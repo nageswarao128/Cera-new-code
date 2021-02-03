@@ -9,3 +9,5 @@
 /CERA.Azure.APIServices/obj
 /CERA.Azure.ODataAPI/obj
 /CERA.Azure.SyncService/obj/Debug
+/CERA.Converter/obj/Debug
+/CERA.Logging/obj/Debug
