@@ -3,3 +3,6 @@
 ################################################################################
 
 /CERA.Azure.API/obj
+/CERA.Azure.Data/obj
+/CERA.Azure.SDK/obj
+/CERA.Azure.Service/obj
