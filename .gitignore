@@ -11,3 +11,6 @@
 /CERA.Azure.SyncService/obj/Debug
 /CERA.Converter/obj/Debug
 /CERA.Logging/obj/Debug
+/CERA.Azure.SyncService/obj
+/CERA.Logging/obj
+/CERA.Converter/obj
