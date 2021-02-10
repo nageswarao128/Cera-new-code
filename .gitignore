@@ -14,3 +14,9 @@
 /CERA.Azure.SyncService/obj
 /CERA.Logging/obj
 /CERA.Converter/obj
+/CERA.AuthenticationService/obj
+/CERA.CloudService/obj
+/CERA.DataOperation/obj
+/CERAPlatform/obj
+/.vs/slnx.sqlite
+/.vs/VSWorkspaceState.json
