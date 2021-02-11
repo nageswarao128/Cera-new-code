@@ -4,7 +4,6 @@
     {
         public object AddResourceData(object data)
         {
-            SqlCommand cmd = new SqlCommand();
             return new object();
         }
 

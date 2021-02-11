@@ -1,8 +1,10 @@
 ﻿using CERA.AuthenticationService;
+using CERA.CloudService.CERAEntities;
+using System.Collections.Generic;
 
 namespace CERA.CloudService
 {
-    public class CeraAzureApiService : ICeraCloudApiService
+    public class CeraAzureApiService : ICeraAzureApiService
     {
 
         ICeraAuthenticator authenticator;
@@ -41,9 +43,9 @@ namespace CERA.CloudService
             return new object();
         }
 
-        public CeraVM GetVMsList()
+        public List<CeraVM> GetVMsList()
         {
-            return new CeraVM();
+            return new List<CeraVM>();
         }
 
         public object GetWebAppsList()

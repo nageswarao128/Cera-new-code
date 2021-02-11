@@ -1,5 +1,7 @@
 ﻿using CERA.AuthenticationService;
+using CERA.CloudService.CERAEntities;
 using System;
+using System.Collections.Generic;
 
 namespace CERA.CloudService
 {
@@ -41,9 +43,9 @@ namespace CERA.CloudService
             throw new NotImplementedException();
         }
 
-        public CeraVM GetVMsList()
+        public List<CeraVM> GetVMsList()
         {
-            return new CeraVM();
+            return new List<CeraVM>();
         }
 
         public object GetWebAppsList()

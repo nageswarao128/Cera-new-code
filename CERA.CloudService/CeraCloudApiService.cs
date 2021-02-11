@@ -1,5 +1,7 @@
 ﻿
 using CERA.AuthenticationService;
+using CERA.CloudService.CERAEntities;
+using System.Collections.Generic;
 
 namespace CERA.CloudService
 {
@@ -21,6 +23,7 @@ namespace CERA.CloudService
 
         public object GetResourcesList()
         {
+
             return new object();
         }
 
@@ -49,9 +52,14 @@ namespace CERA.CloudService
             return new object();
         }
 
-        public CeraVM GetVMsList()
+        public List<CeraVM> GetVMsList()
         {
-            return new CeraVM();
+            var azvms = azureServices.GetVMsList();
+            var awsvms = awsServices.GetVMsList();
+            var allvms = new List<CeraVM>();
+            allvms.AddRange(azvms);
+            allvms.AddRange(awsvms);
+            return allvms;
         }
 
         public object GetWebAppsList()

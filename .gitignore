@@ -21,3 +21,8 @@
 /.vs/slnx.sqlite
 /.vs/VSWorkspaceState.json
 /WebApplication1/obj
+/CERA.AuthenticationService/bin/Debug/netstandard2.1
+/CERA.CloudService/bin/Debug/netstandard2.1
+/CERA.Converter/bin/Debug/netstandard2.1
+/CERA.DataOperation/bin/Debug/netstandard2.1
+/CERA.Logging/bin/Debug/netstandard2.1
