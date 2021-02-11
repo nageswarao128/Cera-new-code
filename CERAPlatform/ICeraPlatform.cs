@@ -2,6 +2,7 @@
 {
     public interface ICeraPlatform
     {
+        public object Sync();
         public object SyncTenants();
         public object SyncSubscriptions();
         public object SyncResources();

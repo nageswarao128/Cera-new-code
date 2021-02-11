@@ -1,10 +1,10 @@
 ﻿using CERA.AuthenticationService;
+using System;
 
 namespace CERA.CloudService
 {
-    public class CeraAzureApiService : ICeraCloudApiService
+    public class CeraAWSApiService : ICeraAWSApiService
     {
-
         ICeraAuthenticator authenticator;
         public object GetMonthlyBillingsList()
         {
@@ -13,32 +13,32 @@ namespace CERA.CloudService
 
         public object GetResourcesList()
         {
-            return new object();
+            throw new NotImplementedException();
         }
 
         public object GetSqlDbsList()
         {
-            return new object();
+            throw new NotImplementedException();
         }
 
         public object GetSqlServersList()
         {
-            return new object();
+            throw new NotImplementedException();
         }
 
         public object GetSubscriptionsList()
         {
-            return new object();
+            throw new NotImplementedException();
         }
 
         public object GetSurvicePlansList()
         {
-            return new object();
+            throw new NotImplementedException();
         }
 
         public object GetTenantsList()
         {
-            return new object();
+            throw new NotImplementedException();
         }
 
         public CeraVM GetVMsList()
@@ -48,7 +48,7 @@ namespace CERA.CloudService
 
         public object GetWebAppsList()
         {
-            return new object();
+            throw new NotImplementedException();
         }
     }
 }

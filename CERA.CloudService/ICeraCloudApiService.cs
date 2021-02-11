@@ -4,7 +4,7 @@
     {
         public object GetTenantsList();
         public object GetSubscriptionsList();
-        public object GetVMsList();
+        public CeraVM GetVMsList();
         public object GetResourcesList();
         public object GetSurvicePlansList();
         public object GetWebAppsList();

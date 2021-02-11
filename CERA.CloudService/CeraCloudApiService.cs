@@ -1,13 +1,21 @@
-﻿using CERA.AuthenticationService;
+﻿
+using CERA.AuthenticationService;
 
 namespace CERA.CloudService
 {
-    public class CeraAzureApiService : ICeraCloudApiService
+    public sealed class CeraCloudApiService : ICeraCloudApiService
     {
+        ICeraAzureApiService azureServices;
+        ICeraAWSApiService awsServices;
 
-        ICeraAuthenticator authenticator;
+        public CeraCloudApiService()
+        {
+
+        }
         public object GetMonthlyBillingsList()
         {
+            azureServices.GetHashCode();
+            awsServices.GetHashCode();
             return new object();
         }
 
@@ -49,6 +57,14 @@ namespace CERA.CloudService
         public object GetWebAppsList()
         {
             return new object();
+        }
+
+        public void GetAllResources()
+        {
+            GetSurvicePlansList();
+            GetTenantsList();
+            GetVMsList();
+            GetWebAppsList();
         }
     }
 }

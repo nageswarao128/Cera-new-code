@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{95D5B5F8-AA76-4129-AD41-8F3BDB26CF5E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublicAPIs", "PublicAPIs", "{0F4022B0-2503-4786-9BE5-FB9B1F89344E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "APIs", "APIs", "{0F4022B0-2503-4786-9BE5-FB9B1F89344E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{6242F99E-B6C2-4416-BBC2-A93243E0FE79}"
 EndProject
@@ -15,19 +15,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cloud.Services", "Cloud.Ser
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{0FB19D69-09CB-4C3E-B198-019A0F515475}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{555326A3-E51F-4C48-BECF-CA9FF992F6FB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platforms", "Platforms", "{555326A3-E51F-4C48-BECF-CA9FF992F6FB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CERA.Logging", "CERA.Logging\CERA.Logging.csproj", "{82D50166-5D5E-4B8B-82D6-2479052CA65D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CERA.Converter", "CERA.Converter\CERA.Converter.csproj", "{53AFEC06-6AE0-4363-8EFB-666B94D537A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CERA.CloudService", "CERA.CloudService\CERA.CloudService.csproj", "{C897A009-3779-426E-83F3-AED7EF2C8480}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CERA.CloudService", "CERA.CloudService\CERA.CloudService.csproj", "{C897A009-3779-426E-83F3-AED7EF2C8480}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CERA.DataOperation", "CERA.DataOperation\CERA.DataOperation.csproj", "{71F6038B-A298-4949-B3E0-087C2E1A7643}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CERA.DataOperation", "CERA.DataOperation\CERA.DataOperation.csproj", "{71F6038B-A298-4949-B3E0-087C2E1A7643}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CERA.AuthenticationService", "CERA.AuthenticationService\CERA.AuthenticationService.csproj", "{26912149-350B-479F-BFCA-68702FD594E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CERA.AuthenticationService", "CERA.AuthenticationService\CERA.AuthenticationService.csproj", "{26912149-350B-479F-BFCA-68702FD594E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CERAPlatform", "CERAPlatform\CERAPlatform.csproj", "{5DC3AA22-1617-430D-9200-0484CC74EE5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CERAPlatform", "CERAPlatform\CERAPlatform.csproj", "{5DC3AA22-1617-430D-9200-0484CC74EE5C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

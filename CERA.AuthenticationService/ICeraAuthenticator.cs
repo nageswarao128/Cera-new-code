@@ -2,7 +2,8 @@
 {
     public interface ICeraAuthenticator
     {
-        public object GetCertificate();
-        public object GetJwtToken();
+        public string GetAuthToken();
+        public string GetAuthToken(string TenantId, string ClientID, string ClientSecret);
+        public string GetAuthToken(object Certificate);
     }
 }
