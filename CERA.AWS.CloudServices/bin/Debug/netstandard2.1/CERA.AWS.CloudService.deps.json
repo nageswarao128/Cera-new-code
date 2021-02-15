@@ -1,0 +1,61 @@
+{
+  "runtimeTarget": {
+    "name": ".NETStandard,Version=v2.1/",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETStandard,Version=v2.1": {},
+    ".NETStandard,Version=v2.1/": {
+      "CERA.AWS.CloudService/1.0.0": {
+        "dependencies": {
+          "CERA.CloudService": "1.0.0"
+        },
+        "runtime": {
+          "CERA.AWS.CloudService.dll": {}
+        }
+      },
+      "CERA.AuthenticationService/1.0.0": {
+        "runtime": {
+          "CERA.AuthenticationService.dll": {}
+        }
+      },
+      "CERA.CloudService/1.0.0": {
+        "dependencies": {
+          "CERA.AuthenticationService": "1.0.0",
+          "CERA.Entities": "1.0.0"
+        },
+        "runtime": {
+          "CERA.CloudService.dll": {}
+        }
+      },
+      "CERA.Entities/1.0.0": {
+        "runtime": {
+          "CERA.Entities.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "CERA.AWS.CloudService/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CERA.AuthenticationService/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CERA.CloudService/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CERA.Entities/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

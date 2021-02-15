@@ -26,3 +26,14 @@
 /CERA.Converter/bin/Debug/netstandard2.1
 /CERA.DataOperation/bin/Debug/netstandard2.1
 /CERA.Logging/bin/Debug/netstandard2.1
+/CERA.AWS.CloudServices/obj
+/CERA.Azure.CloudService/obj
+/CERA.Platform/obj
+/CERA.TestClient/obj
+/CERA.Tests/obj
+/CERA.Entities/obj
+/CERA.Entities/bin/Debug/netstandard2.0
+/CERA.TestClient/bin/Debug/netcoreapp3.1
+/CERA.Tests/bin/Debug/netcoreapp3.1
+/CERA.Azure.CloudService/bin/Debug/netstandard2.1
+/CERA.Platform/bin/Debug/netstandard2.1

@@ -1,6 +1,7 @@
 ﻿
-using CERA.AuthenticationService;
-using CERA.CloudService.CERAEntities;
+using CERA.AWS.CloudService;
+using CERA.Azure.CloudService;
+using CERA.Entities;
 using System.Collections.Generic;
 
 namespace CERA.CloudService
@@ -8,7 +9,7 @@ namespace CERA.CloudService
     public sealed class CeraCloudApiService : ICeraCloudApiService
     {
         ICeraAzureApiService azureServices;
-        ICeraAWSApiService awsServices;
+        ICeraAwsApiService awsServices;
 
         public CeraCloudApiService()
         {
@@ -47,15 +48,15 @@ namespace CERA.CloudService
             return new object();
         }
 
-        public object GetTenantsList()
+        public object GetCloudTenantList()
         {
             return new object();
         }
 
-        public List<CeraVM> GetVMsList()
+        public List<CeraVM> GetCloudVMList()
         {
-            var azvms = azureServices.GetVMsList();
-            var awsvms = awsServices.GetVMsList();
+            var azvms = azureServices.GetCloudVMList();
+            var awsvms = awsServices.GetCloudVMList();
             var allvms = new List<CeraVM>();
             allvms.AddRange(azvms);
             allvms.AddRange(awsvms);
@@ -70,9 +71,11 @@ namespace CERA.CloudService
         public void GetAllResources()
         {
             GetSurvicePlansList();
-            GetTenantsList();
-            GetVMsList();
+            GetCloudTenantList();
+            GetCloudVMList();
             GetWebAppsList();
         }
+
+
     }
 }

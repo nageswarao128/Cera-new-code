@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CERA.AuthenticationService\CERA.AuthenticationService.csproj" />
+		<ProjectReference Include="..\CERA.AWS.CloudServices\CERA.AWS.CloudService.csproj" />
+		<ProjectReference Include="..\CERA.Azure.CloudService\CERA.Azure.CloudService.csproj" />
+		<ProjectReference Include="..\CERA.CloudService\CERA.CloudService.csproj" />
+	</ItemGroup>
+
+</Project>

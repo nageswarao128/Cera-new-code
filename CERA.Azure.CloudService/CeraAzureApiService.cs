@@ -1,8 +1,8 @@
 ﻿using CERA.AuthenticationService;
-using CERA.CloudService.CERAEntities;
+using CERA.Entities;
 using System.Collections.Generic;
 
-namespace CERA.CloudService
+namespace CERA.Azure.CloudService
 {
     public class CeraAzureApiService : ICeraAzureApiService
     {
@@ -38,12 +38,12 @@ namespace CERA.CloudService
             return new object();
         }
 
-        public object GetTenantsList()
+        public object GetCloudTenantList()
         {
             return new object();
         }
 
-        public List<CeraVM> GetVMsList()
+        public List<CeraVM> GetCloudVMList()
         {
             return new List<CeraVM>();
         }

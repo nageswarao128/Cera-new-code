@@ -1,11 +1,11 @@
 ﻿using CERA.AuthenticationService;
-using CERA.CloudService.CERAEntities;
+using CERA.Entities;
 using System;
 using System.Collections.Generic;
 
-namespace CERA.CloudService
+namespace CERA.AWS.CloudService
 {
-    public class CeraAWSApiService : ICeraAWSApiService
+    public class CeraAWSApiService : ICeraAwsApiService
     {
         ICeraAuthenticator authenticator;
         public object GetMonthlyBillingsList()
@@ -38,12 +38,12 @@ namespace CERA.CloudService
             throw new NotImplementedException();
         }
 
-        public object GetTenantsList()
+        public object GetCloudTenantList()
         {
             throw new NotImplementedException();
         }
 
-        public List<CeraVM> GetVMsList()
+        public List<CeraVM> GetCloudVMList()
         {
             return new List<CeraVM>();
         }
