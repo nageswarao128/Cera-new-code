@@ -1,5 +1,4 @@
-﻿
-using CERA.AWS.CloudService;
+﻿using CERA.AWS.CloudService;
 using CERA.Azure.CloudService;
 using CERA.Entities;
 using System.Collections.Generic;
@@ -15,35 +14,35 @@ namespace CERA.CloudService
         {
 
         }
-        public object GetMonthlyBillingsList()
+        public object GetCloudMonthlyBillingList()
         {
             azureServices.GetHashCode();
             awsServices.GetHashCode();
             return new object();
         }
 
-        public object GetResourcesList()
+        public object GetCloudResourceList()
         {
 
             return new object();
         }
 
-        public object GetSqlDbsList()
+        public object GetCloudSqlDbList()
         {
             return new object();
         }
 
-        public object GetSqlServersList()
+        public object GetCloudSqlServerList()
         {
             return new object();
         }
 
-        public object GetSubscriptionsList()
+        public object GetCloudSubscriptionList()
         {
             return new object();
         }
 
-        public object GetSurvicePlansList()
+        public object GetCloudServicePlanList()
         {
             return new object();
         }
@@ -63,17 +62,17 @@ namespace CERA.CloudService
             return allvms;
         }
 
-        public object GetWebAppsList()
+        public object GetCloudWebAppList()
         {
             return new object();
         }
 
         public void GetAllResources()
         {
-            GetSurvicePlansList();
+            GetCloudServicePlanList();
             GetCloudTenantList();
             GetCloudVMList();
-            GetWebAppsList();
+            GetCloudWebAppList();
         }
 
 

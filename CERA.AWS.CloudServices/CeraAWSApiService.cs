@@ -8,32 +8,32 @@ namespace CERA.AWS.CloudService
     public class CeraAWSApiService : ICeraAwsApiService
     {
         ICeraAuthenticator authenticator;
-        public object GetMonthlyBillingsList()
+        public object GetCloudMonthlyBillingList()
         {
             return new object();
         }
 
-        public object GetResourcesList()
+        public object GetCloudResourceList()
         {
             throw new NotImplementedException();
         }
 
-        public object GetSqlDbsList()
+        public object GetCloudSqlDbList()
         {
             throw new NotImplementedException();
         }
 
-        public object GetSqlServersList()
+        public object GetCloudSqlServerList()
         {
             throw new NotImplementedException();
         }
 
-        public object GetSubscriptionsList()
+        public object GetCloudSubscriptionList()
         {
             throw new NotImplementedException();
         }
 
-        public object GetSurvicePlansList()
+        public object GetCloudServicePlanList()
         {
             throw new NotImplementedException();
         }
@@ -48,7 +48,7 @@ namespace CERA.AWS.CloudService
             return new List<CeraVM>();
         }
 
-        public object GetWebAppsList()
+        public object GetCloudWebAppList()
         {
             throw new NotImplementedException();
         }
