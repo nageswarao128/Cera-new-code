@@ -75,6 +75,9 @@ namespace CERA.CloudService
             GetCloudWebAppList();
         }
 
-
+        public object GetSubscriptionList()
+        {
+            return new object();
+        }
     }
 }

@@ -52,5 +52,9 @@ namespace CERA.Azure.CloudService
         {
             return new object();
         }
+        public object GetSubscriptionList()
+        {
+            return new object();
+        }
     }
 }

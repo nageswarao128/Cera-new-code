@@ -15,32 +15,32 @@ namespace CERA.AWS.CloudService
 
         public object GetCloudResourceList()
         {
-            throw new NotImplementedException();
+            return new object();
         }
 
         public object GetCloudSqlDbList()
         {
-            throw new NotImplementedException();
+            return new object();
         }
 
         public object GetCloudSqlServerList()
         {
-            throw new NotImplementedException();
+            return new object();
         }
 
         public object GetCloudSubscriptionList()
         {
-            throw new NotImplementedException();
+            return new object();
         }
 
         public object GetCloudServicePlanList()
         {
-            throw new NotImplementedException();
+            return new object();
         }
 
         public object GetCloudTenantList()
         {
-            throw new NotImplementedException();
+            return new object();
         }
 
         public List<CeraVM> GetCloudVMList()
@@ -50,7 +50,11 @@ namespace CERA.AWS.CloudService
 
         public object GetCloudWebAppList()
         {
-            throw new NotImplementedException();
+            return new object();
+        }
+        public object GetSubscriptionList()
+        {
+            return new object();
         }
     }
 }

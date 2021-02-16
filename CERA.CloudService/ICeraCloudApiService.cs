@@ -14,5 +14,6 @@ namespace CERA.CloudService
         public object GetCloudSqlServerList();
         public object GetCloudSqlDbList();
         public object GetCloudMonthlyBillingList();
+        public object GetSubscriptionList();
     }
 }
