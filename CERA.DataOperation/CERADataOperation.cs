@@ -3,7 +3,9 @@ using CERA.DataOperation.CeraContext;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace CERA.DataOperation
 {
@@ -36,18 +38,22 @@ namespace CERA.DataOperation
             return new object();
         }
 
-        public object AddSubscriptionData(List<CeraSubscriptionList> data)
+        public int AddSubscriptionData(List<CeraSubscriptionList> data)
         {
 
-            int StepID = 1;
-            int BatchID = 1;
-            var jsonData = JsonConvert.SerializeObject(data);
-            var sp_parameters = new List<SqlParameter>() { new SqlParameter("json", jsonData) };
-            int record = _dbContext.Database.ExecuteSqlRaw($"Exec Subscription_inserting @json" , sp_parameters);
-            int sample = _dbContext.Database.ExecuteSqlRaw("Exec sp_GetSubscriptionList");
-
-
-            return new object();
+            try
+            {
+                var jsonData = JsonConvert.SerializeObject(data);
+                var sp_parameters = new List<SqlParameter>() { new SqlParameter("json", jsonData) };
+                int record = _dbContext.Database.ExecuteSqlRaw($"Exec usp_Subscription_inserting @json", sp_parameters);
+                int sample = _dbContext.Database.ExecuteSqlRaw("Exec sp_GetSubscriptionList");
+                return sample;
+            }
+            catch(Exception ex)
+            {
+                EventLog.WriteEntry("List", ex.Message, EventLogEntryType.Error);
+                return 1;
+            }
         }
 
         

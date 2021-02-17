@@ -1,4 +1,6 @@
 ﻿using Microsoft.Identity.Client;
+using System;
+using System.Diagnostics;
 
 namespace CERA.AuthenticationService
 {
@@ -33,27 +35,43 @@ namespace CERA.AuthenticationService
 
         private IConfidentialClientApplication CreateAuthClient()
         {
-            IConfidentialClientApplication confidentialClientApp;
-            ConfidentialClientApplicationBuilder clientBuilder = ConfidentialClientApplicationBuilder
-                                                                        .Create(ClientID);
-            if (!string.IsNullOrWhiteSpace(string.Format(Authority, "")))
-                clientBuilder = clientBuilder.WithAuthority(Authority);
-            if (!string.IsNullOrWhiteSpace(ClientSecret))
-                clientBuilder = clientBuilder.WithClientSecret(ClientSecret);
-            if (!string.IsNullOrWhiteSpace(RedirectUri))
-                clientBuilder = clientBuilder.WithRedirectUri(RedirectUri);
-            confidentialClientApp = clientBuilder.Build();
-            return confidentialClientApp;
+            try
+            {
+                IConfidentialClientApplication confidentialClientApp;
+                ConfidentialClientApplicationBuilder clientBuilder = ConfidentialClientApplicationBuilder
+                                                                            .Create(ClientID);
+                if (!string.IsNullOrWhiteSpace(string.Format(Authority, "")))
+                    clientBuilder = clientBuilder.WithAuthority(Authority);
+                if (!string.IsNullOrWhiteSpace(ClientSecret))
+                    clientBuilder = clientBuilder.WithClientSecret(ClientSecret);
+                if (!string.IsNullOrWhiteSpace(RedirectUri))
+                    clientBuilder = clientBuilder.WithRedirectUri(RedirectUri);
+                confidentialClientApp = clientBuilder.Build();
+                return confidentialClientApp;
+            }
+            catch(Exception ex)
+            {
+                EventLog.WriteEntry("CeraAuthenticator", ex.Message, EventLogEntryType.Error);
+                return null;
+            }
 
         }
         public AuthenticationResult Authenticate()
         {
-            var app = CreateAuthClient();
-            //List<string> scopes = new List<string>();
-            var scopes = new[] { "https://management.core.windows.net//.default" };
-            var AquireTokenClient = app.AcquireTokenForClient(scopes);
-            var AuthResult = AquireTokenClient.ExecuteAsync().Result;
-            return AuthResult;
+            try
+            {
+                var app = CreateAuthClient();
+                //List<string> scopes = new List<string>();
+                var scopes = new[] { "https://management.core.windows.net//.default" };
+                var AquireTokenClient = app.AcquireTokenForClient(scopes);
+                var AuthResult = AquireTokenClient.ExecuteAsync().Result;
+                return AuthResult;
+            }
+            catch(Exception ex)
+            {
+                EventLog.WriteEntry("CeraAuthenticator", ex.Message, EventLogEntryType.Error);
+                return null;
+            }
         }
 
         public string GetAuthToken()

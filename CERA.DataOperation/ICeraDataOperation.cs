@@ -7,7 +7,7 @@ namespace CERA.DataOperation
     {
         public object AddTenantData(object data);
 
-        public object AddSubscriptionData(List<CeraSubscriptionList> data);
+        public int AddSubscriptionData(List<CeraSubscriptionList> data);
         
             public object AddResourceData(object data);
         public object AddWebAppData(object data);
