@@ -6,8 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CERA.Azure.CloudService\CERA.Azure.CloudService.csproj" />
-    <ProjectReference Include="..\CERA.DataOperation\CERA.DataOperation.csproj" />
+    <ProjectReference Include="..\CERA.CloudService\CERA.CloudService.csproj" />
   </ItemGroup>
 
 </Project>

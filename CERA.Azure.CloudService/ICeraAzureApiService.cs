@@ -4,5 +4,7 @@ namespace CERA.Azure.CloudService
 {
     public interface ICeraAzureApiService : ICeraCloudApiService
     {
+    
+
     }
 }

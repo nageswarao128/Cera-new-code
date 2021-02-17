@@ -1,4 +1,5 @@
-﻿using CERA.Entities;
+﻿using CERA.CloudService.CERAEntities;
+using CERA.Entities;
 using System.Collections.Generic;
 
 namespace CERA.CloudService
@@ -6,7 +7,7 @@ namespace CERA.CloudService
     public interface ICeraCloudApiService
     {
         public object GetCloudTenantList();
-        public object GetSubscriptionsList();
+        public List<CeraSubscriptionList> GetSubscriptionsList(string authority, string clientId, string clientSecret, string redirectUrl,string tenantId);
         public List<CeraVM> GetCloudVMList();
         public object GetResourcesList();
         public object GetSurvicePlansList();

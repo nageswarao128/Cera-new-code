@@ -1,4 +1,6 @@
-﻿namespace CERA.AuthenticationService
+﻿using Microsoft.Identity.Client;
+
+namespace CERA.AuthenticationService
 {
     public class CeraAzureAuthenticator : ICeraAuthenticator
     {
@@ -8,14 +10,20 @@
         public string ClientSecret { get; set; }
         public object Certificate { get; set; }
         public string AuthToken { get; set; }
+        public  string RedirectUri { get; set; }
         public CeraAzureAuthenticator()
         {
 
         }
-        public CeraAzureAuthenticator(string TenantId, string ClientID, string ClientSecret)
+        public CeraAzureAuthenticator(string authority, string clientId, string clientSecret, string redirectUri)
         {
+            Authority = authority;
+            ClientID = clientId;
+            ClientSecret = clientSecret;
+            RedirectUri = redirectUri;
             Initialize();
         }
+
 
         void Initialize()
         {
@@ -23,14 +31,36 @@
             AuthToken = "";
         }
 
-        private object CreateAuthClient()
+        private IConfidentialClientApplication CreateAuthClient()
         {
-            throw new System.NotImplementedException();
+            IConfidentialClientApplication confidentialClientApp;
+            ConfidentialClientApplicationBuilder clientBuilder = ConfidentialClientApplicationBuilder
+                                                                        .Create(ClientID);
+            if (!string.IsNullOrWhiteSpace(string.Format(Authority, "")))
+                clientBuilder = clientBuilder.WithAuthority(Authority);
+            if (!string.IsNullOrWhiteSpace(ClientSecret))
+                clientBuilder = clientBuilder.WithClientSecret(ClientSecret);
+            if (!string.IsNullOrWhiteSpace(RedirectUri))
+                clientBuilder = clientBuilder.WithRedirectUri(RedirectUri);
+            confidentialClientApp = clientBuilder.Build();
+            return confidentialClientApp;
+
+        }
+        public AuthenticationResult Authenticate()
+        {
+            var app = CreateAuthClient();
+            //List<string> scopes = new List<string>();
+            var scopes = new[] { "https://management.core.windows.net//.default" };
+            var AquireTokenClient = app.AcquireTokenForClient(scopes);
+            var AuthResult = AquireTokenClient.ExecuteAsync().Result;
+            return AuthResult;
         }
 
         public string GetAuthToken()
         {
-            return string.Empty;
+            var authResult = Authenticate();
+            return authResult.AccessToken;
+            
         }
 
         public string GetAuthToken(string TenantId, string ClientID, string ClientSecret)

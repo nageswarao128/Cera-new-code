@@ -1,10 +1,15 @@
-﻿namespace CERA.DataOperation
+﻿using CERA.CloudService.CERAEntities;
+using System.Collections.Generic;
+
+namespace CERA.DataOperation
 {
     public interface ICeraDataOperation
     {
         public object AddTenantData(object data);
-        public object AddSubscriptionData(object data);
-        public object AddResourceData(object data);
+
+        public object AddSubscriptionData(List<CeraSubscriptionList> data);
+        
+            public object AddResourceData(object data);
         public object AddWebAppData(object data);
         public object AddServicePlanData(object data);
         public object AddVMData(object data);
