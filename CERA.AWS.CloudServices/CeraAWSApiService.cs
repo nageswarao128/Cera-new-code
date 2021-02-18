@@ -28,9 +28,9 @@ namespace CERA.AWS.CloudService
             return new object();
         }
 
-        public object GetCloudSubscriptionList()
+        public List<CeraSubscription> GetCloudSubscriptionList()
         {
-            return new object();
+            return new List<CeraSubscription>();
         }
 
         public object GetCloudServicePlanList()
@@ -52,9 +52,9 @@ namespace CERA.AWS.CloudService
         {
             return new object();
         }
-        public object GetSubscriptionList()
+        public List<CeraSubscription> GetSubscriptionList()
         {
-            return new object();
+            return new List<CeraSubscription>();
         }
     }
 }

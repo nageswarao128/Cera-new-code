@@ -28,9 +28,27 @@ namespace CERA.Azure.CloudService
             return new object();
         }
 
-        public object GetCloudSubscriptionList()
+        public List<CeraSubscription> GetCloudSubscriptionList()
         {
-            return new object();
+            authenticator = new CeraAzureAuthenticator();
+            var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
+            var azureSubscriptions = authClient.Subscriptions.ListAsync().Result;
+            if (azureSubscriptions != null)
+            {
+
+                List<CeraSubscription> subscriptions = new List<CeraSubscription>();
+                foreach (var sub in azureSubscriptions)
+                {
+                    subscriptions.Add(new CeraSubscription
+                    {
+                        SubscriptionId = sub.SubscriptionId,
+                        DisplayName = sub.DisplayName,
+                        TenantID = sub.Inner.TenantId,
+                    });
+                }
+                return subscriptions;
+            }
+            return null;
         }
 
         public object GetCloudServicePlanList()
@@ -52,9 +70,9 @@ namespace CERA.Azure.CloudService
         {
             return new object();
         }
-        public object GetSubscriptionList()
+        public List<CeraSubscription> GetSubscriptionList()
         {
-            return new object();
+            return new List<CeraSubscription>();
         }
     }
 }

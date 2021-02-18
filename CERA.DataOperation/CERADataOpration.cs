@@ -1,7 +1,22 @@
-﻿namespace CERA.DataOperation
+﻿using CERA.DataOperation.Data;
+using CERA.Entities;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace CERA.DataOperation
 {
-    public class CERADataOpration : ICeraDataOperation
+    public class CERADataOperation : ICeraDataOperation
     {
+        protected readonly CeraDbContext _dbContext;
+
+        public CERADataOperation(CeraDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
         public object AddResourceData(object data)
         {
             return new object();
@@ -22,9 +37,31 @@
             return new object();
         }
 
-        public object AddSubscriptionData(object data)
+        public int AddSubscriptionData(List<CeraSubscription> data)
         {
-            return new object();
+            try
+            {
+                var jsonData = JsonConvert.SerializeObject(data);
+                var sp_parameters = new List<SqlParameter>() { new SqlParameter("json", jsonData) };
+                int record = _dbContext.Database.ExecuteSqlRaw($"Exec usp_Subscription_insert @json", sp_parameters);
+                return record;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
+
+        public List<CeraSubscription> GetSubscriptions()
+        {
+            try
+            {
+                return _dbContext.Subscriptions.ToList();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
         public object AddTenantData(object data)

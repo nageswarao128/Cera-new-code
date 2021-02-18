@@ -1,5 +1,6 @@
 ﻿using CERA.AWS.CloudService;
 using CERA.Azure.CloudService;
+using CERA.DataOperation;
 using CERA.Entities;
 using System.Collections.Generic;
 
@@ -9,6 +10,7 @@ namespace CERA.CloudService
     {
         ICeraAzureApiService azureServices;
         ICeraAwsApiService awsServices;
+        ICeraDataOperation dataOps;
 
         public CeraCloudApiService()
         {
@@ -37,9 +39,11 @@ namespace CERA.CloudService
             return new object();
         }
 
-        public object GetCloudSubscriptionList()
+        public List<CeraSubscription> GetCloudSubscriptionList()
         {
-            return new object();
+            var subscriptions = azureServices.GetCloudSubscriptionList();
+            dataOps.AddSubscriptionData(subscriptions);
+            return subscriptions;
         }
 
         public object GetCloudServicePlanList()
@@ -75,9 +79,9 @@ namespace CERA.CloudService
             GetCloudWebAppList();
         }
 
-        public object GetSubscriptionList()
+        public List<CeraSubscription> GetSubscriptionList()
         {
-            return new object();
+            return dataOps.GetSubscriptions();
         }
     }
 }

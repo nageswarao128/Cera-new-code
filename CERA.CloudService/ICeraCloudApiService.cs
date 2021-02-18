@@ -6,7 +6,7 @@ namespace CERA.CloudService
     public interface ICeraCloudApiService
     {
         public object GetCloudTenantList();
-        public object GetCloudSubscriptionList();
+        public List<CeraSubscription> GetCloudSubscriptionList();
         public List<CeraVM> GetCloudVMList();
         public object GetCloudResourceList();
         public object GetCloudServicePlanList();
@@ -14,6 +14,6 @@ namespace CERA.CloudService
         public object GetCloudSqlServerList();
         public object GetCloudSqlDbList();
         public object GetCloudMonthlyBillingList();
-        public object GetSubscriptionList();
+        public List<CeraSubscription> GetSubscriptionList();
     }
 }
