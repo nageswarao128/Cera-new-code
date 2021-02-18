@@ -1,4 +1,8 @@
-﻿using Microsoft.Identity.Client;
+﻿using Microsoft.Azure.Management.ResourceManager.Fluent;
+using Microsoft.Azure.Management.ResourceManager.Fluent.Authentication;
+using Microsoft.Azure.Management.ResourceManager.Fluent.Core;
+using Microsoft.Identity.Client;
+using Microsoft.Rest;
 using System;
 using System.Diagnostics;
 
@@ -12,7 +16,7 @@ namespace CERA.AuthenticationService
         public string ClientSecret { get; set; }
         public object Certificate { get; set; }
         public string AuthToken { get; set; }
-        public  string RedirectUri { get; set; }
+        public string RedirectUri { get; set; }
         public CeraAzureAuthenticator()
         {
 
@@ -49,7 +53,7 @@ namespace CERA.AuthenticationService
                 confidentialClientApp = clientBuilder.Build();
                 return confidentialClientApp;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 EventLog.WriteEntry("CeraAuthenticator", ex.Message, EventLogEntryType.Error);
                 return null;
@@ -67,18 +71,33 @@ namespace CERA.AuthenticationService
                 var AuthResult = AquireTokenClient.ExecuteAsync().Result;
                 return AuthResult;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 EventLog.WriteEntry("CeraAuthenticator", ex.Message, EventLogEntryType.Error);
                 return null;
             }
         }
 
+        public object CreateRestClient()
+        {
+            var tokenObject = Authenticate();
+            TokenCredentials tokenCredentials = new TokenCredentials(tokenObject.AccessToken);
+            var azureCredentials = new AzureCredentials(tokenCredentials, tokenCredentials, TenantId, AzureEnvironment.AzureGlobalCloud);
+            var restClient = RestClient
+            .Configure()
+            .WithEnvironment(AzureEnvironment.AzureGlobalCloud)
+            .WithLogLevel(HttpLoggingDelegatingHandler.Level.Basic)
+            .WithCredentials(azureCredentials)
+            .Build();
+            var azure = Microsoft.Azure.Management.ResourceManager.Fluent.Azure.Authenticate(restClient, TenantId);
+            return azure;
+        }
+
         public string GetAuthToken()
         {
             var authResult = Authenticate();
             return authResult.AccessToken;
-            
+
         }
 
         public string GetAuthToken(string TenantId, string ClientID, string ClientSecret)

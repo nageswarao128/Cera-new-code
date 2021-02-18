@@ -15,7 +15,7 @@ namespace CERA.Azure.CloudService
     public class CeraAzureApiService : ICeraAzureApiService
     {
 
-       // ICeraAuthenticator authenticator;
+        // ICeraAuthenticator authenticator;
         public object GetMonthlyBillingsList()
         {
             return new object();
@@ -65,22 +65,11 @@ namespace CERA.Azure.CloudService
         {
             try
             {
-
                 if (authority != null && clientId != null && clientSecret != null && redirectUri != null && tenantId != null)
                 {
                     CeraAzureAuthenticator authenticator = new CeraAzureAuthenticator(authority, clientId, clientSecret, redirectUri);
-                    var token = authenticator.GetAuthToken();
-                    TokenCredentials tokenCredentials = new TokenCredentials(token);
-                    var azureCredentials = new AzureCredentials(tokenCredentials, tokenCredentials, tenantId, AzureEnvironment.AzureGlobalCloud);
-                    var restClient = RestClient
-                    .Configure()
-                    .WithEnvironment(AzureEnvironment.AzureGlobalCloud)
-                    .WithLogLevel(HttpLoggingDelegatingHandler.Level.Basic)
-                    .WithCredentials(azureCredentials)
-                    .Build();
-                    var azure = Microsoft.Azure.Management.Fluent.Azure.Authenticate(restClient, tenantId);
+                    var azure = authenticator.CreateRestClient();
                     var sample = azure.Subscriptions.ListAsync().Result;
-
                     List<CeraSubscriptionList> subscriptions = new List<CeraSubscriptionList>();
 
                     foreach (var sub in sample)
@@ -102,17 +91,17 @@ namespace CERA.Azure.CloudService
                     return null;
                 }
             }
-           
-                  catch (Exception ex)
+
+            catch (Exception ex)
             {
                 EventLog.WriteEntry("CERA", ex.Message, EventLogEntryType.Error);
                 return null;
             }
-        
+
         }
 
-        
 
-        
+
+
     }
 }
