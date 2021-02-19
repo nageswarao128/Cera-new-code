@@ -1,11 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CERA.CloudService\CERA.CloudService.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\CERA.CloudService\CERA.CloudService.csproj" />
+		<ProjectReference Include="..\CERA.Logging\CERA.Logging.csproj" />
+	</ItemGroup>
 
 </Project>

@@ -11,4 +11,8 @@
 	  <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.22" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\CERA.Logging\CERA.Logging.csproj" />
+	</ItemGroup>
+
 </Project>

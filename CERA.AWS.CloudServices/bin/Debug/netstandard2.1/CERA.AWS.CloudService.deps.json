@@ -479,6 +479,14 @@
           }
         }
       },
+      "Microsoft.Extensions.Logging.Abstractions/5.0.0": {
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.20.51904"
+          }
+        }
+      },
       "Microsoft.Identity.Client/4.26.0": {
         "dependencies": {
           "Microsoft.CSharp": "4.5.0",
@@ -1815,6 +1823,7 @@
       },
       "CERA.AuthenticationService/1.0.0": {
         "dependencies": {
+          "CERA.Logging": "1.0.0",
           "Microsoft.Azure.Management.Fluent": "1.37.0",
           "Microsoft.Azure.Management.ResourceManager.Fluent": "1.37.0",
           "Microsoft.Identity.Client": "4.26.0",
@@ -1836,6 +1845,14 @@
       "CERA.Entities/1.0.0": {
         "runtime": {
           "CERA.Entities.dll": {}
+        }
+      },
+      "CERA.Logging/1.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "5.0.0"
+        },
+        "runtime": {
+          "CERA.Logging.dll": {}
         }
       }
     }
@@ -2041,6 +2058,13 @@
       "sha512": "sha512-kaj6Wb4qoMuH3HySFJhxwQfe8R/sJsNJnANrvv8WdFPMoNbKY5htfNscv+LHCu5ipz+49m2e+WQXpLXr9XYemQ==",
       "path": "microsoft.csharp/4.5.0",
       "hashPath": "microsoft.csharp.4.5.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Logging.Abstractions/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-NxP6ahFcBnnSfwNBi2KH2Oz8Xl5Sm2krjId/jRR3I7teFphwiUoUeZPwTNA21EX+5PtjqmyAvKaOeBXcJjcH/w==",
+      "path": "microsoft.extensions.logging.abstractions/5.0.0",
+      "hashPath": "microsoft.extensions.logging.abstractions.5.0.0.nupkg.sha512"
     },
     "Microsoft.Identity.Client/4.26.0": {
       "type": "package",
@@ -2788,6 +2812,11 @@
       "sha512": ""
     },
     "CERA.Entities/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CERA.Logging/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

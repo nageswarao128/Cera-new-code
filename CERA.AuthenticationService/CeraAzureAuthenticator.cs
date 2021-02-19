@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Management.Fluent;
+﻿using CERA.Logging;
+using Microsoft.Azure.Management.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent.Authentication;
 using Microsoft.Azure.Management.ResourceManager.Fluent.Core;
@@ -19,25 +20,36 @@ namespace CERA.AuthenticationService
         public string AuthToken { get; private set; }
         public string RedirectUri { get; set; }
         IConfidentialClientApplication confidentialClientApp;
-        public CeraAzureAuthenticator()
+        private ICeraLogger _logger;
+
+        public CeraAzureAuthenticator(ICeraLogger logger)
         {
+            _logger = logger;
             Initialize();
         }
-        public CeraAzureAuthenticator(string TenantId, string ClientID, string ClientSecret)
+        public CeraAzureAuthenticator(string TenantId, string ClientID, string ClientSecret, ICeraLogger logger)
         {
+            _logger = logger;
             InitializeVariables(TenantId, ClientID, ClientSecret);
             Initialize();
         }
 
         void Initialize()
         {
+            _logger.LogInfo("Initializing Auth Client");
             InitializeAuthClient();
+            _logger.LogInfo("Initialization Complete for Auth Client");
         }
         void InitializeVariables(string tenantId, string clientID, string clientSecret)
         {
-            Authority = string.Format(Authority, tenantId);
-            ClientID = clientID;
-            ClientSecret = clientSecret;
+            _logger.LogInfo("Initializing Variable for Auth Client");
+            if (!string.IsNullOrWhiteSpace(tenantId))
+                Authority = string.Format(Authority, tenantId);
+            if (!string.IsNullOrWhiteSpace(clientID))
+                ClientID = clientID;
+            if (!string.IsNullOrWhiteSpace(clientSecret))
+                ClientSecret = clientSecret;
+            _logger.LogInfo("Initialization Complete  Variable for Auth Client");
         }
 
         private void InitializeAuthClient()

@@ -1,5 +1,7 @@
 ﻿using CERA.AuthenticationService;
 using CERA.Entities;
+using CERA.Logging;
+using System;
 using System.Collections.Generic;
 
 namespace CERA.Azure.CloudService
@@ -8,6 +10,12 @@ namespace CERA.Azure.CloudService
     {
 
         ICeraAuthenticator authenticator;
+        private ICeraLogger _logger;
+
+        public CeraAzureApiService(ICeraLogger logger)
+        {
+            _logger = logger;
+        }
         public object GetCloudMonthlyBillingList()
         {
             return new object();
@@ -30,25 +38,37 @@ namespace CERA.Azure.CloudService
 
         public List<CeraSubscription> GetCloudSubscriptionList()
         {
-            authenticator = new CeraAzureAuthenticator();
-            var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
-            var azureSubscriptions = authClient.Subscriptions.ListAsync().Result;
-            if (azureSubscriptions != null)
+            try
             {
-
-                List<CeraSubscription> subscriptions = new List<CeraSubscription>();
-                foreach (var sub in azureSubscriptions)
+                authenticator = new CeraAzureAuthenticator(_logger);
+                var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
+                _logger.LogInfo("Auth Client Initialized");
+                var azureSubscriptions = authClient.Subscriptions.ListAsync().Result;
+                _logger.LogInfo("Got Subscription List from Azure Cloud Provider");
+                if (azureSubscriptions != null)
                 {
-                    subscriptions.Add(new CeraSubscription
+                    _logger.LogInfo("Parsing Subscription List To CERA Subscription");
+                    List<CeraSubscription> subscriptions = new List<CeraSubscription>();
+                    foreach (var sub in azureSubscriptions)
                     {
-                        SubscriptionId = sub.SubscriptionId,
-                        DisplayName = sub.DisplayName,
-                        TenantID = sub.Inner.TenantId,
-                    });
+                        subscriptions.Add(new CeraSubscription
+                        {
+                            SubscriptionId = sub.SubscriptionId,
+                            DisplayName = sub.DisplayName,
+                            TenantID = sub.Inner.TenantId,
+                        });
+                    }
+                    _logger.LogInfo("Parsing Completed Subscription List To CERA Subscription");
+                    return subscriptions;
                 }
-                return subscriptions;
+                _logger.LogInfo("No Subscription List found");
+                return null;
             }
-            return null;
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return null;
+            }
         }
 
         public object GetCloudServicePlanList()

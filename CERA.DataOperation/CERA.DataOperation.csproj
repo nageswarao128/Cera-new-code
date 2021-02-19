@@ -11,7 +11,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\CERA.Converter\CERA.Converter.csproj" />
 		<ProjectReference Include="..\CERA.Entities\CERA.Entities.csproj" />
+		<ProjectReference Include="..\CERA.Logging\CERA.Logging.csproj" />
 	</ItemGroup>
 
 </Project>
