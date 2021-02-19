@@ -40,6 +40,11 @@ namespace CERA.AuthenticationService
             InitializeAuthClient();
             _logger.LogInfo("Initialization Complete for Auth Client");
         }
+        public void Initialize(string tenantId, string clientID, string clientSecret)
+        {
+            InitializeVariables(tenantId, clientID, clientSecret);
+            Initialize();
+        }
         void InitializeVariables(string tenantId, string clientID, string clientSecret)
         {
             _logger.LogInfo("Initializing Variable for Auth Client");

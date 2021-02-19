@@ -39,3 +39,6 @@
 /CERA.Azure.CloudService/bin/Debug/netstandard2.1
 /CERA.Platform/bin/Debug/netstandard2.1
 /CERA.Entities/bin/Debug/netstandard2.1
+/TestCERAClient/bin/Debug/netcoreapp3.1
+/TestCERAClient/obj/Debug/netcoreapp3.1
+/TestCERAClient/obj

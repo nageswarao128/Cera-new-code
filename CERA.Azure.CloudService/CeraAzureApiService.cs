@@ -35,12 +35,16 @@ namespace CERA.Azure.CloudService
         {
             return new object();
         }
+        public void Initialize(string tenantId, string clientID, string clientSecret)
+        {
+            authenticator = new CeraAzureAuthenticator(_logger);
+            authenticator.Initialize(tenantId, clientID, clientSecret);
+        }
 
         public List<CeraSubscription> GetCloudSubscriptionList()
         {
             try
             {
-                authenticator = new CeraAzureAuthenticator(_logger);
                 var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
                 _logger.LogInfo("Auth Client Initialized");
                 var azureSubscriptions = authClient.Subscriptions.ListAsync().Result;

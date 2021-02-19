@@ -47,6 +47,7 @@ namespace CERA.CloudService
         public List<CeraSubscription> GetCloudSubscriptionList()
         {
             _logger.LogInfo("Get Cloud Subcription List Called");
+
             var subscriptions = _azureServices.GetCloudSubscriptionList();
             _logger.LogInfo("Got data from Cloud Subcription");
             _dataOps.AddSubscriptionData(subscriptions);
@@ -91,6 +92,11 @@ namespace CERA.CloudService
         {
             _logger.LogInfo("Requested data for Subcription List from Database called");
             return _dataOps.GetSubscriptions();
+        }
+
+        public void Initialize(string tenantId, string clientID, string clientSecret)
+        {
+            _azureServices.Initialize(tenantId, clientID, clientSecret);
         }
     }
 }

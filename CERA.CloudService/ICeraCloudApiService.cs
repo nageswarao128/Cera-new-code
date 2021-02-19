@@ -5,6 +5,7 @@ namespace CERA.CloudService
 {
     public interface ICeraCloudApiService
     {
+        void Initialize(string tenantId, string clientID, string clientSecret);
         public object GetCloudTenantList();
         public List<CeraSubscription> GetCloudSubscriptionList();
         public List<CeraVM> GetCloudVMList();

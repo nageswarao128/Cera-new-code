@@ -5,8 +5,8 @@ namespace CERA.Logging
 {
     public class CERALogger : ICeraLogger
     {
-        ILogger _logger;
-        public CERALogger(ILogger logger)
+        ILogger<CERALogger> _logger;
+        public CERALogger(ILogger<CERALogger> logger)
         {
             _logger = logger;
         }
