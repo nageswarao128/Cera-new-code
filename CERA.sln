@@ -47,7 +47,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CERA.Entities", "CERA.Entit
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authenticaton", "Authenticaton", "{51D6ECDD-6121-401C-93E6-8EF0C159451C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCERAClient", "TestCERAClient\TestCERAClient.csproj", "{68BBA9C0-DD49-4824-9D92-C7FDC502BAF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CERAAPI", "TestCERAClient\CERAAPI.csproj", "{68BBA9C0-DD49-4824-9D92-C7FDC502BAF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -31,7 +31,7 @@ namespace TestCERAClient
             services.AddSwaggerGen();
             services.AddTransient<ICeraAzureApiService, CeraAzureApiService>();
             services.AddTransient<ICeraAwsApiService, CeraAWSApiService>();
-            services.AddDbContext<CeraDbContext>(x => x.UseSqlServer(""));
+            services.AddDbContext<CeraDbContext>(x => x.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=db_Cera; Integrated Security= true;"));
             services.AddTransient<ICeraConverter, CeraConverter>();
             services.AddTransient<ICeraDataOperation, CERADataOperation>();
             services.AddLogging(logging => logging.AddConsole());

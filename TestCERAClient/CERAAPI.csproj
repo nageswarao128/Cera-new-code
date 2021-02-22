@@ -19,6 +19,7 @@
 	
 
 	<ItemGroup>
+		<ProjectReference Include="..\CERA.Converter\CERA.Converter.csproj" />
 		<ProjectReference Include="..\CERA.Platform\CERA.Platform.csproj" />
 	</ItemGroup>
 
