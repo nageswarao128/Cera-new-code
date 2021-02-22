@@ -24,10 +24,16 @@ namespace CERA.Converter
         public dynamic CreateInstance(string DllPath = @"D:\Personal\My Projects\HealthDomain\BeFit\Jitus.BeFit\Jitus.BeFit.BMICalculator\bin\Debug\netstandard2.1\Jitus.BeFit.BMICalculation.dll", string TypeName = "Jitus.BeFit.BMICalculation.BMICalculator")
         {
             var assembly = Assembly.LoadFile(DllPath);
-            var name = assembly.GetName();
-            var objectType = assembly.GetType(TypeName);
-            var instantiatedObject = Activator.CreateInstance(objectType);
-            return instantiatedObject;
+            if (assembly != null)
+            {
+                var objectType = assembly.GetType(TypeName);
+                if (objectType != null)
+                {
+                    var instantiatedObject = Activator.CreateInstance(objectType);
+                    return instantiatedObject;
+                }
+            }
+            return null;
         }
     }
 }

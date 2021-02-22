@@ -8,7 +8,10 @@ namespace CERA.Azure.CloudService
 {
     public class CeraAzureApiService : ICeraAzureApiService
     {
+        public CeraAzureApiService()
+        {
 
+        }
         ICeraAuthenticator authenticator;
         private ICeraLogger _logger;
 

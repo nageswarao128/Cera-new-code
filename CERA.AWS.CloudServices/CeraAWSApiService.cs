@@ -7,6 +7,10 @@ namespace CERA.AWS.CloudService
 {
     public class CeraAWSApiService : ICeraAwsApiService
     {
+        public CeraAWSApiService()
+        {
+
+        }
         ICeraAuthenticator authenticator;
         public object GetCloudMonthlyBillingList()
         {
