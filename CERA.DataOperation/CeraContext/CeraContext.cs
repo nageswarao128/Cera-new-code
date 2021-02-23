@@ -7,7 +7,7 @@ using CERA.Entities;
 
 namespace CERA.DataOperation.CeraContext
 {
-   public class CeraDbContext :DbContext
+   public class CeraContext :DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -17,5 +17,6 @@ namespace CERA.DataOperation.CeraContext
                     );
         }
         public DbSet<SubscriptionList> Subscriptiondata { get; set; }
+
     }
 }

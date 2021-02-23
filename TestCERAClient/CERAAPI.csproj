@@ -5,6 +5,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.12" />
+	  <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.3" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.3">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -20,7 +22,14 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\CERA.Converter\CERA.Converter.csproj" />
+		<ProjectReference Include="..\CERA.Logging\CERA.Logging.csproj" />
 		<ProjectReference Include="..\CERA.Platform\CERA.Platform.csproj" />
+	</ItemGroup>
+
+	
+
+	<ItemGroup>
+	  <Folder Include="BL\" />
 	</ItemGroup>
 
 
