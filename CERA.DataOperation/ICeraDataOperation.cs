@@ -1,4 +1,4 @@
-﻿using CERA.CloudService.CERAEntities;
+﻿using CERA.Entities;
 using System.Collections.Generic;
 
 namespace CERA.DataOperation
@@ -6,10 +6,8 @@ namespace CERA.DataOperation
     public interface ICeraDataOperation
     {
         public object AddTenantData(object data);
-
-        public int AddSubscriptionData(List<CeraSubscriptionList> data);
-        
-            public object AddResourceData(object data);
+        public int AddSubscriptionData(List<CeraSubscription> data);
+        public object AddResourceData(object data);
         public object AddWebAppData(object data);
         public object AddServicePlanData(object data);
         public object AddVMData(object data);
@@ -23,6 +21,6 @@ namespace CERA.DataOperation
         public object UpdateVMData(object data);
         public object UpdateSqlServerData(object data);
         public object UpdateSqlDbData(object data);
-
+        public List<CeraSubscription> GetSubscriptions();
     }
 }

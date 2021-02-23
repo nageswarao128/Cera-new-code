@@ -9,40 +9,44 @@ namespace CERA.AWS.CloudService
 {
     public class CeraAWSApiService : ICeraAwsApiService
     {
+        public CeraAWSApiService()
+        {
+
+        }
         ICeraAuthenticator authenticator;
-        public object GetMonthlyBillingsList()
+        public object GetCloudMonthlyBillingList()
         {
             return new object();
         }
 
-        public object GetResourcesList()
+        public object GetCloudResourceList()
         {
-            throw new NotImplementedException();
+            return new object();
         }
 
-        public object GetSqlDbsList()
+        public object GetCloudSqlDbList()
         {
-            throw new NotImplementedException();
+            return new object();
         }
 
-        public object GetSqlServersList()
+        public object GetCloudSqlServerList()
         {
-            throw new NotImplementedException();
+            return new object();
         }
 
-        public object GetSubscriptionsList()
+        public List<CeraSubscription> GetCloudSubscriptionList()
         {
-            throw new NotImplementedException();
+            return new List<CeraSubscription>();
         }
 
-        public object GetSurvicePlansList()
+        public object GetCloudServicePlanList()
         {
-            throw new NotImplementedException();
+            return new object();
         }
 
         public object GetCloudTenantList()
         {
-            throw new NotImplementedException();
+            return new object();
         }
 
         public List<CeraVM> GetCloudVMList()
@@ -50,7 +54,16 @@ namespace CERA.AWS.CloudService
             return new List<CeraVM>();
         }
 
-        public object GetWebAppsList()
+        public object GetCloudWebAppList()
+        {
+            return new object();
+        }
+        public List<CeraSubscription> GetSubscriptionList()
+        {
+            return new List<CeraSubscription>();
+        }
+
+        public void Initialize(string tenantId, string clientID, string clientSecret)
         {
             throw new NotImplementedException();
         }

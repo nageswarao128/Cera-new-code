@@ -1,53 +1,84 @@
-﻿using CERA.Azure.CloudService;
-using CERA.CloudService.CERAEntities;
-using CERA.Entities;
-using System.Collections.Generic;
+﻿using CERA.AWS.CloudService;
+using CERA.Azure.CloudService;
+using CERA.Converter;
 using CERA.DataOperation;
-using Newtonsoft.Json;
-using Microsoft.Data.SqlClient;
-using CERA.DataOperation.CeraContext;
-using Microsoft.EntityFrameworkCore;
+using CERA.Entities;
+using CERA.Logging;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace CERA.CloudService
 {
     public sealed class CeraCloudApiService : ICeraCloudApiService
     {
-        ICeraAzureApiService azureServices;
-        // ICeraAwsApiService awsServices;
-        //ICeraDataOperation dataOperation;
+        ICeraAzureApiService _azureServices;
+        ICeraAwsApiService _awsServices;
+        ICeraDataOperation _dataOps;
+        ICeraConverter _converter;
+        private ICeraLogger _logger;
 
-       private CeraDbContext _DbContext;
-        public CeraCloudApiService()
+        List<CeraPlatformConfig> _platformConfigs = new List<CeraPlatformConfig>() {
+            new CeraPlatformConfig(){PlatformName =   "Azure", APIClassName = "", DllPath = ""},
+            new CeraPlatformConfig(){PlatformName =   "Aws", APIClassName = "", DllPath = ""},
+            new CeraPlatformConfig(){PlatformName =   "GCP", APIClassName = "", DllPath = ""},
+            new CeraPlatformConfig(){PlatformName =   "IBM", APIClassName = "", DllPath = ""},
+        };
+
+        public CeraCloudApiService(ICeraAzureApiService azureServices,
+            ICeraAwsApiService awsServices,
+            ICeraDataOperation dataOps,
+            ICeraLogger logger,
+            ICeraConverter converter)
         {
-
+            _azureServices = azureServices;
+            _awsServices = awsServices;
+            _dataOps = dataOps;
+            _logger = logger;
+            _converter = converter;
         }
-        public object GetMonthlyBillingsList()
+        public object GetCloudMonthlyBillingList()
         {
-            azureServices.GetHashCode();
-           // awsServices.GetHashCode();
+            _azureServices.GetHashCode();
+            _awsServices.GetHashCode();
             return new object();
         }
 
-        public object GetResourcesList()
+        public object GetCloudResourceList()
         {
 
             return new object();
         }
 
-        public object GetSqlDbsList()
+        public object GetCloudSqlDbList()
         {
             return new object();
         }
 
-        public object GetSqlServersList()
+        public object GetCloudSqlServerList()
         {
             return new object();
         }
 
-      
+        public List<CeraSubscription> GetCloudSubscriptionList()
+        {
+            _logger.LogInfo("Get Cloud Subcription List Called");
+            ///Get List of Cloud services for the client
+            ///usig Reflection instantiate cloud service for corresponding Cloud Platform using itteration
+            ///ICeraCloudApiService i = using Reflection create instance of cloud service
+            List<CeraSubscription> subscriptions = new List<CeraSubscription>();
+            foreach (var platformConfig in _platformConfigs)
+            {
+                ICeraCloudApiService _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
+                subscriptions = _cloudApiServices.GetCloudSubscriptionList();
+                _logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Subcription");
+                _dataOps.AddSubscriptionData(subscriptions);
+                subscriptions.Clear();
+                _logger.LogInfo($"Imported data for {platformConfig.PlatformName} Cloud Subcription to DB");
+            }
+            return subscriptions;
+        }
 
-
-        public object GetSurvicePlansList()
+        public object GetCloudServicePlanList()
         {
             return new object();
         }
@@ -59,35 +90,36 @@ namespace CERA.CloudService
 
         public List<CeraVM> GetCloudVMList()
         {
-            var azvms = azureServices.GetCloudVMList();
-            //var awsvms = awsServices.GetCloudVMList();
+            var azvms = _azureServices.GetCloudVMList();
+            var awsvms = _awsServices.GetCloudVMList();
             var allvms = new List<CeraVM>();
             allvms.AddRange(azvms);
-           // allvms.AddRange(awsvms);
+            allvms.AddRange(awsvms);
             return allvms;
         }
 
-        public object GetWebAppsList()
+        public object GetCloudWebAppList()
         {
             return new object();
         }
 
         public void GetAllResources()
         {
-            GetSurvicePlansList();
+            GetCloudServicePlanList();
             GetCloudTenantList();
             GetCloudVMList();
-            GetWebAppsList();
+            GetCloudWebAppList();
         }
 
-        
-        public List<CeraSubscriptionList> GetSubscriptionsList(string authority, string clientId, string clientSecret, string redirectUrl, string tenantId)
+        public List<CeraSubscription> GetSubscriptionList()
         {
-            var subscriptions = azureServices.GetSubscriptionsList(authority, clientId, clientSecret, redirectUrl, tenantId);
-           
-            // CERADataOperation data = new CERADataOperation();
-            // var sample = data.AddSubscriptionData(list);
-            throw new System.NotImplementedException();
+            _logger.LogInfo("Requested data for Subcription List from Database called");
+            return _dataOps.GetSubscriptions();
+        }
+
+        public void Initialize(string tenantId, string clientID, string clientSecret)
+        {
+            _azureServices.Initialize(tenantId, clientID, clientSecret);
         }
     }
 }

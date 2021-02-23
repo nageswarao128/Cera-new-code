@@ -1,47 +1,84 @@
 ﻿using CERA.AuthenticationService;
-using CERA.CloudService;
-using CERA.CloudService.CERAEntities;
 using CERA.Entities;
-using Microsoft.Azure.Management.ResourceManager.Fluent;
-using Microsoft.Azure.Management.ResourceManager.Fluent.Authentication;
-using Microsoft.Azure.Management.ResourceManager.Fluent.Core;
-using Microsoft.Rest;
+using CERA.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace CERA.Azure.CloudService
 {
     public class CeraAzureApiService : ICeraAzureApiService
     {
+        public CeraAzureApiService()
+        {
 
-       // ICeraAuthenticator authenticator;
-        public object GetMonthlyBillingsList()
+        }
+        ICeraAuthenticator authenticator;
+        private ICeraLogger _logger;
+
+        public CeraAzureApiService(ICeraLogger logger)
+        {
+            _logger = logger;
+        }
+        public object GetCloudMonthlyBillingList()
         {
             return new object();
         }
 
-        public object GetResourcesList()
+        public object GetCloudResourceList()
         {
             return new object();
         }
 
-        public object GetSqlDbsList()
+        public object GetCloudSqlDbList()
         {
             return new object();
         }
 
-        public object GetSqlServersList()
+        public object GetCloudSqlServerList()
         {
             return new object();
         }
-
-        public object GetSubscriptionsList()
+        public void Initialize(string tenantId, string clientID, string clientSecret)
         {
-            return new object();
+            authenticator = new CeraAzureAuthenticator(_logger);
+            authenticator.Initialize(tenantId, clientID, clientSecret);
         }
 
-        public object GetSurvicePlansList()
+        public List<CeraSubscription> GetCloudSubscriptionList()
+        {
+            try
+            {
+                var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
+                _logger.LogInfo("Auth Client Initialized");
+                var azureSubscriptions = authClient.Subscriptions.ListAsync().Result;
+                _logger.LogInfo("Got Subscription List from Azure Cloud Provider");
+                if (azureSubscriptions != null)
+                {
+                    _logger.LogInfo("Parsing Subscription List To CERA Subscription");
+                    List<CeraSubscription> subscriptions = new List<CeraSubscription>();
+                    foreach (var sub in azureSubscriptions)
+                    {
+                        subscriptions.Add(new CeraSubscription
+                        {
+                            SubscriptionId = sub.SubscriptionId,
+                            DisplayName = sub.DisplayName,
+                            TenantID = sub.Inner.TenantId,
+                        });
+                    }
+                    _logger.LogInfo("Parsing Completed Subscription List To CERA Subscription");
+                    return subscriptions;
+                }
+                _logger.LogInfo("No Subscription List found");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return null;
+            }
+        }
+
+        public object GetCloudServicePlanList()
         {
             return new object();
         }
@@ -56,63 +93,13 @@ namespace CERA.Azure.CloudService
             return new List<CeraVM>();
         }
 
-        public object GetWebAppsList()
+        public object GetCloudWebAppList()
         {
             return new object();
         }
-
-        public List<CeraSubscriptionList> GetSubscriptionsList(string authority, string clientId, string clientSecret, string redirectUri, string tenantId)
+        public List<CeraSubscription> GetSubscriptionList()
         {
-            try
-            {
-
-                if (authority != null && clientId != null && clientSecret != null && redirectUri != null && tenantId != null)
-                {
-                    CeraAzureAuthenticator authenticator = new CeraAzureAuthenticator(authority, clientId, clientSecret, redirectUri);
-                    var token = authenticator.GetAuthToken();
-                    TokenCredentials tokenCredentials = new TokenCredentials(token);
-                    var azureCredentials = new AzureCredentials(tokenCredentials, tokenCredentials, tenantId, AzureEnvironment.AzureGlobalCloud);
-                    var restClient = RestClient
-                    .Configure()
-                    .WithEnvironment(AzureEnvironment.AzureGlobalCloud)
-                    .WithLogLevel(HttpLoggingDelegatingHandler.Level.Basic)
-                    .WithCredentials(azureCredentials)
-                    .Build();
-                    var azure = Microsoft.Azure.Management.Fluent.Azure.Authenticate(restClient, tenantId);
-                    var sample = azure.Subscriptions.ListAsync().Result;
-
-                    List<CeraSubscriptionList> subscriptions = new List<CeraSubscriptionList>();
-
-                    foreach (var sub in sample)
-                    {
-                        sub.Inner.AuthorizationSource = "RoleBased";
-
-                        CeraSubscriptionList list = new CeraSubscriptionList { SubscriptionId = sub.SubscriptionId, DisplayName = sub.DisplayName, TenantID = sub.Inner.TenantId, AuthorizationSource = sub.Inner.AuthorizationSource };
-                        subscriptions.Add(list);
-                    }
-
-                    EventLog.WriteEntry("CERA", "Obtained Subscription List", EventLogEntryType.Information);
-
-
-                    return subscriptions;
-                }
-                else
-                {
-                    EventLog.WriteEntry("CERA", "authority or ClientID or ClientSecret or TenantId or RedirectUri  to obtain Subscription data should not be null", EventLogEntryType.Error);
-                    return null;
-                }
-            }
-           
-                  catch (Exception ex)
-            {
-                EventLog.WriteEntry("CERA", ex.Message, EventLogEntryType.Error);
-                return null;
-            }
-        
+            return new List<CeraSubscription>();
         }
-
-        
-
-        
     }
 }

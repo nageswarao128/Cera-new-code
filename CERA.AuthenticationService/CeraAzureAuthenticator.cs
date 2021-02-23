@@ -1,94 +1,105 @@
-﻿using Microsoft.Identity.Client;
+﻿using CERA.Logging;
+using Microsoft.Azure.Management.Fluent;
+using Microsoft.Azure.Management.ResourceManager.Fluent;
+using Microsoft.Azure.Management.ResourceManager.Fluent.Authentication;
+using Microsoft.Azure.Management.ResourceManager.Fluent.Core;
+using Microsoft.Identity.Client;
+using Microsoft.Rest;
 using System;
-using System.Diagnostics;
+using static Microsoft.Azure.Management.Fluent.Azure;
 
 namespace CERA.AuthenticationService
 {
     public class CeraAzureAuthenticator : ICeraAuthenticator
     {
-        public string Authority { get; set; } = "";
+        public string Authority { get; private set; } = "https://login.microsoftonline.com/{0}/v2.0";
         public string TenantId { get; set; }
         public string ClientID { get; set; }
         public string ClientSecret { get; set; }
         public object Certificate { get; set; }
-        public string AuthToken { get; set; }
-        public  string RedirectUri { get; set; }
-        public CeraAzureAuthenticator()
-        {
+        public string AuthToken { get; private set; }
+        public string RedirectUri { get; set; }
+        IConfidentialClientApplication confidentialClientApp;
+        private ICeraLogger _logger;
 
-        }
-        public CeraAzureAuthenticator(string authority, string clientId, string clientSecret, string redirectUri)
+        public CeraAzureAuthenticator(ICeraLogger logger)
         {
-            Authority = authority;
-            ClientID = clientId;
-            ClientSecret = clientSecret;
-            RedirectUri = redirectUri;
+            _logger = logger;
+            Initialize();
+        }
+        public CeraAzureAuthenticator(string TenantId, string ClientID, string ClientSecret, ICeraLogger logger)
+        {
+            _logger = logger;
+            InitializeVariables(TenantId, ClientID, ClientSecret);
             Initialize();
         }
 
-
         void Initialize()
         {
-            var x = CreateAuthClient();
-            AuthToken = "";
+            _logger.LogInfo("Initializing Auth Client");
+            InitializeAuthClient();
+            _logger.LogInfo("Initialization Complete for Auth Client");
+        }
+        public void Initialize(string tenantId, string clientID, string clientSecret)
+        {
+            InitializeVariables(tenantId, clientID, clientSecret);
+            Initialize();
+        }
+        void InitializeVariables(string tenantId, string clientID, string clientSecret)
+        {
+            _logger.LogInfo("Initializing Variable for Auth Client");
+            if (!string.IsNullOrWhiteSpace(tenantId))
+                Authority = string.Format(Authority, tenantId);
+            if (!string.IsNullOrWhiteSpace(clientID))
+                ClientID = clientID;
+            if (!string.IsNullOrWhiteSpace(clientSecret))
+                ClientSecret = clientSecret;
+            _logger.LogInfo("Initialization Complete  Variable for Auth Client");
         }
 
-        private IConfidentialClientApplication CreateAuthClient()
+        private void InitializeAuthClient()
         {
             try
             {
-                IConfidentialClientApplication confidentialClientApp;
-                ConfidentialClientApplicationBuilder clientBuilder = ConfidentialClientApplicationBuilder
-                                                                            .Create(ClientID);
-                if (!string.IsNullOrWhiteSpace(string.Format(Authority, "")))
-                    clientBuilder = clientBuilder.WithAuthority(Authority);
-                if (!string.IsNullOrWhiteSpace(ClientSecret))
-                    clientBuilder = clientBuilder.WithClientSecret(ClientSecret);
-                if (!string.IsNullOrWhiteSpace(RedirectUri))
-                    clientBuilder = clientBuilder.WithRedirectUri(RedirectUri);
-                confidentialClientApp = clientBuilder.Build();
-                return confidentialClientApp;
+                if (!string.IsNullOrWhiteSpace(ClientID))
+                {
+                    ConfidentialClientApplicationBuilder clientBuilder = ConfidentialClientApplicationBuilder
+                                                                                .Create(ClientID);
+                    if (!string.IsNullOrWhiteSpace(Authority))
+                        clientBuilder = clientBuilder.WithAuthority(Authority);
+                    if (!string.IsNullOrWhiteSpace(ClientSecret))
+                        clientBuilder = clientBuilder.WithClientSecret(ClientSecret);
+                    if (!string.IsNullOrWhiteSpace(RedirectUri))
+                        clientBuilder = clientBuilder.WithRedirectUri(RedirectUri);
+                    confidentialClientApp = clientBuilder.Build();
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                EventLog.WriteEntry("CeraAuthenticator", ex.Message, EventLogEntryType.Error);
-                return null;
-            }
-
-        }
-        public AuthenticationResult Authenticate()
-        {
-            try
-            {
-                var app = CreateAuthClient();
-                //List<string> scopes = new List<string>();
-                var scopes = new[] { "https://management.core.windows.net//.default" };
-                var AquireTokenClient = app.AcquireTokenForClient(scopes);
-                var AuthResult = AquireTokenClient.ExecuteAsync().Result;
-                return AuthResult;
-            }
-            catch(Exception ex)
-            {
-                EventLog.WriteEntry("CeraAuthenticator", ex.Message, EventLogEntryType.Error);
-                return null;
+                //EventLog.WriteEntry("CeraAuthenticator", ex.Message, EventLogEntryType.Error);
             }
         }
 
         public string GetAuthToken()
         {
-            var authResult = Authenticate();
-            return authResult.AccessToken;
-            
+            var scopes = new[] { "https://management.core.windows.net//.default" };
+            var AquireTokenClient = confidentialClientApp.AcquireTokenForClient(scopes);
+            var AuthResult = AquireTokenClient.ExecuteAsync().Result;
+            AuthToken = AuthResult.AccessToken;
+            return AuthToken;
         }
 
         public string GetAuthToken(string TenantId, string ClientID, string ClientSecret)
         {
-            throw new System.NotImplementedException();
+            InitializeVariables(TenantId, ClientID, ClientSecret);
+            GetAuthToken();
+            return AuthToken;
         }
 
         public string GetAuthToken(object Certificate)
         {
-            throw new System.NotImplementedException();
+            AuthToken = "";
+            return AuthToken;
         }
 
         public object GetCertificate()
@@ -96,9 +107,35 @@ namespace CERA.AuthenticationService
             return new object();
         }
 
-        public string GetJwtToken(string TenantId, string ClientID, string ClientSecret)
+        public RestClient CreateRestClient()
         {
-            return string.Empty;
+            var azureCredentials = GetAzureCredentials();
+            var restClient = RestClient
+            .Configure()
+            .WithEnvironment(AzureEnvironment.AzureGlobalCloud)
+            .WithLogLevel(HttpLoggingDelegatingHandler.Level.Basic)
+            .WithCredentials(azureCredentials)
+            .Build();
+            return restClient;
+        }
+        AzureCredentials GetAzureCredentials()
+        {
+            GetAuthToken();
+            TokenCredentials tokenCredentials = new TokenCredentials(AuthToken);
+            var azureCredentials = new AzureCredentials(tokenCredentials, tokenCredentials, TenantId, AzureEnvironment.AzureGlobalCloud);
+            return azureCredentials;
+        }
+        public IAuthenticated GetAuthenticatedClient()
+        {
+            var restClient = CreateRestClient();
+            var azure = Azure.Authenticate(restClient, TenantId);
+            return azure;
+        }
+        public IAuthenticated GetAuthenticatedClientUsingAzureCredential()
+        {
+            var azureCredentials = GetAzureCredentials();
+            var azure = Azure.Authenticate(azureCredentials);
+            return azure;
         }
     }
 }
