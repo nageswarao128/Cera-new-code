@@ -1,8 +1,11 @@
 ﻿using CERA.AuthenticationService;
+using CERA.CloudService;
+using CERA.CloudService.CERAEntities;
 using CERA.Entities;
 using CERA.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace CERA.Azure.CloudService
 {

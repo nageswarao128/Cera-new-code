@@ -1,4 +1,5 @@
-﻿using CERA.Entities;
+﻿using CERA.CloudService.CERAEntities;
+using CERA.Entities;
 using System.Collections.Generic;
 
 namespace CERA.CloudService

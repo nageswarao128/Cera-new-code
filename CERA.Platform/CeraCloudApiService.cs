@@ -1,11 +1,16 @@
-﻿using CERA.AWS.CloudService;
-using CERA.Azure.CloudService;
+﻿using CERA.Azure.CloudService;
 using CERA.Converter;
 using CERA.DataOperation;
+using CERA.CloudService.CERAEntities;
 using CERA.Entities;
 using CERA.Logging;
 using System.Collections.Generic;
 using System.Reflection;
+using CERA.DataOperation;
+using Newtonsoft.Json;
+using Microsoft.Data.SqlClient;
+using CERA.DataOperation.CeraContext;
+using Microsoft.EntityFrameworkCore;
 
 namespace CERA.CloudService
 {
@@ -16,6 +21,9 @@ namespace CERA.CloudService
         ICeraDataOperation _dataOps;
         ICeraConverter _converter;
         private ICeraLogger _logger;
+        ICeraAzureApiService azureServices;
+        // ICeraAwsApiService awsServices;
+        //ICeraDataOperation dataOperation;
 
         List<CeraPlatformConfig> _platformConfigs = new List<CeraPlatformConfig>() {
             new CeraPlatformConfig(){PlatformName =   "Azure", APIClassName = "", DllPath = ""},
@@ -23,6 +31,9 @@ namespace CERA.CloudService
             new CeraPlatformConfig(){PlatformName =   "GCP", APIClassName = "", DllPath = ""},
             new CeraPlatformConfig(){PlatformName =   "IBM", APIClassName = "", DllPath = ""},
         };
+       private CeraDbContext _DbContext;
+        public CeraCloudApiService()
+        {
 
         public CeraCloudApiService(ICeraAzureApiService azureServices,
             ICeraAwsApiService awsServices,
@@ -40,6 +51,8 @@ namespace CERA.CloudService
         {
             _azureServices.GetHashCode();
             _awsServices.GetHashCode();
+            azureServices.GetHashCode();
+           // awsServices.GetHashCode();
             return new object();
         }
 
@@ -77,6 +90,8 @@ namespace CERA.CloudService
             }
             return subscriptions;
         }
+      
+
 
         public object GetCloudServicePlanList()
         {
@@ -92,9 +107,11 @@ namespace CERA.CloudService
         {
             var azvms = _azureServices.GetCloudVMList();
             var awsvms = _awsServices.GetCloudVMList();
+            var azvms = azureServices.GetCloudVMList();
+            //var awsvms = awsServices.GetCloudVMList();
             var allvms = new List<CeraVM>();
             allvms.AddRange(azvms);
-            allvms.AddRange(awsvms);
+           // allvms.AddRange(awsvms);
             return allvms;
         }
 
@@ -120,6 +137,15 @@ namespace CERA.CloudService
         public void Initialize(string tenantId, string clientID, string clientSecret)
         {
             _azureServices.Initialize(tenantId, clientID, clientSecret);
+        }
+        
+        public List<CeraSubscriptionList> GetSubscriptionsList(string authority, string clientId, string clientSecret, string redirectUrl, string tenantId)
+        {
+            var subscriptions = azureServices.GetSubscriptionsList(authority, clientId, clientSecret, redirectUrl, tenantId);
+           
+            // CERADataOperation data = new CERADataOperation();
+            // var sample = data.AddSubscriptionData(list);
+            throw new System.NotImplementedException();
         }
     }
 }

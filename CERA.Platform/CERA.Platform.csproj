@@ -5,8 +5,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\CERA.AuthenticationService\CERA.AuthenticationService.csproj" />
-		<ProjectReference Include="..\CERA.AWS.CloudServices\CERA.AWS.CloudService.csproj" />
+	  <PackageReference Include="Microsoft.Azure.Management.ResourceManager.Fluent" Version="1.37.0" />
+	  <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.22" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\CERA.Azure.CloudService\CERA.Azure.CloudService.csproj" />
 		<ProjectReference Include="..\CERA.CloudService\CERA.CloudService.csproj" />
 		<ProjectReference Include="..\CERA.DataOperation\CERA.DataOperation.csproj" />

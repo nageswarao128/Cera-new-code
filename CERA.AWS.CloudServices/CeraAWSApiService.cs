@@ -1,4 +1,6 @@
 ﻿using CERA.AuthenticationService;
+using CERA.CloudService;
+using CERA.CloudService.CERAEntities;
 using CERA.Entities;
 using System;
 using System.Collections.Generic;
@@ -62,6 +64,13 @@ namespace CERA.AWS.CloudService
         }
 
         public void Initialize(string tenantId, string clientID, string clientSecret)
+        {
+            throw new NotImplementedException();
+        }
+
+        
+
+        public List<CeraSubscriptionList> GetSubscriptionsList(string authority, string clientId, string clientSecret, string redirectUrl, string tenantId)
         {
             throw new NotImplementedException();
         }

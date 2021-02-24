@@ -76,6 +76,8 @@ namespace CERA.DataOperation
             }
         }
 
+        
+
         public object AddTenantData(object data)
         {
             return new object();
@@ -130,5 +132,7 @@ namespace CERA.DataOperation
         {
             return new object();
         }
+
+        
     }
 }

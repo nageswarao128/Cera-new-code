@@ -34,6 +34,7 @@ namespace CERA.AuthenticationService
             Initialize();
         }
 
+
         void Initialize()
         {
             _logger.LogInfo("Initializing Auth Client");
