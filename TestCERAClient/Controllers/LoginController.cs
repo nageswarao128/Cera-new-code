@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -47,21 +48,29 @@ namespace CERAAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginViewModel loginModel)
         {
+            var tokenHandler = new JwtSecurityTokenHandler();
             var user = await _userManager.FindByNameAsync(loginModel.UserName);
             if (user != null && await _userManager.CheckPasswordAsync(user, loginModel.Password))
             {
                 var authsigningkey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));
-                var token = new JwtSecurityToken(
-                    issuer: null,
-                    audience: null,
-                    expires: DateTime.Now.AddHours(1),
-                    signingCredentials: new SigningCredentials(authsigningkey, SecurityAlgorithms.HmacSha256)
-                    );
+
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim(ClaimTypes.Email, user.Email),
+                        new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    }),
+                    Expires = DateTime.UtcNow.AddMinutes(20),
+                    SigningCredentials = new SigningCredentials(authsigningkey, SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
                 return Ok(new
                 {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
+                    token = tokenHandler.WriteToken(token),
                     expiration = token.ValidTo
-                });
+                }); ;
             }
             return Unauthorized();
         }

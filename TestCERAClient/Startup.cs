@@ -49,7 +49,7 @@ namespace TestCERAClient
             services.AddDbContext<CeraAPIUserDbContext>(x => x.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=db_Cera_User; Integrated Security= true;"));
             services.AddIdentity<CERAAPIUser, CERAAPIRole>()
                 .AddEntityFrameworkStores<CeraAPIUserDbContext>()
-                .AddDefaultTokenProviders();
+                .AddUserManager<UserManager<CERAAPIUser>>();
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -64,7 +64,8 @@ namespace TestCERAClient
                    ValidateIssuerSigningKey = true,
                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:key"])),
                    ValidateIssuer = false,
-                   ValidateAudience = false
+                   ValidateAudience = false,
+                   RequireExpirationTime = true
                };
            });
         }
