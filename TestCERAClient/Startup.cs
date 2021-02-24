@@ -5,13 +5,19 @@ using CERA.Converter;
 using CERA.DataOperation;
 using CERA.DataOperation.Data;
 using CERA.Logging;
+using CERAAPI.Data;
+using CERAAPI.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace TestCERAClient
 {
@@ -37,6 +43,30 @@ namespace TestCERAClient
             services.AddLogging(logging => logging.AddConsole());
             services.AddSingleton<ICeraLogger, CERALogger>();
             services.AddTransient<ICeraCloudApiService, CeraCloudApiService>();
+
+
+
+            services.AddDbContext<CeraAPIUserDbContext>(x => x.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=db_Cera_User; Integrated Security= true;"));
+            services.AddIdentity<CERAAPIUser, CERAAPIRole>()
+                .AddEntityFrameworkStores<CeraAPIUserDbContext>()
+                .AddDefaultTokenProviders();
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+           .AddJwtBearer(x =>
+           {
+               x.RequireHttpsMetadata = false;
+               x.SaveToken = true;
+               x.TokenValidationParameters = new TokenValidationParameters
+               {
+                   ValidateIssuerSigningKey = true,
+                   IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:key"])),
+                   ValidateIssuer = false,
+                   ValidateAudience = false
+               };
+           });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,6 +93,7 @@ namespace TestCERAClient
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
