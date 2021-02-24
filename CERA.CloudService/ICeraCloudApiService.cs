@@ -1,10 +1,12 @@
 ﻿using CERA.Entities;
+using CERA.Logging;
 using System.Collections.Generic;
 
 namespace CERA.CloudService
 {
     public interface ICeraCloudApiService
     {
+        public ICeraLogger Logger { get; set; }
         void Initialize(string tenantId, string clientID, string clientSecret);
         public object GetCloudTenantList();
         public List<CeraSubscription> GetCloudSubscriptionList();

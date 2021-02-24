@@ -13,11 +13,11 @@ namespace CERA.Azure.CloudService
 
         }
         ICeraAuthenticator authenticator;
-        private ICeraLogger _logger;
+        public ICeraLogger Logger { get; set; }
 
         public CeraAzureApiService(ICeraLogger logger)
         {
-            _logger = logger;
+            Logger = logger;
         }
         public object GetCloudMonthlyBillingList()
         {
@@ -40,7 +40,7 @@ namespace CERA.Azure.CloudService
         }
         public void Initialize(string tenantId, string clientID, string clientSecret)
         {
-            authenticator = new CeraAzureAuthenticator(_logger);
+            authenticator = new CeraAzureAuthenticator(Logger);
             authenticator.Initialize(tenantId, clientID, clientSecret);
         }
 
@@ -49,12 +49,12 @@ namespace CERA.Azure.CloudService
             try
             {
                 var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
-                _logger.LogInfo("Auth Client Initialized");
+                Logger.LogInfo("Auth Client Initialized");
                 var azureSubscriptions = authClient.Subscriptions.ListAsync().Result;
-                _logger.LogInfo("Got Subscription List from Azure Cloud Provider");
+                Logger.LogInfo("Got Subscription List from Azure Cloud Provider");
                 if (azureSubscriptions != null)
                 {
-                    _logger.LogInfo("Parsing Subscription List To CERA Subscription");
+                    Logger.LogInfo("Parsing Subscription List To CERA Subscription");
                     List<CeraSubscription> subscriptions = new List<CeraSubscription>();
                     foreach (var sub in azureSubscriptions)
                     {
@@ -65,15 +65,15 @@ namespace CERA.Azure.CloudService
                             TenantID = sub.Inner.TenantId,
                         });
                     }
-                    _logger.LogInfo("Parsing Completed Subscription List To CERA Subscription");
+                    Logger.LogInfo("Parsing Completed Subscription List To CERA Subscription");
                     return subscriptions;
                 }
-                _logger.LogInfo("No Subscription List found");
+                Logger.LogInfo("No Subscription List found");
                 return null;
             }
             catch (Exception ex)
             {
-                _logger.LogException(ex);
+                Logger.LogException(ex);
                 return null;
             }
         }

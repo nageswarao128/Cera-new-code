@@ -11,11 +11,10 @@ namespace CERA.CloudService
 {
     public sealed class CeraCloudApiService : ICeraCloudApiService
     {
-        ICeraAzureApiService _azureServices;
-        ICeraAwsApiService _awsServices;
+        ICeraCloudApiService _cloudApiServices;
         ICeraDataOperation _dataOps;
         ICeraConverter _converter;
-        private ICeraLogger _logger;
+        public ICeraLogger Logger { get; set; }
 
         List<CeraPlatformConfig> _platformConfigs = new List<CeraPlatformConfig>() {
             new CeraPlatformConfig(){PlatformName =   "Azure", APIClassName = "", DllPath = ""},
@@ -24,22 +23,17 @@ namespace CERA.CloudService
             new CeraPlatformConfig(){PlatformName =   "IBM", APIClassName = "", DllPath = ""},
         };
 
-        public CeraCloudApiService(ICeraAzureApiService azureServices,
-            ICeraAwsApiService awsServices,
+        public CeraCloudApiService(
             ICeraDataOperation dataOps,
             ICeraLogger logger,
             ICeraConverter converter)
         {
-            _azureServices = azureServices;
-            _awsServices = awsServices;
             _dataOps = dataOps;
-            _logger = logger;
+            Logger = logger;
             _converter = converter;
         }
         public object GetCloudMonthlyBillingList()
         {
-            _azureServices.GetHashCode();
-            _awsServices.GetHashCode();
             return new object();
         }
 
@@ -61,7 +55,7 @@ namespace CERA.CloudService
 
         public List<CeraSubscription> GetCloudSubscriptionList()
         {
-            _logger.LogInfo("Get Cloud Subcription List Called");
+            Logger.LogInfo("Get Cloud Subcription List Called");
             ///Get List of Cloud services for the client
             ///usig Reflection instantiate cloud service for corresponding Cloud Platform using itteration
             ///ICeraCloudApiService i = using Reflection create instance of cloud service
@@ -69,11 +63,12 @@ namespace CERA.CloudService
             foreach (var platformConfig in _platformConfigs)
             {
                 ICeraCloudApiService _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
+                _cloudApiServices.Logger = Logger;
                 subscriptions = _cloudApiServices.GetCloudSubscriptionList();
-                _logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Subcription");
+                Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Subcription");
                 _dataOps.AddSubscriptionData(subscriptions);
                 subscriptions.Clear();
-                _logger.LogInfo($"Imported data for {platformConfig.PlatformName} Cloud Subcription to DB");
+                Logger.LogInfo($"Imported data for {platformConfig.PlatformName} Cloud Subcription to DB");
             }
             return subscriptions;
         }
@@ -90,11 +85,7 @@ namespace CERA.CloudService
 
         public List<CeraVM> GetCloudVMList()
         {
-            var azvms = _azureServices.GetCloudVMList();
-            var awsvms = _awsServices.GetCloudVMList();
             var allvms = new List<CeraVM>();
-            allvms.AddRange(azvms);
-            allvms.AddRange(awsvms);
             return allvms;
         }
 
@@ -113,13 +104,13 @@ namespace CERA.CloudService
 
         public List<CeraSubscription> GetSubscriptionList()
         {
-            _logger.LogInfo("Requested data for Subcription List from Database called");
+            Logger.LogInfo("Requested data for Subcription List from Database called");
             return _dataOps.GetSubscriptions();
         }
 
         public void Initialize(string tenantId, string clientID, string clientSecret)
         {
-            _azureServices.Initialize(tenantId, clientID, clientSecret);
+            _cloudApiServices.Initialize(tenantId, clientID, clientSecret);
         }
     }
 }

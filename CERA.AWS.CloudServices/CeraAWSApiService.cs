@@ -1,5 +1,6 @@
 ﻿using CERA.AuthenticationService;
 using CERA.Entities;
+using CERA.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -12,6 +13,9 @@ namespace CERA.AWS.CloudService
 
         }
         ICeraAuthenticator authenticator;
+
+        public ICeraLogger Logger { get; set; }
+
         public object GetCloudMonthlyBillingList()
         {
             return new object();
