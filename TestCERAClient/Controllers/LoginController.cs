@@ -22,6 +22,7 @@ namespace CERAAPI.Controllers
         private readonly UserManager<IdentityUser> userManager;
         private readonly IConfiguration _configuration;
         private readonly CeraDbContext _appDbContext;
+
         public LoginController(UserManager<IdentityUser> userManager, IConfiguration configuration, CeraDbContext appDbContext)
         {
             this.userManager = userManager;
