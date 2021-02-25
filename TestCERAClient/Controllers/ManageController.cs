@@ -21,14 +21,14 @@ namespace CERAAPI.Controllers
         public IActionResult RegisterOrganisation([FromBody] AddOrganizationViewModel Org)
         {
             Org.UserId = Guid.NewGuid();
-            _db.Organizations.Add(new Organization()
+            _db.Clients.Add(new Client()
             {
-                UserId = Org.UserId,
-                ContactPersonName = Org.ContactPersonName,
-                Description = Org.Description,
-                EmailId = Org.EmailId,
-                OrganizationName = Org.OrganizationName,
-                PhoneNo = Org.PhoneNo,
+                Id = Org.UserId,
+                PrimaryContactName = Org.ContactPersonName,
+                ClientDescription = Org.Description,
+                PrimaryEmail = Org.EmailId,
+                ClientName = Org.OrganizationName,
+                PrimaryPhone = Org.PhoneNo,
                 PrimaryAddress = Org.PrimaryAddress
             });
             var result = _db.SaveChanges();
@@ -41,13 +41,13 @@ namespace CERAAPI.Controllers
         [HttpPost]
         public IActionResult ManagePlatform([FromBody] AddPlatformViewModel managePlatform)
         {
-            _db.Platforms.Add(new Platform()
+            _db.ClientCloudPlugins.Add(new ClientCloudPlugin()
             {
-                ClientId = managePlatform.ClientId,
-                ClientSecret = managePlatform.ClientSecret,
-                OrganizationId = managePlatform.OrganizationId,
-                PlatformName = managePlatform.PlatformName,
-                TenantId = managePlatform.TenantId
+                //ClientId = managePlatform.ClientId,
+                //ClientSecret = managePlatform.ClientSecret,
+                //Client = managePlatform.OrganizationId,
+                //PlatformName = managePlatform.PlatformName,
+                //TenantId = managePlatform.TenantId
             });
             var result = _db.SaveChanges();
             if (result < 1)
