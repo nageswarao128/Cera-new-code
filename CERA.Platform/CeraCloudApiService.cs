@@ -17,10 +17,10 @@ namespace CERA.CloudService
         public ICeraLogger Logger { get; set; }
 
         List<CeraPlatformConfig> _platformConfigs = new List<CeraPlatformConfig>() {
-            new CeraPlatformConfig(){PlatformName =   "Azure", APIClassName = "", DllPath = ""},
-            new CeraPlatformConfig(){PlatformName =   "Aws", APIClassName = "", DllPath = ""},
-            new CeraPlatformConfig(){PlatformName =   "GCP", APIClassName = "", DllPath = ""},
-            new CeraPlatformConfig(){PlatformName =   "IBM", APIClassName = "", DllPath = ""},
+            new CeraPlatformConfig(){PlatformName =   "Azure", APIClassName = "CERA.Azure.CloudService.CeraAzureApiService", DllPath = @"D:\ClientWorks\Quadrant\QHub Team\CERA\CERA.Azure.CloudService\bin\Debug\netstandard2.1\CERA.Azure.CloudService.dll"},
+            new CeraPlatformConfig(){PlatformName =   "Aws", APIClassName = "CERA.AWS.CloudService.CeraAWSApiService", DllPath = @"D:\ClientWorks\Quadrant\QHub Team\CERA\CERA.AWS.CloudServices\bin\Debug\netstandard2.1\CERA.AWS.CloudService.dll"},
+            //new CeraPlatformConfig(){PlatformName =   "GCP", APIClassName = "", DllPath = ""},
+            //new CeraPlatformConfig(){PlatformName =   "IBM", APIClassName = "", DllPath = ""},
         };
 
         public CeraCloudApiService(

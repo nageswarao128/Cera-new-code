@@ -49,8 +49,10 @@ namespace CERA.DataOperation
                 _logger.LogInfo("Receive Data");
                 string jsonData = _converter.GenerateJson(data);
                 _logger.LogInfo("Converted Data into JSON Format");
-                var sp_parameters = new List<SqlParameter>() { new SqlParameter("json", jsonData) };
-                int record = _dbContext.Database.ExecuteSqlRaw($"Exec usp_Subscription_insert @json", sp_parameters);
+                _dbContext.Subscriptions.AddRange(data);
+                int record = _dbContext.SaveChanges();
+                //var sp_parameters = new List<SqlParameter>() { new SqlParameter("json", jsonData) };
+                //int record = _dbContext.Database.ExecuteSqlRaw($"Exec usp_Subscription_insert @json", sp_parameters);
                 _logger.LogInfo("Data Imported Successfully");
                 return record;
             }

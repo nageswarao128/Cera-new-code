@@ -26,7 +26,7 @@ namespace TestCERAClient.Controllers
             _logger = logger;
             _ceraCloud = ceraCloud;
             _ceraConverter = ceraConverter;
-            _ceraCloud.Initialize(_config.GetSection("AzureConfig:TenentID").Value, _config.GetSection("AzureConfig:ClientID").Value, _config.GetSection("AzureConfig:ClientSecret").Value);
+            //_ceraCloud.Initialize(_config.GetSection("AzureConfig:TenentID").Value, _config.GetSection("AzureConfig:ClientID").Value, _config.GetSection("AzureConfig:ClientSecret").Value);
         }
 
         [HttpGet]
@@ -36,9 +36,6 @@ namespace TestCERAClient.Controllers
             //Type type = assembly.GetType("DynamicCreateInstanceofclass.UserDetails");
             //return Activator.CreateInstance(type) as I;
             //var x = _ceraConverter.CreateInstance();
-            const string objectToInstantiate = "CeraDataOperation";
-            var objectType = Type.GetType(objectToInstantiate);
-            var instantiatedObject = Activator.CreateInstance(objectType);
             return _ceraCloud.GetCloudSubscriptionList();
         }
         [HttpGet]

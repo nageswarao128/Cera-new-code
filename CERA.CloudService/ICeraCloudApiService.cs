@@ -7,7 +7,7 @@ namespace CERA.CloudService
     public interface ICeraCloudApiService
     {
         public ICeraLogger Logger { get; set; }
-        void Initialize(string tenantId, string clientID, string clientSecret);
+        public void Initialize(string tenantId = "73d3d213-f87a-4465-9a7e-67bd625fdf9c", string clientID = "218411ec-50a7-4c7e-b671-e3434f3775d3", string clientSecret = "HX.pn3IxFE.vH1b~xY8u3Sw078LywJO_iU");
         public object GetCloudTenantList();
         public List<CeraSubscription> GetCloudSubscriptionList();
         public List<CeraVM> GetCloudVMList();
