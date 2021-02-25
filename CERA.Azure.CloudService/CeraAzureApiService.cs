@@ -1,5 +1,6 @@
 ﻿using CERA.AuthenticationService;
 using CERA.Entities;
+using CERA.Entities.ViewModel;
 using CERA.Logging;
 using System;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ namespace CERA.Azure.CloudService
             authenticator.Initialize();
         }
 
-        public List<CeraSubscription> GetCloudSubscriptionList()
+        public List<CeraSubscription> GetCloudSubscriptionList(RequestInfoViewModel requestInfo)
         {
             try
             {

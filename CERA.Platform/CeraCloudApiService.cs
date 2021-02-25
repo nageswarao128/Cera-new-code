@@ -3,7 +3,9 @@ using CERA.Azure.CloudService;
 using CERA.Converter;
 using CERA.DataOperation;
 using CERA.Entities;
+using CERA.Entities.ViewModel;
 using CERA.Logging;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -53,18 +55,15 @@ namespace CERA.CloudService
             return new object();
         }
 
-        public List<CeraSubscription> GetCloudSubscriptionList()
+        public List<CeraSubscription> GetCloudSubscriptionList(RequestInfoViewModel requestInfo)
         {
             Logger.LogInfo("Get Cloud Subcription List Called");
-            ///Get List of Cloud services for the client
-            ///usig Reflection instantiate cloud service for corresponding Cloud Platform using itteration
-            ///ICeraCloudApiService i = using Reflection create instance of cloud service
             List<CeraSubscription> subscriptions = new List<CeraSubscription>();
             foreach (var platformConfig in _platformConfigs)
             {
                 ICeraCloudApiService _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                 _cloudApiServices.Logger = Logger;
-                subscriptions = _cloudApiServices.GetCloudSubscriptionList();
+                subscriptions = _cloudApiServices.GetCloudSubscriptionList(requestInfo);
                 Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Subcription");
                 _dataOps.AddSubscriptionData(subscriptions);
                 subscriptions.Clear();

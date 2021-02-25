@@ -2,6 +2,7 @@
 using CERA.Converter;
 using CERA.DataOperation.Data;
 using CERA.Entities;
+using CERA.Entities.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -32,11 +33,8 @@ namespace TestCERAClient.Controllers
         [HttpGet]
         public IEnumerable<CeraSubscription> GetCloudSubscriptions()
         {
-            //var assembly = Assembly.LoadFrom("");
-            //Type type = assembly.GetType("DynamicCreateInstanceofclass.UserDetails");
-            //return Activator.CreateInstance(type) as I;
-            //var x = _ceraConverter.CreateInstance();
-            return _ceraCloud.GetCloudSubscriptionList();
+            RequestInfoViewModel requestInfo = new RequestInfoViewModel();
+            return _ceraCloud.GetCloudSubscriptionList(requestInfo);
         }
         [HttpGet]
         public IEnumerable<CeraSubscription> GetDBSubscriptions()

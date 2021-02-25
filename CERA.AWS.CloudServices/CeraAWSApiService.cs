@@ -1,5 +1,6 @@
 ﻿using CERA.AuthenticationService;
 using CERA.Entities;
+using CERA.Entities.ViewModel;
 using CERA.Logging;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace CERA.AWS.CloudService
             return new object();
         }
 
-        public List<CeraSubscription> GetCloudSubscriptionList()
+        public List<CeraSubscription> GetCloudSubscriptionList(RequestInfoViewModel requestInfo)
         {
             return new List<CeraSubscription>();
         }
