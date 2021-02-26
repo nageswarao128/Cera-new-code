@@ -1,4 +1,5 @@
-﻿using CERAAPI.Entities;
+﻿using CERAAPI.Data;
+using CERAAPI.Entities;
 using CERAAPI.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,10 +21,12 @@ namespace CERAAPI.Controllers
     {
         private readonly UserManager<CERAAPIUser> _userManager;
         IConfiguration _configuration;
-        public LoginController(UserManager<CERAAPIUser> userManager, IConfiguration configuration)
+        CeraAPIUserDbContext _db;
+        public LoginController(UserManager<CERAAPIUser> userManager, IConfiguration configuration, CeraAPIUserDbContext db)
         {
             _userManager = userManager;
             _configuration = configuration;
+            _db = db;
         }
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel registerUser)
@@ -50,6 +54,7 @@ namespace CERAAPI.Controllers
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var user = await _userManager.FindByNameAsync(loginModel.UserName);
+            var client = _db.Clients.Where(x => x.PrimaryContactName == user.UserName).FirstOrDefault();
             if (user != null && await _userManager.CheckPasswordAsync(user, loginModel.Password))
             {
                 var authsigningkey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));
@@ -65,6 +70,10 @@ namespace CERAAPI.Controllers
                     Expires = DateTime.UtcNow.AddMinutes(20),
                     SigningCredentials = new SigningCredentials(authsigningkey, SecurityAlgorithms.HmacSha256Signature)
                 };
+                if (client != null)
+                {
+                    tokenDescriptor.Subject.AddClaim(new Claim("orgname", client.ClientName));
+                }
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 return Ok(new
                 {

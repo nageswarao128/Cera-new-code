@@ -2,8 +2,9 @@
 
 namespace CERAAPI.ViewModels
 {
-    public class AddPlatformViewModel
+    public class AddClientPlatformViewModel
     {
+        public string OrganizationName { get; set; }
         public Guid OrganizationId { get; set; }
         public string PlatformName { get; set; }
         public string TenantId { get; set; }

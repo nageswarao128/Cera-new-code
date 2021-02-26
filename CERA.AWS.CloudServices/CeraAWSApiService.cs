@@ -16,6 +16,7 @@ namespace CERA.AWS.CloudService
         ICeraAuthenticator authenticator;
 
         public ICeraLogger Logger { get; set; }
+        public List<CeraPlatformConfig> _platformConfigs { get; set; }
 
         public object GetCloudMonthlyBillingList()
         {

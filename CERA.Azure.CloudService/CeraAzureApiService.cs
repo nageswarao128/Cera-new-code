@@ -13,6 +13,7 @@ namespace CERA.Azure.CloudService
         {
 
         }
+        public List<CeraPlatformConfig> _platformConfigs { get; set; }
         ICeraAuthenticator authenticator;
         public ICeraLogger Logger { get; set; }
 

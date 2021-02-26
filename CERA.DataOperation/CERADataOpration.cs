@@ -42,14 +42,18 @@ namespace CERA.DataOperation
             return new object();
         }
 
-        public int AddSubscriptionData(List<CeraSubscription> data)
+        public int AddSubscriptionData(List<CeraSubscription> subscriptions)
         {
             try
             {
                 _logger.LogInfo("Receive Data");
-                string jsonData = _converter.GenerateJson(data);
+                string jsonData = _converter.GenerateJson(subscriptions);
                 _logger.LogInfo("Converted Data into JSON Format");
-                _dbContext.Subscriptions.AddRange(data);
+                foreach (var subscription in subscriptions)
+                {
+                    if (!_dbContext.Subscriptions.Contains(subscription))
+                        _dbContext.Subscriptions.Add(subscription);
+                }
                 int record = _dbContext.SaveChanges();
                 //var sp_parameters = new List<SqlParameter>() { new SqlParameter("json", jsonData) };
                 //int record = _dbContext.Database.ExecuteSqlRaw($"Exec usp_Subscription_insert @json", sp_parameters);

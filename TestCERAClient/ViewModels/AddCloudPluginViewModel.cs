@@ -1,10 +1,8 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CERAAPI.Entities
+namespace CERAAPI.ViewModels
 {
-    [Table("tbl_CloudPlugIns")]
-    public class CloudPlugIn : BaseEntity
+    public class AddCloudPluginViewModel
     {
         public string CloudProviderName { get; set; }
         public string DllPath { get; set; }

@@ -1,13 +1,9 @@
-﻿using CERA.AWS.CloudService;
-using CERA.Azure.CloudService;
-using CERA.Converter;
+﻿using CERA.Converter;
 using CERA.DataOperation;
 using CERA.Entities;
 using CERA.Entities.ViewModel;
 using CERA.Logging;
-using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace CERA.CloudService
 {
@@ -18,12 +14,13 @@ namespace CERA.CloudService
         ICeraConverter _converter;
         public ICeraLogger Logger { get; set; }
 
-        List<CeraPlatformConfig> _platformConfigs = new List<CeraPlatformConfig>() {
-            new CeraPlatformConfig(){PlatformName =   "Azure", APIClassName = "CERA.Azure.CloudService.CeraAzureApiService", DllPath = @"D:\ClientWorks\Quadrant\QHub Team\CERA\CERA.Azure.CloudService\bin\Debug\netstandard2.1\CERA.Azure.CloudService.dll"},
-            new CeraPlatformConfig(){PlatformName =   "Aws", APIClassName = "CERA.AWS.CloudService.CeraAWSApiService", DllPath = @"D:\ClientWorks\Quadrant\QHub Team\CERA\CERA.AWS.CloudServices\bin\Debug\netstandard2.1\CERA.AWS.CloudService.dll"},
-            //new CeraPlatformConfig(){PlatformName =   "GCP", APIClassName = "", DllPath = ""},
-            //new CeraPlatformConfig(){PlatformName =   "IBM", APIClassName = "", DllPath = ""},
-        };
+        public List<CeraPlatformConfig> _platformConfigs { get; set; }
+        //    = new List<CeraPlatformConfig>() {
+        //    new CeraPlatformConfig(){PlatformName =   "Azure", APIClassName = "CERA.Azure.CloudService.CeraAzureApiService", DllPath = @"D:\ClientWorks\Quadrant\QHub Team\CERA\CERA.Azure.CloudService\bin\Debug\netstandard2.1\CERA.Azure.CloudService.dll"},
+        //    new CeraPlatformConfig(){PlatformName =   "Aws", APIClassName = "CERA.AWS.CloudService.CeraAWSApiService", DllPath = @"D:\ClientWorks\Quadrant\QHub Team\CERA\CERA.AWS.CloudServices\bin\Debug\netstandard2.1\CERA.AWS.CloudService.dll"},
+        //    //new CeraPlatformConfig(){PlatformName =   "GCP", APIClassName = "", DllPath = ""},
+        //    //new CeraPlatformConfig(){PlatformName =   "IBM", APIClassName = "", DllPath = ""},
+        //};
 
         public CeraCloudApiService(
             ICeraDataOperation dataOps,
@@ -41,7 +38,6 @@ namespace CERA.CloudService
 
         public object GetCloudResourceList()
         {
-
             return new object();
         }
 
@@ -61,7 +57,7 @@ namespace CERA.CloudService
             List<CeraSubscription> subscriptions = new List<CeraSubscription>();
             foreach (var platformConfig in _platformConfigs)
             {
-                ICeraCloudApiService _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
+                _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                 _cloudApiServices.Logger = Logger;
                 subscriptions = _cloudApiServices.GetCloudSubscriptionList(requestInfo);
                 Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Subcription");
