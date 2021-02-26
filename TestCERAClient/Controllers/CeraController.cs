@@ -37,11 +37,11 @@ namespace TestCERAClient.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<CeraSubscription> GetCloudSubscriptions()
+        public IEnumerable<CeraSubscription> GetCloudSubscriptions(string ClientName = "Quadrant")
         {
             RequestInfoViewModel requestInfo = new RequestInfoViewModel();
             var data = from clientPlugin in _userDb.ClientCloudPlugins
-                       where clientPlugin.Client.ClientName == "Quadrant"
+                       where clientPlugin.Client.ClientName == ClientName
                        join cloudPlugin in _userDb.CloudPlugIns
                        on clientPlugin.PlugIn.Id equals cloudPlugin.Id
                        select new CeraPlatformConfig
