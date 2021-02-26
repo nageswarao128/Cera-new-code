@@ -1,4 +1,4 @@
-﻿using CERA.Entities;
+﻿using CERA.Entities.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CERA.DataOperation.Data
@@ -16,5 +16,8 @@ namespace CERA.DataOperation.Data
                     );
         }
         public DbSet<CeraSubscription> Subscriptions { get; set; }
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<ClientCloudPlugin> ClientCloudPlugins { get; set; }
+        public DbSet<CloudPlugIn> CloudPlugIns { get; set; }
     }
 }

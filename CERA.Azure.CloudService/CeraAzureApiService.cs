@@ -1,6 +1,7 @@
 ﻿using CERA.AuthenticationService;
 using CERA.Entities;
-using CERA.Entities.ViewModel;
+using CERA.Entities.Models;
+using CERA.Entities.ViewModels;
 using CERA.Logging;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace CERA.Azure.CloudService
         {
 
         }
-        public List<CeraPlatformConfig> _platformConfigs { get; set; }
+        public List<CeraPlatformConfigViewModel> _platformConfigs { get; set; }
         ICeraAuthenticator authenticator;
         public ICeraLogger Logger { get; set; }
 

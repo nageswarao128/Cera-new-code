@@ -1,9 +1,10 @@
-﻿using CERA.Entities;
+﻿using CERA.Entities.Models;
+using CERA.Entities.ViewModels;
 using System.Collections.Generic;
 
 namespace CERA.DataOperation
 {
-    public interface ICeraDataOperation
+    public partial interface ICeraDataOperation
     {
         public object AddTenantData(object data);
         public int AddSubscriptionData(List<CeraSubscription> data);
@@ -22,5 +23,7 @@ namespace CERA.DataOperation
         public object UpdateSqlServerData(object data);
         public object UpdateSqlDbData(object data);
         public List<CeraSubscription> GetSubscriptions();
+
+
     }
 }

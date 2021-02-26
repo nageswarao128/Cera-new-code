@@ -1,26 +1,23 @@
 ﻿using CERA.Converter;
 using CERA.DataOperation;
 using CERA.Entities;
-using CERA.Entities.ViewModel;
+using CERA.Entities.Models;
+using CERA.Entities.ViewModels;
 using CERA.Logging;
+using CERA.Platform;
 using System.Collections.Generic;
 
 namespace CERA.CloudService
 {
-    public sealed class CeraCloudApiService : ICeraCloudApiService
+    public sealed class CeraCloudApiService : ICeraPlatform
     {
+        public string ClientName { get; set; }
         ICeraCloudApiService _cloudApiServices;
         ICeraDataOperation _dataOps;
         ICeraConverter _converter;
         public ICeraLogger Logger { get; set; }
 
-        public List<CeraPlatformConfig> _platformConfigs { get; set; }
-        //    = new List<CeraPlatformConfig>() {
-        //    new CeraPlatformConfig(){PlatformName =   "Azure", APIClassName = "CERA.Azure.CloudService.CeraAzureApiService", DllPath = @"D:\ClientWorks\Quadrant\QHub Team\CERA\CERA.Azure.CloudService\bin\Debug\netstandard2.1\CERA.Azure.CloudService.dll"},
-        //    new CeraPlatformConfig(){PlatformName =   "Aws", APIClassName = "CERA.AWS.CloudService.CeraAWSApiService", DllPath = @"D:\ClientWorks\Quadrant\QHub Team\CERA\CERA.AWS.CloudServices\bin\Debug\netstandard2.1\CERA.AWS.CloudService.dll"},
-        //    //new CeraPlatformConfig(){PlatformName =   "GCP", APIClassName = "", DllPath = ""},
-        //    //new CeraPlatformConfig(){PlatformName =   "IBM", APIClassName = "", DllPath = ""},
-        //};
+        List<CeraPlatformConfigViewModel> PlatformConfigs { get; set; }
 
         public CeraCloudApiService(
             ICeraDataOperation dataOps,
@@ -31,9 +28,18 @@ namespace CERA.CloudService
             Logger = logger;
             _converter = converter;
         }
+
+        public CeraCloudApiService()
+        {
+        }
+
         public object GetCloudMonthlyBillingList()
         {
             return new object();
+        }
+        void GetPlatforms()
+        {
+            PlatformConfigs = _dataOps.GetClientOnboardedPlatforms(ClientName);
         }
 
         public object GetCloudResourceList()
@@ -55,7 +61,7 @@ namespace CERA.CloudService
         {
             Logger.LogInfo("Get Cloud Subcription List Called");
             List<CeraSubscription> subscriptions = new List<CeraSubscription>();
-            foreach (var platformConfig in _platformConfigs)
+            foreach (var platformConfig in PlatformConfigs)
             {
                 _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                 _cloudApiServices.Logger = Logger;
@@ -106,6 +112,26 @@ namespace CERA.CloudService
         public void Initialize(string tenantId, string clientID, string clientSecret)
         {
             _cloudApiServices.Initialize(tenantId, clientID, clientSecret);
+        }
+
+        public int OnBoardClientPlatform(AddClientPlatformViewModel platform)
+        {
+            return _dataOps.OnBoardClientPlatform(platform);
+        }
+
+        public int OnBoardOrganization(AddOrganizationViewModel OrgDetails)
+        {
+            return _dataOps.OnBoardOrganization(OrgDetails);
+        }
+
+        public int OnBoardCloudProvider(AddCloudPluginViewModel plugin)
+        {
+            return _dataOps.OnBoardCloudProvider(plugin);
+        }
+
+        public List<CeraPlatformConfigViewModel> GetClientOnboardedPlatforms(string ClientName)
+        {
+            return _dataOps.GetClientOnboardedPlatforms(ClientName);
         }
     }
 }

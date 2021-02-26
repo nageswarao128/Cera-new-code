@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CERA.Entities
+namespace CERA.Entities.Models
 {
     [Table("tbl_Subscription")]
     public class CeraSubscription

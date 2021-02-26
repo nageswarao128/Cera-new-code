@@ -40,6 +40,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Implementations", "Implementations", "{97D5DBDA-37E1-4E8D-9358-7E250A919C5C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Enitites", "Enitites", "{1FDD6A18-DCFA-4200-A6BC-CB5B91082D9F}"
+	ProjectSection(SolutionItems) = preProject
+		BaseEntity.cs = BaseEntity.cs
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CERA.Entities", "CERA.Entities\CERA.Entities.csproj", "{53F49625-7518-4F07-99B6-6AAFBE366E12}"
 EndProject

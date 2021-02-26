@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CERAAPI.Entities
+namespace CERA.Entities.Models
 {
     [Table("tbl_Clients")]
     public class Client : BaseEntity

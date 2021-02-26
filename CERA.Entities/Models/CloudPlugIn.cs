@@ -1,14 +1,17 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CERAAPI.Entities
+namespace CERA.Entities.Models
 {
     [Table("tbl_CloudPlugIns")]
     public class CloudPlugIn : BaseEntity
     {
         public string CloudProviderName { get; set; }
+        public string ServiceName { get; set; }
+        public string AssemblyName { get; set; }
+        public string ClassName { get; set; }
         public string DllPath { get; set; }
-        public string FullyQualifiedClassName { get; set; }
+        public string FullyQualifiedName { get; set; }
         public DateTime DateEnabled { get; set; }
         public string DevContact { get; set; }
         public string SupportContact { get; set; }

@@ -5,6 +5,7 @@ using CERA.Converter;
 using CERA.DataOperation;
 using CERA.DataOperation.Data;
 using CERA.Logging;
+using CERA.Platform;
 using CERAAPI.Data;
 using CERAAPI.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -42,7 +43,9 @@ namespace TestCERAClient
             services.AddTransient<ICeraDataOperation, CERADataOperation>();
             services.AddLogging(logging => logging.AddConsole());
             services.AddSingleton<ICeraLogger, CERALogger>();
+
             services.AddTransient<ICeraCloudApiService, CeraCloudApiService>();
+            services.AddTransient<ICeraPlatform, CeraCloudApiService>();
 
 
 

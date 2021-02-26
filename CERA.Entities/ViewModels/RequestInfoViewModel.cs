@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CERA.Entities.ViewModel
+namespace CERA.Entities.ViewModels
 {
     public class RequestInfoViewModel
     {

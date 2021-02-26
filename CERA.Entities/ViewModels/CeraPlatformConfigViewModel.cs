@@ -1,6 +1,6 @@
-﻿namespace CERA.Entities
+﻿namespace CERA.Entities.ViewModels
 {
-    public class CeraPlatformConfig
+    public class CeraPlatformConfigViewModel
     {
         public string PlatformName { get; set; }
         public string APIClassName { get; set; }

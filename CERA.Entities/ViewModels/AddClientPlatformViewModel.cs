@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CERAAPI.ViewModels
+namespace CERA.Entities.ViewModels
 {
     public class AddClientPlatformViewModel
     {

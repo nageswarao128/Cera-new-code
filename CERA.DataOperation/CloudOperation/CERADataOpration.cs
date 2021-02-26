@@ -1,8 +1,9 @@
 ﻿using CERA.Converter;
 using CERA.DataOperation.Data;
 using CERA.Entities;
+using CERA.Entities.Models;
+using CERA.Entities.ViewModels;
 using CERA.Logging;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Linq;
 
 namespace CERA.DataOperation
 {
-    public class CERADataOperation : ICeraDataOperation
+    public partial class CERADataOperation : ICeraDataOperation
     {
         private readonly ICeraLogger _logger;
         protected readonly CeraDbContext _dbContext;
@@ -47,12 +48,11 @@ namespace CERA.DataOperation
             try
             {
                 _logger.LogInfo("Receive Data");
-                string jsonData = _converter.GenerateJson(subscriptions);
-                _logger.LogInfo("Converted Data into JSON Format");
                 foreach (var subscription in subscriptions)
                 {
-                    if (!_dbContext.Subscriptions.Contains(subscription))
-                        _dbContext.Subscriptions.Add(subscription);
+                    if (_dbContext.Subscriptions.Where(x => x.SubscriptionId == subscription.SubscriptionId).Count() > 0)
+                        _dbContext.Subscriptions.Remove(subscription);
+                    _dbContext.Subscriptions.Add(subscription);
                 }
                 int record = _dbContext.SaveChanges();
                 //var sp_parameters = new List<SqlParameter>() { new SqlParameter("json", jsonData) };
@@ -136,5 +136,7 @@ namespace CERA.DataOperation
         {
             return new object();
         }
+
+      
     }
 }

@@ -22,8 +22,6 @@ namespace CERAAPI.Data
                  );
             base.OnConfiguring(optionsBuilder);
         }
-        public DbSet<Client> Clients { get; set; }
-        public DbSet<ClientCloudPlugin> ClientCloudPlugins { get; set; }
-        public DbSet<CloudPlugIn> CloudPlugIns { get; set; }
+     
     }
 }

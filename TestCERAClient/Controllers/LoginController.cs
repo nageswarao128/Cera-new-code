@@ -54,7 +54,7 @@ namespace CERAAPI.Controllers
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var user = await _userManager.FindByNameAsync(loginModel.UserName);
-            var client = _db.Clients.Where(x => x.PrimaryContactName == user.UserName).FirstOrDefault();
+            //var client = _db.Clients.Where(x => x.PrimaryContactName == user.UserName).FirstOrDefault();
             if (user != null && await _userManager.CheckPasswordAsync(user, loginModel.Password))
             {
                 var authsigningkey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));
@@ -70,10 +70,10 @@ namespace CERAAPI.Controllers
                     Expires = DateTime.UtcNow.AddMinutes(20),
                     SigningCredentials = new SigningCredentials(authsigningkey, SecurityAlgorithms.HmacSha256Signature)
                 };
-                if (client != null)
-                {
-                    tokenDescriptor.Subject.AddClaim(new Claim("orgname", client.ClientName));
-                }
+                //if (client != null)
+                //{
+                //    tokenDescriptor.Subject.AddClaim(new Claim("orgname", client.ClientName));
+                //}
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 return Ok(new
                 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CERAAPI.Entities
+namespace CERA.Entities.Models
 {
     public class BaseEntity
     {

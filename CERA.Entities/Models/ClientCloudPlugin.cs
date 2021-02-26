@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CERAAPI.Entities
+namespace CERA.Entities.Models
 {
     [Table("tbl_ClientCloudPlugins")]
     public class ClientCloudPlugin : BaseEntity
