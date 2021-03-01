@@ -38,7 +38,8 @@ namespace TestCERAClient
             services.AddSwaggerGen();
             services.AddTransient<ICeraAzureApiService, CeraAzureApiService>();
             services.AddTransient<ICeraAwsApiService, CeraAWSApiService>();
-            services.AddDbContext<CeraDbContext>(x => x.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=db_Cera; Integrated Security= true;"));
+            //services.AddDbContext<CeraDbContext>(x => x.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=db_Cera; Integrated Security= true;"));
+            services.AddDbContext<CeraDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DbCS")));
             services.AddTransient<ICeraConverter, CeraConverter>();
             services.AddTransient<ICeraDataOperation, CERADataOperation>();
             services.AddLogging(logging => logging.AddConsole());
@@ -49,7 +50,8 @@ namespace TestCERAClient
 
 
 
-            services.AddDbContext<CeraAPIUserDbContext>(x => x.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=db_Cera_User; Integrated Security= true;"));
+            //services.AddDbContext<CeraAPIUserDbContext>(x => x.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=db_Cera_User; Integrated Security= true;"));
+            services.AddDbContext<CeraAPIUserDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DbCS")));
             services.AddIdentity<CERAAPIUser, CERAAPIRole>()
                 .AddEntityFrameworkStores<CeraAPIUserDbContext>()
                 .AddUserManager<UserManager<CERAAPIUser>>();

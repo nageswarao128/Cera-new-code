@@ -1,19 +1,25 @@
 ﻿using CERA.Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace CERA.DataOperation.Data
 {
     public class CeraDbContext : DbContext
     {
+        //IConfiguration _Config;
+        //public CeraDbContext(IConfiguration Config)
+        //{
+        //    _Config = Config;
+        //}
         public CeraDbContext(DbContextOptions<CeraDbContext> options) : base(options)
         {
 
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(
-                    "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=db_Cera; Integrated Security= true;"
-                    );
+            //optionsBuilder.UseSqlServer(_Config.GetConnectionString("")
+                    //"Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=db_Cera; Integrated Security= true;"
+                    //);
         }
         public DbSet<CeraSubscription> Subscriptions { get; set; }
         public DbSet<Client> Clients { get; set; }
