@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+using Serilog;
+using System;
 
 namespace CERA.Logging
 {
@@ -8,5 +10,6 @@ namespace CERA.Logging
         public void LogError(string Message);
         public void LogException(Exception exception);
         public void LogWarning(string Message);
+        //public void CERALogging();
     }
 }

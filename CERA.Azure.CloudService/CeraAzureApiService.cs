@@ -75,6 +75,7 @@ namespace CERA.Azure.CloudService
                         });
                     }
                     Logger.LogInfo("Parsing Completed Subscription List To CERA Subscription");
+                    
                     return subscriptions;
                 }
                 Logger.LogInfo("No Subscription List found");

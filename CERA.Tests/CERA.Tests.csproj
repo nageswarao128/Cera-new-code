@@ -7,10 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.1" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.1" />
     <PackageReference Include="coverlet.collector" Version="1.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CERA.AWS.CloudServices\CERA.AWS.CloudService.csproj" />
+    <ProjectReference Include="..\CERA.Azure.CloudService\CERA.Azure.CloudService.csproj" />
+    <ProjectReference Include="..\CERA.CloudService\CERA.CloudService.csproj" />
   </ItemGroup>
 
 </Project>
