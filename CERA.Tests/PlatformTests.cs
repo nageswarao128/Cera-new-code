@@ -15,10 +15,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CERA.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class PlatformTests
     {
         [TestMethod]
-        public void TestMethod1()
+        public void GetSubscriptionTest()
         {
             var serviceprovider = new ServiceCollection()
                                     .AddLogging(logging => logging.AddConsole())

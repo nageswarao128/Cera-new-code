@@ -94,7 +94,7 @@ namespace CERA.Azure.CloudService
         /// <summary>
         /// This method will authenticate the user and gets the access token from the cloud
         /// </summary>
-        /// <returns></returns>
+        /// <returns>returns the access token from Azure</returns>
         public string GetAuthToken()
         {
             var scopes = new[] { "https://management.core.windows.net//.default" };
@@ -150,7 +150,7 @@ namespace CERA.Azure.CloudService
         /// <summary>
         /// This method will comunicate the cloud and retrives the client details
         /// </summary>
-        /// <returns></returns>
+        /// <returns>returns the client details</returns>
         public IAuthenticated GetAuthenticatedClientUsingAzureCredential()
         {
             var azureCredentials = GetAzureCredentials();

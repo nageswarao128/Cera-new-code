@@ -46,7 +46,7 @@ namespace CERA.DataOperation
         /// This method will inserts the subscrptions data into database
         /// </summary>
         /// <param name="subscriptions"></param>
-        /// <returns></returns>
+        /// <returns>returns 1 or 0</returns>
         public int AddSubscriptionData(List<CeraSubscription> subscriptions)
         {
             try
@@ -73,7 +73,7 @@ namespace CERA.DataOperation
         /// <summary>
         /// This method will retrives the subscriptions data from database
         /// </summary>
-        /// <returns></returns>
+        /// <returns>returns subscriptions data</returns>
         public List<CeraSubscription> GetSubscriptions()
         {
             try

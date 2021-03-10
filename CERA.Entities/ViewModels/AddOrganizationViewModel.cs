@@ -2,6 +2,9 @@
 
 namespace CERA.Entities.ViewModels
 {
+    /// <summary>
+    /// This class is used as a data transfer objecct for adding a organisation details
+    /// </summary>
     public class AddOrganizationViewModel
     {
         public string OrganizationName { get; set; }

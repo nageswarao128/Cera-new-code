@@ -13,7 +13,7 @@ namespace CERA.DataOperation
         /// client name
         /// </summary>
         /// <param name="ClientName"></param>
-        /// <returns></returns>
+        /// <returns>returns a object containing PlatformName,APIClassName,DllPath</returns>
         public List<CeraPlatformConfigViewModel> GetClientOnboardedPlatforms(string ClientName)
         {
             var onboradedPlatforms = from clientPlugin in _dbContext.ClientCloudPlugins
@@ -32,7 +32,7 @@ namespace CERA.DataOperation
         /// This will adds a organisation details into database
         /// </summary>
         /// <param name="OrgDetails"></param>
-        /// <returns></returns>
+        /// <returns>returns 1 or 0</returns>
         public int OnBoardOrganization(AddOrganizationViewModel OrgDetails)
         {
             OrgDetails.UserId = Guid.NewGuid();
@@ -52,7 +52,7 @@ namespace CERA.DataOperation
         /// This method will inserts the Client Cloud details into database
         /// </summary>
         /// <param name="platform"></param>
-        /// <returns></returns>
+        /// <returns>returns 1 or 0</returns>
         public int OnBoardClientPlatform(AddClientPlatformViewModel platform)
         {
             var cloudPlugIn = _dbContext.CloudPlugIns.Where(x => x.CloudProviderName == platform.PlatformName).FirstOrDefault();
@@ -71,7 +71,7 @@ namespace CERA.DataOperation
         /// This method will inserts the cloud platform details into database
         /// </summary>
         /// <param name="plugin"></param>
-        /// <returns></returns>
+        /// <returns>returns 1 or 0</returns>
         public int OnBoardCloudProvider(AddCloudPluginViewModel plugin)
         {
             _dbContext.CloudPlugIns.Add(new CloudPlugIn()

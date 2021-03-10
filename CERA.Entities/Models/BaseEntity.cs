@@ -2,6 +2,9 @@
 
 namespace CERA.Entities.Models
 {
+    /// <summary>
+    /// This class contains the useful information which is used by other model classes
+    /// </summary>
     public class BaseEntity
     {
         public Guid Id { get; set; }

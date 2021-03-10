@@ -116,7 +116,7 @@ namespace CERA.CloudService
         /// <summary>
         /// This method retrives subscription data from database
         /// </summary>
-        /// <returns></returns>
+        /// <returns>returns subscription data from database</returns>
         public List<CeraSubscription> GetSubscriptionList()
         {
             Logger.LogInfo("Requested data for Subcription List from Database called");
@@ -132,7 +132,7 @@ namespace CERA.CloudService
         /// into database
         /// </summary>
         /// <param name="platform"></param>
-        /// <returns></returns>
+        /// <returns>returns 1 or 0</returns>
         public int OnBoardClientPlatform(AddClientPlatformViewModel platform)
         {
             return _dataOps.OnBoardClientPlatform(platform);
@@ -142,7 +142,7 @@ namespace CERA.CloudService
         /// into database
         /// </summary>
         /// <param name="OrgDetails"></param>
-        /// <returns></returns>
+        /// <returns>returns 1 or 0</returns>
         public int OnBoardOrganization(AddOrganizationViewModel OrgDetails)
         {
             return _dataOps.OnBoardOrganization(OrgDetails);
@@ -152,7 +152,7 @@ namespace CERA.CloudService
         /// into database
         /// </summary>
         /// <param name="plugin"></param>
-        /// <returns></returns>
+        /// <returns>returns 1 or 0</returns>
         public int OnBoardCloudProvider(AddCloudPluginViewModel plugin)
         {
             return _dataOps.OnBoardCloudProvider(plugin);
@@ -162,7 +162,7 @@ namespace CERA.CloudService
         /// the client name
         /// </summary>
         /// <param name="ClientName"></param>
-        /// <returns></returns>
+        /// <returns>returns 1 or 0</returns>
         public List<CeraPlatformConfigViewModel> GetClientOnboardedPlatforms(string ClientName)
         {
             return _dataOps.GetClientOnboardedPlatforms(ClientName);

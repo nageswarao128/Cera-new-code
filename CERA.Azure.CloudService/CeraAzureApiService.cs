@@ -75,7 +75,7 @@ namespace CERA.Azure.CloudService
         /// retrives available subscrption from Azure cloud
         /// </summary>
         /// <param name="requestInfo"></param>
-        /// <returns></returns>
+        /// <returns>returns a object with list of subscriptions from Azure</returns>
         public List<CeraSubscription> GetCloudSubscriptionList(RequestInfoViewModel requestInfo)
         {
             

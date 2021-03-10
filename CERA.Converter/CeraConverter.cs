@@ -16,8 +16,8 @@ namespace CERA.Converter
         /// </summary>
         /// <param name="DllPath"></param>
         /// <param name="TypeName"></param>
-        /// <returns></returns>
-        public dynamic CreateInstance(string DllPath = @"D:\Personal\My Projects\HealthDomain\BeFit\Jitus.BeFit\Jitus.BeFit.BMICalculator\bin\Debug\netstandard2.1\Jitus.BeFit.BMICalculation.dll", string TypeName = "Jitus.BeFit.BMICalculation.BMICalculator")
+        /// <returns>returns a object which contains instance of the dll path </returns>
+        public dynamic CreateInstance(string DllPath , string TypeName )
         {
             var assembly = Assembly.LoadFile(DllPath);
             if (assembly != null)

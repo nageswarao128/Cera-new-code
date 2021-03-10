@@ -2,6 +2,9 @@
 
 namespace CERA.Entities.ViewModels
 {
+    /// <summary>
+    /// This class is used as a data transfer objecct for adding a cloud plugin
+    /// </summary>
     public class AddCloudPluginViewModel
     {
         public string CloudProviderName { get; set; }
