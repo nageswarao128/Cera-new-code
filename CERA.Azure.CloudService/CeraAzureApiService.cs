@@ -1,10 +1,13 @@
-﻿using CERA.AuthenticationService;
+﻿
+using CERA.CloudService;
 using CERA.Entities;
 using CERA.Entities.Models;
 using CERA.Entities.ViewModels;
 using CERA.Logging;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Reflection;
 
 namespace CERA.Azure.CloudService
 {
@@ -17,7 +20,6 @@ namespace CERA.Azure.CloudService
         public List<CeraPlatformConfigViewModel> _platformConfigs { get; set; }
         ICeraAuthenticator authenticator;
         public ICeraLogger Logger { get; set; }
-
         public CeraAzureApiService(ICeraLogger logger)
         {
             Logger = logger;
@@ -41,19 +43,42 @@ namespace CERA.Azure.CloudService
         {
             return new object();
         }
-        public void Initialize(string tenantId, string clientID, string clientSecret)
+        /// <summary>
+        /// This method will initialises the authenticator class and sends the required client cloud 
+        /// details to the class for authentication
+        /// </summary>
+        /// <param name="tenantId"></param>
+        /// <param name="clientID"></param>
+        /// <param name="clientSecret"></param>
+        /// <param name="authority"></param>
+        public void Initialize(string tenantId, string clientID, string clientSecret,string authority)
         {
             authenticator = new CeraAzureAuthenticator(Logger);
-            authenticator.Initialize(tenantId, clientID, clientSecret);
+            authenticator.Initialize(tenantId, clientID, clientSecret,authority);
         }
+        /// <summary>
+        /// This method will initialises the authenticator class and sends the required client cloud 
+        /// details to the class for authentication
+        /// </summary>
         public void Initialize()
         {
-            authenticator = new CeraAzureAuthenticator(Logger);
-            authenticator.Initialize();
-        }
+            string clientID = AzureAuth.Default.clientId;
+            string tenantId = AzureAuth.Default.tenantId;
+            string clientSecret = AzureAuth.Default.clientSecret;
+            string authority = AzureAuth.Default.authority;
 
+            authenticator = new CeraAzureAuthenticator(tenantId, clientID, clientSecret,authority, Logger);
+            authenticator.Initialize(tenantId, clientID, clientSecret,authority);
+        }
+        /// <summary>
+        /// This method will calls the required authenticationa and after the authenticating it will 
+        /// retrives available subscrption from Azure cloud
+        /// </summary>
+        /// <param name="requestInfo"></param>
+        /// <returns></returns>
         public List<CeraSubscription> GetCloudSubscriptionList(RequestInfoViewModel requestInfo)
         {
+            
             try
             {
                 Initialize();

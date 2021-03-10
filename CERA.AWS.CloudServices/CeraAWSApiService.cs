@@ -67,7 +67,7 @@ namespace CERA.AWS.CloudService
             return new List<CeraSubscription>();
         }
 
-        public void Initialize(string tenantId, string clientID, string clientSecret)
+        public void Initialize(string tenantId, string clientID, string clientSecret,string authority)
         {
             throw new NotImplementedException();
         }

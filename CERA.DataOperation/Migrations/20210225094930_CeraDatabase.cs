@@ -6,18 +6,18 @@ namespace CERA.DataOperation.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Subscriptions",
-                table: "Subscriptions");
+            //migrationBuilder.DropPrimaryKey(
+            //    name: "PK_Subscriptions",
+            //    table: "Subscriptions");
 
-            migrationBuilder.RenameTable(
-                name: "Subscriptions",
-                newName: "tbl_Subscription");
+            //migrationBuilder.RenameTable(
+            //    name: "Subscriptions",
+            //    newName: "tbl_Subscription");
 
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_tbl_Subscription",
-                table: "tbl_Subscription",
-                column: "SubscriptionId");
+            //migrationBuilder.AddPrimaryKey(
+            //    name: "PK_tbl_Subscription",
+            //    table: "tbl_Subscription",
+            //    column: "SubscriptionId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

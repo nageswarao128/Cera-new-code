@@ -1,6 +1,6 @@
 ﻿using static Microsoft.Azure.Management.Fluent.Azure;
 
-namespace CERA.AuthenticationService
+namespace CERA.CloudService
 {
     public interface ICeraAuthenticator
     {

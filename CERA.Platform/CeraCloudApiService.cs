@@ -37,6 +37,10 @@ namespace CERA.CloudService
         {
             return new object();
         }
+        /// <summary>
+        /// This method retrives the available cloud platforms data from the database based on 
+        /// the client name
+        /// </summary>
         void GetPlatforms()
         {
             PlatformConfigs = _dataOps.GetClientOnboardedPlatforms(ClientName);
@@ -56,11 +60,18 @@ namespace CERA.CloudService
         {
             return new object();
         }
-
+        /// <summary>
+        /// Based on the obtained cloud platforms this method will call the class with cloud service logic
+        /// and retrives the subscription data and inserts the obatained data into database
+        /// </summary>
+        /// <param name="requestInfo"></param>
+        /// <returns>This method returns the list of subscription data</returns>
         public List<CeraSubscription> GetCloudSubscriptionList(RequestInfoViewModel requestInfo)
         {
+            
             Logger.LogInfo("Get Cloud Subcription List Called");
             List<CeraSubscription> subscriptions = new List<CeraSubscription>();
+            GetPlatforms();
             foreach (var platformConfig in PlatformConfigs)
             {
                 _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
@@ -102,33 +113,56 @@ namespace CERA.CloudService
             GetCloudVMList();
             GetCloudWebAppList();
         }
-
+        /// <summary>
+        /// This method retrives subscription data from database
+        /// </summary>
+        /// <returns></returns>
         public List<CeraSubscription> GetSubscriptionList()
         {
             Logger.LogInfo("Requested data for Subcription List from Database called");
             return _dataOps.GetSubscriptions();
         }
 
-        public void Initialize(string tenantId, string clientID, string clientSecret)
+        public void Initialize(string tenantId, string clientID, string clientSecret,string authority)
         {
-            _cloudApiServices.Initialize(tenantId, clientID, clientSecret);
+            _cloudApiServices.Initialize(tenantId, clientID, clientSecret,authority);
         }
-
+        /// <summary>
+        /// This method will send the cloud platform details to the database layer to insert the data
+        /// into database
+        /// </summary>
+        /// <param name="platform"></param>
+        /// <returns></returns>
         public int OnBoardClientPlatform(AddClientPlatformViewModel platform)
         {
             return _dataOps.OnBoardClientPlatform(platform);
         }
-
+        /// <summary>
+        /// This method will send the organisation details to the database layer to insert the data
+        /// into database
+        /// </summary>
+        /// <param name="OrgDetails"></param>
+        /// <returns></returns>
         public int OnBoardOrganization(AddOrganizationViewModel OrgDetails)
         {
             return _dataOps.OnBoardOrganization(OrgDetails);
         }
-
+        /// <summary>
+        /// This method will send the cloud platform details to the database layer to insert the data
+        /// into database
+        /// </summary>
+        /// <param name="plugin"></param>
+        /// <returns></returns>
         public int OnBoardCloudProvider(AddCloudPluginViewModel plugin)
         {
             return _dataOps.OnBoardCloudProvider(plugin);
         }
-
+        /// <summary>
+        /// This method retrives the available cloud platforms data from the database based on 
+        /// the client name
+        /// </summary>
+        /// <param name="ClientName"></param>
+        /// <returns></returns>
         public List<CeraPlatformConfigViewModel> GetClientOnboardedPlatforms(string ClientName)
         {
             return _dataOps.GetClientOnboardedPlatforms(ClientName);

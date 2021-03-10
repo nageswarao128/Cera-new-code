@@ -8,6 +8,12 @@ namespace CERA.DataOperation
 {
     public partial class CERADataOperation : ICeraDataOperation
     {
+        /// <summary>
+        /// This method will retrives PlatformName,APIClassName,DllPath data from database based on the
+        /// client name
+        /// </summary>
+        /// <param name="ClientName"></param>
+        /// <returns></returns>
         public List<CeraPlatformConfigViewModel> GetClientOnboardedPlatforms(string ClientName)
         {
             var onboradedPlatforms = from clientPlugin in _dbContext.ClientCloudPlugins
@@ -22,6 +28,11 @@ namespace CERA.DataOperation
                                      };
             return onboradedPlatforms.ToList();
         }
+        /// <summary>
+        /// This will adds a organisation details into database
+        /// </summary>
+        /// <param name="OrgDetails"></param>
+        /// <returns></returns>
         public int OnBoardOrganization(AddOrganizationViewModel OrgDetails)
         {
             OrgDetails.UserId = Guid.NewGuid();
@@ -37,6 +48,11 @@ namespace CERA.DataOperation
             });
             return _dbContext.SaveChanges();
         }
+        /// <summary>
+        /// This method will inserts the Client Cloud details into database
+        /// </summary>
+        /// <param name="platform"></param>
+        /// <returns></returns>
         public int OnBoardClientPlatform(AddClientPlatformViewModel platform)
         {
             var cloudPlugIn = _dbContext.CloudPlugIns.Where(x => x.CloudProviderName == platform.PlatformName).FirstOrDefault();
@@ -51,6 +67,11 @@ namespace CERA.DataOperation
             });
             return _dbContext.SaveChanges();
         }
+        /// <summary>
+        /// This method will inserts the cloud platform details into database
+        /// </summary>
+        /// <param name="plugin"></param>
+        /// <returns></returns>
         public int OnBoardCloudProvider(AddCloudPluginViewModel plugin)
         {
             _dbContext.CloudPlugIns.Add(new CloudPlugIn()
