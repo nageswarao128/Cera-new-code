@@ -12,16 +12,18 @@ namespace CERA.Logging
 
         public void CERALogging()
         {
-         
+            string InstrumentationKey = "992f17de-b9e2-4f34-91f8-a7f453b3de70";
+
             Log.Logger = new LoggerConfiguration()
                                .MinimumLevel.Debug()
-                               .Enrich.WithProperty("CorrelationId", Guid.NewGuid())
+                               //.Enrich.WithProperty("CorrelationId", Guid.NewGuid())
                                .WriteTo.MSSqlServer
                                  (
                                    connectionString: "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=db_Cera; Integrated Security= true;",
                                    sinkOptions: new Serilog.Sinks.MSSqlServer.MSSqlServerSinkOptions { TableName = "Logs" }
-                                   
+
                                  )
+                               .WriteTo.ApplicationInsights(InstrumentationKey, TelemetryConverter.Traces)
                                .CreateLogger();
         }
         public CERALogger(ILogger<CERALogger> logger)

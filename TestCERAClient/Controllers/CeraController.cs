@@ -32,5 +32,30 @@ namespace TestCERAClient.Controllers
         {
             return _ceraCloud.GetSubscriptionList();
         }
+        [HttpGet]
+        public IEnumerable<CeraResources> GetCloudResources(string ClientName = "Quadrant")
+        {
+            RequestInfoViewModel requestInfo = new RequestInfoViewModel();
+            _ceraCloud.ClientName = ClientName;
+            return _ceraCloud.GetCloudResourceList(requestInfo);
+        }
+        [HttpGet]
+        public IEnumerable<CeraResources> GetDBResources()
+        {
+            return _ceraCloud.GetResourcesList();
+        }
+        [HttpGet]
+        public IEnumerable<CeraVM> GetCloudVM(string ClientName = "Quadrant")
+        {
+            RequestInfoViewModel requestInfo = new RequestInfoViewModel();
+            _ceraCloud.ClientName = ClientName;
+            return _ceraCloud.GetCloudVMList(requestInfo);
+        }
+        [HttpGet]
+        public IEnumerable<CeraVM> GetDBVM()
+        {
+            //var data= _ceraCloud.GetVMList(); 
+            return _ceraCloud.GetVMList();
+        }
     }
 }

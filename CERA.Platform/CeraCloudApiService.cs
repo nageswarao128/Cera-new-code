@@ -5,6 +5,7 @@ using CERA.Entities.Models;
 using CERA.Entities.ViewModels;
 using CERA.Logging;
 using CERA.Platform;
+using System;
 using System.Collections.Generic;
 
 namespace CERA.CloudService
@@ -42,9 +43,23 @@ namespace CERA.CloudService
             PlatformConfigs = _dataOps.GetClientOnboardedPlatforms(ClientName);
         }
 
-        public object GetCloudResourceList()
+        public List<CeraResources> GetCloudResourceList(RequestInfoViewModel requestInfo)
         {
-            return new object();
+            
+            Logger.LogInfo("Get Cloud Resources List Called");
+            List<CeraResources> resources = new List<CeraResources>();
+            GetPlatforms();
+            foreach (var platformConfig in PlatformConfigs)
+            {
+                _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
+                _cloudApiServices.Logger = Logger;
+                resources = _cloudApiServices.GetCloudResourceList(requestInfo);
+                Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Resources");
+                _dataOps.AddResourcesData(resources);
+                resources.Clear();
+                Logger.LogInfo($"Imported data for {platformConfig.PlatformName} Cloud Resources to DB");
+            }
+            return resources;
         }
 
         public object GetCloudSqlDbList()
@@ -61,6 +76,7 @@ namespace CERA.CloudService
         {
             Logger.LogInfo("Get Cloud Subcription List Called");
             List<CeraSubscription> subscriptions = new List<CeraSubscription>();
+            GetPlatforms();
             foreach (var platformConfig in PlatformConfigs)
             {
                 _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
@@ -73,7 +89,7 @@ namespace CERA.CloudService
             }
             return subscriptions;
         }
-
+        
         public object GetCloudServicePlanList()
         {
             return new object();
@@ -84,10 +100,22 @@ namespace CERA.CloudService
             return new object();
         }
 
-        public List<CeraVM> GetCloudVMList()
+        public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo)
         {
-            var allvms = new List<CeraVM>();
-            return allvms;
+            Logger.LogInfo("Get Cloud Virtual Machines List Called");
+            List<CeraVM> vM = new List<CeraVM>();
+            GetPlatforms();
+            foreach (var platformConfig in PlatformConfigs)
+            {
+                _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
+                _cloudApiServices.Logger = Logger;
+                vM = _cloudApiServices.GetCloudVMList(requestInfo);
+                Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud virtual Machines");
+               _dataOps.AddVMData(vM);
+                vM.Clear();
+                Logger.LogInfo($"Imported data for {platformConfig.PlatformName} Cloud Virtual Machines to DB");
+            }
+            return vM;
         }
 
         public object GetCloudWebAppList()
@@ -99,7 +127,7 @@ namespace CERA.CloudService
         {
             GetCloudServicePlanList();
             GetCloudTenantList();
-            GetCloudVMList();
+           // GetCloudVMList();
             GetCloudWebAppList();
         }
 
@@ -108,10 +136,22 @@ namespace CERA.CloudService
             Logger.LogInfo("Requested data for Subcription List from Database called");
             return _dataOps.GetSubscriptions();
         }
-
-        public void Initialize(string tenantId, string clientID, string clientSecret)
+        public List<CeraResources> GetResourcesList()
         {
-            _cloudApiServices.Initialize(tenantId, clientID, clientSecret);
+
+            Logger.LogInfo("Requested data for Resources List from Database called");
+            return _dataOps.GetResources();
+        }
+        public List<CeraVM> GetVMList()
+        {
+            Logger.LogInfo("Requested data for Virtual Machines List from Database called");
+            return _dataOps.GetVM();
+        }
+
+
+        public void Initialize(string tenantId, string clientID, string clientSecret,string authority)
+        {
+            _cloudApiServices.Initialize(tenantId, clientID, clientSecret,authority);
         }
 
         public int OnBoardClientPlatform(AddClientPlatformViewModel platform)

@@ -23,10 +23,7 @@ namespace CERA.DataOperation
             _dbContext = dbContext;
             _converter = converter;
         }
-        public object AddResourceData(object data)
-        {
-            return new object();
-        }
+       
 
         public object AddServicePlanData(object data)
         {
@@ -42,6 +39,43 @@ namespace CERA.DataOperation
         {
             return new object();
         }
+        public int AddResourcesData(List<CeraResources> resources)
+        {
+            try
+            {
+                _logger.LogInfo("Receive Data");
+                foreach (var Resource in resources)
+                {
+                    if (_dbContext.Resources.Where(x => x.Name == Resource.Name).Count() > 0)
+                       _dbContext.Resources.Remove(Resource);
+                    _dbContext.Resources.Add(Resource);
+                }
+                int record = _dbContext.SaveChanges();
+                _logger.LogInfo("Data Imported Successfully");
+                return record;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return 0;
+            }
+        }
+        public List<CeraResources> GetResources()
+        {
+            try
+            {
+                var Resources = _dbContext.Resources.ToList();
+                _logger.LogInfo("Data retrieved for Resources List from Database");
+                return Resources;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return null;
+            }
+        }
+
+
 
         public int AddSubscriptionData(List<CeraSubscription> subscriptions)
         {
@@ -82,16 +116,47 @@ namespace CERA.DataOperation
             }
         }
 
+       
+
+        public int AddVMData( List<CeraVM> ceraVMs)
+        {
+            try
+            {
+                _logger.LogInfo("Receive Data");
+                foreach (var vm in ceraVMs)
+                {
+                    if (_dbContext.ceraVMs.Where(x => x.VMName == vm.VMName).Count() > 0)
+                        _dbContext.ceraVMs.Remove(vm);
+                    _dbContext.ceraVMs.Add(vm);
+                }
+                int record = _dbContext.SaveChanges();
+                _logger.LogInfo("Data Imported Successfully");
+                return record;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return 0;
+            }
+        }
+        public List<CeraVM> GetVM()
+        {
+            try
+            {
+                var Vm = _dbContext.ceraVMs.ToList();
+                _logger.LogInfo("Data retrieved for Virtual Machines List from Database");
+                return Vm;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return null;
+            }
+        }
         public object AddTenantData(object data)
         {
             return new object();
         }
-
-        public object AddVMData(object data)
-        {
-            return new object();
-        }
-
         public object AddWebAppData(object data)
         {
             return new object();

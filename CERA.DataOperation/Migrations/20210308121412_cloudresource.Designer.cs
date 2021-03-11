@@ -4,14 +4,16 @@ using CERA.DataOperation.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CERA.DataOperation.Migrations
 {
     [DbContext(typeof(CeraDbContext))]
-    partial class CeraDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210308121412_cloudresource")]
+    partial class cloudresource
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,27 +59,6 @@ namespace CERA.DataOperation.Migrations
                     b.HasKey("SubscriptionId");
 
                     b.ToTable("tbl_Subscription");
-                });
-
-            modelBuilder.Entity("CERA.Entities.Models.CeraVM", b =>
-                {
-                    b.Property<int>("VMId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("RegionName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ResourceGroupName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VMName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("VMId");
-
-                    b.ToTable("tbl_VirtualMachines");
                 });
 
             modelBuilder.Entity("CERA.Entities.Models.Client", b =>

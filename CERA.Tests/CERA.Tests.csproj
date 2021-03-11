@@ -18,6 +18,7 @@
     <ProjectReference Include="..\CERA.AWS.CloudServices\CERA.AWS.CloudService.csproj" />
     <ProjectReference Include="..\CERA.Azure.CloudService\CERA.Azure.CloudService.csproj" />
     <ProjectReference Include="..\CERA.CloudService\CERA.CloudService.csproj" />
+    <ProjectReference Include="..\CERA.Platform\CERA.Platform.csproj" />
   </ItemGroup>
 
 </Project>

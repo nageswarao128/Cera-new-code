@@ -23,9 +23,9 @@ namespace CERA.AWS.CloudService
             return new object();
         }
 
-        public object GetCloudResourceList()
+        public List<CeraResources> GetCloudResourceList(RequestInfoViewModel requestInfo)
         {
-            return new object();
+            return new List<CeraResources>();
         }
 
         public object GetCloudSqlDbList()
@@ -53,7 +53,7 @@ namespace CERA.AWS.CloudService
             return new object();
         }
 
-        public List<CeraVM> GetCloudVMList()
+        public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo)
         {
             return new List<CeraVM>();
         }
@@ -66,8 +66,16 @@ namespace CERA.AWS.CloudService
         {
             return new List<CeraSubscription>();
         }
+        public List<CeraResources> GetResourcesList()
+        {
+            return new List<CeraResources>();
+        }
+        public List<CeraVM> GetVMList()
+        {
+            return new List<CeraVM>();
+        }
 
-        public void Initialize(string tenantId, string clientID, string clientSecret)
+        public void Initialize(string tenantId, string clientID, string clientSecret,string authority)
         {
             throw new NotImplementedException();
         }
