@@ -13,10 +13,10 @@ namespace CERA.Azure.CloudService
 {
     public class CeraAzureAuthenticator : ICeraAuthenticator
     {
-        public string Authority { get; private set; } /*= "https://login.microsoftonline.com/{0}/v2.0";*/
-        public string TenantId { get; set; } /*= "73d3d213-f87a-4465-9a7e-67bd625fdf9c";*/
-        public string ClientID { get; set; } /*= "218411ec-50a7-4c7e-b671-e3434f3775d3";*/
-        public string ClientSecret { get; set; } /*= "HX.pn3IxFE.vH1b~xY8u3Sw078LywJO_iU";*/
+        public string Authority { get; private set; } 
+        public string TenantId { get; set; } 
+        public string ClientID { get; set; } 
+        public string ClientSecret { get; set; } 
         public object Certificate { get; set; }
         public string AuthToken { get; private set; }
         public string RedirectUri { get; set; }
@@ -44,7 +44,7 @@ namespace CERA.Azure.CloudService
             _logger.LogInfo("Initialization Complete for Auth Client");
         }
 
-        public void Initialize(string tenantId /*= "73d3d213-f87a-4465-9a7e-67bd625fdf9c"*/, string clientID /*= "218411ec-50a7-4c7e-b671-e3434f3775d3"*/, string clientSecret /*= "HX.pn3IxFE.vH1b~xY8u3Sw078LywJO_iU"*/,string authority)
+        public void Initialize(string tenantId, string clientID , string clientSecret ,string authority)
         {
             //TODO: get client id , tenet id and client secret from DB
             InitializeVariables(tenantId, clientID, clientSecret,authority);
