@@ -28,6 +28,11 @@ namespace CERAAPI.Controllers
             _configuration = configuration;
             _db = db;
         }
+        /// <summary>
+        /// This method will registers the user
+        /// </summary>
+        /// <param name="registerUser"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel registerUser)
         {
@@ -48,7 +53,11 @@ namespace CERAAPI.Controllers
             }
             return Ok(new ResponseViewModel { Status = "Success", Message = "User registered Successfully" });
         }
-
+        /// <summary>
+        /// This method will authenticates the user and issues a JWT token to the user
+        /// </summary>
+        /// <param name="loginModel"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginViewModel loginModel)
         {

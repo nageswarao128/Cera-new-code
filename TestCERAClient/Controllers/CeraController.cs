@@ -19,7 +19,11 @@ namespace TestCERAClient.Controllers
             _logger = logger;
             _ceraCloud = ceraCloud;
         }
-
+        /// <summary>
+        ///Based on the cloud this method will retrives subscription details from the cloud
+        /// </summary>
+        /// <param name="ClientName"></param>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<CeraSubscription> GetCloudSubscriptions(string ClientName = "Quadrant")
         {
@@ -27,6 +31,10 @@ namespace TestCERAClient.Controllers
             _ceraCloud.ClientName = ClientName;
             return _ceraCloud.GetCloudSubscriptionList(requestInfo);
         }
+        /// <summary>
+        /// This method will retrives the subscription data from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<CeraSubscription> GetDBSubscriptions()
         {

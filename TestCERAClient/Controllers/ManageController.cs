@@ -22,7 +22,11 @@ namespace CERAAPI.Controllers
             _db = db;
             _platform = platform;
         }
-
+        /// <summary>
+        /// This method will inserts the organisation details into database 
+        /// </summary>
+        /// <param name="Org"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult RegisterOrganisation([FromBody] AddOrganizationViewModel Org)
         {
@@ -32,6 +36,11 @@ namespace CERAAPI.Controllers
             }
             return Ok(new ResponseViewModel { Status = "Success", Message = "Data inserted into DB" });
         }
+        /// <summary>
+        /// This method will inserts the cloud details for the orgnisation into database
+        /// </summary>
+        /// <param name="platform"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult ManagePlatform([FromBody] AddClientPlatformViewModel platform)
         {
@@ -50,6 +59,11 @@ namespace CERAAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new ResponseViewModel { Status = "Error", Message = ex.Message });
             }
         }
+        /// <summary>
+        /// This method will inserts the dll details for the cloud 
+        /// </summary>
+        /// <param name="plugin"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult ManagePlugin(AddCloudPluginViewModel plugin)
         {
