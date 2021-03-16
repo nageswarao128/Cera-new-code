@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CERA.Entities.Models
 {
+    /// <summary>
+    /// This class is used as a object for subscriptions
+    /// </summary>
     [Table("tbl_Subscription")]
     public class CeraSubscription
     {

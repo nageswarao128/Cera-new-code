@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CERA.Entities.Models
 {
+    /// <summary>
+    /// This class is used as a object for cloud plugin details
+    /// </summary>
     [Table("tbl_CloudPlugIns")]
     public class CloudPlugIn : BaseEntity
     {

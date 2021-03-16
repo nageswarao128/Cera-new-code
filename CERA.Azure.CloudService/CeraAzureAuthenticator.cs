@@ -1,4 +1,5 @@
-﻿using CERA.Logging;
+﻿using CERA.CloudService;
+using CERA.Logging;
 using Microsoft.Azure.Management.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent.Authentication;
@@ -8,14 +9,14 @@ using Microsoft.Rest;
 using System;
 using static Microsoft.Azure.Management.Fluent.Azure;
 
-namespace CERA.AuthenticationService
+namespace CERA.Azure.CloudService
 {
     public class CeraAzureAuthenticator : ICeraAuthenticator
     {
-        public string Authority { get; private set; }
-        public string TenantId { get; set; }
-        public string ClientID { get; set; }
-        public string ClientSecret { get; set; }
+        public string Authority { get; private set; } 
+        public string TenantId { get; set; } 
+        public string ClientID { get; set; } 
+        public string ClientSecret { get; set; } 
         public object Certificate { get; set; }
         public string AuthToken { get; private set; }
         public string RedirectUri { get; set; }
@@ -33,7 +34,9 @@ namespace CERA.AuthenticationService
             InitializeVariables(TenantId, ClientID, ClientSecret,Authority);
             Initialize();
         }
-
+        /// <summary>
+        /// This method will intialize the client authentication
+        /// </summary>
         void Initialize()
         {
             _logger.LogInfo("Initializing Auth Client");
@@ -41,12 +44,19 @@ namespace CERA.AuthenticationService
             _logger.LogInfo("Initialization Complete for Auth Client");
         }
 
-        public void Initialize(string tenantId , string clientID, string clientSecret,string authority)
+        public void Initialize(string tenantId, string clientID , string clientSecret ,string authority)
         {
-            
+            //TODO: get client id , tenet id and client secret from DB
             InitializeVariables(tenantId, clientID, clientSecret,authority);
             Initialize();
         }
+        /// <summary>
+        /// This method will intializes the variables for the client authentication
+        /// </summary>
+        /// <param name="tenantId"></param>
+        /// <param name="clientID"></param>
+        /// <param name="clientSecret"></param>
+        /// <param name="authority"></param>
         void InitializeVariables(string tenantId, string clientID, string clientSecret,string authority)
         {
             _logger.LogInfo("Initializing Variable for Auth Client");
@@ -81,7 +91,10 @@ namespace CERA.AuthenticationService
                 //EventLog.WriteEntry("CeraAuthenticator", ex.Message, EventLogEntryType.Error);
             }
         }
-
+        /// <summary>
+        /// This method will authenticate the user and gets the access token from the cloud
+        /// </summary>
+        /// <returns>returns the access token from Azure</returns>
         public string GetAuthToken()
         {
             var scopes = new[] { "https://management.core.windows.net//.default" };
@@ -130,13 +143,19 @@ namespace CERA.AuthenticationService
         public IAuthenticated GetAuthenticatedClient()
         {
             var restClient = CreateRestClient();
-            var azure = Azure.Authenticate(restClient, TenantId);
+            var azure = Microsoft.Azure.Management.Fluent.Azure.Authenticate(restClient, TenantId);
+            //var azure = Azure.Authenticate(restClient, TenantId);
             return azure;
         }
+        /// <summary>
+        /// This method will comunicate the cloud and retrives the client details
+        /// </summary>
+        /// <returns>returns the client details</returns>
         public IAuthenticated GetAuthenticatedClientUsingAzureCredential()
         {
             var azureCredentials = GetAzureCredentials();
-            var azure = Azure.Authenticate(azureCredentials);
+            var azure = Microsoft.Azure.Management.Fluent.Azure.Authenticate(azureCredentials);
+            //var azure = Azure.Authenticate(azureCredentials);
             return azure;
         }
     }

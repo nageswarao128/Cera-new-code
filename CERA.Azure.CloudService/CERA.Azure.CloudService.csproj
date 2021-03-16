@@ -10,22 +10,21 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\CERA.CloudService\CERA.CloudService.csproj" />
-		<ProjectReference Include="..\CERA.DataOperation\CERA.DataOperation.csproj" />
 		<ProjectReference Include="..\CERA.Logging\CERA.Logging.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="azureauth.Designer.cs">
+	  <Compile Update="AzureAuth.Designer.cs">
 	    <DesignTimeSharedInput>True</DesignTimeSharedInput>
 	    <AutoGen>True</AutoGen>
-	    <DependentUpon>azureauth.settings</DependentUpon>
+	    <DependentUpon>AzureAuth.settings</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="azureauth.settings">
+	  <None Update="AzureAuth.settings">
 	    <Generator>SettingsSingleFileGenerator</Generator>
-	    <LastGenOutput>azureauth.Designer.cs</LastGenOutput>
+	    <LastGenOutput>AzureAuth.Designer.cs</LastGenOutput>
 	  </None>
 	</ItemGroup>
 
