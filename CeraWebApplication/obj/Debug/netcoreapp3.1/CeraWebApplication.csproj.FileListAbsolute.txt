@@ -22,6 +22,11 @@ C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CER
 C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CERA)\CeraWebApplication\obj\Debug\netcoreapp3.1\CeraWebApplication.TagHelpers.input.cache
 C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CERA)\CeraWebApplication\obj\Debug\netcoreapp3.1\CeraWebApplication.TagHelpers.output.cache
 C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CERA)\CeraWebApplication\obj\Debug\netcoreapp3.1\CeraWebApplication.RazorCoreGenerate.cache
+C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CERA)\CeraWebApplication\obj\Debug\netcoreapp3.1\Razor\Views\Cera\GetCloudSubscriptionDetails.cshtml.g.cs
+C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CERA)\CeraWebApplication\obj\Debug\netcoreapp3.1\Razor\Views\Cera\GetCloudVMDetails.cshtml.g.cs
+C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CERA)\CeraWebApplication\obj\Debug\netcoreapp3.1\Razor\Views\Cera\GetResourceDetails.cshtml.g.cs
+C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CERA)\CeraWebApplication\obj\Debug\netcoreapp3.1\Razor\Views\Cera\GetResourceGroupDetails.cshtml.g.cs
+C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CERA)\CeraWebApplication\obj\Debug\netcoreapp3.1\Razor\Views\Cera\GetStorageAccountsDetails.cshtml.g.cs
 C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CERA)\CeraWebApplication\obj\Debug\netcoreapp3.1\Razor\Views\Cera\GetSubscriptionDetails.cshtml.g.cs
 C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CERA)\CeraWebApplication\obj\Debug\netcoreapp3.1\Razor\Views\Cera\LandingPage.cshtml.g.cs
 C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CERA)\CeraWebApplication\obj\Debug\netcoreapp3.1\Razor\Views\Cera\Privacy.cshtml.g.cs
@@ -37,8 +42,3 @@ C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CER
 C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CERA)\CeraWebApplication\obj\Debug\netcoreapp3.1\CeraWebApplication.dll
 C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CERA)\CeraWebApplication\obj\Debug\netcoreapp3.1\CeraWebApplication.pdb
 C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CERA)\CeraWebApplication\obj\Debug\netcoreapp3.1\CeraWebApplication.genruntimeconfig.cache
-C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CERA)\CeraWebApplication\obj\Debug\netcoreapp3.1\Razor\Views\Cera\GetCloudSubscriptionDetails.cshtml.g.cs
-C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CERA)\CeraWebApplication\obj\Debug\netcoreapp3.1\Razor\Views\Cera\GetResourceGroupDetails.cshtml.g.cs
-C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CERA)\CeraWebApplication\obj\Debug\netcoreapp3.1\Razor\Views\Cera\GetStorageAccountsDetails.cshtml.g.cs
-C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CERA)\CeraWebApplication\obj\Debug\netcoreapp3.1\Razor\Views\Cera\GetCloudVMDetails.cshtml.g.cs
-C:\Users\Bindhu Kottamasu\source\repos\Cloud Enablement And Risk Assessment (CERA)\CeraWebApplication\obj\Debug\netcoreapp3.1\Razor\Views\Cera\GetResourceDetails.cshtml.g.cs

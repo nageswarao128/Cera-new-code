@@ -1,6 +1,5 @@
 ﻿using CERA.AuthenticationService;
 using CERA.CloudService;
-using CERA.DataOperation;
 using CERA.Entities;
 using CERA.Entities.Models;
 using CERA.Entities.ViewModels;
@@ -8,6 +7,7 @@ using CERA.Logging;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using ICeraAuthenticator = CERA.CloudService.ICeraAuthenticator;
 
 namespace CERA.Azure.CloudService
 {
