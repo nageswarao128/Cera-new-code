@@ -12,7 +12,15 @@ namespace CERA.CloudService
         public object GetCloudTenantList();
         public List<CeraSubscription> GetCloudSubscriptionList(RequestInfoViewModel requestInfo);
         public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo);
+        public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo,List<CeraSubscription> subscriptions);
         public List<CeraResources> GetCloudResourceList(RequestInfoViewModel requestInfo);
+        public List<CeraResources> GetCloudResourceList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions);
+
+        public List<CeraResourceGroups> GetCloudResourceGroups(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions);
+        public List<CeraResourceGroups> GetCloudResourceGroups(RequestInfoViewModel requestInfo);
+        public List<CeraStorageAccount> GetCloudStorageAccountList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions);
+        public List<CeraStorageAccount> GetCloudStorageAccountList(RequestInfoViewModel requestInfo);
+
         public object GetCloudServicePlanList();
         public object GetCloudWebAppList();
         public object GetCloudSqlServerList();
@@ -21,5 +29,7 @@ namespace CERA.CloudService
         public List<CeraSubscription> GetSubscriptionList();
         public List<CeraResources> GetResourcesList();
         public List<CeraVM> GetVMList();
+        public List<CeraResourceGroups> GetResourceGroupsList();
+        public List<CeraStorageAccount> GetStorageAccountList();
     }
 }

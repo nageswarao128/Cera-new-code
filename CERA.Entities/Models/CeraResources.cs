@@ -6,6 +6,9 @@ using System.Text;
 
 namespace CERA.Entities.Models
 {
+    /// <summary>
+    /// This class is used as a object for Resources
+    /// </summary>
     [Table("tbl_Resources")]
     public class CeraResources
     {   

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "m8Aseh9BrSA0OQImBATE/MhU+9/7gXdYTd5k99t58ixpS6gtospYUTOiAoSC9WzzhmlD9NCX/VaAcwQ8zwkULw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CeraWebApplication\\CeraWebApplication.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Bindhu Kottamasu\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

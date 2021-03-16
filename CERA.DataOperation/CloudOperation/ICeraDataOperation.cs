@@ -8,8 +8,10 @@ namespace CERA.DataOperation
     {
         public object AddTenantData(object data);
         public int AddSubscriptionData(List<CeraSubscription> data);
-        public int AddResourcesData(List<CeraResources> data);   
-        
+        public int AddResourcesData(List<CeraResources> data);
+        public int AddResourceGroupData(List<CeraResourceGroups> data);
+        public int AddStorageAccountData(List<CeraStorageAccount> data);
+
         public object AddWebAppData(object data);
         public object AddServicePlanData(object data);
         public int AddVMData(List<CeraVM> data);
@@ -26,7 +28,8 @@ namespace CERA.DataOperation
         public List<CeraSubscription> GetSubscriptions();
         public List<CeraResources> GetResources();
         public List<CeraVM> GetVM();
+        public List<CeraResourceGroups> GetResourceGroups();
 
-
+        public List<CeraStorageAccount> GetStorageAccount();
     }
 }

@@ -17,7 +17,6 @@ namespace CERA.DataOperation.Data
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer(connectionString: "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=db_Cera; Integrated Security= true;");
             //optionsBuilder.UseSqlServer(_Config.GetConnectionString("")
                     //"Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=db_Cera; Integrated Security= true;"
                     //);
@@ -28,6 +27,8 @@ namespace CERA.DataOperation.Data
         public DbSet<CloudPlugIn> CloudPlugIns { get; set; }
         public DbSet<CeraResources> Resources { get; set; }
         public DbSet<CeraVM> ceraVMs { get; set; }
+        public DbSet<CeraResourceGroups> resourceGroups { get; set; }
+        public DbSet<CeraStorageAccount> StorageAccounts { get; set; }
 
 
     }

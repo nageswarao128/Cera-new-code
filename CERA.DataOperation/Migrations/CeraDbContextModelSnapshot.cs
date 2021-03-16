@@ -19,6 +19,27 @@ namespace CERA.DataOperation.Migrations
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("CERA.Entities.Models.CeraResourceGroups", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("provisioningstate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tbl_ResourceGroups");
+                });
+
             modelBuilder.Entity("CERA.Entities.Models.CeraResources", b =>
                 {
                     b.Property<int?>("ResourceID")
@@ -41,6 +62,27 @@ namespace CERA.DataOperation.Migrations
                     b.HasKey("ResourceID");
 
                     b.ToTable("tbl_Resources");
+                });
+
+            modelBuilder.Entity("CERA.Entities.Models.CeraStorageAccount", b =>
+                {
+                    b.Property<int?>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResourceGroupName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("tbl_StorageAccounts");
                 });
 
             modelBuilder.Entity("CERA.Entities.Models.CeraSubscription", b =>

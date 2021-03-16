@@ -1,0 +1,39 @@
+﻿@model List<CeraWebApplication.Models.CeraVM>
+<h1>AzureVM List</h1>
+@if (Model != null)
+{
+<table class="table table-striped table-hover" style="margin-top:1%">
+    <thead>
+        <tr>
+
+            <th>
+                VMName
+            </th>
+
+            <th>
+                RegionName
+            </th>
+
+            <th>
+                ResourceGroupName
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.VMName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.RegionName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ResourceGroupName)
+    </td>
+</tr>
+}
+    </tbody>
+</table>}
+

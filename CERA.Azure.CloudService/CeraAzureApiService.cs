@@ -18,47 +18,41 @@ namespace CERA.Azure.CloudService
         }
         public List<CeraPlatformConfigViewModel> _platformConfigs { get; set; }
         ICeraAuthenticator authenticator;
-         ICeraDataOperation _dataOps;
-        ICeraCloudApiService _ceraCloudApiService;
       public List<CeraSubscription> _subscription { get; set; }
         public ICeraLogger Logger { get; set; }
         
 
-        public CeraAzureApiService(ICeraLogger logger,ICeraDataOperation dataOps,ICeraCloudApiService ceraCloudApiService)
+        public CeraAzureApiService(ICeraLogger logger)
         {
             Logger = logger;
-            _dataOps = dataOps;
-            _ceraCloudApiService = ceraCloudApiService;
            
         }
-        //void DbSubscriptions()
-        //{
-        //    _subscription = _ceraCloudApiService.GetSubscriptionList();
-        //}
-        
-        public List<CeraResources> GetCloudResourceList(RequestInfoViewModel requestInfo)
+
+
+        /// <summary>
+        /// This method will calls the required authentication and after  authenticating it will 
+        /// get the available Resources List from Azure cloud
+        /// </summary>
+        /// <param name="requestInfo"></param>
+        /// <param name="subscriptions"></param>
+        /// <returns>returns a list of resources from Azure</returns>
+        public List<CeraResources> GetCloudResourceList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
+            
             try
             {
                 Initialize();
                 var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
                 Logger.LogInfo("Auth Client Initialized");
-                
-                var subscriptions1 = _ceraCloudApiService.GetSubscriptionList();
-                var subscriptions= _dataOps.GetSubscriptions();
-
-              // var subscriptions = GetCloudSubscriptionList(requestInfo);
-              //  DbSubscriptions();
                 List<CeraResources> ceraResources = new List<CeraResources>();
                 foreach (var sub in subscriptions)
                 {
                     var azureResources = authClient.WithSubscription(sub.SubscriptionId).GenericResources.ListAsync().Result;
-                    
                     Logger.LogInfo("Got Resources List from a subscription in Azure Cloud Provider");
                     if (azureResources != null)
                     {
                         Logger.LogInfo("Parsing Resources List To CERA Resources");
-                       
+
                         foreach (var resource in azureResources)
                         {
                             ceraResources.Add(new CeraResources
@@ -69,10 +63,10 @@ namespace CERA.Azure.CloudService
                                 ResourceType = resource.ResourceType
                             });
                         }
-                    }                
+                    }
                     Logger.LogInfo("Parsing Completed Resources List To CERA Resources");
-
                     return ceraResources;
+
                 }
                 Logger.LogInfo("No Resources List found");
                 return null;
@@ -82,8 +76,107 @@ namespace CERA.Azure.CloudService
                 Logger.LogException(ex);
                 return null;
             }
-           
         }
+        /// <summary>
+        /// This method will calls the required authentication and after  authenticating it will 
+        /// get the available ResourceGroups List from Azure cloud
+        /// </summary>
+        /// <param name="requestInfo"></param>
+        /// <param name="subscriptions"></param>
+        /// <returns>returns a list of resourceGroups from Azure</returns>
+        public List<CeraResourceGroups> GetCloudResourceGroups(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            try
+            {
+                Initialize();
+                var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
+                Logger.LogInfo("Auth Client Initialized");
+                List<CeraResourceGroups> ceraResourceGroups = new List<CeraResourceGroups>();
+                foreach (var sub in subscriptions)
+                {
+                    var azureResourceGroups = authClient.WithSubscription(sub.SubscriptionId).ResourceGroups.ListAsync().Result;
+                    Logger.LogInfo("Got Resources Groups List from a subscription in Azure Cloud Provider");
+                    if (azureResourceGroups != null)
+                    {
+                        Logger.LogInfo("Parsing ResourceGroups List To CERA Resources");
+
+                        foreach (var resource in azureResourceGroups)
+                        {
+                            ceraResourceGroups.Add(new CeraResourceGroups
+                            {
+                                Name = resource.Name,
+                                RegionName = resource.RegionName,
+                                provisioningstate = resource.ProvisioningState
+                                
+                            });
+                        }
+                    }
+                    Logger.LogInfo("Parsing Completed ResourceGroups List To CERA Resources");
+                    return ceraResourceGroups;
+
+                }
+                Logger.LogInfo("No ResourceGroup List found");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                return null;
+            }
+        }
+        /// <summary>
+        /// This method will calls the required authentication and after  authenticating it will 
+        /// get the available StorageAccount List from Azure cloud
+        /// </summary>
+        /// <param name="requestInfo"></param>
+        /// <param name="subscriptions"></param>
+        /// <returns>returns a list of StorageAccount from Azure</returns>
+        public List<CeraStorageAccount> GetCloudStorageAccountList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            try
+            {
+                Initialize();
+                var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
+                Logger.LogInfo("Auth Client Initialized");
+                List<CeraStorageAccount> ceraStorageAccounts = new List<CeraStorageAccount>();
+                foreach (var sub in subscriptions)
+                {
+                    var azureStorageAccount = authClient.WithSubscription(sub.SubscriptionId).StorageAccounts.ListAsync().Result;
+                    Logger.LogInfo("Got StorageAccount  List from a subscription in Azure Cloud Provider");
+                    if (azureStorageAccount != null)
+                    {
+                        Logger.LogInfo("Parsing ResourceGroups List To CERA Resources");
+
+                        foreach (var storage in azureStorageAccount)
+                        {
+                            ceraStorageAccounts.Add(new CeraStorageAccount
+                            {
+                                Name = storage.Name,
+                                RegionName = storage.RegionName,
+                                ResourceGroupName=storage.ResourceGroupName
+
+                            });
+                        }
+                    }
+                    Logger.LogInfo("Parsing Completed ResourceGroups List To CERA Resources");
+                    return ceraStorageAccounts;
+
+                }
+                Logger.LogInfo("No ResourceGroup List found");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                return null;
+            }
+        }
+        public List<CeraResources> GetCloudResourceList(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+
+        }
+
         public object GetCloudMonthlyBillingList()
         {
             return new object();
@@ -113,7 +206,7 @@ namespace CERA.Azure.CloudService
             authenticator = new CeraAzureAuthenticator(Logger);
             authenticator.Initialize(tenantId, clientId, clientSecret,authority);
         }
-
+        
         public List<CeraSubscription> GetCloudSubscriptionList(RequestInfoViewModel requestInfo)
         {
             try
@@ -161,34 +254,42 @@ namespace CERA.Azure.CloudService
         {
             return new object();
         }
-
-        public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo)
-        {
+        /// <summary>
+        /// This method will calls the required authentication and after  authenticating it will 
+        /// get the available VirtualMachines List from Azure cloud
+        /// </summary>
+        /// <param name="requestInfo"></param>
+        /// <param name="subscriptions"></param>
+        /// <returns>returns a list of Virtual Machines from Azure</returns>
+        public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {            
             try
             {
                 Initialize();
                 var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
                 Logger.LogInfo("Auth Client Initialized");
-                var VM = authClient.WithSubscription("b6700194-6522-4789-b5a1-c222828c1fba").VirtualMachines.ListAsync().Result;
-                Logger.LogInfo("Got Virtual Machines List from Azure Cloud Provider");
-                if (VM != null)
+                foreach (var sub in subscriptions)
                 {
-                    Logger.LogInfo("Parsing Virtual Machines List To CERA Resources");
-                    List<CeraVM> ceraVM = new List<CeraVM>();
-                    foreach (var virtualMachine in VM)
+                    var VM = authClient.WithSubscription(sub.SubscriptionId).VirtualMachines.ListAsync().Result;
+                    Logger.LogInfo("Got Virtual Machines List from Azure Cloud Provider");
+                    if (VM != null)
                     {
-                        ceraVM.Add(new CeraVM
+                        Logger.LogInfo("Parsing Virtual Machines List To CERA Resources");
+                        List<CeraVM> ceraVM = new List<CeraVM>();
+                        foreach (var virtualMachine in VM)
                         {
+                            ceraVM.Add(new CeraVM
+                            {
+                                VMName = virtualMachine.Name,
+                                RegionName = virtualMachine.RegionName,
+                                ResourceGroupName = virtualMachine.ResourceGroupName,
 
-                            VMName = virtualMachine.Name,
-                            RegionName = virtualMachine.RegionName,
-                            ResourceGroupName = virtualMachine.ResourceGroupName,
-                            
-                        });
+                            });
+                        }
+                        Logger.LogInfo("Parsing Completed Resources List To CERA Resources");
+
+                        return ceraVM;
                     }
-                    Logger.LogInfo("Parsing Completed Resources List To CERA Resources");
-
-                    return ceraVM;
                 }
                 Logger.LogInfo("No VM's List found");
                 return null;
@@ -198,6 +299,10 @@ namespace CERA.Azure.CloudService
                 Logger.LogException(ex);
                 return null;
             }
+        }
+        public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
         }
 
         public object GetCloudWebAppList()
@@ -215,6 +320,29 @@ namespace CERA.Azure.CloudService
         public List<CeraVM> GetVMList()
         {
             return new List<CeraVM>();
+        }
+        public List<CeraResourceGroups> GetResourceGroupsList()
+        {
+            return new List<CeraResourceGroups>();
+        }
+
+
+
+        public List<CeraResourceGroups> GetCloudResourceGroups(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+       
+
+        public List<CeraStorageAccount> GetCloudStorageAccountList(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraStorageAccount> GetStorageAccountList()
+        {
+            throw new NotImplementedException();
         }
     }
 }

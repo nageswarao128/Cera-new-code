@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CERA.AWS.CloudServices\CERA.AWS.CloudService.csproj" />
+    <ProjectReference Include="..\CERA.Azure.CloudService\CERA.Azure.CloudService.csproj" />
+    <ProjectReference Include="..\CERA.CloudService\CERA.CloudService.csproj" />
+    <ProjectReference Include="..\CERA.Converter\CERA.Converter.csproj" />
+    <ProjectReference Include="..\CERA.DataOperation\CERA.DataOperation.csproj" />
+    <ProjectReference Include="..\CERA.Entities\CERA.Entities.csproj" />
+    <ProjectReference Include="..\CERA.Logging\CERA.Logging.csproj" />
+    <ProjectReference Include="..\CERA.Platform\CERA.Platform.csproj" />
+  </ItemGroup>
+
+
+</Project>
