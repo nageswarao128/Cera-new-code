@@ -12,7 +12,7 @@ namespace CERA.Azure.CloudService {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.7.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
     internal sealed partial class AzureAuth : global::System.Configuration.ApplicationSettingsBase {
         
         private static AzureAuth defaultInstance = ((AzureAuth)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new AzureAuth())));
@@ -26,12 +26,12 @@ namespace CERA.Azure.CloudService {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("218411ec-50a7-4c7e-b671-e3434f3775d3")]
-        public string clientId {
+        public string ClientId {
             get {
-                return ((string)(this["clientId"]));
+                return ((string)(this["ClientId"]));
             }
             set {
-                this["clientId"] = value;
+                this["ClientId"] = value;
             }
         }
         
@@ -50,12 +50,12 @@ namespace CERA.Azure.CloudService {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("HX.pn3IxFE.vH1b~xY8u3Sw078LywJO_iU")]
-        public string clientSecret {
+        public string Clientsecert {
             get {
-                return ((string)(this["clientSecret"]));
+                return ((string)(this["Clientsecert"]));
             }
             set {
-                this["clientSecret"] = value;
+                this["Clientsecert"] = value;
             }
         }
         

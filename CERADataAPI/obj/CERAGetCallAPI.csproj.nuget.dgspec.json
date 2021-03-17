@@ -1,0 +1,776 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERAGetCallAPI\\CERAGetCallAPI.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj",
+        "projectName": "CERA.AuthenticationService",
+        "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj",
+        "packagesPath": "C:\\Users\\Bindhu Kottamasu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AuthenticationService\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Bindhu Kottamasu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
+            "projectReferences": {
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "dependencies": {
+            "Microsoft.Azure.Management.Fluent": {
+              "target": "Package",
+              "version": "[1.37.0, )"
+            },
+            "Microsoft.Azure.Management.ResourceManager.Fluent": {
+              "target": "Package",
+              "version": "[1.37.0, )"
+            },
+            "Microsoft.Identity.Client": {
+              "target": "Package",
+              "version": "[4.26.0, )"
+            },
+            "Microsoft.Rest.ClientRuntime": {
+              "target": "Package",
+              "version": "[2.3.22, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj",
+        "projectName": "CERA.AWS.CloudService",
+        "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj",
+        "packagesPath": "C:\\Users\\Bindhu Kottamasu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AWS.CloudServices\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Bindhu Kottamasu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
+            "projectReferences": {
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj",
+        "projectName": "CERA.Azure.CloudService",
+        "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj",
+        "packagesPath": "C:\\Users\\Bindhu Kottamasu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Azure.CloudService\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Bindhu Kottamasu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
+            "projectReferences": {
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj"
+              },
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.DataOperation\\CERA.DataOperation.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.DataOperation\\CERA.DataOperation.csproj"
+              },
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "dependencies": {
+            "System.Configuration.ConfigurationManager": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj",
+        "projectName": "CERA.CloudService",
+        "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj",
+        "packagesPath": "C:\\Users\\Bindhu Kottamasu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Bindhu Kottamasu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
+            "projectReferences": {
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj"
+              },
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Entities\\CERA.Entities.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Entities\\CERA.Entities.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Converter\\CERA.Converter.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Converter\\CERA.Converter.csproj",
+        "projectName": "CERA.Converter",
+        "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Converter\\CERA.Converter.csproj",
+        "packagesPath": "C:\\Users\\Bindhu Kottamasu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Converter\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Bindhu Kottamasu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.DataOperation\\CERA.DataOperation.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.DataOperation\\CERA.DataOperation.csproj",
+        "projectName": "CERA.DataOperation",
+        "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.DataOperation\\CERA.DataOperation.csproj",
+        "packagesPath": "C:\\Users\\Bindhu Kottamasu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.DataOperation\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Bindhu Kottamasu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
+            "projectReferences": {
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Converter\\CERA.Converter.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Converter\\CERA.Converter.csproj"
+              },
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Entities\\CERA.Entities.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Entities\\CERA.Entities.csproj"
+              },
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.Relational": {
+              "target": "Package",
+              "version": "[5.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Entities\\CERA.Entities.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Entities\\CERA.Entities.csproj",
+        "projectName": "CERA.Entities",
+        "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Entities\\CERA.Entities.csproj",
+        "packagesPath": "C:\\Users\\Bindhu Kottamasu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Entities\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Bindhu Kottamasu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "dependencies": {
+            "System.ComponentModel.Annotations": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj",
+        "projectName": "CERA.Logging",
+        "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj",
+        "packagesPath": "C:\\Users\\Bindhu Kottamasu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Bindhu Kottamasu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "dependencies": {
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[2.10.0, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[3.4.0, )"
+            },
+            "Serilog.Sinks.ApplicationInsights": {
+              "target": "Package",
+              "version": "[3.1.0, )"
+            },
+            "Serilog.Sinks.MSSqlServer": {
+              "target": "Package",
+              "version": "[5.6.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Platform\\CERA.Platform.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Platform\\CERA.Platform.csproj",
+        "projectName": "CERA.Platform",
+        "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Platform\\CERA.Platform.csproj",
+        "packagesPath": "C:\\Users\\Bindhu Kottamasu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Platform\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Bindhu Kottamasu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
+            "projectReferences": {
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj"
+              },
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj"
+              },
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj"
+              },
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj"
+              },
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.DataOperation\\CERA.DataOperation.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.DataOperation\\CERA.DataOperation.csproj"
+              },
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERAGetCallAPI\\CERAGetCallAPI.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERAGetCallAPI\\CERAGetCallAPI.csproj",
+        "projectName": "CERAGetCallAPI",
+        "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERAGetCallAPI\\CERAGetCallAPI.csproj",
+        "packagesPath": "C:\\Users\\Bindhu Kottamasu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERAGetCallAPI\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Bindhu Kottamasu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj"
+              },
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj"
+              },
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj"
+              },
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Converter\\CERA.Converter.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Converter\\CERA.Converter.csproj"
+              },
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.DataOperation\\CERA.DataOperation.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.DataOperation\\CERA.DataOperation.csproj"
+              },
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Entities\\CERA.Entities.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Entities\\CERA.Entities.csproj"
+              },
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj"
+              },
+              "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Platform\\CERA.Platform.csproj": {
+                "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Platform\\CERA.Platform.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.4, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.1.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

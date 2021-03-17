@@ -25,5 +25,11 @@ namespace CERA.DataOperation.Data
         public DbSet<Client> Clients { get; set; }
         public DbSet<ClientCloudPlugin> ClientCloudPlugins { get; set; }
         public DbSet<CloudPlugIn> CloudPlugIns { get; set; }
+        public DbSet<CeraResources> Resources { get; set; }
+        public DbSet<CeraVM> ceraVMs { get; set; }
+        public DbSet<CeraResourceGroups> resourceGroups { get; set; }
+        public DbSet<CeraStorageAccount> StorageAccounts { get; set; }
+
+
     }
 }
