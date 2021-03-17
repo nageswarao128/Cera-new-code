@@ -199,10 +199,10 @@ namespace CERA.Azure.CloudService
         }
         public void Initialize()
         {
-            string clientId = azureauth.Default.ClientId;
-            string tenantId = azureauth.Default.tenantId;
-            string clientSecret = azureauth.Default.Clientsecert;
-            string authority = azureauth.Default.authority;
+            string clientId = AzureAuth.Default.ClientId;
+            string tenantId = AzureAuth.Default.tenantId;
+            string clientSecret = AzureAuth.Default.Clientsecert;
+            string authority = AzureAuth.Default.authority;
             authenticator = new CeraAzureAuthenticator(Logger);
             authenticator.Initialize(tenantId, clientId, clientSecret,authority);
         }
