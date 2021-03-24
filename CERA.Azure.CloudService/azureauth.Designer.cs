@@ -13,11 +13,11 @@ namespace CERA.Azure.CloudService {
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
-    internal sealed partial class azureauth : global::System.Configuration.ApplicationSettingsBase {
+    internal sealed partial class AzureAuth : global::System.Configuration.ApplicationSettingsBase {
         
-        private static azureauth defaultInstance = ((azureauth)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new azureauth())));
+        private static AzureAuth defaultInstance = ((AzureAuth)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new AzureAuth())));
         
-        public static azureauth Default {
+        public static AzureAuth Default {
             get {
                 return defaultInstance;
             }
