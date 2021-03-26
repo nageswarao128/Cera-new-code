@@ -36,15 +36,17 @@ namespace CERAAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel registerUser)
         {
+            CERAAPIUser user;
             var userExist = await _userManager.FindByNameAsync(registerUser.UserName);
             if (userExist != null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new ResponseViewModel { Status = "Error", Message = "User already Exists" });
             }
-            CERAAPIUser user = new CERAAPIUser()
+             user = new CERAAPIUser()
             {
                 Email = registerUser.EmailID,
-                UserName = registerUser.UserName
+                UserName = registerUser.UserName,
+                OrgName = registerUser.OrgName
             };
             var result = await _userManager.CreateAsync(user, registerUser.Password);
             if (!result.Succeeded)
