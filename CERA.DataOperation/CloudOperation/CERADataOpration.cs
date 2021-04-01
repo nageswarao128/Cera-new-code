@@ -481,7 +481,7 @@ namespace CERA.DataOperation
             try
             {
                 _logger.LogInfo("Receive Data");
-                var ceraDisks= _dbContext.Disks.ToList();
+                var ceraDisks = _dbContext.Disks.ToList();
                 foreach (var item in ceraDisks)
                 {
                     _dbContext.Disks.Remove(item);
@@ -500,6 +500,7 @@ namespace CERA.DataOperation
                 _logger.LogException(ex);
                 return 0;
             }
+        }
         public int AddResourceHealth(List<CeraResourceHealth> resourceHealth)
         {
             try
@@ -608,6 +609,11 @@ namespace CERA.DataOperation
         }
 
         public int AddSqlDbData(List<CeraSqlServer> data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object AddSqlServerData(object data)
         {
             throw new NotImplementedException();
         }
