@@ -230,7 +230,7 @@ namespace CeraWebApplication.Controllers
         /// </summary>
         /// <returns>returns VM in a view</returns>
         [HttpGet]
-        public async Task<IActionResult> GetCloudVMDetails()
+        public async Task<IActionResult> GetVMDetails()
         {
             IEnumerable<CeraVM> CeraVMs = null;
 
@@ -256,7 +256,7 @@ namespace CeraWebApplication.Controllers
         /// </summary>
         /// <returns>returns view page</returns>
         [HttpGet]
-        public async Task<IActionResult> GetVMDetails()
+        public async Task<IActionResult> GetCloudVMDetails()
         {
             using (var httpClient = new HttpClient())
             {
@@ -273,6 +273,247 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+        /// <summary>
+        /// This method will call the API to retrive SqlServer details from db 
+        /// </summary>
+        /// <returns>returns SqlServer in a view</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetSqlServerDetails()
+        {
+            IEnumerable<CeraSqlServer> sqlServers = null;
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:44379/api/CeraData/GetDBSqlServer"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        sqlServers = JsonConvert.DeserializeObject<List<CeraSqlServer>>(apiResponse);
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Home");
+                    }
+                }
+            }
+            return View(sqlServers.ToList());
+        }
+        /// <summary>
+        /// This method will calls the API to sync the SqlServer data from cloud to db
+        /// </summary>
+        /// <returns>returns view page</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetCloudSqlServerDetails()
+        {
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:44389/api/cera/GetCloudSqlServer"))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return View("GetCloudSubscriptionDetails");
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Home");
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// This method will call the API to retrive Tenant details from db 
+        /// </summary>
+        /// <returns>returns Tenant in a view</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetTenantDetails()
+        {
+            IEnumerable<CeraTenants> tenants = null;
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:44379/api/CeraData/GetDBTenants"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        tenants = JsonConvert.DeserializeObject<List<CeraTenants>>(apiResponse);
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Home");
+                    }
+                }
+            }
+            return View(tenants.ToList());
+        }
+        /// <summary>
+        /// This method will calls the API to sync the Tenant data from cloud to db
+        /// </summary>
+        /// <returns>returns view page</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetCloudTenantDetails()
+        {
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:44389/api/cera/GetCloudTenants"))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return View("GetCloudSubscriptionDetails");
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Home");
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// This method will call the API to retrive WebApps details from db 
+        /// </summary>
+        /// <returns>returns WebApps in a view</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetWebAppsDetails()
+        {
+            IEnumerable<CeraWebApps> webApps = null;
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:44379/api/CeraData/GetDBWebApps"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        webApps = JsonConvert.DeserializeObject<List<CeraWebApps>>(apiResponse);
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Home");
+                    }
+                }
+            }
+            return View(webApps.ToList());
+        }
+        /// <summary>
+        /// This method will calls the API to sync the WebApps data from cloud to db
+        /// </summary>
+        /// <returns>returns view page</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetCloudWebAppsDetails()
+        {
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:44389/api/cera/GetCloudWebApps"))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return View("GetCloudSubscriptionDetails");
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Home");
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// This method will call the API to retrive AppServicePlans details from db 
+        /// </summary>
+        /// <returns>returns AppServicePlans in a view</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetAppServicePlansDetails()
+        {
+            IEnumerable<CeraAppServicePlans> appServicePlans = null;
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:44379/api/CeraData/GetDBAppServicePlans"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        appServicePlans = JsonConvert.DeserializeObject<List<CeraAppServicePlans>>(apiResponse);
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Home");
+                    }
+                }
+            }
+            return View(appServicePlans.ToList());
+        }
+        /// <summary>
+        /// This method will calls the API to sync the AppServicePlan data from cloud to db
+        /// </summary>
+        /// <returns>returns view page</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetCloudAppServicePlansDetails()
+        {
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:44389/api/cera/GetCloudAppServicePlans"))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return View("GetCloudSubscriptionDetails");
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Home");
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// This method will call the API to retrive Disks details from db 
+        /// </summary>
+        /// <returns>returns Disks in a view</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetDisksDetails()
+        {
+            IEnumerable<CeraDisks> Disks = null;
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:44379/api/CeraData/GetDBDisks"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        Disks = JsonConvert.DeserializeObject<List<CeraDisks>>(apiResponse);
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Home");
+                    }
+                }
+            }
+            return View(Disks.ToList());
+        }
+        /// <summary>
+        /// This method will calls the API to sync the Disks data from cloud to db
+        /// </summary>
+        /// <returns>returns view page</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetCloudDisksDetails()
+        {
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:44389/api/cera/GetCloudDisks"))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return View("GetCloudSubscriptionDetails");
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Home");
+                    }
+                }
+            }
+        }
+
         public IActionResult Privacy()
         {
             return View();

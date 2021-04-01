@@ -34,11 +34,6 @@ namespace CERA.DataOperation
         {
             return new object();
         }
-
-        public object AddSqlServerData(object data)
-        {
-            return new object();
-        }
         /// <summary>
         /// This method will inserts the resources data into database
         /// </summary>
@@ -188,7 +183,11 @@ namespace CERA.DataOperation
             }
 
         }
-
+        /// <summary>
+        /// This method will inserts the subscriptions data into database
+        /// </summary>
+        /// <param name="subscriptions"></param>
+        /// <returns>returns 1 or 0</returns>
         public int AddSubscriptionData(List<CeraSubscription> subscriptions)
         {
             try
@@ -214,7 +213,10 @@ namespace CERA.DataOperation
                 return 0;
             }
         }
-
+        /// <summary>
+        /// This method will retrives the Subscriptions data from database
+        /// </summary>
+        /// <returns>returns Subscriptions data</returns>
         public List<CeraSubscription> GetSubscriptions()
         {
             try
@@ -222,6 +224,54 @@ namespace CERA.DataOperation
                 var subscriptions = _dbContext.Subscriptions.ToList();
                 _logger.LogInfo("Data retrieved for Subcription List from Database");
                 return subscriptions;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return null;
+            }
+        }
+        /// <summary>
+        /// This method will inserts the SqlServer data into database
+        /// </summary>
+        /// <param name="sqlServer"></param>
+        /// <returns>returns 1 or 0</returns>
+        public int AddSqlServerData(List<CeraSqlServer> sqlServer)
+        {
+            try
+            {
+                _logger.LogInfo("Receive Data");
+                var ceraSqlServers = _dbContext.SqlServers.ToList();
+                foreach (var item in ceraSqlServers)
+                {
+                    _dbContext.SqlServers.Remove(item);
+                }
+                _dbContext.SaveChanges();
+                foreach (var sqlservers in sqlServer)
+                {
+                    _dbContext.SqlServers.Add(sqlservers);
+                }
+                int record = _dbContext.SaveChanges();
+                _logger.LogInfo("Data Imported Successfully");
+                return record;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return 0;
+            }
+        }
+        /// <summary>
+        /// This method will retrives the SqlServer data from database
+        /// </summary>
+        /// <returns>returns SqlServer data</returns>
+        public List<CeraSqlServer> GetSqlServers()
+        {
+            try
+            {
+                var sqlServers = _dbContext.SqlServers.ToList();
+                _logger.LogInfo("Data retrieved for SqlServers List from Database");
+                return sqlServers;
             }
             catch (Exception ex)
             {
@@ -277,6 +327,179 @@ namespace CERA.DataOperation
                 return null;
             }
         }
+        /// <summary>
+        /// This method will inserts the Tenant data into database
+        /// </summary>
+        /// <param name="tenants"></param>
+        /// <returns>returns 1 or 0</returns>
+        public int AddTenantData(List<CeraTenants> tenants)
+        {
+            try
+            {
+                _logger.LogInfo("Receive Data");
+                var Tenant = _dbContext.CeraTenants.ToList();
+                foreach (var item in Tenant)
+                {
+                    _dbContext.CeraTenants.Remove(item);
+                }
+                _dbContext.SaveChanges();
+                foreach (var Tenants in tenants)
+                {
+                    _dbContext.CeraTenants.Add(Tenants);
+                }
+                int record = _dbContext.SaveChanges();
+                _logger.LogInfo("Data Imported Successfully");
+                return record;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return 0;
+            }
+        }
+        /// <summary>
+        /// This method will retrives the Tenants data from database
+        /// </summary>
+        /// <returns>returns Tenant data</returns>
+        public List<CeraTenants> GetTenants()
+        {
+            try
+            {
+                var tenants = _dbContext.CeraTenants.ToList();
+                _logger.LogInfo("Data retrieved for Tenants List from Database");
+                return tenants;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return null;
+            }
+        }
+        /// <summary>
+        /// This method will inserts the WebApp data into database
+        /// </summary>
+        /// <param name="webApps"></param>
+        /// <returns>returns 1 or 0</returns>
+        public int AddWebAppData(List<CeraWebApps> webApps)
+        {
+            try
+            {
+                _logger.LogInfo("Receive Data");
+                var ceraWebApps = _dbContext.CeraWebApps.ToList();
+                foreach (var item in ceraWebApps)
+                {
+                    _dbContext.CeraWebApps.Remove(item);
+                }
+                _dbContext.SaveChanges();
+                foreach (var Webapps in webApps)
+                {
+                    _dbContext.CeraWebApps.Add(Webapps);
+                }
+                int record = _dbContext.SaveChanges();
+                _logger.LogInfo("Data Imported Successfully");
+                return record;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return 0;
+            }
+        }
+        /// <summary>
+        /// This method will retrives the WebApps data from database
+        /// </summary>
+        /// <returns>returns WebApps data</returns>
+        public List<CeraWebApps> GetWebApps()
+        {
+            try
+            {
+                var webApps = _dbContext.CeraWebApps.ToList();
+                _logger.LogInfo("Data retrieved for WebApps List from Database");
+                return webApps;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return null;
+            }
+        }
+        /// <summary>
+        /// This method will inserts the AppServicePlans data into database
+        /// </summary>
+        /// <param name="ceraAppServices"></param>
+        /// <returns>returns 1 or 0</returns>
+        public int AddAppServicePlans(List<CeraAppServicePlans> ceraAppServices)
+        {
+            try
+            {
+                _logger.LogInfo("Receive Data");
+                var ceraappservice = _dbContext.AppServicePlans.ToList();
+                foreach (var item in ceraappservice)
+                {
+                    _dbContext.AppServicePlans.Remove(item);
+                }
+                _dbContext.SaveChanges();
+                foreach (var ceraAppService in ceraAppServices)
+                {
+                    _dbContext.AppServicePlans.Add(ceraAppService);
+                }
+                int record = _dbContext.SaveChanges();
+                _logger.LogInfo("Data Imported Successfully");
+                return record;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return 0;
+            }
+        }
+        /// <summary>
+        /// This method will retrives the AppServicePlans data from database
+        /// </summary>
+        /// <returns>returns AppServicePlans data</returns>
+        public List<CeraAppServicePlans> GetAppServicePlans()
+        {
+            try
+            {
+                var appServicePlans = _dbContext.AppServicePlans.ToList();
+                _logger.LogInfo("Data retrieved for AppServicePlans List from Database");
+                return appServicePlans;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return null;
+            }
+        }
+        /// <summary>
+        /// This method will inserts the Disks data into database
+        /// </summary>
+        /// <param name="Disks"></param>
+        /// <returns>returns 1 or 0</returns>
+        public int AddDisksData(List<CeraDisks> Disks)
+        {
+            try
+            {
+                _logger.LogInfo("Receive Data");
+                var ceraDisks= _dbContext.Disks.ToList();
+                foreach (var item in ceraDisks)
+                {
+                    _dbContext.Disks.Remove(item);
+                }
+                _dbContext.SaveChanges();
+                foreach (var disks in Disks)
+                {
+                    _dbContext.Disks.Add(disks);
+                }
+                int record = _dbContext.SaveChanges();
+                _logger.LogInfo("Data Imported Successfully");
+                return record;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return 0;
+            }
         public int AddResourceHealth(List<CeraResourceHealth> resourceHealth)
         {
             try
@@ -325,7 +548,25 @@ namespace CERA.DataOperation
         {
             return new object();
         }
+        /// <summary>
+        /// This method will retrives the Disks data from database
+        /// </summary>
+        /// <returns>returns Disks data</returns>
 
+        public List<CeraDisks> GetDisks()
+        {
+            try
+            {
+                var Disks = _dbContext.Disks.ToList();
+                _logger.LogInfo("Data retrieved for Disks List from Database");
+                return Disks;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return null;
+            }
+        }
         public object UpdateResourceData(object data)
         {
             return new object();
@@ -366,6 +607,9 @@ namespace CERA.DataOperation
             return new object();
         }
 
-       
+        public int AddSqlDbData(List<CeraSqlServer> data)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

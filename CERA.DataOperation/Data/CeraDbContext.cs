@@ -29,6 +29,12 @@ namespace CERA.DataOperation.Data
         public DbSet<CeraVM> ceraVMs { get; set; }
         public DbSet<CeraResourceGroups> resourceGroups { get; set; }
         public DbSet<CeraStorageAccount> StorageAccounts { get; set; }
+        public DbSet<CeraSqlServer> SqlServers { get; set; }
+        public DbSet<CeraTenants> CeraTenants { get; set; }
+        public DbSet<CeraWebApps> CeraWebApps { get; set; }
+
+        public DbSet<CeraAppServicePlans> AppServicePlans { get; set; }
+        public DbSet<CeraDisks> Disks { get; set; }
 
         public DbSet<CeraResourceHealth> ResourceHealth { get; set; }
 

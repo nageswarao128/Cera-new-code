@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace CERAGetCallAPI.Controllers
 {
-    [Route("api/[controller]/[action]")]
+   
     [ApiController]
-    
+    [Route("api/[controller]/[action]")]
     public class CERADataController : ControllerBase
     {
         private readonly ILogger<CERADataController> _logger;
@@ -24,6 +24,10 @@ namespace CERAGetCallAPI.Controllers
             _ceraCloud = ceraCloud;
 
         }
+        /// <summary>
+        /// This method will retrives the Subscription data from the database
+        /// </summary>
+        /// <returns>returns Subscription data from database</returns>
         [HttpGet]
         [Authorize]
         public IEnumerable<CeraSubscription> GetDBSubscriptions()
@@ -65,6 +69,51 @@ namespace CERAGetCallAPI.Controllers
         public IEnumerable<CeraStorageAccount> GetDBStorageAccount()
         {
             return _ceraCloud.GetStorageAccountList();
+        }
+        /// <summary>
+        /// This method will retrives the SqlServer data from the database
+        /// </summary>
+        /// <returns>returns SqlServer data from database</returns>
+        [HttpGet]
+        public IEnumerable<CeraSqlServer> GetDBSqlServer()
+        {
+            return _ceraCloud.GetSqlServersList();
+        }
+        /// <summary>
+        /// This method will retrives the Tenants data from the database
+        /// </summary>
+        /// <returns>returns Tenants data from database</returns>
+        [HttpGet]
+        public IEnumerable<CeraTenants> GetDBTenants()
+        {
+            return _ceraCloud.GetTenantsList();
+        }
+        /// <summary>
+        /// This method will retrives the WebApps data from the database
+        /// </summary>
+        /// <returns>returns WebApps data from database</returns>
+        [HttpGet]
+        public IEnumerable<CeraWebApps> GetDBWebApps()
+        {
+            return _ceraCloud.GetWebAppsList();
+        }
+        /// <summary>
+        /// This method will retrives the AppServicePlans data from the database
+        /// </summary>
+        /// <returns>returns AppServicePlans data from database</returns>
+        [HttpGet]
+        public IEnumerable<CeraAppServicePlans> GetDBAppServicePlans()
+        {
+            return _ceraCloud.GetAppServicePlansList();
+        }
+        /// <summary>
+        /// This method will retrives the Disks data from the database
+        /// </summary>
+        /// <returns>returns Disks data from database</returns>
+        [HttpGet]
+        public IEnumerable<CeraDisks> GetDBDisks()
+        {
+            return _ceraCloud.GetDisksList();
         }
     }
 }

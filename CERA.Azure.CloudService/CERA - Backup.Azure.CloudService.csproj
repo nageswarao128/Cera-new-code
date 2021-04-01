@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CERA.CloudService\CERA.CloudService.csproj" />
+		<ProjectReference Include="..\CERA.Logging\CERA.Logging.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="AzureAuth.Designer.cs">
+	    <DesignTimeSharedInput>True</DesignTimeSharedInput>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>AzureAuth.settings</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="AzureAuth.settings">
+	    <Generator>SettingsSingleFileGenerator</Generator>
+	    <LastGenOutput>AzureAuth.Designer.cs</LastGenOutput>
+	  </None>
+	</ItemGroup>
+
+</Project>

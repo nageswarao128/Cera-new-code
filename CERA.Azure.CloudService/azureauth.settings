@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CERA.Azure.CloudService" GeneratedClassName="azureauth">
+  <Profiles />
+  <Settings>
+    <Setting Name="ClientId" Type="System.String" Scope="User">
+      <Value Profile="(Default)">218411ec-50a7-4c7e-b671-e3434f3775d3</Value>
+    </Setting>
+    <Setting Name="tenantId" Type="System.String" Scope="User">
+      <Value Profile="(Default)">73d3d213-f87a-4465-9a7e-67bd625fdf9c</Value>
+    </Setting>
+    <Setting Name="Clientsecert" Type="System.String" Scope="User">
+      <Value Profile="(Default)">HX.pn3IxFE.vH1b~xY8u3Sw078LywJO_iU</Value>
+    </Setting>
+    <Setting Name="authority" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://login.microsoftonline.com/{0}/v2.0</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

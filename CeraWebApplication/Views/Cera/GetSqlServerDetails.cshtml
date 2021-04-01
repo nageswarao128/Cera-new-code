@@ -1,0 +1,40 @@
+﻿@model List<CeraWebApplication.Models.CeraSqlServer>
+<h1>SqlServer List</h1>
+@if (Model != null)
+{
+<table class="table table-striped table-hover" style="margin-top:1%">
+    <thead>
+        <tr>
+
+            <th>
+                Name
+            </th>
+
+            <th>
+                RegionName
+            </th>
+
+
+            <th>
+                ResourceGroupName
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.RegionName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ResourceGroupName)
+    </td>
+</tr>
+}
+    </tbody>
+</table>}
+

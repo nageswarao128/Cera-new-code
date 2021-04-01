@@ -49,9 +49,9 @@ namespace CERA.AWS.CloudService
             return new object();
         }
 
-        public object GetCloudTenantList()
+        public List<CeraTenants> GetCloudTenantList(RequestInfoViewModel requestInfo)
         {
-            return new object();
+            return new List<CeraTenants>();
         }
 
         public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo)
@@ -59,9 +59,9 @@ namespace CERA.AWS.CloudService
             return new List<CeraVM>();
         }
 
-        public object GetCloudWebAppList()
+        public List<CeraWebApps> GetCloudWebAppList(RequestInfoViewModel requestInfo)
         {
-            return new object();
+            return new List<CeraWebApps>();
         }
         public List<CeraSubscription> GetSubscriptionList()
         {
@@ -116,6 +116,66 @@ namespace CERA.AWS.CloudService
         }
 
         public List<CeraStorageAccount> GetStorageAccountList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraSqlServer> GetCloudSqlServersList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraSqlServer> GetCloudSqlServersList(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraSqlServer> GetSqlServersList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraTenants> GetTenantsList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraWebApps> GetCloudWebAppList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraWebApps> GetWebAppsList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraAppServicePlans> GetCloudAppServicePlansList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraAppServicePlans> GetCloudAppServicePlansList(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraAppServicePlans> GetAppServicePlansList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraDisks> GetCloudDisksList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraDisks> GetCloudDisksList(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraDisks> GetDisksList()
         {
             throw new NotImplementedException();
         }
