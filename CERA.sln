@@ -52,7 +52,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CERASyncAPI", "TestCERAClie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CERADataAPI", "CERADataAPI\CERADataAPI.csproj", "{BACF39CD-3320-4CCE-B368-FC5F7136730B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CeraWebApplication", "CeraWebApplication\CeraWebApplication.csproj", "{054DC178-95D9-4AAA-8DBE-1C4CC521DBFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CeraWebApplication", "CeraWebApplication\CeraWebApplication.csproj", "{054DC178-95D9-4AAA-8DBE-1C4CC521DBFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

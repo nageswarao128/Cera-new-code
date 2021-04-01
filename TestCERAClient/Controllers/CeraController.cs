@@ -19,6 +19,11 @@ namespace TestCERAClient.Controllers
             _logger = logger;
             _ceraCloud = ceraCloud;
         }
+        /// <summary>
+        /// Based on the cloud this method will retrives Subscription details from the cloud
+        /// </summary>
+        /// <param name="ClientName"></param>
+        /// <returns>returns the list of Subscription data from cloud</returns>
 
         [HttpGet]
         public IEnumerable<CeraSubscription> GetCloudSubscriptions(string ClientName = "Quadrant")
@@ -75,5 +80,66 @@ namespace TestCERAClient.Controllers
             _ceraCloud.ClientName = ClientName;
             return _ceraCloud.GetCloudStorageAccountList(requestInfo);
         }
+        /// <summary>
+        /// Based on the cloud this method will retrives SqlServer details from the cloud
+        /// </summary>
+        /// <param name="ClientName"></param>
+        /// <returns>returns the list of SqlServer data from cloud</returns>
+        [HttpGet]
+        public IEnumerable<CeraSqlServer> GetCloudSqlServer(string ClientName = "Quadrant")
+        {
+            RequestInfoViewModel requestInfo = new RequestInfoViewModel();
+            _ceraCloud.ClientName = ClientName;
+            return _ceraCloud.GetCloudSqlServersList(requestInfo);
+        }
+        /// <summary>
+        /// Based on the cloud this method will retrives Tenants details from the cloud
+        /// </summary>
+        /// <param name="ClientName"></param>
+        /// <returns>returns the list of Tenants data from cloud</returns>
+        [HttpGet]
+        public IEnumerable<CeraTenants> GetCloudTenants(string ClientName = "Quadrant")
+        {
+            RequestInfoViewModel requestInfo = new RequestInfoViewModel();
+            _ceraCloud.ClientName = ClientName;
+            return _ceraCloud.GetCloudTenantList(requestInfo);
+        }
+        /// <summary>
+        /// Based on the cloud this method will retrives WebApps details from the cloud
+        /// </summary>
+        /// <param name="ClientName"></param>
+        /// <returns>returns the list of WebApps data from cloud</returns>
+        [HttpGet]
+        public IEnumerable<CeraWebApps> GetCloudWebApps(string ClientName = "Quadrant")
+        {
+            RequestInfoViewModel requestInfo = new RequestInfoViewModel();
+            _ceraCloud.ClientName = ClientName;
+            return _ceraCloud.GetCloudWebAppList(requestInfo);
+        }
+        /// <summary>
+        /// Based on the cloud this method will retrives AppServicePlans details from the cloud
+        /// </summary>
+        /// <param name="ClientName"></param>
+        /// <returns>returns the list of AppServicePlans data from cloud</returns>
+        [HttpGet]
+        public IEnumerable<CeraAppServicePlans> GetCloudAppServicePlans(string ClientName = "Quadrant")
+        {
+            RequestInfoViewModel requestInfo = new RequestInfoViewModel();
+            _ceraCloud.ClientName = ClientName;
+            return _ceraCloud.GetCloudAppServicePlansList(requestInfo);
+        }
+        /// <summary>
+        /// Based on the cloud this method will retrives Disks details from the cloud
+        /// </summary>
+        /// <param name="ClientName"></param>
+        /// <returns>returns the list of Disks data from cloud</returns>
+        [HttpGet]
+        public IEnumerable<CeraDisks> GetCloudDisks(string ClientName = "Quadrant")
+        {
+            RequestInfoViewModel requestInfo = new RequestInfoViewModel();
+            _ceraCloud.ClientName = ClientName;
+            return _ceraCloud.GetCloudDisksList(requestInfo);
+        }
+
     }
 }

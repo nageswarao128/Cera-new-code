@@ -14,7 +14,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="azureAuth.Designer.cs">
+	  <Compile Update="AzureAuth.Designer.cs">
 	    <DesignTimeSharedInput>True</DesignTimeSharedInput>
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>AzureAuth.settings</DependentUpon>
@@ -24,7 +24,7 @@
 	<ItemGroup>
 	  <None Update="AzureAuth.settings">
 	    <Generator>SettingsSingleFileGenerator</Generator>
-	    <LastGenOutput>azureAuth.Designer.cs</LastGenOutput>
+	    <LastGenOutput>AzureAuth.Designer.cs</LastGenOutput>
 	  </None>
 	</ItemGroup>
 
