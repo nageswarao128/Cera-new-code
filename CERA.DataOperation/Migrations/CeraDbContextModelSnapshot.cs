@@ -19,6 +19,96 @@ namespace CERA.DataOperation.Migrations
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("CERA.Entities.Models.CeraResourceGroups", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("provisioningstate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tbl_ResourceGroups");
+                });
+
+            modelBuilder.Entity("CERA.Entities.Models.CeraResourceHealth", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AvailabilityState")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tbl_ResourceHealth");
+                });
+
+            modelBuilder.Entity("CERA.Entities.Models.CeraResources", b =>
+                {
+                    b.Property<int?>("ResourceID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResourceGroupName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResourceType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ResourceID");
+
+                    b.ToTable("tbl_Resources");
+                });
+
+            modelBuilder.Entity("CERA.Entities.Models.CeraStorageAccount", b =>
+                {
+                    b.Property<int?>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResourceGroupName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("tbl_StorageAccounts");
+                });
+
             modelBuilder.Entity("CERA.Entities.Models.CeraSubscription", b =>
                 {
                     b.Property<string>("SubscriptionId")
@@ -33,6 +123,27 @@ namespace CERA.DataOperation.Migrations
                     b.HasKey("SubscriptionId");
 
                     b.ToTable("tbl_Subscription");
+                });
+
+            modelBuilder.Entity("CERA.Entities.Models.CeraVM", b =>
+                {
+                    b.Property<int>("VMId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("RegionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResourceGroupName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VMName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("VMId");
+
+                    b.ToTable("tbl_VirtualMachines");
                 });
 
             modelBuilder.Entity("CERA.Entities.Models.Client", b =>

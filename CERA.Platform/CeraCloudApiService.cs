@@ -7,6 +7,7 @@ using CERA.Logging;
 using CERA.Platform;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CERA.CloudService
 {
@@ -185,7 +186,25 @@ namespace CERA.CloudService
             }
             return vM;
         }
-
+        public async Task<List<CeraResourceHealth>> GetCloudResourceHealth(RequestInfoViewModel requestInfo)
+        {
+            Logger.LogInfo("Get Cloud Resource Health List Called");
+            List<CeraResourceHealth> resourceHealth = new List<CeraResourceHealth>();
+            GetPlatforms();
+            List<CeraSubscription> subscriptions = new List<CeraSubscription>();
+            subscriptions = GetSubscriptionList();
+            foreach (var platformConfig in PlatformConfigs)
+            {
+                _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
+                _cloudApiServices.Logger = Logger;
+                resourceHealth = await _cloudApiServices.GetCloudResourceHealth(requestInfo,subscriptions);
+                Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Resource Health");
+                _dataOps.AddResourceHealth(resourceHealth);
+                resourceHealth.Clear();
+                Logger.LogInfo($"Imported data for {platformConfig.PlatformName} Cloud Resource Health to DB");
+            }
+            return resourceHealth;
+        }
         public object GetCloudWebAppList()
         {
             return new object();
@@ -241,6 +260,11 @@ namespace CERA.CloudService
             Logger.LogInfo("Requested data for StorageAccount List from Database called");
             return _dataOps.GetStorageAccount();
         }
+        public List<CeraResourceHealth> GetCeraResourceHealthList()
+        {
+            Logger.LogInfo("Requested data for Resource Health List from Database called");
+            return _dataOps.GetResourceHealth();
+        }
         public void Initialize(string tenantId, string clientID, string clientSecret,string authority)
         {
             _cloudApiServices.Initialize(tenantId, clientID, clientSecret,authority);
@@ -282,6 +306,11 @@ namespace CERA.CloudService
         }
 
         public List<CeraStorageAccount> GetCloudStorageAccountList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<CeraResourceHealth>> GetCloudResourceHealth(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             throw new NotImplementedException();
         }

@@ -1,9 +1,11 @@
 ﻿using CERA.Entities.Models;
 using CERA.Entities.ViewModels;
 using CERA.Platform;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace TestCERAClient.Controllers
 {
@@ -21,11 +23,19 @@ namespace TestCERAClient.Controllers
         }
 
         [HttpGet]
+        //[Authorize]
         public IEnumerable<CeraSubscription> GetCloudSubscriptions(string ClientName = "Quadrant")
         {
             RequestInfoViewModel requestInfo = new RequestInfoViewModel();
             _ceraCloud.ClientName = ClientName;
             return _ceraCloud.GetCloudSubscriptionList(requestInfo);
+        }
+        [HttpGet]
+        public async Task<List<CeraResourceHealth>> GetCloudResourceHealth(string ClientName = "Quadrant")
+        {
+            RequestInfoViewModel requestInfo = new RequestInfoViewModel();
+            _ceraCloud.ClientName = ClientName;
+            return await _ceraCloud.GetCloudResourceHealth(requestInfo);
         }
         /// <summary>
         /// Based on the cloud this method will retrives Resources details from the cloud

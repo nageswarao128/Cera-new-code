@@ -4,6 +4,7 @@ using CERA.Entities.ViewModels;
 using CERA.Logging;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CERA.AWS.CloudService
 {
@@ -115,6 +116,21 @@ namespace CERA.AWS.CloudService
         }
 
         public List<CeraStorageAccount> GetStorageAccountList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<CeraResourceHealth>> GetCloudResourceHealth(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<CeraResourceHealth>> GetCloudResourceHealth(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraResourceHealth> GetCeraResourceHealthList()
         {
             throw new NotImplementedException();
         }

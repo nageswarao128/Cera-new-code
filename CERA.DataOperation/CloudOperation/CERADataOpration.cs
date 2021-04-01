@@ -277,6 +277,46 @@ namespace CERA.DataOperation
                 return null;
             }
         }
+        public int AddResourceHealth(List<CeraResourceHealth> resourceHealth)
+        {
+            try
+            {
+                _logger.LogInfo("Receive Data");
+                var health = _dbContext.ResourceHealth.ToList();
+                foreach (var item in health)
+                {
+                    _dbContext.ResourceHealth.Remove(item);
+                }
+                _dbContext.SaveChanges();
+                foreach (var item in resourceHealth)
+                {
+                    _dbContext.ResourceHealth.Add(item);
+                }
+                int record = _dbContext.SaveChanges();
+                _logger.LogInfo("Data Imported Successfully");
+                return record;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return 0;
+            }
+        }
+
+        public List<CeraResourceHealth> GetResourceHealth()
+        {
+            try
+            {
+                var resourceHealth = _dbContext.ResourceHealth.ToList();
+                _logger.LogInfo("Data retrieved for Resources Health List from Database");
+                return resourceHealth;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return null;
+            }
+        }
         public object AddTenantData(object data)
         {
             return new object();
@@ -326,6 +366,6 @@ namespace CERA.DataOperation
             return new object();
         }
 
-      
+       
     }
 }

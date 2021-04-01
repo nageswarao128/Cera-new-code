@@ -4,9 +4,13 @@ using CERA.Entities;
 using CERA.Entities.Models;
 using CERA.Entities.ViewModels;
 using CERA.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using ICeraAuthenticator = CERA.CloudService.ICeraAuthenticator;
 
 namespace CERA.Azure.CloudService
@@ -18,14 +22,14 @@ namespace CERA.Azure.CloudService
         }
         public List<CeraPlatformConfigViewModel> _platformConfigs { get; set; }
         ICeraAuthenticator authenticator;
-      public List<CeraSubscription> _subscription { get; set; }
+        public List<CeraSubscription> _subscription { get; set; }
         public ICeraLogger Logger { get; set; }
-        
+
 
         public CeraAzureApiService(ICeraLogger logger)
         {
             Logger = logger;
-           
+
         }
 
 
@@ -38,7 +42,7 @@ namespace CERA.Azure.CloudService
         /// <returns>returns a list of resources from Azure</returns>
         public List<CeraResources> GetCloudResourceList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
-            
+
             try
             {
                 Initialize();
@@ -107,7 +111,7 @@ namespace CERA.Azure.CloudService
                                 Name = resource.Name,
                                 RegionName = resource.RegionName,
                                 provisioningstate = resource.ProvisioningState
-                                
+
                             });
                         }
                     }
@@ -153,7 +157,7 @@ namespace CERA.Azure.CloudService
                             {
                                 Name = storage.Name,
                                 RegionName = storage.RegionName,
-                                ResourceGroupName=storage.ResourceGroupName
+                                ResourceGroupName = storage.ResourceGroupName
 
                             });
                         }
@@ -192,10 +196,10 @@ namespace CERA.Azure.CloudService
         {
             return new object();
         }
-        public void Initialize(string tenantId, string clientID, string clientSecret,string authority)
+        public void Initialize(string tenantId, string clientID, string clientSecret, string authority)
         {
             authenticator = new CeraAzureAuthenticator(Logger);
-            authenticator.Initialize(tenantId, clientID, clientSecret,authority);
+            authenticator.Initialize(tenantId, clientID, clientSecret, authority);
         }
         public void Initialize()
         {
@@ -204,9 +208,9 @@ namespace CERA.Azure.CloudService
             string clientSecret = AzureAuth.Default.Clientsecert;
             string authority = AzureAuth.Default.authority;
             authenticator = new CeraAzureAuthenticator(Logger);
-            authenticator.Initialize(tenantId, clientId, clientSecret,authority);
+            authenticator.Initialize(tenantId, clientId, clientSecret, authority);
         }
-        
+
         public List<CeraSubscription> GetCloudSubscriptionList(RequestInfoViewModel requestInfo)
         {
             try
@@ -229,10 +233,10 @@ namespace CERA.Azure.CloudService
                             TenantID = sub.Inner.TenantId,
 
                         });
-                        
+
                     }
                     Logger.LogInfo("Parsing Completed Subscription List To CERA Subscription");
-                    
+
                     return subscriptions;
                 }
                 Logger.LogInfo("No Subscription List found");
@@ -262,7 +266,7 @@ namespace CERA.Azure.CloudService
         /// <param name="subscriptions"></param>
         /// <returns>returns a list of Virtual Machines from Azure</returns>
         public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
-        {            
+        {
             try
             {
                 Initialize();
@@ -300,6 +304,49 @@ namespace CERA.Azure.CloudService
                 return null;
             }
         }
+        public async Task<List<CeraResourceHealth>> GetCloudResourceHealth(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            //CeraResourceHealthDTO dTO = new CeraResourceHealthDTO();
+            const string url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.ResourceHealth/availabilityStatuses?api-version=2020-05-01-preview";
+            try
+            {
+                Initialize();
+                string token = authenticator.GetAuthToken();
+                if (token != null)
+                {
+                    foreach (var sub in subscriptions)
+                    {
+                        string uri = string.Format(url, sub.SubscriptionId);
+                        HttpClient client = new HttpClient();
+                        HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
+                        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                        HttpResponseMessage responseMessage = await client.SendAsync(requestMessage);
+                        var data = await requestMessage.Content.ReadAsStringAsync();
+                        List<CeraResourceHealthDTO> ceraResourceHealthDTO = new List<CeraResourceHealthDTO>();
+                        ceraResourceHealthDTO = JsonConvert.DeserializeObject<List<CeraResourceHealthDTO>>(data);
+                        List<CeraResourceHealth> resourceHealth = new List<CeraResourceHealth>();
+                        foreach (var item in ceraResourceHealthDTO)
+                        {
+                            resourceHealth.Add(new CeraResourceHealth
+                            {
+                                Name = item.Name,
+                                Location = item.Location,
+                                Type = item.Type,
+                                AvailabilityState = item.Properties.AvailabilityState
+                            });
+                        }
+                        return resourceHealth;
+                    }
+
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+        }
         public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo)
         {
             throw new NotImplementedException();
@@ -326,14 +373,10 @@ namespace CERA.Azure.CloudService
             return new List<CeraResourceGroups>();
         }
 
-
-
         public List<CeraResourceGroups> GetCloudResourceGroups(RequestInfoViewModel requestInfo)
         {
             throw new NotImplementedException();
         }
-
-       
 
         public List<CeraStorageAccount> GetCloudStorageAccountList(RequestInfoViewModel requestInfo)
         {
@@ -341,6 +384,16 @@ namespace CERA.Azure.CloudService
         }
 
         public List<CeraStorageAccount> GetStorageAccountList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<CeraResourceHealth>> GetCloudResourceHealth(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraResourceHealth> GetCeraResourceHealthList()
         {
             throw new NotImplementedException();
         }

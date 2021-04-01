@@ -30,6 +30,7 @@ namespace CERA.DataOperation.Data
         public DbSet<CeraResourceGroups> resourceGroups { get; set; }
         public DbSet<CeraStorageAccount> StorageAccounts { get; set; }
 
+        public DbSet<CeraResourceHealth> ResourceHealth { get; set; }
 
     }
 }

@@ -1,24 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CeraWebApplication\\CeraWebApplication.csproj": {}
+    "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CeraWebApplication\\CeraWebApplication.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CeraWebApplication\\CeraWebApplication.csproj": {
+    "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CeraWebApplication\\CeraWebApplication.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CeraWebApplication\\CeraWebApplication.csproj",
+        "projectUniqueName": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CeraWebApplication\\CeraWebApplication.csproj",
         "projectName": "CeraWebApplication",
-        "projectPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CeraWebApplication\\CeraWebApplication.csproj",
-        "packagesPath": "C:\\Users\\Bindhu Kottamasu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CeraWebApplication\\obj\\",
+        "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CeraWebApplication\\CeraWebApplication.csproj",
+        "packagesPath": "C:\\Users\\Quadrant\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CeraWebApplication\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\Bindhu Kottamasu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Quadrant\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -31,7 +30,6 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -43,7 +41,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "Newtonsoft.Json": {
               "target": "Package",
@@ -68,7 +65,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

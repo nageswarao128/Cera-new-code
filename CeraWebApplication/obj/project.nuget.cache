@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "m8Aseh9BrSA0OQImBATE/MhU+9/7gXdYTd5k99t58ixpS6gtospYUTOiAoSC9WzzhmlD9NCX/VaAcwQ8zwkULw==",
+  "dgSpecHash": "vRcxo6BTBWbK11MWCvsKb4MtoJ68tqInqYjb1Sozd4836BOS06PiLN7U9BjO/edHS0LYnpNLalzdhl2gGTFa3g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Bindhu Kottamasu\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)\\CeraWebApplication\\CeraWebApplication.csproj",
+  "projectFilePath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CeraWebApplication\\CeraWebApplication.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Bindhu Kottamasu\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+    "C:\\Users\\Quadrant\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
   ],
   "logs": []
 }

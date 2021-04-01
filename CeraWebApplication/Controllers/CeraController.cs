@@ -27,6 +27,10 @@ namespace CeraWebApplication.Controllers
         {
             return View();
         }
+        public IActionResult DashBoard()
+        {
+            return View();
+        }
         /// <summary>
         /// This method will call the API to retrive subscription details from db 
         /// </summary>

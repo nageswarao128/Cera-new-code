@@ -1,5 +1,6 @@
 ﻿using CERA.Entities.Models;
 using CERA.Platform;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -24,6 +25,7 @@ namespace CERAGetCallAPI.Controllers
 
         }
         [HttpGet]
+        [Authorize]
         public IEnumerable<CeraSubscription> GetDBSubscriptions()
         {
             return _ceraCloud.GetSubscriptionList();
