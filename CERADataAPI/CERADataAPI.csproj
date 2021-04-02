@@ -19,9 +19,10 @@
     <ProjectReference Include="..\CERA.Converter\CERA.Converter.csproj" />
     <ProjectReference Include="..\CERA.DataOperation\CERA.DataOperation.csproj" />
     <ProjectReference Include="..\CERA.Entities\CERA.Entities.csproj" />
-    <ProjectReference Include="..\CERA.Logging\CERA.Logging.csproj" />
     <ProjectReference Include="..\CERA.Platform\CERA.Platform.csproj" />
   </ItemGroup>
+
+ 
 
 
 </Project>

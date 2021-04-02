@@ -4,9 +4,14 @@ using CERA.Entities;
 using CERA.Entities.Models;
 using CERA.Entities.ViewModels;
 using CERA.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using ICeraAuthenticator = CERA.CloudService.ICeraAuthenticator;
 
 namespace CERA.Azure.CloudService
@@ -18,14 +23,14 @@ namespace CERA.Azure.CloudService
         }
         public List<CeraPlatformConfigViewModel> _platformConfigs { get; set; }
         ICeraAuthenticator authenticator;
-      public List<CeraSubscription> _subscription { get; set; }
+        public List<CeraSubscription> _subscription { get; set; }
         public ICeraLogger Logger { get; set; }
-        
+
 
         public CeraAzureApiService(ICeraLogger logger)
         {
             Logger = logger;
-           
+
         }
 
         /// <summary>
@@ -37,7 +42,7 @@ namespace CERA.Azure.CloudService
         /// <returns>returns a list of resources from Azure</returns>
         public List<CeraResources> GetCloudResourceList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
-            
+
             try
             {
                 Initialize();
@@ -106,7 +111,7 @@ namespace CERA.Azure.CloudService
                                 Name = resource.Name,
                                 RegionName = resource.RegionName,
                                 provisioningstate = resource.ProvisioningState
-                                
+
                             });
                         }
                     }
@@ -152,7 +157,7 @@ namespace CERA.Azure.CloudService
                             {
                                 Name = storage.Name,
                                 RegionName = storage.RegionName,
-                                ResourceGroupName=storage.ResourceGroupName
+                                ResourceGroupName = storage.ResourceGroupName
 
                             });
                         }
@@ -238,7 +243,7 @@ namespace CERA.Azure.CloudService
         public void Initialize(string tenantId, string clientID, string clientSecret,string authority)
         {
             authenticator = new CeraAzureAuthenticator(Logger);
-            authenticator.Initialize(tenantId, clientID, clientSecret,authority);
+            authenticator.Initialize(tenantId, clientID, clientSecret, authority);
         }
         public void Initialize()
         {
@@ -247,7 +252,7 @@ namespace CERA.Azure.CloudService
             string clientSecret = AzureAuth.Default.Clientsecert;
             string authority = AzureAuth.Default.authority;
             authenticator = new CeraAzureAuthenticator(Logger);
-            authenticator.Initialize(tenantId, clientId, clientSecret,authority);
+            authenticator.Initialize(tenantId, clientId, clientSecret, authority);
         }
         /// <summary>
         /// This method will calls the required authentication and after  authenticating it will 
@@ -277,10 +282,10 @@ namespace CERA.Azure.CloudService
                             TenantID = sub.Inner.TenantId,
 
                         });
-                        
+
                     }
                     Logger.LogInfo("Parsing Completed Subscription List To CERA Subscription");
-                    
+
                     return subscriptions;
                 }
                 Logger.LogInfo("No Subscription List found");
@@ -346,7 +351,7 @@ namespace CERA.Azure.CloudService
         /// <param name="subscriptions"></param>
         /// <returns>returns a list of Virtual Machines from Azure</returns>
         public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
-        {            
+        {
             try
             {
                 Initialize();
@@ -522,6 +527,88 @@ namespace CERA.Azure.CloudService
                 return null;
             }
         }
+        public List<CeraResourceHealth> GetCloudResourceHealth(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            
+            const string url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.ResourceHealth/availabilityStatuses?api-version=2020-05-01-preview";
+            var data = CallAzureEndPoint(url, subscriptions);
+            if (data == null)
+            {
+                return null;
+            }
+            List<CeraResourceHealthDTO> ceraResourceHealthDTO = new List<CeraResourceHealthDTO>();
+            JObject result = JObject.Parse(data.Result);
+            var clientarray = result["value"].Value<JArray>();
+            ceraResourceHealthDTO = clientarray.ToObject<List<CeraResourceHealthDTO>>();
+            List<CeraResourceHealth> resourceHealth = new List<CeraResourceHealth>();
+            foreach (var item in ceraResourceHealthDTO)
+            {
+                resourceHealth.Add(new CeraResourceHealth
+                {
+                    Name = item.name,
+                    Location = item.location,
+                    Type = item.type,
+                    AvailabilityState = item.properties.availabilityState
+                });
+            }
+            return resourceHealth;
+            
+        }
+        public List<CeraCompliances> GetCloudCompliances(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            const string url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.Security/compliances?api-version=2017-08-01-preview";
+            var data = CallAzureEndPoint(url, subscriptions);
+            if (data == null)
+            {
+                return null;
+            }
+            List<CeraCompliancesDTO> ceraCompliancesDTO = new List<CeraCompliancesDTO>();
+            JObject result = JObject.Parse(data.Result);
+            var clientarray = result["value"].Value<JArray>();
+            //var array = result["assessmentResult"].First.Value<JArray>();
+            ceraCompliancesDTO = clientarray.ToObject<List<CeraCompliancesDTO>>();
+            
+            List<CeraCompliances> ceraCompliances = new List<CeraCompliances>();
+            foreach (var item in ceraCompliancesDTO)
+            {
+                ceraCompliances.Add(new CeraCompliances
+                {
+                    Name = item.name,
+                    Type = item.type,
+                    AssessmentType = item.properties.assessmentResult.type
+                });
+            }
+            return ceraCompliances;
+        }
+        public async Task<string> CallAzureEndPoint(string url,List<CeraSubscription> subscriptions)
+        {
+            try
+            {
+                Initialize();
+                string token = authenticator.GetAuthToken();
+                var data =string.Empty;
+                if (token != null)
+                {
+                    foreach (var sub in subscriptions)
+                    {
+                        string uri = string.Format(url, sub.SubscriptionId);
+                        HttpClient client = new HttpClient();
+                        HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
+                        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                        HttpResponseMessage responseMessage = await client.SendAsync(requestMessage);
+                        data = await responseMessage.Content.ReadAsStringAsync();
+                    }
+                    return data;
+
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+            }
+        }
         public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo)
         {
             throw new NotImplementedException();
@@ -596,6 +683,26 @@ namespace CERA.Azure.CloudService
         }
 
         public List<CeraDisks> GetDisksList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraResourceHealth> GetCloudResourceHealth(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraResourceHealth> GetCeraResourceHealthList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraCompliances> GetCloudCompliances(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraCompliances> GetCompliancesList()
         {
             throw new NotImplementedException();
         }

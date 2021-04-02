@@ -1,5 +1,6 @@
 ﻿using CERA.Entities.Models;
 using CERA.Platform;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CERAGetCallAPI.Controllers
+namespace CERADataAPI.Controllers
 {
    
     [ApiController]
@@ -28,6 +29,7 @@ namespace CERAGetCallAPI.Controllers
         /// </summary>
         /// <returns>returns Subscription data from database</returns>
         [HttpGet]
+        //[Authorize]
         public IEnumerable<CeraSubscription> GetDBSubscriptions()
         {
             return _ceraCloud.GetSubscriptionList();
@@ -112,6 +114,11 @@ namespace CERAGetCallAPI.Controllers
         public IEnumerable<CeraDisks> GetDBDisks()
         {
             return _ceraCloud.GetDisksList();
+        }
+        [HttpGet]
+        public IEnumerable<CeraResourceHealth> GetDBResourceHealth()
+        {
+            return _ceraCloud.GetCeraResourceHealthList();
         }
     }
 }

@@ -481,7 +481,7 @@ namespace CERA.DataOperation
             try
             {
                 _logger.LogInfo("Receive Data");
-                var ceraDisks= _dbContext.Disks.ToList();
+                var ceraDisks = _dbContext.Disks.ToList();
                 foreach (var item in ceraDisks)
                 {
                     _dbContext.Disks.Remove(item);
@@ -500,6 +500,94 @@ namespace CERA.DataOperation
                 _logger.LogException(ex);
                 return 0;
             }
+        }
+        public int AddResourceHealth(List<CeraResourceHealth> resourceHealth)
+        {
+            try
+            {
+                _logger.LogInfo("Receive Data");
+                var health = _dbContext.ResourceHealth.ToList();
+                foreach (var item in health)
+                {
+                    _dbContext.ResourceHealth.Remove(item);
+                }
+                _dbContext.SaveChanges();
+                foreach (var item in resourceHealth)
+                {
+                    _dbContext.ResourceHealth.Add(item);
+                }
+                int record = _dbContext.SaveChanges();
+                _logger.LogInfo("Data Imported Successfully");
+                return record;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return 0;
+            }
+        }
+
+        public List<CeraResourceHealth> GetResourceHealth()
+        {
+            try
+            {
+                var resourceHealth = _dbContext.ResourceHealth.ToList();
+                _logger.LogInfo("Data retrieved for Resources Health List from Database");
+                return resourceHealth;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return null;
+            }
+        }
+
+        public int AddCompliances(List<CeraCompliances> data)
+        {
+            try
+            {
+                _logger.LogInfo("Receive Data");
+                var compliances = _dbContext.Compliances.ToList();
+                foreach (var item in compliances)
+                {
+                    _dbContext.Compliances.Remove(item);
+                }
+                _dbContext.SaveChanges();
+                foreach (var item in data)
+                {
+                    _dbContext.Compliances.Add(item);
+                }
+                int record = _dbContext.SaveChanges();
+                _logger.LogInfo("Data Imported Successfully");
+                return record;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return 0;
+            }
+        }
+        public List<CeraCompliances> GetCompliances()
+        {
+            try
+            {
+                var compliances = _dbContext.Compliances.ToList();
+                _logger.LogInfo("Data retrieved for Compliances List from Database");
+                return compliances;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return null;
+            }
+        }
+        public object AddTenantData(object data)
+        {
+            return new object();
+        }
+        public object AddWebAppData(object data)
+        {
+            return new object();
         }
         /// <summary>
         /// This method will retrives the Disks data from database
@@ -520,6 +608,7 @@ namespace CERA.DataOperation
                 return null;
             }
         }
+       
         public object UpdateResourceData(object data)
         {
             return new object();
@@ -564,5 +653,12 @@ namespace CERA.DataOperation
         {
             throw new NotImplementedException();
         }
+
+        public object AddSqlServerData(object data)
+        {
+            throw new NotImplementedException();
+        }
+
+       
     }
 }

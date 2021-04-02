@@ -4,6 +4,7 @@ using CERA.Entities.ViewModels;
 using CERA.Logging;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CERA.AWS.CloudService
 {
@@ -175,6 +176,36 @@ namespace CERA.AWS.CloudService
         }
 
         public List<CeraDisks> GetDisksList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraResourceHealth> GetCloudResourceHealth(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraResourceHealth> GetCloudResourceHealth(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraResourceHealth> GetCeraResourceHealthList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraCompliances> GetCloudCompliances(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraCompliances> GetCloudCompliances(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraCompliances> GetCompliancesList()
         {
             throw new NotImplementedException();
         }

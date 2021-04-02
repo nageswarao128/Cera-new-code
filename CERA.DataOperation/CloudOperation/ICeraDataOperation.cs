@@ -17,6 +17,12 @@ namespace CERA.DataOperation
         public int AddVMData(List<CeraVM> data);
         public int AddAppServicePlans(List<CeraAppServicePlans> data);
         public int AddDisksData(List<CeraDisks> data);
+        public int AddResourceHealth(List<CeraResourceHealth> data);
+        public int AddCompliances(List<CeraCompliances> data);
+       
+        public object AddSqlServerData(object data);
+        public object AddSqlDbData(object data);
+        
         public object UpdateTenantData(object data);
         public object UpdateSubscriptionData(object data);
         public object UpdateResourceData(object data);
@@ -30,10 +36,12 @@ namespace CERA.DataOperation
         public List<CeraVM> GetVM();
         public List<CeraResourceGroups> GetResourceGroups();
         public List<CeraSqlServer> GetSqlServers();
+        public List<CeraResourceHealth> GetResourceHealth();
         public List<CeraStorageAccount> GetStorageAccount();
         public List<CeraTenants> GetTenants();
         public List<CeraWebApps> GetWebApps();
         public List<CeraAppServicePlans> GetAppServicePlans();
         public List<CeraDisks> GetDisks();
+        public List<CeraCompliances> GetCompliances();
     }
 }

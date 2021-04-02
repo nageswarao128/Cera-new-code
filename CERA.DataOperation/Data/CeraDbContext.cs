@@ -36,6 +36,8 @@ namespace CERA.DataOperation.Data
         public DbSet<CeraAppServicePlans> AppServicePlans { get; set; }
         public DbSet<CeraDisks> Disks { get; set; }
 
+        public DbSet<CeraResourceHealth> ResourceHealth { get; set; }
+        public DbSet<CeraCompliances> Compliances { get; set; }
 
     }
 }

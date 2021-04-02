@@ -1,3 +1,4 @@
+using CERA.AuthenticationService;
 using CERA.AWS.CloudService;
 using CERA.Azure.CloudService;
 using CERA.CloudService;
@@ -34,27 +35,33 @@ namespace TestCERAClient
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                                        options.SerializerSettings.ReferenceLoopHandling
+                                        =Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddSwaggerGen();
             services.AddTransient<ICeraAzureApiService, CeraAzureApiService>();
             services.AddTransient<ICeraAwsApiService, CeraAWSApiService>();
             //services.AddDbContext<CeraDbContext>(x => x.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=db_Cera; Integrated Security= true;"));
+            services.AddDbContext<CeraClientAuthenticatorContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DbCS")));
             services.AddDbContext<CeraDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DbCS")));
             services.AddTransient<ICeraConverter, CeraConverter>();
+            services.AddTransient<ICeraClientAuthenticator, CeraClientAuthenticator>();
             services.AddTransient<ICeraDataOperation, CERADataOperation>();
             services.AddLogging(logging => logging.AddConsole());
             services.AddSingleton<ICeraLogger, CERALogger>();
 
             services.AddTransient<ICeraCloudApiService, CeraCloudApiService>();
             services.AddTransient<ICeraPlatform, CeraCloudApiService>();
-
+           
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<CeraClientAuthenticatorContext>();
 
 
             //services.AddDbContext<CeraAPIUserDbContext>(x => x.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=db_Cera_User; Integrated Security= true;"));
             services.AddDbContext<CeraAPIUserDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DbCS")));
-            services.AddIdentity<CERAAPIUser, CERAAPIRole>()
-                .AddEntityFrameworkStores<CeraAPIUserDbContext>()
-                .AddUserManager<UserManager<CERAAPIUser>>();
+            //services.AddIdentity<CERAAPIUser, CERAAPIRole>()
+            //    .AddEntityFrameworkStores<CeraAPIUserDbContext>()
+            //    .AddUserManager<UserManager<CERAAPIUser>>();
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

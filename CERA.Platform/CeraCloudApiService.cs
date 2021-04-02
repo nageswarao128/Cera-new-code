@@ -7,6 +7,7 @@ using CERA.Logging;
 using CERA.Platform;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CERA.CloudService
 {
@@ -203,6 +204,25 @@ namespace CERA.CloudService
             }
             return vM;
         }
+        public List<CeraResourceHealth> GetCloudResourceHealth(RequestInfoViewModel requestInfo)
+        {
+            Logger.LogInfo("Get Cloud Resource Health List Called");
+            List<CeraResourceHealth> resourceHealth = new List<CeraResourceHealth>();
+            GetPlatforms();
+            List<CeraSubscription> subscriptions = new List<CeraSubscription>();
+            subscriptions = GetSubscriptionList();
+            foreach (var platformConfig in PlatformConfigs)
+            {
+                _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
+                _cloudApiServices.Logger = Logger;
+                resourceHealth = _cloudApiServices.GetCloudResourceHealth(requestInfo, subscriptions);
+                Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Resource Health");
+                _dataOps.AddResourceHealth(resourceHealth);
+                resourceHealth.Clear();
+                Logger.LogInfo($"Imported data for {platformConfig.PlatformName} Cloud Resource Health to DB");
+            }
+            return resourceHealth;
+        }
         /// <summary>
         /// Based on the obtained cloud platforms this method will call the class with cloud service logic
         /// and retrives the SqlServer data and inserts the obatained data into database
@@ -212,6 +232,7 @@ namespace CERA.CloudService
         public List<CeraSqlServer> GetCloudSqlServersList(RequestInfoViewModel requestInfo)
         {
 
+        
             Logger.LogInfo("Get SqlServer List Called");
             List<CeraSqlServer> sqlServers = new List<CeraSqlServer>();
             GetPlatforms();
@@ -305,7 +326,25 @@ namespace CERA.CloudService
             return Disks;
         }
 
-
+        public List<CeraCompliances> GetCloudCompliances(RequestInfoViewModel requestInfo)
+        {
+            Logger.LogInfo("Get Compliances List Called");
+            List<CeraCompliances> compliances = new List<CeraCompliances>();
+            GetPlatforms();
+            List<CeraSubscription> subscriptions = new List<CeraSubscription>();
+            subscriptions = GetSubscriptionList();
+            foreach (var platformConfig in PlatformConfigs)
+            {
+                _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
+                _cloudApiServices.Logger = Logger;
+                compliances = _cloudApiServices.GetCloudCompliances(requestInfo, subscriptions);
+                Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Compliances");
+                _dataOps.AddCompliances(compliances);
+                compliances.Clear();
+                Logger.LogInfo($"Imported data for {platformConfig.PlatformName} Cloud Compliances to DB");
+            }
+            return compliances;
+        }
         public void GetAllResources()
         {
             GetCloudServicePlanList();
@@ -404,6 +443,16 @@ namespace CERA.CloudService
             Logger.LogInfo("Requested data for Disks List from Database called");
             return _dataOps.GetDisks();
         }
+        public List<CeraResourceHealth> GetCeraResourceHealthList()
+        {
+            Logger.LogInfo("Requested data for Resource Health List from Database called");
+            return _dataOps.GetResourceHealth();
+        }
+        public List<CeraCompliances> GetCompliancesList()
+        {
+            Logger.LogInfo("Requested data for Compliances List from Database called");
+            return _dataOps.GetCompliances();
+        }
         public void Initialize(string tenantId, string clientID, string clientSecret,string authority)
         {
             _cloudApiServices.Initialize(tenantId, clientID, clientSecret,authority);
@@ -469,7 +518,16 @@ namespace CERA.CloudService
             throw new NotImplementedException();
         }
 
-        
+        public List<CeraResourceHealth> GetCloudResourceHealth(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraCompliances> GetCloudCompliances(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
         
     }
 }

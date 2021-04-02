@@ -2,6 +2,7 @@
 using CERA.Entities.ViewModels;
 using CERA.Logging;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CERA.CloudService
 {
@@ -22,6 +23,10 @@ namespace CERA.CloudService
         public List<CeraStorageAccount> GetCloudStorageAccountList(RequestInfoViewModel requestInfo);
         public List<CeraSqlServer> GetCloudSqlServersList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions);
         public List<CeraSqlServer> GetCloudSqlServersList(RequestInfoViewModel requestInfo);
+        public List<CeraResourceHealth> GetCloudResourceHealth(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions);
+        public List<CeraResourceHealth> GetCloudResourceHealth(RequestInfoViewModel requestInfo);
+        public List<CeraCompliances> GetCloudCompliances(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions);
+        public List<CeraCompliances> GetCloudCompliances(RequestInfoViewModel requestInfo);
 
         public List<CeraWebApps> GetCloudWebAppList(RequestInfoViewModel requestInfo,List<CeraSubscription> subscriptions);
         public List<CeraWebApps> GetCloudWebAppList(RequestInfoViewModel requestInfo);
@@ -42,5 +47,7 @@ namespace CERA.CloudService
         public List<CeraWebApps> GetWebAppsList();
         public List<CeraAppServicePlans> GetAppServicePlansList();
         public List<CeraDisks> GetDisksList();
+        public List<CeraResourceHealth> GetCeraResourceHealthList();
+        public List<CeraCompliances> GetCompliancesList();
     }
 }
