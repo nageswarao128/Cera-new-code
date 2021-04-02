@@ -18,6 +18,7 @@ namespace CERA.DataOperation
         public int AddAppServicePlans(List<CeraAppServicePlans> data);
         public int AddDisksData(List<CeraDisks> data);
         public int AddResourceHealth(List<CeraResourceHealth> data);
+        public int AddCompliances(List<CeraCompliances> data);
        
         public object AddSqlServerData(object data);
         public object AddSqlDbData(object data);
@@ -41,5 +42,6 @@ namespace CERA.DataOperation
         public List<CeraWebApps> GetWebApps();
         public List<CeraAppServicePlans> GetAppServicePlans();
         public List<CeraDisks> GetDisks();
+        public List<CeraCompliances> GetCompliances();
     }
 }

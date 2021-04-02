@@ -50,7 +50,7 @@ namespace CeraWebApplication
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Cera}/{action=LandingPage}/{id?}");
+                    pattern: "{controller=Cera}/{action=DashBoard}/{id?}");
             });
         }
     }

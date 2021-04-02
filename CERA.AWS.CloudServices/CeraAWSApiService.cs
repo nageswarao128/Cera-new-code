@@ -180,17 +180,32 @@ namespace CERA.AWS.CloudService
             throw new NotImplementedException();
         }
 
-        public Task<List<CeraResourceHealth>> GetCloudResourceHealth(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        public List<CeraResourceHealth> GetCloudResourceHealth(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<CeraResourceHealth>> GetCloudResourceHealth(RequestInfoViewModel requestInfo)
+        public List<CeraResourceHealth> GetCloudResourceHealth(RequestInfoViewModel requestInfo)
         {
             throw new NotImplementedException();
         }
 
         public List<CeraResourceHealth> GetCeraResourceHealthList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraCompliances> GetCloudCompliances(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraCompliances> GetCloudCompliances(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraCompliances> GetCompliancesList()
         {
             throw new NotImplementedException();
         }

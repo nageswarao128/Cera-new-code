@@ -541,6 +541,46 @@ namespace CERA.DataOperation
                 return null;
             }
         }
+
+        public int AddCompliances(List<CeraCompliances> data)
+        {
+            try
+            {
+                _logger.LogInfo("Receive Data");
+                var compliances = _dbContext.Compliances.ToList();
+                foreach (var item in compliances)
+                {
+                    _dbContext.Compliances.Remove(item);
+                }
+                _dbContext.SaveChanges();
+                foreach (var item in data)
+                {
+                    _dbContext.Compliances.Add(item);
+                }
+                int record = _dbContext.SaveChanges();
+                _logger.LogInfo("Data Imported Successfully");
+                return record;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return 0;
+            }
+        }
+        public List<CeraCompliances> GetCompliances()
+        {
+            try
+            {
+                var compliances = _dbContext.Compliances.ToList();
+                _logger.LogInfo("Data retrieved for Compliances List from Database");
+                return compliances;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return null;
+            }
+        }
         public object AddTenantData(object data)
         {
             return new object();
@@ -568,6 +608,7 @@ namespace CERA.DataOperation
                 return null;
             }
         }
+       
         public object UpdateResourceData(object data)
         {
             return new object();
@@ -617,5 +658,7 @@ namespace CERA.DataOperation
         {
             throw new NotImplementedException();
         }
+
+       
     }
 }

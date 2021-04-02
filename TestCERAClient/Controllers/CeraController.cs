@@ -36,11 +36,18 @@ namespace TestCERAClient.Controllers
             return _ceraCloud.GetCloudSubscriptionList(requestInfo);
         }
         [HttpGet]
-        public async Task<List<CeraResourceHealth>> GetCloudResourceHealth(string ClientName = "Quadrant")
+        public List<CeraResourceHealth> GetCloudResourceHealth(string ClientName = "Quadrant")
         {
             RequestInfoViewModel requestInfo = new RequestInfoViewModel();
             _ceraCloud.ClientName = ClientName;
-            return await _ceraCloud.GetCloudResourceHealth(requestInfo);
+            return _ceraCloud.GetCloudResourceHealth(requestInfo);
+        }
+        [HttpGet]
+        public List<CeraCompliances> GetCloudCompliances(string ClientName = "Quadrant")
+        {
+            RequestInfoViewModel requestInfo = new RequestInfoViewModel();
+            _ceraCloud.ClientName = ClientName;
+            return _ceraCloud.GetCloudCompliances(requestInfo);
         }
         /// <summary>
         /// Based on the cloud this method will retrives Resources details from the cloud

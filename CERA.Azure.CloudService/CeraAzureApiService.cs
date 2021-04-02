@@ -5,6 +5,7 @@ using CERA.Entities.Models;
 using CERA.Entities.ViewModels;
 using CERA.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -526,14 +527,66 @@ namespace CERA.Azure.CloudService
                 return null;
             }
         }
-        public async Task<List<CeraResourceHealth>> GetCloudResourceHealth(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        public List<CeraResourceHealth> GetCloudResourceHealth(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
-            //CeraResourceHealthDTO dTO = new CeraResourceHealthDTO();
+            
             const string url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.ResourceHealth/availabilityStatuses?api-version=2020-05-01-preview";
+            var data = CallAzureEndPoint(url, subscriptions);
+            if (data == null)
+            {
+                return null;
+            }
+            List<CeraResourceHealthDTO> ceraResourceHealthDTO = new List<CeraResourceHealthDTO>();
+            JObject result = JObject.Parse(data.Result);
+            var clientarray = result["value"].Value<JArray>();
+            ceraResourceHealthDTO = clientarray.ToObject<List<CeraResourceHealthDTO>>();
+            List<CeraResourceHealth> resourceHealth = new List<CeraResourceHealth>();
+            foreach (var item in ceraResourceHealthDTO)
+            {
+                resourceHealth.Add(new CeraResourceHealth
+                {
+                    Name = item.name,
+                    Location = item.location,
+                    Type = item.type,
+                    AvailabilityState = item.properties.availabilityState
+                });
+            }
+            return resourceHealth;
+            
+        }
+        public List<CeraCompliances> GetCloudCompliances(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            const string url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.Security/compliances?api-version=2017-08-01-preview";
+            var data = CallAzureEndPoint(url, subscriptions);
+            if (data == null)
+            {
+                return null;
+            }
+            List<CeraCompliancesDTO> ceraCompliancesDTO = new List<CeraCompliancesDTO>();
+            JObject result = JObject.Parse(data.Result);
+            var clientarray = result["value"].Value<JArray>();
+            //var array = result["assessmentResult"].First.Value<JArray>();
+            ceraCompliancesDTO = clientarray.ToObject<List<CeraCompliancesDTO>>();
+            
+            List<CeraCompliances> ceraCompliances = new List<CeraCompliances>();
+            foreach (var item in ceraCompliancesDTO)
+            {
+                ceraCompliances.Add(new CeraCompliances
+                {
+                    Name = item.name,
+                    Type = item.type,
+                    AssessmentType = item.properties.assessmentResult.type
+                });
+            }
+            return ceraCompliances;
+        }
+        public async Task<string> CallAzureEndPoint(string url,List<CeraSubscription> subscriptions)
+        {
             try
             {
                 Initialize();
                 string token = authenticator.GetAuthToken();
+                var data =string.Empty;
                 if (token != null)
                 {
                     foreach (var sub in subscriptions)
@@ -543,27 +596,14 @@ namespace CERA.Azure.CloudService
                         HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
                         requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
                         HttpResponseMessage responseMessage = await client.SendAsync(requestMessage);
-                        var data = await requestMessage.Content.ReadAsStringAsync();
-                        List<CeraResourceHealthDTO> ceraResourceHealthDTO = new List<CeraResourceHealthDTO>();
-                        ceraResourceHealthDTO = JsonConvert.DeserializeObject<List<CeraResourceHealthDTO>>(data);
-                        List<CeraResourceHealth> resourceHealth = new List<CeraResourceHealth>();
-                        foreach (var item in ceraResourceHealthDTO)
-                        {
-                            resourceHealth.Add(new CeraResourceHealth
-                            {
-                                Name = item.Name,
-                                Location = item.Location,
-                                Type = item.Type,
-                                AvailabilityState = item.Properties.AvailabilityState
-                            });
-                        }
-                        return resourceHealth;
+                        data = await responseMessage.Content.ReadAsStringAsync();
                     }
+                    return data;
 
                 }
                 return null;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 return null;
@@ -647,12 +687,22 @@ namespace CERA.Azure.CloudService
             throw new NotImplementedException();
         }
 
-        public Task<List<CeraResourceHealth>> GetCloudResourceHealth(RequestInfoViewModel requestInfo)
+        public List<CeraResourceHealth> GetCloudResourceHealth(RequestInfoViewModel requestInfo)
         {
             throw new NotImplementedException();
         }
 
         public List<CeraResourceHealth> GetCeraResourceHealthList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraCompliances> GetCloudCompliances(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraCompliances> GetCompliancesList()
         {
             throw new NotImplementedException();
         }

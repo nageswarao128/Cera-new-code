@@ -6,24 +6,26 @@ using System.Text;
 
 namespace CERA.Entities.Models
 {
-   
+
     public class CeraResourceHealthDTO
     {
-       
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public string Location { get; set; }
-        public Properties Properties { get; set; }
+
+        public string id { get; set; }
+        public string name { get; set; }
+        public string type { get; set; }
+        public string location { get; set; }
+        public Properties properties { get; set; }
+
     }
-    public class Properties
-    {
-        public string AvailabilityState { get; set; }
-        public string Title { get; set; }
-        public string Summary { get; set; }
-        public string ReasonType { get; set; }
-        public DateTime OccuredTime { get; set; }
-        public string ReasonChronicity { get; set; }
-        public DateTime ReportedTime { get; set; }
+        public class Properties
+        {
+            public string availabilityState { get; set; }
+            public string title { get; set; }
+            public string summary { get; set; }
+            public string reasonType { get; set; }
+            public DateTime occuredTime { get; set; }
+            public string reasonChronicity { get; set; }
+            public DateTime reportedTime { get; set; }
+        }
     }
-}
+

@@ -27,9 +27,25 @@ namespace CeraWebApplication.Controllers
         {
             return View();
         }
-        public IActionResult DashBoard()
+        public async Task<IActionResult> DashBoard()
         {
-            return View();
+            IEnumerable<CeraResourceHealth> resourceHealth = null;
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:44379/api/CeraData/GetDBResourceHealth"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        resourceHealth = JsonConvert.DeserializeObject<List<CeraResourceHealth>>(apiResponse);
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Cera");
+                    }
+                }
+            }
+            return View(resourceHealth);
         }
         /// <summary>
         /// This method will call the API to retrive subscription details from db 
