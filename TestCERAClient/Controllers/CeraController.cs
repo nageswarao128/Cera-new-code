@@ -27,6 +27,7 @@ namespace TestCERAClient.Controllers
         /// <param name="ClientName"></param>
         /// <returns>returns the list of Subscription data from cloud</returns>  
         [HttpGet]
+        //[Authorize]
         public IEnumerable<CeraSubscription> GetCloudSubscriptions(string ClientName = "Quadrant")
         {
             RequestInfoViewModel requestInfo = new RequestInfoViewModel();
