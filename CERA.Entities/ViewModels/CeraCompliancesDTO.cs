@@ -14,7 +14,7 @@ namespace CERA.Entities.ViewModels
         public class Properties
         {
             public string scope { get; set; }
-            public Assessmentresult assessmentResult { get; set; }
+            public Assessmentresult[] assessmentResult { get; set; }
             public int resourceCount { get; set; }
             public DateTime assessmentTimestampUtcDate { get; set; }
         }

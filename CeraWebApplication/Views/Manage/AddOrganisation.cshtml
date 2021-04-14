@@ -1,0 +1,118 @@
+﻿@model CeraWebApplication.Models.AddOrgModel
+
+@{
+    ViewData["Title"] = "AddOrganisation";
+}
+
+<h1>Add Organisation</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddOrganisation">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <h6>Enter Organisation Details:</h6>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrganizationName" class="control-label"></label>
+                <input asp-for="OrganizationName" class="form-control" />
+                <span asp-validation-for="OrganizationName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrimaryAddress" class="control-label"></label>
+                <input asp-for="PrimaryAddress" class="form-control" />
+                <span asp-validation-for="PrimaryAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrgDescription" class="control-label"></label>
+                <input asp-for="OrgDescription" class="form-control" />
+                <span asp-validation-for="OrgDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContactPersonName" class="control-label"></label>
+                <input asp-for="ContactPersonName" class="form-control" />
+                <span asp-validation-for="ContactPersonName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmailId" class="control-label"></label>
+                <input asp-for="EmailId" class="form-control" />
+                <span asp-validation-for="EmailId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNo" class="control-label"></label>
+                <input asp-for="PhoneNo" class="form-control" />
+                <span asp-validation-for="PhoneNo" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <input asp-for="UserId" class="form-control" />
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <h6>Enter Cloud Details:</h6>
+            </div>
+            <div class="form-group">
+                <label asp-for="CloudProviderName" class="control-label"></label>
+                <input asp-for="CloudProviderName" class="form-control" />
+                <span asp-validation-for="CloudProviderName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DllPath" class="control-label"></label>
+                <input asp-for="DllPath" class="form-control" />
+                <span asp-validation-for="DllPath" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FullyQualifiedClassName" class="control-label"></label>
+                <input asp-for="FullyQualifiedClassName" class="form-control" />
+                <span asp-validation-for="FullyQualifiedClassName" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="DateEnabled" class="control-label"></label>
+                <input asp-for="DateEnabled" class="form-control" />
+                <span asp-validation-for="DateEnabled" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="DevContact" class="control-label"></label>
+                <input asp-for="DevContact" class="form-control" />
+                <span asp-validation-for="DevContact" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SupportContact" class="control-label"></label>
+                <input asp-for="SupportContact" class="form-control" />
+                <span asp-validation-for="SupportContact" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TenantId" class="control-label"></label>
+                <input asp-for="TenantId" class="form-control" />
+                <span asp-validation-for="TenantId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientId" class="control-label"></label>
+                <input asp-for="ClientId" class="form-control" />
+                <span asp-validation-for="ClientId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientSecret" class="control-label"></label>
+                <input asp-for="ClientSecret" class="form-control" />
+                <span asp-validation-for="ClientSecret" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@*<div>
+    <a asp-action="Index">Back to List</a>
+</div>*@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -498,6 +498,7 @@ namespace CERA.Azure.CloudService
                 foreach (var sub in subscriptions)
                 {
                     var Disks = authClient.WithSubscription(sub.SubscriptionId).Disks.ListAsync().Result;
+                   
                     Logger.LogInfo("Got Disks List from Azure Cloud Provider");
                     if (Disks != null)
                     {
@@ -571,12 +572,15 @@ namespace CERA.Azure.CloudService
             List<CeraCompliances> ceraCompliances = new List<CeraCompliances>();
             foreach (var item in ceraCompliancesDTO)
             {
-                ceraCompliances.Add(new CeraCompliances
+                for(int i = 0; i < item.properties.assessmentResult.Length; i++)
                 {
-                    Name = item.name,
-                    Type = item.type,
-                    AssessmentType = item.properties.assessmentResult.type
-                });
+                    ceraCompliances.Add(new CeraCompliances
+                    {
+                        Name = item.name,
+                        Type = item.type,
+                        AssessmentType = item.properties.assessmentResult[i].type
+                    });
+                }
             }
             return ceraCompliances;
         }

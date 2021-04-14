@@ -1,4 +1,7 @@
-﻿using CeraWebApplication.Models;
+﻿using CERA.AuthenticationService;
+using CeraWebApplication.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -8,9 +11,15 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using Newtonsoft.Json.Linq;
 
 namespace CeraWebApplication.Controllers
 {
+    [Authorize]
     public class CeraController : Controller
     {
         private readonly ILogger<CeraController> _logger;
@@ -23,9 +32,164 @@ namespace CeraWebApplication.Controllers
         /// This method gives the home page view
         /// </summary>
         /// <returns></returns>
+
         public IActionResult LandingPage()
         {
             return View();
+        }
+        [AllowAnonymous]
+        public IActionResult Login()
+        {
+            return View();
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginModel loginModel)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.PostAsJsonAsync<LoginModel>("https://localhost:44389/api/Login/Login", loginModel))
+                {
+                    var apiresponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var auth = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                        auth.AddClaim(new Claim(ClaimTypes.Name, loginModel.UserName));
+                        var principle = new ClaimsPrincipal(auth);
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principle);
+                        return RedirectToAction("LandingPage", "Cera");
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Cera");
+                    }
+                }
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> ManageUsers()
+        {
+            IEnumerable<CeraUsers> users = null;
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:44389/api/Manage/GetUsers"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        users = JsonConvert.DeserializeObject<List<CeraUsers>>(apiResponse);
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Cera");
+                    }
+                }
+            }
+            return View(users.ToList());
+        }
+        public IActionResult AddUser()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddUser(AddCeraUser ceraUser)
+        {
+        
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.PostAsJsonAsync<AddCeraUser>("https://localhost:44389/api/Login/Register",ceraUser))
+                {
+                    var apiresponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                       return RedirectToAction("ManageUsers", "Cera");
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Cera");
+                    }
+                }
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> UpdateUser(string id)
+        {
+            CeraUserModel user = null;
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:44389/api/Manage/GetUser?id="+id))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        user = JsonConvert.DeserializeObject<CeraUserModel>(apiResponse);
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Cera");
+                    }
+                }
+            }
+            return View(user);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateUser(CeraUserModel userModel)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.PutAsJsonAsync<CeraUserModel>("https://localhost:44389/api/Manage/UpdateUser", userModel))
+                {
+                    var apiresponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("ManageUsers", "Cera");
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Cera");
+                    }
+                }
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            CeraUserModel user = null;
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:44389/api/Manage/GetUser?id=" + id))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        user = JsonConvert.DeserializeObject<CeraUserModel>(apiResponse);
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Cera");
+                    }
+                }
+            }
+            return View(user);
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(CeraUserModel userModel)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.DeleteAsync("https://localhost:44389/api/Manage/DeleteUser?id="+userModel.Id))
+                {
+                    var apiresponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("ManageUsers", "Cera");
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Cera");
+                    }
+                }
+            }
         }
         public async Task<IActionResult> DashBoard()
         {
@@ -45,7 +209,77 @@ namespace CeraWebApplication.Controllers
                     }
                 }
             }
-            return View(resourceHealth);
+            List<CeraDashboardModel> dashboardModel = new List<CeraDashboardModel>();
+            dashboardModel.Add(
+                new CeraDashboardModel
+                {
+                    resources = "Compute",
+                    count = 30,
+                    health = "Available"
+                }
+                );
+            dashboardModel.Add(
+               new CeraDashboardModel
+               {
+                   resources = "Storage",
+                   count = 45,
+                   health = "Available"
+               }
+               );
+            dashboardModel.Add(
+              new CeraDashboardModel
+              {
+                  resources = "Sql",
+                  count = 10,
+                  health = "Available"
+              }
+              );
+            dashboardModel.Add(
+              new CeraDashboardModel
+              {
+                  resources = "Services",
+                  count = 28,
+                  health = "Available"
+              }
+              );
+            dashboardModel.Add(
+              new CeraDashboardModel
+              {
+                  resources = "VM",
+                  count = 5,
+                  health = "Available"
+              }
+              );
+            dashboardModel.Add(
+              new CeraDashboardModel
+              {
+                  resources = "WebApps",
+                  count = 3,
+                  health = "Available"
+              }
+              );
+            return View(dashboardModel);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetResourceHealth()
+        {
+            IEnumerable<CeraResourceHealth> resourceHealths = null;
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:44379/api/CeraData/GetDBResourceHealth"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        resourceHealths = JsonConvert.DeserializeObject<List<CeraResourceHealth>>(apiResponse);
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Cera");
+                    }
+                }
+            }
+            return View(resourceHealths.ToList());
         }
         /// <summary>
         /// This method will call the API to retrive subscription details from db 
@@ -83,7 +317,7 @@ namespace CeraWebApplication.Controllers
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync("https://localhost:44389/api/Cera/GetCloudSubscriptions"))
-                {                   
+                {
                     if (response.IsSuccessStatusCode)
                     {
                         return View();
@@ -127,7 +361,7 @@ namespace CeraWebApplication.Controllers
         /// <returns>returns view page</returns>
         [HttpGet]
         public async Task<IActionResult> GetCloudResourceGroupDetails()
-        { 
+        {
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync("https://localhost:44389/api/cera/GetCloudResourceGroups"))
@@ -229,7 +463,7 @@ namespace CeraWebApplication.Controllers
             {
                 using (var response = await httpClient.GetAsync("https://localhost:44389/api/cera/GetCloudResources"))
                 {
-                   
+
                     if (response.IsSuccessStatusCode)
                     {
                         return View("GetCloudSubscriptionDetails");

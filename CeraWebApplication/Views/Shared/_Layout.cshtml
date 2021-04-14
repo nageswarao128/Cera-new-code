@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - CeraWebApplication</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    
+
 </head>
 <body>
     <header>
@@ -22,7 +22,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Cera" asp-action="LandingPage">Home</a>
                         </li>
-                   
+                        <li class="nav-item float-right">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Cera" asp-action="Login">Login</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -31,59 +33,93 @@
     <div class="row">
 
         <div class="col-md-2">
-            <div class="container body">
-                <div class="main_Container">
-
-                    <div class="left_col scroll-view">
-                        <div class="navbar nav_title" style="margin-left: -2px;">
-                            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-                                <div class="menu_section">
-                                    <ul class="nav side-menu">
-
-                                        <li>
-                                            <a asp-controller="Cera" asp-action="DashBoard">
-<img src="https://freepikpsd.com/wp-content/uploads/2019/10/overview-icon-png-5-Transparent-Images.png"style="width:30px;height:30px;" />Overview <span class="fa fa-chevron-down"></span></a>
-                                            <hr />
-                                            <ul class="nav child_menu">
-                                                <li>
-                                                    <a asp-controller="Cera" asp-action="GetResourceDetails" style="display: inline-flex;width: 100% !important;">
-                                                        <img src="https://www.vhv.rs/dpng/d/432-4323159_azure-resource-group-icon-arm-azure-resource-manager.png" style="width:30px;height:20px;" />
-                                                        <span style="font-size: 14px !important;margin-left: 3%;">Resources</span>
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a asp-controller="Cera" asp-action="GetVmDetails" style="display: inline-flex;width: 100% !important;">
-                                                        <img src="https://bobpusateri.blob.core.windows.net/bcn/2020/04/Azure_VM.png" style="width:30px;height:20px;" />
-                                                        <span style="font-size: 14px !important;margin-left: 3%;">VM</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a asp-controller="Cera" asp-action="GetStorageAccountsDetails" style="display: inline-flex;width: 100% !important;">
-                                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeV3Fv0vHwFFU2QAN42lNboDzlyappVURMag&usqp=CAU" style="width:30px;height:20px;" />
-                                                        <span style="font-size: 14px !important;margin-left: 3%;">StorageAccounts</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a asp-controller="Cera" asp-action="GetResourceGroupDetails" style="display: inline-flex;width: 100% !important;">
-                                                        <img src="https://www.vhv.rs/dpng/d/432-4323159_azure-resource-group-icon-arm-azure-resource-manager.png" style="width:30px;height:20px;" />
-                                                        <span style="font-size: 14px !important;margin-left: 3%;">ResourceGroups</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a asp-controller="Cera" asp-action="GetWebAppsDetails" style="display: inline-flex;width: 100% !important;">
-                                                        <img src="https://img.favpng.com/9/7/19/microsoft-azure-web-sites-web-application-png-favpng-ceQYNWUnpNGwGmRpJRpC1a0j4.jpg" style="width:30px;height:20px;" />
-                                                        <span style="font-size: 14px !important;margin-left: 3%;">WebApps</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
+            <div class="left_col scroll-view">
+                <div class="navbar nav_title" style="margin-left:-2px;">
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <img src="https://freepikpsd.com/wp-content/uploads/2019/10/overview-icon-png-5-Transparent-Images.png" style="width:30px;height:20px;" />
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <a asp-controller="Cera" asp-action="DashBoard">OverView</a>
+                                    </div>
                                 </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <img src="https://www.vhv.rs/dpng/d/432-4323159_azure-resource-group-icon-arm-azure-resource-manager.png" style="width:30px;height:20px;" />
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <a asp-controller="Cera" asp-action="GetResourceDetails">Resources</a>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <img src="https://bobpusateri.blob.core.windows.net/bcn/2020/04/Azure_VM.png" style="width:30px;height:20px;" />
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <a asp-controller="Cera" asp-action="GetVmDetails">VirualMachines</a>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeV3Fv0vHwFFU2QAN42lNboDzlyappVURMag&usqp=CAU" style="width:30px;height:20px;" />
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <a asp-controller="Cera" asp-action="GetStorageAccountsDetails">StorageAccounts</a>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <img src="https://www.vhv.rs/dpng/d/432-4323159_azure-resource-group-icon-arm-azure-resource-manager.png" style="width:30px;height:20px;" />
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <a asp-controller="Cera" asp-action="GetResourceGroupDetails">ResourceGroups</a>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <img src="https://img.favpng.com/9/7/19/microsoft-azure-web-sites-web-application-png-favpng-ceQYNWUnpNGwGmRpJRpC1a0j4.jpg" style="width:30px;height:20px;" />
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <a asp-controller="Cera" asp-action="GetWebAppsDetails">WebApps</a>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <img src="https://www.ciraltos.com/wp-content/uploads/2018/09/SH.png" style="width:30px;height:30px" />
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <a asp-controller="Cera" asp-action="GetResourceHealth">Advisor</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <img src="https://cdn1.iconfinder.com/data/icons/ui-colored-3-of-3/100/UI_3__23-512.png" style="width:30px;height:30px" />
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <a asp-controller="Cera" asp-action="ManageUsers">ManageUsers</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <img src="https://static.vecteezy.com/system/resources/thumbnails/000/580/868/small/sarmi2-16.jpg" style="width:30px;height:30px" />
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <a asp-controller="Manage" asp-action="AddOrganisation">ManageOrganisation</a>
+                                    </div>
+                                </div>
+                                <hr />
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -94,7 +130,7 @@
                 </main>
             </div>
         </div>
-       
+
     </div>
 
     <footer class="border-top footer text-muted">
