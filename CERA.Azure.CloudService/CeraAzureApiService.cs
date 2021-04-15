@@ -563,24 +563,17 @@ namespace CERA.Azure.CloudService
             {
                 return null;
             }
-            List<CeraCompliancesDTO> ceraCompliancesDTO = new List<CeraCompliancesDTO>();
-            JObject result = JObject.Parse(data.Result);
-            var clientarray = result["value"].Value<JArray>();
-            //var array = result["assessmentResult"].First.Value<JArray>();
-            ceraCompliancesDTO = clientarray.ToObject<List<CeraCompliancesDTO>>();
             
+            CeraCompliancesDTO ceraCompliancesDTO = new CeraCompliancesDTO();
+            ceraCompliancesDTO = JsonConvert.DeserializeObject<CeraCompliancesDTO>(data.Result);
             List<CeraCompliances> ceraCompliances = new List<CeraCompliances>();
-            foreach (var item in ceraCompliancesDTO)
+            foreach (var item in ceraCompliancesDTO.value)
             {
-                for(int i = 0; i < item.properties.assessmentResult.Length; i++)
-                {
-                    ceraCompliances.Add(new CeraCompliances
-                    {
-                        Name = item.name,
-                        Type = item.type,
-                        AssessmentType = item.properties.assessmentResult[i].type
-                    });
-                }
+                ceraCompliances.Add(new CeraCompliances {
+                    Name = item.name,
+                    Type = item.type,
+                    AssessmentType = item.properties.assessmentResult[0].type
+                });
             }
             return ceraCompliances;
         }

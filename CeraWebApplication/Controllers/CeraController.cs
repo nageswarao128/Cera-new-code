@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Newtonsoft.Json.Linq;
+using CeraWebApplication.Utility;
 
 namespace CeraWebApplication.Controllers
 {
@@ -28,6 +29,9 @@ namespace CeraWebApplication.Controllers
         {
             _logger = logger;
         }
+  
+        const string SyncApiUrl = Utilities.SyncApiUrl;
+        const string DataApiUrl = Utilities.DataApiUrl;
         /// <summary>
         /// This method gives the home page view
         /// </summary>
@@ -46,9 +50,10 @@ namespace CeraWebApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
+            
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.PostAsJsonAsync<LoginModel>("https://localhost:44389/api/Login/Login", loginModel))
+                using (var response = await httpClient.PostAsJsonAsync<LoginModel>($"{SyncApiUrl}/api/Login/Login", loginModel))
                 {
                     var apiresponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -57,7 +62,7 @@ namespace CeraWebApplication.Controllers
                         auth.AddClaim(new Claim(ClaimTypes.Name, loginModel.UserName));
                         var principle = new ClaimsPrincipal(auth);
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principle);
-                        return RedirectToAction("LandingPage", "Cera");
+                        return RedirectToAction("DashBoard", "Cera");
                     }
                     else
                     {
@@ -72,7 +77,7 @@ namespace CeraWebApplication.Controllers
             IEnumerable<CeraUsers> users = null;
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44389/api/Manage/GetUsers"))
+                using (var response = await httpClient.GetAsync($"{SyncApiUrl}/api/Manage/GetUsers"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -97,7 +102,7 @@ namespace CeraWebApplication.Controllers
         
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.PostAsJsonAsync<AddCeraUser>("https://localhost:44389/api/Login/Register",ceraUser))
+                using (var response = await httpClient.PostAsJsonAsync<AddCeraUser>($"{SyncApiUrl}/api/Login/Register",ceraUser))
                 {
                     var apiresponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -117,7 +122,7 @@ namespace CeraWebApplication.Controllers
             CeraUserModel user = null;
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44389/api/Manage/GetUser?id="+id))
+                using (var response = await httpClient.GetAsync($"{SyncApiUrl}/api/Manage/GetUser?id="+id))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -137,7 +142,7 @@ namespace CeraWebApplication.Controllers
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.PutAsJsonAsync<CeraUserModel>("https://localhost:44389/api/Manage/UpdateUser", userModel))
+                using (var response = await httpClient.PutAsJsonAsync<CeraUserModel>($"{SyncApiUrl}/api/Manage/UpdateUser", userModel))
                 {
                     var apiresponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -157,7 +162,7 @@ namespace CeraWebApplication.Controllers
             CeraUserModel user = null;
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44389/api/Manage/GetUser?id=" + id))
+                using (var response = await httpClient.GetAsync($"{SyncApiUrl}/api/Manage/GetUser?id=" + id))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -177,7 +182,7 @@ namespace CeraWebApplication.Controllers
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.DeleteAsync("https://localhost:44389/api/Manage/DeleteUser?id="+userModel.Id))
+                using (var response = await httpClient.DeleteAsync($"{SyncApiUrl}/api/Manage/DeleteUser?id="+userModel.Id))
                 {
                     var apiresponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -196,7 +201,7 @@ namespace CeraWebApplication.Controllers
             IEnumerable<CeraResourceHealth> resourceHealth = null;
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44379/api/CeraData/GetDBResourceHealth"))
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetDBResourceHealth"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -266,7 +271,7 @@ namespace CeraWebApplication.Controllers
             IEnumerable<CeraResourceHealth> resourceHealths = null;
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44379/api/CeraData/GetDBResourceHealth"))
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetDBResourceHealth"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -292,7 +297,7 @@ namespace CeraWebApplication.Controllers
 
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44379/api/CeraData/GetDBSubscriptions"))
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetDBSubscriptions"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -316,7 +321,7 @@ namespace CeraWebApplication.Controllers
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44389/api/Cera/GetCloudSubscriptions"))
+                using (var response = await httpClient.GetAsync($"{SyncApiUrl}/api/Cera/GetCloudSubscriptions"))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -340,7 +345,7 @@ namespace CeraWebApplication.Controllers
 
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44379/api/CeraData/GetDBResourceGroups"))
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetDBResourceGroups"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -364,7 +369,7 @@ namespace CeraWebApplication.Controllers
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44389/api/cera/GetCloudResourceGroups"))
+                using (var response = await httpClient.GetAsync($"{SyncApiUrl}/api/cera/GetCloudResourceGroups"))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -388,7 +393,7 @@ namespace CeraWebApplication.Controllers
 
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44379/api/CeraData/GetDBStorageAccount"))
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetDBStorageAccount"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -413,7 +418,7 @@ namespace CeraWebApplication.Controllers
 
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44389/api/cera/GetCloudStorageAccount"))
+                using (var response = await httpClient.GetAsync($"{SyncApiUrl}/api/cera/GetCloudStorageAccount"))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -437,7 +442,7 @@ namespace CeraWebApplication.Controllers
 
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44379/api/CeraData/GetDBResources"))
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetDBResources"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -461,7 +466,7 @@ namespace CeraWebApplication.Controllers
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44389/api/cera/GetCloudResources"))
+                using (var response = await httpClient.GetAsync($"{SyncApiUrl}/api/cera/GetCloudResources"))
                 {
 
                     if (response.IsSuccessStatusCode)
@@ -486,7 +491,7 @@ namespace CeraWebApplication.Controllers
 
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44379/api/CeraData/GetDBVM"))
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetDBVM"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -510,7 +515,7 @@ namespace CeraWebApplication.Controllers
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44389/api/cera/GetCloudVM"))
+                using (var response = await httpClient.GetAsync($"{SyncApiUrl}/api/cera/GetCloudVM"))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -534,7 +539,7 @@ namespace CeraWebApplication.Controllers
 
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44379/api/CeraData/GetDBSqlServer"))
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetDBSqlServer"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -558,7 +563,7 @@ namespace CeraWebApplication.Controllers
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44389/api/cera/GetCloudSqlServer"))
+                using (var response = await httpClient.GetAsync($"{SyncApiUrl}/api/cera/GetCloudSqlServer"))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -582,7 +587,7 @@ namespace CeraWebApplication.Controllers
 
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44379/api/CeraData/GetDBTenants"))
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetDBTenants"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -606,7 +611,7 @@ namespace CeraWebApplication.Controllers
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44389/api/cera/GetCloudTenants"))
+                using (var response = await httpClient.GetAsync($"{SyncApiUrl}/api/cera/GetCloudTenants"))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -630,7 +635,7 @@ namespace CeraWebApplication.Controllers
 
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44379/api/CeraData/GetDBWebApps"))
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetDBWebApps"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -654,7 +659,7 @@ namespace CeraWebApplication.Controllers
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44389/api/cera/GetCloudWebApps"))
+                using (var response = await httpClient.GetAsync($"{SyncApiUrl}/api/cera/GetCloudWebApps"))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -678,7 +683,7 @@ namespace CeraWebApplication.Controllers
 
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44379/api/CeraData/GetDBAppServicePlans"))
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetDBAppServicePlans"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -702,7 +707,7 @@ namespace CeraWebApplication.Controllers
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44389/api/cera/GetCloudAppServicePlans"))
+                using (var response = await httpClient.GetAsync($"{SyncApiUrl}/api/cera/GetCloudAppServicePlans"))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -726,7 +731,7 @@ namespace CeraWebApplication.Controllers
 
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44379/api/CeraData/GetDBDisks"))
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetDBDisks"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -750,7 +755,7 @@ namespace CeraWebApplication.Controllers
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44389/api/cera/GetCloudDisks"))
+                using (var response = await httpClient.GetAsync($"{SyncApiUrl}/api/cera/GetCloudDisks"))
                 {
                     if (response.IsSuccessStatusCode)
                     {

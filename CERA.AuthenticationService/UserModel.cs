@@ -11,8 +11,5 @@ namespace CERA.AuthenticationService
         public string emailId { get; set; }
         public IList<string> roles { get; set; }
     }
-    //public class Roles
-    //{
-    //    public string role { get; set; }
-    //}
+    
 }

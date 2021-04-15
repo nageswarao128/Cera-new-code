@@ -72,36 +72,6 @@ namespace CERA.AuthenticationService
             return "User registered Successfully";
         }
 
-        public async Task<object> LoginUser(LoginModel loginModel)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var user = await _userManager.FindByNameAsync(loginModel.UserName);
-            //var client = _db.Clients.Where(x => x.PrimaryContactName == user.UserName).FirstOrDefault();
-            if (user != null && await _userManager.CheckPasswordAsync(user, loginModel.Password))
-            {
-                var authsigningkey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("CER@AP!@!@#$%^&*()"));
-
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                        new Claim(ClaimTypes.Name, user.UserName),
-                        new Claim(ClaimTypes.Email, user.Email),
-                        new Claim(ClaimTypes.NameIdentifier, user.Id),
-                    }),
-                    Expires = DateTime.UtcNow.AddMinutes(20),
-                    SigningCredentials = new SigningCredentials(authsigningkey, SecurityAlgorithms.HmacSha256Signature)
-                };
-                //if (client != null)
-                //{
-                //    tokenDescriptor.Subject.AddClaim(new Claim("orgname", client.ClientName));
-                //}
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-                var token1 = new { token = tokenHandler.WriteToken(token), expiration = token.ValidTo };
-                return token1; 
-            }
-            return "Unauthorized User";
-        }
         public async Task<object> Login(LoginModel loginModel)
         {
             var user = await _userManager.FindByNameAsync(loginModel.UserName);

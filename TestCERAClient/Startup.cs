@@ -24,7 +24,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
 
-namespace TestCERAClient
+namespace CERASyncAPI
 {
     public class Startup
     {
@@ -62,36 +62,7 @@ namespace TestCERAClient
 
             //services.AddDbContext<CeraAPIUserDbContext>(x => x.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=db_Cera_User; Integrated Security= true;"));
             services.AddDbContext<CeraAPIUserDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DbCS")));
-            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            //    .AddCookie(x =>
-            //    {
-            //        x.LoginPath = "/Login/Login";
-                    
-            //        x.Cookie.Name = "CERAClientApp";
-            //    });
-           // services.AddAuthentication(x =>
-           // {
-                
-           //     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-           //     x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-           // })
-           //.AddJwtBearer(x =>
-           //{
-           //    x.RequireHttpsMetadata = false;
-
-           //    x.SaveToken = true;
-           //    x.TokenValidationParameters = new TokenValidationParameters
-           //    {
-           //        ValidateIssuerSigningKey = true,
-           //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:key"])),
-           //        ValidateIssuer = true,
-           //        ValidIssuer = "https://localhost:44389/",
-           //        ValidateAudience = true,
-           //        ValidAudience = "Client",
-           //        RequireExpirationTime = true,
-
-           //    };
-           //});
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

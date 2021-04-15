@@ -41,8 +41,12 @@ namespace CERAAPI.Controllers
         [HttpPost]
         public object Register([FromBody] RegisterUser registerUser)
         {
-            var result = _ceraClientAuthenticator.AddUser(registerUser);
-            return result;
+            if (ModelState.IsValid)
+            {
+                var result = _ceraClientAuthenticator.AddUser(registerUser);
+                return result;
+            }
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseViewModel { Status = "Error", Message = "User Details should not be null" });
         }
         /// <summary>
         /// This method is used for user login
@@ -52,14 +56,13 @@ namespace CERAAPI.Controllers
         [HttpPost]
         public async Task <object> Login([FromBody] LoginModel loginModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseViewModel { Status = "Error", Message = "User Details should not be null" });
+            }
             var result = await _ceraClientAuthenticator.Login(loginModel);
             if (result != null)
             {
-                //var auth = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-                //auth.AddClaim(new Claim(ClaimTypes.Name, loginModel.UserName));
-                //var principle = new ClaimsPrincipal(auth);
-
-                //HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principle).Wait();
                 return result;
             }
             return null;

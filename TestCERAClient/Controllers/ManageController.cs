@@ -44,6 +44,10 @@ namespace CERAAPI.Controllers
         [HttpPut]
         public Task<object> UpdateUser(UpdateUserModel userModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return null;
+            }
             return _ceraAuthenticator.UpdateUser(userModel);
         }
         [HttpDelete]
@@ -54,6 +58,10 @@ namespace CERAAPI.Controllers
         [HttpPost]
         public IActionResult AddOrganisation([FromBody] RegisterOrgModel orgModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseViewModel { Status = "Error", Message = "Details should not be null" });
+            }
             AddOrganizationViewModel organizationViewModel = new AddOrganizationViewModel{ 
                 OrganizationName=orgModel.OrganizationName,
                 PrimaryAddress = orgModel.PrimaryAddress,
