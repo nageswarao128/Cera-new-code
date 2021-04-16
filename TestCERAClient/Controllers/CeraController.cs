@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace TestCERAClient.Controllers
+namespace CERASyncAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
@@ -25,8 +25,7 @@ namespace TestCERAClient.Controllers
         /// Based on the cloud this method will retrives Subscription details from the cloud
         /// </summary>
         /// <param name="ClientName"></param>
-        /// <returns>returns the list of Subscription data from cloud</returns>
-
+        /// <returns>returns the list of Subscription data from cloud</returns>  
         [HttpGet]
         //[Authorize]
         public IEnumerable<CeraSubscription> GetCloudSubscriptions(string ClientName = "Quadrant")

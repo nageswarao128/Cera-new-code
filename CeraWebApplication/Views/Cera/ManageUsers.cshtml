@@ -1,0 +1,49 @@
+﻿@model IEnumerable<CeraWebApplication.Models.CeraUsers>
+
+@{
+    ViewData["Title"] = "ManageUsers";
+}
+
+<h1>Cera Users</h1>
+
+<p>
+    <a asp-controller="Cera" asp-action="Adduser">+Add User</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                User ID
+            </th>
+            <th>
+                User Name
+            </th>
+            <th>
+                Email ID
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.userName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.emailId)
+            </td>
+            <td>
+                @Html.ActionLink("Update", "UpdateUser","Cera", new { id = item.id }) |
+                
+                @Html.ActionLink("Delete", "DeleteUser","Cera" ,new { id = item.id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

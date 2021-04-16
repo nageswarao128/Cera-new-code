@@ -2,12 +2,15 @@
 using CERAAPI.Data;
 using CERAAPI.Entities;
 using CERAAPI.ViewModels;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -38,9 +41,36 @@ namespace CERAAPI.Controllers
         [HttpPost]
         public object Register([FromBody] RegisterUser registerUser)
         {
-            var result = _ceraClientAuthenticator.RegisterUser(registerUser);
-            return result;
+            if (ModelState.IsValid)
+            {
+                var result = _ceraClientAuthenticator.AddUser(registerUser);
+                return result;
+            }
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseViewModel { Status = "Error", Message = "User Details should not be null" });
         }
-        
+        /// <summary>
+        /// This method is used for user login
+        /// </summary>
+        /// <param name="loginModel"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task <object> Login([FromBody] LoginModel loginModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseViewModel { Status = "Error", Message = "User Details should not be null" });
+            }
+            var result = await _ceraClientAuthenticator.Login(loginModel);
+            if (result != null)
+            {
+                return result;
+            }
+            return null;
+        }
+        [HttpPost]
+        public async void Logout()
+        {
+            await HttpContext.SignOutAsync();
+        }
     }
 }

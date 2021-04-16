@@ -1,4 +1,4 @@
-﻿@model List<CeraWebApplication.Models.CeraResourceHealth>
+﻿@model List<CeraWebApplication.Models.CeraDashboardModel>
     <style>
         .my-custom-scrollbar {
             position: relative;
@@ -9,48 +9,50 @@
             display: block;
         }
     </style>
+<h2>Dashboard</h2>
+<hr />
     <div>
         <div class="row">
-            <div class="col-md-8 table-wrapper-scroll-y my-custom-scrollbar">
-                <table class="table table-responsive table-striped table-hover" style="margin-top:1%">
-                    <thead>
-                        <tr>
-                            <th>
-                                Name
-                            </th>
-                            <th>
-                                Location
-                            </th>
-                            <th>
-                                Availability Status
-                            </th>
-                            <th>
-                                Type
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
+            <div class="col-md-8">
+                <h4>Resources Overview</h4>
+                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                    <table class="table table-striped table-hover" style="margin-top:1%">
+                        <thead>
                             <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Location)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.AvailabilityState)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Type)
-                                </td>
+                                <th>
+                                    Resources
+                                </th>
+                                <th>
+                                    Count
+                                </th>
+                                <th>
+                                    Health
+                                </th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.resources)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.count)
+                                    </td>
+                                    <td>
+                                        <a href="Cera/GetResourceHealth">
+                                            @Html.DisplayFor(modelItem => item.health)
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="col-md-4">
+                <h4>Resource Spend</h4>
                 <img src="https://apexcharts.com/wp-content/uploads/2018/05/simple-pie-chart.svg" style="height:300px;" />
             </div>
         </div>

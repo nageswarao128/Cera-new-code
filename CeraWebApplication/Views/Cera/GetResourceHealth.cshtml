@@ -1,0 +1,60 @@
+﻿@model List<CeraWebApplication.Models.CeraResourceHealth>
+<h1>Resource Health</h1>
+@if (Model != null)
+{
+    <table class="table table-striped table-hover" style="margin-top:1%">
+        <thead>
+            <tr>
+
+                <th>
+                    Name
+                </th>
+
+                <th>
+                    Location
+                </th>
+
+                <th>
+                    AvailabilityStatus
+                </th>
+
+                <th>
+                    Type
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Location)
+                    </td>
+
+                    <td>
+                        @{ if (item.AvailabilityState == "Available")
+                            {
+                                <i style="color:green">@Html.DisplayFor(modelItem => item.AvailabilityState)</i>
+                            }
+                            else if (item.AvailabilityState == "Unavailable")
+                            {
+                                <i style="color:red">@Html.DisplayFor(modelItem => item.AvailabilityState)</i>
+                            }
+                            else
+                            {
+                                <i style="color:dimgray">@Html.DisplayFor(modelItem => item.AvailabilityState)</i>
+                            }
+                        }
+
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>}
