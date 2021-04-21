@@ -86,6 +86,90 @@ namespace CERA.DataOperation
             });
             return _dbContext.SaveChanges();
         }
+        //public List<CeraResourceTypeUsage> ResourceUsage()
+        //{
+        //    string name = "Microsoft.Automation";
+        //    var result = from resource in _dbContext.Resources
+        //                 join usage in _dbContext.UsageDetails
+        //                 on resource.ResourceProviderNameSpace equals usage.consumedService
+        //                 select new CeraResourceTypeUsage
+        //                 {
+        //                     resourceType = resource.ResourceProviderNameSpace,
+        //                     pretaxCost = usage.pretaxCost,
+        //                     currency = usage.currency
+        //                 };
+        //    List<CeraResourceTypeUsage> resourceTypeUsages = result.ToList();
+        //    Dictionary<string, decimal> keyValues = new Dictionary<string, decimal>();
+        //    foreach(var item in resourceTypeUsages)
+        //    {
+        //        if (keyValues.ContainsKey(item.resourceType))
+        //        {
+        //            keyValues[item.resourceType] = keyValues[item.resourceType] + item.pretaxCost;
+        //        }
+        //        else
+        //        {
+        //            keyValues.Add(item.resourceType, decimal.Zero);
+        //        }
+        //    }
+   
+        //    //return result.ToList();
+        //    return null;
+        //}
+        public List<CeraResourceTypeUsage> ResourceUsage()
+        {
+            List<CeraResourceTypeUsage> resourceTypeUsages = new List<CeraResourceTypeUsage>();
+            var data = _dbContext.UsageDetails.ToList();
+            Dictionary<string, decimal> keyValues = new Dictionary<string, decimal>();
+            foreach(var item in data)
+            {
+                if (keyValues.ContainsKey(item.consumedService))
+                {
+                    keyValues[item.consumedService] = keyValues[item.consumedService] + item.pretaxCost;
+                }
+                else
+                {
+                   keyValues.Add(item.consumedService, item.pretaxCost);
+                }   
+            }
+            foreach(var item in keyValues)
+            {
+                resourceTypeUsages.Add(new CeraResourceTypeUsage
+                {
+                    resourceType = item.Key,
+                    pretaxCost = item.Value
+                });
+            }
+            return resourceTypeUsages;
+        }
+        public List<ResourceTypeCount> GetResourceTypeCount()
+        {
+            List<ResourceTypeCount> resourceTypeCount = new List<ResourceTypeCount>();
+            var data = _dbContext.Resources.ToList();
+            Dictionary<string, int> keyValues = new Dictionary<string, int>();
+            foreach (var item in data)
+            {
 
+                if (!keyValues.ContainsKey(item.ResourceProviderNameSpace))
+                {
+                    
+                    keyValues.Add(item.ResourceProviderNameSpace, 1);
+                    //keyValues[item.ResourceType] = keyValues[item.ResourceType] + item.ResourceType.Count();
+                }
+                else
+                {
+                    keyValues[item.ResourceProviderNameSpace]++;
+                    //keyValues.Add(item.ResourceType, item.ResourceType.Count());
+                }
+            }
+            foreach (var item in keyValues)
+            {
+                resourceTypeCount.Add(new ResourceTypeCount
+                {
+                    resourceType = item.Key,
+                    count = item.Value
+                });
+            }
+            return resourceTypeCount;
+        }
     }
 }

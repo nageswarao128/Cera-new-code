@@ -42,7 +42,6 @@ namespace CERA.Azure.CloudService
         /// <returns>returns a list of resources from Azure</returns>
         public List<CeraResources> GetCloudResourceList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
-
             try
             {
                 Initialize();
@@ -64,7 +63,9 @@ namespace CERA.Azure.CloudService
                                 Name = resource.Name,
                                 RegionName = resource.RegionName,
                                 ResourceGroupName = resource.ResourceGroupName,
-                                ResourceType = resource.ResourceType
+                                ResourceType = resource.ResourceType,
+                                Id = resource.Id,
+                                ResourceProviderNameSpace = resource.ResourceProviderNamespace
                             });
                         }
                     }
@@ -193,7 +194,7 @@ namespace CERA.Azure.CloudService
                 foreach (var sub in subscriptions)
                 {
                     var azureSqlserver = authClient.WithSubscription(sub.SubscriptionId).SqlServers.ListAsync().Result;
-                    var tenant=authClient.Tenants.ListAsync().Result;
+                    var tenant = authClient.Tenants.ListAsync().Result;
 
                     Logger.LogInfo("Got SqlServer List from a subscription in Azure Cloud Provider");
                     if (azureSqlserver != null)
@@ -240,7 +241,7 @@ namespace CERA.Azure.CloudService
         {
             return new object();
         }
-        public void Initialize(string tenantId, string clientID, string clientSecret,string authority)
+        public void Initialize(string tenantId, string clientID, string clientSecret, string authority)
         {
             authenticator = new CeraAzureAuthenticator(Logger);
             authenticator.Initialize(tenantId, clientID, clientSecret, authority);
@@ -326,7 +327,7 @@ namespace CERA.Azure.CloudService
                         tenants.Add(new CeraTenants
                         {
                             Key = Tenants.Key,
-                            TenantId = Tenants.TenantId                            
+                            TenantId = Tenants.TenantId
                         });
 
                     }
@@ -498,7 +499,7 @@ namespace CERA.Azure.CloudService
                 foreach (var sub in subscriptions)
                 {
                     var Disks = authClient.WithSubscription(sub.SubscriptionId).Disks.ListAsync().Result;
-                   
+
                     Logger.LogInfo("Got Disks List from Azure Cloud Provider");
                     if (Disks != null)
                     {
@@ -530,7 +531,7 @@ namespace CERA.Azure.CloudService
         }
         public List<CeraResourceHealth> GetCloudResourceHealth(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
-            
+
             const string url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.ResourceHealth/availabilityStatuses?api-version=2020-05-01-preview";
             var data = CallAzureEndPoint(url, subscriptions);
             if (data == null)
@@ -553,7 +554,84 @@ namespace CERA.Azure.CloudService
                 });
             }
             return resourceHealth;
-            
+        }
+        public List<CeraRateCard> GetCloudRateCardList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            const string url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.Commerce/RateCard?api-version=2016-08-31-preview&$filter=OfferDurableId eq 'MS-AZR-0003P' and Currency eq 'INR' and Locale eq 'en-IN' and RegionInfo eq 'IN'";
+            var data = CallAzureEndPoint(url, subscriptions);
+            if (data == null)
+            {
+                return null;
+            }
+
+            RateCardDTO rateCardDTO = new RateCardDTO();
+            rateCardDTO = JsonConvert.DeserializeObject<RateCardDTO>(data.Result);
+            List<CeraRateCard> ceraRateCard = new List<CeraRateCard>();
+            foreach (var item in rateCardDTO.Meters)
+            {
+                ceraRateCard.Add(new CeraRateCard
+                {
+                    MeterId = item.MeterId,
+                    MeterName = item.MeterName,
+                    MeterCategory = item.MeterCategory,
+                    MeterRegion = item.MeterRegion,
+                    MeterStatus = item.MeterStatus,
+                    MeterSubCategory = item.MeterSubCategory,
+                    EffectiveDate = item.EffectiveDate,
+                    IncludedQuantity = item.IncludedQuantity,
+                    Unit = item.Unit,
+                    Currency = "INR"
+                });
+            }
+            return ceraRateCard;
+        }
+        public List<CeraUsage> GetCloudUsageDetails(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            const string url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.Consumption/usageDetails?api-version=2018-03-31&$expand=properties/additionalProperties";
+            var data = CallAzureEndPoint(url, subscriptions);
+            if (data == null)
+            {
+                return null;
+            }
+
+            List<UsageDTO> usageDetailsDTO = new List<UsageDTO>();
+            JObject result = JObject.Parse(data.Result);
+            var clientarray = result["value"].Value<JArray>();
+            usageDetailsDTO = clientarray.ToObject<List<UsageDTO>>();
+
+            List<CeraUsage> usageDetails = new List<CeraUsage>();
+            foreach (var item in usageDetailsDTO)
+            {
+                usageDetails.Add(new CeraUsage
+                {
+                    id = item.id,
+                    name = item.name,
+                    type = item.type,
+                    billingPeriodId = item.usageProperties.billingPeriodId,
+                    usageStart = item.usageProperties.usageStart,
+                    usageEnd = item.usageProperties.usageEnd,
+                    instanceId = item.usageProperties.instanceId,
+                    instanceName = item.usageProperties.instanceName,
+                    instanceLocation = item.usageProperties.instanceLocation,
+                    meterId = item.usageProperties.meterId,
+                    usageQuantity = item.usageProperties.usageQuantity,
+                    pretaxCost = item.usageProperties.pretaxCost,
+                    currency = item.usageProperties.currency,
+                    isEstimated = item.usageProperties.isEstimated,
+                    subscriptionGuid = item.usageProperties.subscriptionGuid,
+                    subscriptionName = item.usageProperties.subscriptionName,
+                    product = item.usageProperties.product,
+                    consumedService = item.usageProperties.consumedService,
+                    partNumber = item.usageProperties.partNumber,
+                    resourceGuid = item.usageProperties.resourceGuid,
+                    offerId = item.usageProperties.offerId,
+                    chargesBilledSeparately = item.usageProperties.chargesBilledSeparately,
+                    meterDetails = item.usageProperties.meterDetails,
+                    additionalProperties = item.usageProperties.additionalProperties
+                });
+            }
+
+            return usageDetails;
         }
         public List<CeraCompliances> GetCloudCompliances(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
@@ -563,13 +641,14 @@ namespace CERA.Azure.CloudService
             {
                 return null;
             }
-            
+
             CeraCompliancesDTO ceraCompliancesDTO = new CeraCompliancesDTO();
             ceraCompliancesDTO = JsonConvert.DeserializeObject<CeraCompliancesDTO>(data.Result);
             List<CeraCompliances> ceraCompliances = new List<CeraCompliances>();
             foreach (var item in ceraCompliancesDTO.value)
             {
-                ceraCompliances.Add(new CeraCompliances {
+                ceraCompliances.Add(new CeraCompliances
+                {
                     Name = item.name,
                     Type = item.type,
                     AssessmentType = item.properties.assessmentResult[0].type
@@ -577,13 +656,13 @@ namespace CERA.Azure.CloudService
             }
             return ceraCompliances;
         }
-        public async Task<string> CallAzureEndPoint(string url,List<CeraSubscription> subscriptions)
+        public async Task<string> CallAzureEndPoint(string url, List<CeraSubscription> subscriptions)
         {
             try
             {
                 Initialize();
                 string token = authenticator.GetAuthToken();
-                var data =string.Empty;
+                var data = string.Empty;
                 if (token != null)
                 {
                     foreach (var sub in subscriptions)
@@ -606,6 +685,7 @@ namespace CERA.Azure.CloudService
                 return null;
             }
         }
+
         public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo)
         {
             throw new NotImplementedException();
@@ -634,7 +714,7 @@ namespace CERA.Azure.CloudService
         public List<CeraResourceGroups> GetCloudResourceGroups(RequestInfoViewModel requestInfo)
         {
             throw new NotImplementedException();
-        }     
+        }
 
         public List<CeraStorageAccount> GetCloudStorageAccountList(RequestInfoViewModel requestInfo)
         {
@@ -700,6 +780,35 @@ namespace CERA.Azure.CloudService
         }
 
         public List<CeraCompliances> GetCompliancesList()
+        {
+            throw new NotImplementedException();
+        }
+        public List<CeraRateCard> GetCloudRateCardList(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraRateCard> GetRateCardList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraUsage> GetCloudUsageDetails(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraUsage> GetUsageDetails()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraResourceTypeUsage> GetResourceTypeUsageDetails()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ResourceTypeCount> GetResourceTypeCounts()
         {
             throw new NotImplementedException();
         }

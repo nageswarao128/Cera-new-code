@@ -38,6 +38,7 @@ namespace CERA.DataOperation.Data
 
         public DbSet<CeraResourceHealth> ResourceHealth { get; set; }
         public DbSet<CeraCompliances> Compliances { get; set; }
-
+        public DbSet<CeraRateCard> RateCard { get; set; }
+        public DbSet<CeraUsage> UsageDetails { get; set; }
     }
 }

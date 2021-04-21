@@ -23,8 +23,7 @@ namespace CERA.DataOperation
             _dbContext = dbContext;
             _converter = converter;
         }
-       
-
+      
         public object AddServicePlanData(object data)
         {
             return new object();
@@ -608,7 +607,85 @@ namespace CERA.DataOperation
                 return null;
             }
         }
-       
+        public int AddRateCard(List<CeraRateCard> data)
+        {
+            try
+            {
+                _logger.LogInfo("Receive Data");
+                var rateCard = _dbContext.RateCard.ToList();
+                foreach (var item in rateCard)
+                {
+                    _dbContext.RateCard.Remove(item);
+                }
+                _dbContext.SaveChanges();
+                foreach (var item in data)
+                {
+                    _dbContext.RateCard.Add(item);
+                }
+                int record = _dbContext.SaveChanges();
+                _logger.LogInfo("Data Imported Successfully");
+                return record;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return 0;
+            }
+        }
+
+        public List<CeraRateCard> GetRateCard()
+        {
+            try
+            {
+                var rateCard = _dbContext.RateCard.ToList();
+                _logger.LogInfo("Data retrieved for RateCard List from Database");
+                return rateCard;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return null;
+            }
+        }
+        public int AddUsageDetails(List<CeraUsage> data)
+        {
+            try
+            {
+                _logger.LogInfo("Receive Data");
+                var usage = _dbContext.UsageDetails.ToList();
+                foreach (var item in usage)
+                {
+                    _dbContext.UsageDetails.Remove(item);
+                }
+                _dbContext.SaveChanges();
+                foreach (var item in data)
+                {
+                    _dbContext.UsageDetails.Add(item);
+                }
+                int record = _dbContext.SaveChanges();
+                _logger.LogInfo("Data Imported Successfully");
+                return record;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return 0;
+            }
+        }
+        public List<CeraUsage> GetUsageDetails()
+        {
+            try
+            {
+                var usage = _dbContext.UsageDetails.ToList();
+                _logger.LogInfo("Data retrieved for Usage Details List from Database");
+                return usage;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return null;
+            }
+        }
         public object UpdateResourceData(object data)
         {
             return new object();
@@ -658,7 +735,6 @@ namespace CERA.DataOperation
         {
             throw new NotImplementedException();
         }
-
-       
+  
     }
 }

@@ -42,6 +42,20 @@ namespace CERASyncAPI.Controllers
             return _ceraCloud.GetCloudResourceHealth(requestInfo);
         }
         [HttpGet]
+        public List<CeraRateCard> GetCloudRateCard(string ClientName = "Quadrant")
+        {
+            RequestInfoViewModel requestInfo = new RequestInfoViewModel();
+            _ceraCloud.ClientName = ClientName;
+            return _ceraCloud.GetCloudRateCardList(requestInfo);
+        }
+        [HttpGet]
+        public List<CeraUsage> GetCloudUsageDetails(string ClientName = "Quadrant")
+        {
+            RequestInfoViewModel requestInfo = new RequestInfoViewModel();
+            _ceraCloud.ClientName = ClientName;
+            return _ceraCloud.GetCloudUsageDetails(requestInfo);
+        }
+        [HttpGet]
         public List<CeraCompliances> GetCloudCompliances(string ClientName = "Quadrant")
         {
             RequestInfoViewModel requestInfo = new RequestInfoViewModel();
@@ -156,6 +170,5 @@ namespace CERASyncAPI.Controllers
             _ceraCloud.ClientName = ClientName;
             return _ceraCloud.GetCloudDisksList(requestInfo);
         }
-
     }
 }
