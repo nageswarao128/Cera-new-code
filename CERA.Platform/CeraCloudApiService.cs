@@ -345,6 +345,44 @@ namespace CERA.CloudService
             }
             return compliances;
         }
+        public List<CeraRateCard> GetCloudRateCardList(RequestInfoViewModel requestInfo)
+        {
+            Logger.LogInfo("Get RateCard List Called");
+            List<CeraRateCard> rateCard = new List<CeraRateCard>();
+            GetPlatforms();
+            List<CeraSubscription> subscriptions = new List<CeraSubscription>();
+            subscriptions = GetSubscriptionList();
+            foreach (var platformConfig in PlatformConfigs)
+            {
+                _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
+                _cloudApiServices.Logger = Logger;
+                rateCard = _cloudApiServices.GetCloudRateCardList(requestInfo, subscriptions);
+                Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Ratecard");
+                _dataOps.AddRateCard(rateCard);
+                rateCard.Clear();
+                Logger.LogInfo($"Imported data for {platformConfig.PlatformName} Cloud RateCard to DB");
+            }
+            return rateCard;
+        }
+        public List<CeraUsage> GetCloudUsageDetails(RequestInfoViewModel requestInfo)
+        {
+            Logger.LogInfo("Get Usage Details List Called");
+            List<CeraUsage> usage = new List<CeraUsage>();
+            GetPlatforms();
+            List<CeraSubscription> subscriptions = new List<CeraSubscription>();
+            subscriptions = GetSubscriptionList();
+            foreach (var platformConfig in PlatformConfigs)
+            {
+                _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
+                _cloudApiServices.Logger = Logger;
+                usage = _cloudApiServices.GetCloudUsageDetails(requestInfo, subscriptions);
+                Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Ratecard");
+                _dataOps.AddUsageDetails(usage);
+                usage.Clear();
+                Logger.LogInfo($"Imported data for {platformConfig.PlatformName} Cloud RateCard to DB");
+            }
+            return usage;
+        }
         public void GetAllResources()
         {
             GetCloudServicePlanList();
@@ -453,6 +491,26 @@ namespace CERA.CloudService
             Logger.LogInfo("Requested data for Compliances List from Database called");
             return _dataOps.GetCompliances();
         }
+        public List<CeraRateCard> GetRateCardList()
+        {
+            Logger.LogInfo("Requested data for RateCard List from Database called");
+            return _dataOps.GetRateCard();
+        }
+        public List<CeraUsage> GetUsageDetails()
+        {
+            Logger.LogInfo("Requested data for Usage Details from Database called");
+            return _dataOps.GetUsageDetails();
+        }
+        public List<CeraResourceTypeUsage> GetResourceTypeUsageDetails()
+        {
+            Logger.LogInfo("Requested data for ResourceType Usage Details from Database called");
+            return _dataOps.ResourceUsage();
+        }
+        public List<ResourceTypeCount> GetResourceTypeCounts()
+        {
+            Logger.LogInfo("Requested data for ResourceType count Details from Database called");
+            return _dataOps.GetResourceTypeCount();
+        }
         public void Initialize(string tenantId, string clientID, string clientSecret,string authority)
         {
             _cloudApiServices.Initialize(tenantId, clientID, clientSecret,authority);
@@ -477,7 +535,6 @@ namespace CERA.CloudService
         {
             return _dataOps.GetClientOnboardedPlatforms(ClientName);
         }
-
         public List<CeraResources> GetCloudResourceList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             throw new NotImplementedException();
@@ -528,6 +585,15 @@ namespace CERA.CloudService
             throw new NotImplementedException();
         }
 
-        
+        public List<CeraRateCard> GetCloudRateCardList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraUsage> GetCloudUsageDetails(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

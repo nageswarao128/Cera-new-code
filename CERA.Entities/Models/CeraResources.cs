@@ -13,7 +13,9 @@ namespace CERA.Entities.Models
     public class CeraResources
     {   
         [Key]
-        public int? ResourceID { get; set; } 
+        public int? ResourceID { get; set; }
+        public string Id { get; set; }
+        public string ResourceProviderNameSpace { get; set; }
         public string Name { get; set; }
         public string RegionName { get; set; }
         public string ResourceGroupName { get; set; }

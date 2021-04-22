@@ -198,15 +198,16 @@ namespace CeraWebApplication.Controllers
         }
         public async Task<IActionResult> DashBoard()
         {
-            IEnumerable<CeraResourceHealth> resourceHealth = null;
+            IEnumerable<ResourceTypeCount> resourceCount = null;
+            IEnumerable<ResourceTypeUsage> resourceUsage = null;
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetDBResourceHealth"))
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetResourceTypeCount"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
                     {
-                        resourceHealth = JsonConvert.DeserializeObject<List<CeraResourceHealth>>(apiResponse);
+                        resourceCount = JsonConvert.DeserializeObject<List<ResourceTypeCount>>(apiResponse);
                     }
                     else
                     {
@@ -214,56 +215,47 @@ namespace CeraWebApplication.Controllers
                     }
                 }
             }
-            List<CeraDashboardModel> dashboardModel = new List<CeraDashboardModel>();
-            dashboardModel.Add(
-                new CeraDashboardModel
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetResourceTypeUsageDetails"))
                 {
-                    resources = "Compute",
-                    count = 30,
-                    health = "Available"
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        resourceUsage = JsonConvert.DeserializeObject<List<ResourceTypeUsage>>(apiResponse);
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Cera");
+                    }
                 }
-                );
-            dashboardModel.Add(
-               new CeraDashboardModel
-               {
-                   resources = "Storage",
-                   count = 45,
-                   health = "Available"
-               }
-               );
-            dashboardModel.Add(
-              new CeraDashboardModel
-              {
-                  resources = "Sql",
-                  count = 10,
-                  health = "Available"
-              }
-              );
-            dashboardModel.Add(
-              new CeraDashboardModel
-              {
-                  resources = "Services",
-                  count = 28,
-                  health = "Available"
-              }
-              );
-            dashboardModel.Add(
-              new CeraDashboardModel
-              {
-                  resources = "VM",
-                  count = 5,
-                  health = "Available"
-              }
-              );
-            dashboardModel.Add(
-              new CeraDashboardModel
-              {
-                  resources = "WebApps",
-                  count = 3,
-                  health = "Available"
-              }
-              );
-            return View(dashboardModel);
+            }
+            ViewBag.count = resourceCount;
+            ViewBag.usage = resourceUsage;
+            return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetResourceTypeUsage()
+        {
+            IEnumerable<ResourceTypeUsage> resourceTypeUsages = null;
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetResourceTypeUsageDetails"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        resourceTypeUsages = JsonConvert.DeserializeObject<List<ResourceTypeUsage>>(apiResponse);
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Cera");
+                    }
+                    ViewBag.usage = apiResponse;
+                }
+                
+            }
+            return View(resourceTypeUsages.ToList());
         }
         [HttpGet]
         public async Task<IActionResult> GetResourceHealth()

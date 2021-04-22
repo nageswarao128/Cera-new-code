@@ -209,5 +209,45 @@ namespace CERA.AWS.CloudService
         {
             throw new NotImplementedException();
         }
+
+        public List<CeraRateCard> GetCloudRateCardList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraRateCard> GetCloudRateCardList(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraRateCard> GetRateCardList()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraUsage> GetCloudUsageDetails(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraUsage> GetCloudUsageDetails(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraUsage> GetUsageDetails()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraResourceTypeUsage> GetResourceTypeUsageDetails()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ResourceTypeCount> GetResourceTypeCounts()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

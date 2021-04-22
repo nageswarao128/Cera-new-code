@@ -16,7 +16,6 @@ namespace CERA.CloudService
         public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo,List<CeraSubscription> subscriptions);
         public List<CeraResources> GetCloudResourceList(RequestInfoViewModel requestInfo);
         public List<CeraResources> GetCloudResourceList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions);
-
         public List<CeraResourceGroups> GetCloudResourceGroups(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions);
         public List<CeraResourceGroups> GetCloudResourceGroups(RequestInfoViewModel requestInfo);
         public List<CeraStorageAccount> GetCloudStorageAccountList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions);
@@ -34,6 +33,10 @@ namespace CERA.CloudService
         public List<CeraAppServicePlans> GetCloudAppServicePlansList(RequestInfoViewModel requestInfo);
         public List<CeraDisks> GetCloudDisksList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions);
         public List<CeraDisks> GetCloudDisksList(RequestInfoViewModel requestInfo);
+        public List<CeraRateCard> GetCloudRateCardList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions);
+        public List<CeraRateCard> GetCloudRateCardList(RequestInfoViewModel requestInfo);
+        public List<CeraUsage> GetCloudUsageDetails(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions);
+        public List<CeraUsage> GetCloudUsageDetails(RequestInfoViewModel requestInfo);
         public object GetCloudServicePlanList();
         public object GetCloudSqlDbList();
         public object GetCloudMonthlyBillingList();
@@ -49,5 +52,9 @@ namespace CERA.CloudService
         public List<CeraDisks> GetDisksList();
         public List<CeraResourceHealth> GetCeraResourceHealthList();
         public List<CeraCompliances> GetCompliancesList();
+        public List<CeraRateCard> GetRateCardList();
+        public List<CeraUsage> GetUsageDetails();
+        public List<CeraResourceTypeUsage> GetResourceTypeUsageDetails();
+        public List<ResourceTypeCount> GetResourceTypeCounts();
     }
 }

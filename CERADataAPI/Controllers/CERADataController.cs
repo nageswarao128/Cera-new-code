@@ -1,4 +1,5 @@
 ﻿using CERA.Entities.Models;
+using CERA.Entities.ViewModels;
 using CERA.Platform;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -119,6 +120,16 @@ namespace CERADataAPI.Controllers
         public IEnumerable<CeraResourceHealth> GetDBResourceHealth()
         {
             return _ceraCloud.GetCeraResourceHealthList();
+        }
+        [HttpGet]
+        public object GetResourceTypeUsageDetails()
+        {
+            return _ceraCloud.GetResourceTypeUsageDetails();
+        }
+        [HttpGet]
+        public IEnumerable<ResourceTypeCount> GetResourceTypeCount()
+        {
+            return _ceraCloud.GetResourceTypeCounts();
         }
     }
 }
