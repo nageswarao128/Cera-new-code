@@ -135,7 +135,7 @@ namespace CERA.DataOperation
             {
                 resourceTypeUsages.Add(new CeraResourceTypeUsage
                 {
-                    resourceType = item.Key,
+                    resourceType = item.Key.Remove(0,10),
                     pretaxCost = item.Value
                 });
             }
@@ -148,24 +148,38 @@ namespace CERA.DataOperation
             Dictionary<string, int> keyValues = new Dictionary<string, int>();
             foreach (var item in data)
             {
-
-                if (!keyValues.ContainsKey(item.ResourceProviderNameSpace))
+                if (item.ResourceProviderNameSpace == "Microsoft.Automation" || item.ResourceProviderNameSpace == "Microsoft.Network" || item.ResourceProviderNameSpace == "Microsoft.Storage" || item.ResourceProviderNameSpace == "Microsoft.Compute")
                 {
-                    
-                    keyValues.Add(item.ResourceProviderNameSpace, 1);
-                    //keyValues[item.ResourceType] = keyValues[item.ResourceType] + item.ResourceType.Count();
+
+                    if (!keyValues.ContainsKey(item.ResourceProviderNameSpace))
+                    {
+                        keyValues.Add(item.ResourceProviderNameSpace, 1);   
+                    }
+                    else
+                    {
+                        keyValues[item.ResourceProviderNameSpace]++;
+                    }
                 }
                 else
                 {
-                    keyValues[item.ResourceProviderNameSpace]++;
-                    //keyValues.Add(item.ResourceType, item.ResourceType.Count());
+                    if (!keyValues.ContainsKey("Microsoft.Others"))
+                    {
+
+                        keyValues.Add("Microsoft.Others", 1);
+                        
+                    }
+                    else
+                    {
+                        keyValues["Microsoft.Others"]++;
+                        
+                    }
                 }
             }
             foreach (var item in keyValues)
             {
                 resourceTypeCount.Add(new ResourceTypeCount
                 {
-                    resourceType = item.Key,
+                    resourceType = item.Key.Remove(0,10),
                     count = item.Value
                 });
             }
