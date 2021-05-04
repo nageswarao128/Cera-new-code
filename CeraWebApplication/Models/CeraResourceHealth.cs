@@ -7,10 +7,10 @@ namespace CeraWebApplication.Models
 {
     public class CeraResourceHealth
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public string ResourceName { get; set; }
+        public string ResourceGroupName { get; set; }
+        public string ResourceType { get; set; }
         public string Location { get; set; }
         public string AvailabilityState { get; set; }
-        public string Type { get; set; }
     }
 }

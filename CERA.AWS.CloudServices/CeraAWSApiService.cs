@@ -190,7 +190,7 @@ namespace CERA.AWS.CloudService
             throw new NotImplementedException();
         }
 
-        public List<CeraResourceHealth> GetCeraResourceHealthList()
+        public List<ResourceHealthViewDTO> GetCeraResourceHealthList()
         {
             throw new NotImplementedException();
         }

@@ -117,7 +117,7 @@ namespace CERADataAPI.Controllers
             return _ceraCloud.GetDisksList();
         }
         [HttpGet]
-        public IEnumerable<CeraResourceHealth> GetDBResourceHealth()
+        public IEnumerable<ResourceHealthViewDTO> GetDBResourceHealth()
         {
             return _ceraCloud.GetCeraResourceHealthList();
         }

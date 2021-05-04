@@ -7,54 +7,58 @@
             <tr>
 
                 <th>
-                    Name
+                    Resource Name
+                </th>
+
+                <th>
+                    Resource Group
+                </th>
+
+                <th>
+                    Resource Type
                 </th>
 
                 <th>
                     Location
                 </th>
-
                 <th>
-                    AvailabilityStatus
-                </th>
-
-                <th>
-                    Type
+                    Availability State
                 </th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Location)
-                    </td>
-
-                    <td>
-                        @{ if (item.AvailabilityState == "Available")
-                            {
-                                <i style="color:green">@Html.DisplayFor(modelItem => item.AvailabilityState)</i>
-                            }
-                            else if (item.AvailabilityState == "Unavailable")
-                            {
-                                <i style="color:red">@Html.DisplayFor(modelItem => item.AvailabilityState)</i>
-                            }
-                            else
-                            {
-                                <i style="color:dimgray">@Html.DisplayFor(modelItem => item.AvailabilityState)</i>
-                            }
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ResourceName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ResourceGroupName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ResourceType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+                <td>
+                    @{ if (item.AvailabilityState == "Available")
+                        {
+                            <i style="color:green">@Html.DisplayFor(modelItem => item.AvailabilityState)</i>
                         }
+                        else if (item.AvailabilityState == "Unavailable")
+                        {
+                            <i style="color:red">@Html.DisplayFor(modelItem => item.AvailabilityState)</i>
+                        }
+                        else
+                        {
+                            <i style="color:dimgray">@Html.DisplayFor(modelItem => item.AvailabilityState)</i>
+                        }
+                    }
 
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Type)
-                    </td>
-                </tr>
+                </td>
+            </tr>
             }
         </tbody>
     </table>}

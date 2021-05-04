@@ -86,56 +86,51 @@ namespace CERA.DataOperation
             });
             return _dbContext.SaveChanges();
         }
-        //public List<CeraResourceTypeUsage> ResourceUsage()
-        //{
-        //    string name = "Microsoft.Automation";
-        //    var result = from resource in _dbContext.Resources
-        //                 join usage in _dbContext.UsageDetails
-        //                 on resource.ResourceProviderNameSpace equals usage.consumedService
-        //                 select new CeraResourceTypeUsage
-        //                 {
-        //                     resourceType = resource.ResourceProviderNameSpace,
-        //                     pretaxCost = usage.pretaxCost,
-        //                     currency = usage.currency
-        //                 };
-        //    List<CeraResourceTypeUsage> resourceTypeUsages = result.ToList();
-        //    Dictionary<string, decimal> keyValues = new Dictionary<string, decimal>();
-        //    foreach(var item in resourceTypeUsages)
-        //    {
-        //        if (keyValues.ContainsKey(item.resourceType))
-        //        {
-        //            keyValues[item.resourceType] = keyValues[item.resourceType] + item.pretaxCost;
-        //        }
-        //        else
-        //        {
-        //            keyValues.Add(item.resourceType, decimal.Zero);
-        //        }
-        //    }
-   
-        //    //return result.ToList();
-        //    return null;
-        //}
+
         public List<CeraResourceTypeUsage> ResourceUsage()
         {
             List<CeraResourceTypeUsage> resourceTypeUsages = new List<CeraResourceTypeUsage>();
             var data = _dbContext.UsageDetails.ToList();
             Dictionary<string, decimal> keyValues = new Dictionary<string, decimal>();
-            foreach(var item in data)
+
+
+            foreach (var item in data)
             {
-                if (keyValues.ContainsKey(item.consumedService))
+                if (item.consumedService == "Microsoft.Automation" || item.consumedService == "Microsoft.Network" || item.consumedService == "Microsoft.Storage" || item.consumedService == "Microsoft.Compute")
                 {
-                    keyValues[item.consumedService] = keyValues[item.consumedService] + item.pretaxCost;
+                    if (keyValues.ContainsKey(item.consumedService))
+                    {
+                        keyValues[item.consumedService] = keyValues[item.consumedService] + item.pretaxCost;
+                    }
+                    else
+                    {
+                        keyValues.Add(item.consumedService, item.pretaxCost);
+                    }
                 }
+
                 else
                 {
-                   keyValues.Add(item.consumedService, item.pretaxCost);
-                }   
+                    if (!keyValues.ContainsKey("Microsoft.Others"))
+                    {
+
+                        keyValues.Add("Microsoft.Others", item.pretaxCost);
+
+                    }
+                    else
+                    {
+                        keyValues["Microsoft.Others"] = keyValues["Microsoft.Others"] + item.pretaxCost;
+
+                    }
+                }
             }
-            foreach(var item in keyValues)
+
+
+
+            foreach (var item in keyValues)
             {
                 resourceTypeUsages.Add(new CeraResourceTypeUsage
                 {
-                    resourceType = item.Key.Remove(0,10),
+                    resourceType = item.Key.Remove(0, 10),
                     pretaxCost = item.Value
                 });
             }
@@ -150,10 +145,9 @@ namespace CERA.DataOperation
             {
                 if (item.ResourceProviderNameSpace == "Microsoft.Automation" || item.ResourceProviderNameSpace == "Microsoft.Network" || item.ResourceProviderNameSpace == "Microsoft.Storage" || item.ResourceProviderNameSpace == "Microsoft.Compute")
                 {
-
                     if (!keyValues.ContainsKey(item.ResourceProviderNameSpace))
                     {
-                        keyValues.Add(item.ResourceProviderNameSpace, 1);   
+                        keyValues.Add(item.ResourceProviderNameSpace, 1);
                     }
                     else
                     {
@@ -164,14 +158,11 @@ namespace CERA.DataOperation
                 {
                     if (!keyValues.ContainsKey("Microsoft.Others"))
                     {
-
                         keyValues.Add("Microsoft.Others", 1);
-                        
                     }
                     else
                     {
                         keyValues["Microsoft.Others"]++;
-                        
                     }
                 }
             }
@@ -179,11 +170,26 @@ namespace CERA.DataOperation
             {
                 resourceTypeCount.Add(new ResourceTypeCount
                 {
-                    resourceType = item.Key.Remove(0,10),
+                    resourceType = item.Key.Remove(0, 10),
                     count = item.Value
                 });
             }
             return resourceTypeCount;
+        }
+        public List<ResourceHealthViewDTO> ResourceHealth()
+        {
+            var ResourceHealth = from resources in _dbContext.Resources
+                                 join healths in _dbContext.ResourceHealth
+                                 on resources.Id equals healths.ResourceId
+                                 select new ResourceHealthViewDTO
+                                 {
+                                     ResourceName = resources.Name,
+                                     ResourceGroupName = resources.ResourceGroupName,
+                                     ResourceType = resources.ResourceProviderNameSpace.Remove(0, 10),
+                                     Location = healths.Location,
+                                     AvailabilityState = healths.AvailabilityState
+                                 };
+            return ResourceHealth.ToList();
         }
     }
 }

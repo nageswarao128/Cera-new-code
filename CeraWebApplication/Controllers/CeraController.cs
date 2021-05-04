@@ -36,7 +36,6 @@ namespace CeraWebApplication.Controllers
         /// This method gives the home page view
         /// </summary>
         /// <returns></returns>
-
         public IActionResult LandingPage()
         {
             return View();
@@ -50,16 +49,24 @@ namespace CeraWebApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
-            
+            UserDetails userDetails = new UserDetails();
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.PostAsJsonAsync<LoginModel>($"{SyncApiUrl}/api/Login/Login", loginModel))
                 {
                     var apiresponse = await response.Content.ReadAsStringAsync();
-                    if (response.IsSuccessStatusCode)
+                    if (apiresponse.Contains("userName"))
                     {
-                        var auth = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-                        auth.AddClaim(new Claim(ClaimTypes.Name, loginModel.UserName));
+                        userDetails = JsonConvert.DeserializeObject<UserDetails>(apiresponse);
+                        //var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser()
+                        //                .RequireRole("Admin").Build();
+                        var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name,userDetails.userName),
+                            new Claim(ClaimTypes.Role,"Admin")
+                        };
+                        var auth = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        //auth.AddClaim(new Claim(ClaimTypes.Name, loginModel.UserName));
                         var principle = new ClaimsPrincipal(auth);
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principle);
                         return RedirectToAction("DashBoard", "Cera");
@@ -71,6 +78,7 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+        
         [HttpGet]
         public async Task<IActionResult> ManageUsers()
         {

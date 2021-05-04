@@ -1,0 +1,44 @@
+@font-face {
+  font-family: "Tahoma-Bold";
+  font-style: normal;
+  font-weight: 700;
+  src: url("https://anima-uploads.s3.amazonaws.com/5c40ecb7923362000ae49c10/Tahoma Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Tahoma-Regular";
+  font-style: normal;
+  font-weight: 400;
+  src: url("https://anima-uploads.s3.amazonaws.com/5bd05d66c02dca000bcd5d2c/Tahoma.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "CourierNew-Bold";
+  font-style: normal;
+  font-weight: 700;
+  src: url("https://anima-uploads.s3.amazonaws.com/projects/6003ed6337e78091d55f7a83/fonts/cour.ttf") format("truetype");
+}
+
+* {
+  box-sizing: border-box;
+}
+.container-center-horizontal {
+  pointer-events: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+.container-center-horizontal > * {
+  pointer-events: auto;
+  flex-shrink: 0;
+}
+.hidden,
+.hidden * {
+  visibility: hidden;
+  pointer-events: none;
+}
+.screen a {
+  text-decoration: none;
+  display: contents;
+}

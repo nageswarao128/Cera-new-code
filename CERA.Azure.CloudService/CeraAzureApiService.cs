@@ -58,20 +58,38 @@ namespace CERA.Azure.CloudService
 
                         foreach (var resource in azureResources)
                         {
-                            ceraResources.Add(new CeraResources
+                            if (resource.Tags.Count > 0)
                             {
-                                Name = resource.Name,
-                                RegionName = resource.RegionName,
-                                ResourceGroupName = resource.ResourceGroupName,
-                                ResourceType = resource.ResourceType,
-                                Id = resource.Id,
-                                ResourceProviderNameSpace = resource.ResourceProviderNamespace
-                            });
+                                ceraResources.Add(new CeraResources
+                                {
+                                    Name = resource.Name,
+                                    RegionName = resource.RegionName,
+                                    ResourceGroupName = resource.ResourceGroupName,
+                                    ResourceType = resource.ResourceType,
+                                    Id = resource.Id,
+                                    ResourceProviderNameSpace = resource.ResourceProviderNamespace,
+                                    Tags = true
+                                }) ;
+                            }
+                            else
+                            {
+                                ceraResources.Add(new CeraResources
+                                {
+                                    Name = resource.Name,
+                                    RegionName = resource.RegionName,
+                                    ResourceGroupName = resource.ResourceGroupName,
+                                    ResourceType = resource.ResourceType,
+                                    Id = resource.Id,
+                                    ResourceProviderNameSpace = resource.ResourceProviderNamespace,
+                                    Tags = false
+                                });
+                            }
+                            
                         }
+
                     }
                     Logger.LogInfo("Parsing Completed Resources List To CERA Resources");
                     return ceraResources;
-
                 }
                 Logger.LogInfo("No Resources List found");
                 return null;
@@ -531,7 +549,7 @@ namespace CERA.Azure.CloudService
         }
         public List<CeraResourceHealth> GetCloudResourceHealth(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
-
+            string trim = "/providers/Microsoft.ResourceHealth/availabilityStatuses/current";
             const string url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.ResourceHealth/availabilityStatuses?api-version=2020-05-01-preview";
             var data = CallAzureEndPoint(url, subscriptions);
             if (data == null)
@@ -547,6 +565,7 @@ namespace CERA.Azure.CloudService
             {
                 resourceHealth.Add(new CeraResourceHealth
                 {
+                    ResourceId = item.id.Replace("/providers/Microsoft.ResourceHealth/availabilityStatuses/current",""),
                     Name = item.name,
                     Location = item.location,
                     Type = item.type,
@@ -769,7 +788,7 @@ namespace CERA.Azure.CloudService
             throw new NotImplementedException();
         }
 
-        public List<CeraResourceHealth> GetCeraResourceHealthList()
+        public List<ResourceHealthViewDTO> GetCeraResourceHealthList()
         {
             throw new NotImplementedException();
         }

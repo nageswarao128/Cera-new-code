@@ -1,3 +1,4 @@
+using CERA.AuthenticationService;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,9 +31,14 @@ namespace CeraWebApplication
                 {
                     x.LoginPath = "/Cera/Login";
                     x.LogoutPath = "/Cera/Logout";
-                    x.Cookie.Name="CeraWebApp";
+                    x.Cookie.Name = "CeraWebApp";
                     x.ExpireTimeSpan = TimeSpan.FromMinutes(5);
                 });
+            //services.AddAuthorization(x => 
+            //{
+            //    x.AddPolicy("RequiredAdmin", policy =>
+            //                 policy.RequireRole("User"));
+            //    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

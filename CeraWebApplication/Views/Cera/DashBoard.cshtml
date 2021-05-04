@@ -54,48 +54,22 @@
         </div>
         <div class="col-md-6">
             <h4>Resource Spend</h4>
-            <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                <table class="table table-striped table-hover" style="margin-top:1%">
-                    <thead>
-                        <tr>
-                            <th>
-                                Resources
-                            </th>
-                            <th>
-                                Cost
-                            </th>
-                            <th>
-                                Currency
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in ViewBag.usage)
-                        {
-                            <tr>
-                                <td>
-                                    @item.resourceType
-                                </td>
-                                <td>
-                                    @item.pretaxCost
-                                </td>
-                                <td>
-                                    INR
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+            <iframe width="500" height="300" src="https://app.powerbi.com/view?r=eyJrIjoiOTY5MmE1NTgtOTcxMC00MTgzLWI3MTEtNGI3MTg2YWRmNjVhIiwidCI6IjBlYWRiNzdlLTQyZGMtNDdmOC1iYmUzLWVjMjM5NWUwNzEyYyIsImMiOjZ9&pageName=ReportSection" frameborder="0" allowFullScreen="true"></iframe>
         </div>
     </div>
     <hr />
     <div class="row">
-        <div class="col-md-8">
-            <img src="https://image.freepik.com/free-vector/colored-world-map-political-maps-colourful-world-countries-country-names-illustration_102902-1693.jpg" style="height:300px;" />
+        <div class="col-md-6">
+            <h4>Resource Availability Map</h4>
+            <iframe width="500" height="300" src="https://app.powerbi.com/view?r=eyJrIjoiMmE3OWFhZDYtYjk4Ny00NDE1LWI5ZjUtNTJhYTI0MmIxNDNkIiwidCI6IjBlYWRiNzdlLTQyZGMtNDdmOC1iYmUzLWVjMjM5NWUwNzEyYyIsImMiOjZ9" frameborder="0" allowFullScreen="true"></iframe>
         </div>
-        <div class="col-md-4">
-            <img src="https://apexcharts.com/wp-content/uploads/2018/05/simple-pie-chart.svg" style="height:300px;" />
+        <div class="col-md-6">
+          
+            <h4>Resources with Tags</h4>
+            <div id="Tags" class="group">
+                <iframe width="500" height="300" src="https://app.powerbi.com/view?r=eyJrIjoiYWExYjczYmYtNWMyNC00NWM1LWFlZTYtYjczMWVjOThjNzBlIiwidCI6IjBlYWRiNzdlLTQyZGMtNDdmOC1iYmUzLWVjMjM5NWUwNzEyYyIsImMiOjZ9" frameborder="0" allowFullScreen="true"></iframe>
+            </div>
+            
         </div>
     </div>
 </div>

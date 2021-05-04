@@ -481,10 +481,10 @@ namespace CERA.CloudService
             Logger.LogInfo("Requested data for Disks List from Database called");
             return _dataOps.GetDisks();
         }
-        public List<CeraResourceHealth> GetCeraResourceHealthList()
+        public List<ResourceHealthViewDTO> GetCeraResourceHealthList()
         {
             Logger.LogInfo("Requested data for Resource Health List from Database called");
-            return _dataOps.GetResourceHealth();
+            return _dataOps.ResourceHealth();
         }
         public List<CeraCompliances> GetCompliancesList()
         {

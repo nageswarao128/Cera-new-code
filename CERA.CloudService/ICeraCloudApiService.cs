@@ -50,7 +50,7 @@ namespace CERA.CloudService
         public List<CeraWebApps> GetWebAppsList();
         public List<CeraAppServicePlans> GetAppServicePlansList();
         public List<CeraDisks> GetDisksList();
-        public List<CeraResourceHealth> GetCeraResourceHealthList();
+        public List<ResourceHealthViewDTO> GetCeraResourceHealthList();
         public List<CeraCompliances> GetCompliancesList();
         public List<CeraRateCard> GetRateCardList();
         public List<CeraUsage> GetUsageDetails();
