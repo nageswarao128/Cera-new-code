@@ -1,79 +1,78 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1920, maximum-scale=1.0" />
-    <link rel="shortcut icon" type="image/png" href="https://animaproject.s3.amazonaws.com/home/favicon.png" />
-    <meta name="og:type" content="website" />
-    <meta name="twitter:card" content="photo" />
-    <link rel="stylesheet" type="text/css" href="/css/dashboard-11.css" />
-    <link rel="stylesheet" type="text/css" href="/css/styleguide.css" />
-    <link rel="stylesheet" type="text/css" href="/css/globals.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/css/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <meta name="author" content="AnimaApp.com - Design to code, Automated." />
 </head>
-<body style="margin: 0; background: rgba(255, 255, 255, 1)">
-    <input type="hidden" id="anPageName" name="page" value="dashboard-11" />
-    <div class="dashboard-11 screen">
-        <div class="rectangle-162-C61RwL border-1px-dove-gray"></div>
-        
-        <div class="rectangle-174-C61RwL container" style="margin:2%">@RenderBody()</div>
-
-
-        <div class="group-94-C61RwL">
-            <img class="path-54-NhvmeG" src="/img/path-54-1@1x.png" />
-            <img class="path-52-NhvmeG" src="/img/path-52-1@1x.png" />
-        </div>
-        <img class="path-53-C61RwL" src="/img/path-53-1@1x.png" />
-        <div class="cera-C61RwL couriernew-bold-black-squeeze-25px">Cera</div>
-        <img class="eye-2-128-1-C61RwL" src="/img/eye-2-128--1--1@1x.png" />
-        <img class="group-128-C61RwL" src="/img/group-128-1@1x.png" />
-        <img class="cog-128-C61RwL" src="/img/cog-128-1@1x.png" />
-        <div class="overview-C61RwL altarikh-regular-normal-celeste-21px"><a asp-controller="Cera" asp-action="Dashboard">Overview</a></div>
-        <div class="resources-C61RwL altarikh-regular-normal-celeste-21px">Resources</div>
-
-        <img class="path-80-C61RwL" src="/img/path-80-1@1x.png" />
-        <div class="c-C61RwL altarikh-regular-normal-white-14px">C</div>
-        <div class="x2021-cera-web-a-ication-privacy-C61RwL altarikh-normal-navy-blue-18px">
-            <span class="span0-wA6UEn">2021 - </span><span class="span1-wA6UEn">Cera web Application- </span>
-            <span class="span2-wA6UEn">Privacy</span>
-        </div>
-
-        <img class="path-98-C61RwL" src="/img/path-98-1@1x.png" />
-
-        <img class="desktop-2-128-C61RwL" src="/img/desktop-2-128-1@1x.png" />
-        <img class="cloud-storage-128-C61RwL" src="/img/cloud-storage-128-1@1x.png" />
-        <div class="group-119-C61RwL">
-            <div class="group-116-6O7KbK">
-                <img class="group-128-bciHWA" src="/img/group-128-2@1x.png" />
-                <img class="cog-128-bciHWA" src="/img/cog-128-2@1x.png" />
+<body>
+    <div class="sidenav">
+        <div class="main">
+            <div class="container">
+                <center><a href="#"><i class="fa fa-cloud" aria-hidden="true"></i></a></center>
+                <div class="centered">CERA</div>
             </div>
-            <div class="group-117-6O7KbK">
-                <img class="line-80-c25RNN" src="/img/line-80-1@1x.png" />
-                <img class="line-81-c25RNN" src="/img/line-81-1@1x.png" />
-                <img class="line-82-c25RNN" src="/img/line-81-1@1x.png" />
-            </div>
-            <div class="group-118-6O7KbK">
-                <img class="line-80-laZo41" src="/img/line-80-1@1x.png" />
-                <img class="line-81-laZo41" src="/img/line-81-1@1x.png" />
-                <img class="line-82-laZo41" src="/img/line-81-1@1x.png" />
-            </div>
+
         </div>
-        <img class="kisspng-compute-691523395403475-C61RwL"
-             src="/img/kisspng-computer-icons-web-development-globe-internet-globe-5acd-1@1x.png" />
-        <img class="pngkeycom-heart-ine-png-9678260-C61RwL" src="/img/pngkey-com-heartbeat-line-png-9678260-1@1x.png" />
+        <a style="margin-left:0px; font-size:25px" asp-controller="Cera" asp-action="Dashboard"><i class="fa fa-eye" style="color:white" aria-hidden="true"></i>Overview</a>
 
-        <div class="virtual-machine-C61RwL altarikh-regular-normal-celeste-19px"><a asp-controller="Cera" asp-action="GetVMDetails">Virtual Machine</a></div>
-        <div class="storage-account-C61RwL altarikh-regular-normal-celeste-19px"><a asp-controller="Cera" asp-action="GetStorageAccountsDetails">Storage Account</a></div>
-        <div class="resource-group-C61RwL altarikh-regular-normal-celeste-19px"><a asp-controller="Cera" asp-action="GetResourceGroupDetails">Resource Group</a></div>
-        <div class="web-application-C61RwL altarikh-regular-normal-celeste-19px"><a asp-controller="Cera" asp-action="GetWebAppsDetails">Web Application</a></div>
-        <div class="advisor-C61RwL altarikh-regular-normal-celeste-19px"><a asp-controller="Cera" asp-action="GetResourceHealth">Advisor</a></div>
-
+        <div class="dropdown-btn">
+            <img class="one" src="/img/group-128-1@1x.png" height="25" width="30">Resources
+            <i class="fa fa-caret-down"></i>
+        </div>
+        <div class="dropdown-container">
+            <a asp-controller="Cera" asp-action="GetVMDetails"><img class="one" src="/img/desktop-2-128-1@1x.png" height="25" width="30"> Virtual Machine</a>
+            <a asp-controller="Cera" asp-action="GetStorageAccountsDetails"><img class="one" src="/img/cloud-storage-128-1@1x.png" height="25" width="30">Storage Account</a>
+            <a asp-controller="Cera" asp-action="GetResourceGroupDetails"><img class="one" src="/img/group-128-1@1x.png" height="25" width="30">Resource Group</a>
+            <a asp-controller="Cera" asp-action="GetResourceGroupDetails"><img class="one" src="/img/kisspng-computer-icons-web-development-globe-internet-globe-5acd-1@1x.png" height="25" width="30">Web Application</a>
+            <a asp-controller="Cera" asp-action="GetResourceHealth"><img class="one" src="/img/pngkey-com-heartbeat-line-png-9678260-1@1x.png" height="25" width="30">Advisor</a>
+        </div>
+        <div class="dropdown-btn">
+            <img class="one" src="/img/group-128-1@1x.png" height="25" width="30">Admin
+            <i class="fa fa-caret-down"></i>
+        </div>
+        <div class="dropdown-container">
+            <a asp-controller="Cera" asp-action="ManageUsers"><img class="one" src="/img/desktop-2-128-1@1x.png" height="25" width="30">Manager Users</a>
+        </div>
     </div>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
+    <div class="topnav">
+        <a href=""><img src="/img/power-button-icon-8348.png" width="20" height="20"></a>
+        <a href="" style="color:black"><img src="/img/ellipse-28-1@1x.png" width="30" height="30" style="border-radius: 20%;">@User.Identity.Name</a>
+        <a href=""><img src="/img/bell-2-128-1@1x.png" width="20" height="20"></a>
+        <a href=""><img src="/img/email-12-128-1@1x.png" width="20" height="20"> </a>
+        <a href=""><img src="/img/help-128-1@1x.png" width="20" height="20"> </a>
+        <hr style="height:4px;border-width:1px;margin-top:50px;">
+    </div>
+
+    <div class="rightmenu">
+        @RenderBody()
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@RenderSection("Scripts", required: false)
+<script>
+    var dropdown = document.getElementsByClassName("dropdown-btn");
+    var i;
+
+    for (i = 0; i < dropdown.length; i++) {
+        dropdown[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var dropdownContent = this.nextElementSibling;
+            if (dropdownContent.style.display === "block") {
+                dropdownContent.style.display = "none";
+            } else {
+                dropdownContent.style.display = "block";
+            }
+        });
+    }
+</script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@RenderSection("Scripts", required: false)
 </body>
 </html>

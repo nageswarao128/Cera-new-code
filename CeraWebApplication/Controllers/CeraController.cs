@@ -24,10 +24,10 @@ namespace CeraWebApplication.Controllers
     public class CeraController : Controller
     {
         private readonly ILogger<CeraController> _logger;
-
+        
         public CeraController(ILogger<CeraController> logger)
         {
-            _logger = logger;
+            _logger = logger;            
         }
   
         const string SyncApiUrl = Utilities.SyncApiUrl;
@@ -58,15 +58,14 @@ namespace CeraWebApplication.Controllers
                     if (apiresponse.Contains("userName"))
                     {
                         userDetails = JsonConvert.DeserializeObject<UserDetails>(apiresponse);
-                        //var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser()
-                        //                .RequireRole("Admin").Build();
+                        
                         var claims = new List<Claim>
                         {
                             new Claim(ClaimTypes.Name,userDetails.userName),
                             new Claim(ClaimTypes.Role,"Admin")
                         };
                         var auth = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                        //auth.AddClaim(new Claim(ClaimTypes.Name, loginModel.UserName));
+                        
                         var principle = new ClaimsPrincipal(auth);
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principle);
                         return RedirectToAction("DashBoard", "Cera");
@@ -78,7 +77,17 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
-        
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Logout(string username) 
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Login", "Cera");
+        }
         [HttpGet]
         public async Task<IActionResult> ManageUsers()
         {

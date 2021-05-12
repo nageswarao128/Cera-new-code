@@ -1,0 +1,14 @@
+﻿@{
+    Layout = "~/Views/Shared/_LoginLayoutPage.cshtml";
+    ViewData["Title"] = "Login";
+}
+
+<div class="card">
+    <form asp-controller="Cera" asp-action="Logout">
+        <h4><strong> @User.Identity.Name are you sure</strong></h4>
+        <div class="row">
+            <button type="submit" class="btn btn-warning">Yes</button>
+            <button class="btn btn-success" asp-controller="Cera" asp-action="Dashboard">No</button>
+        </div>
+    </form>
+</div>

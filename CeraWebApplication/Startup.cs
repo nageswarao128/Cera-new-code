@@ -32,13 +32,8 @@ namespace CeraWebApplication
                     x.LoginPath = "/Cera/Login";
                     x.LogoutPath = "/Cera/Logout";
                     x.Cookie.Name = "CeraWebApp";
-                    x.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                    x.ExpireTimeSpan = TimeSpan.FromMinutes(30);
                 });
-            //services.AddAuthorization(x => 
-            //{
-            //    x.AddPolicy("RequiredAdmin", policy =>
-            //                 policy.RequireRole("User"));
-            //    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +49,7 @@ namespace CeraWebApplication
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
