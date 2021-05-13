@@ -1,35 +1,164 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CeraWebApplication\\CeraWebApplication.csproj": {}
+    "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CeraWebApplication\\CeraWebApplication.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CeraWebApplication\\CeraWebApplication.csproj": {
+    "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CeraWebApplication\\CeraWebApplication.csproj",
-        "projectName": "CeraWebApplication",
-        "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CeraWebApplication\\CeraWebApplication.csproj",
-        "packagesPath": "C:\\Users\\Quadrant\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CeraWebApplication\\obj\\",
+        "projectUniqueName": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj",
+        "projectName": "CERA.AuthenticationService",
+        "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj",
+        "packagesPath": "C:\\Users\\v-vetam\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AuthenticationService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Quadrant\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\v-vetam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "netcoreapp3.1"
+          "netstandard2.1"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/DefaultCollection/_apis/packaging/Toolset/nuget/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/CoreXTMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/ManualMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/NugetMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/Official/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/synthetics/nuget/v3/index.json": {},
+          "https://msblox.pkgs.visualstudio.com/_packaging/AzureGenevaMonitoring/nuget/v3/index.json": {}
         },
         "frameworks": {
-          "netcoreapp3.1": {
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
+            "projectReferences": {
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Logging\\CERA.Logging.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Logging\\CERA.Logging.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "dependencies": {
+            "Microsoft.AspNetCore.Authentication.Cookies": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[2.1.2, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.3, )"
+            },
+            "Microsoft.Azure.Management.Fluent": {
+              "target": "Package",
+              "version": "[1.37.0, )"
+            },
+            "Microsoft.Azure.Management.ResourceManager.Fluent": {
+              "target": "Package",
+              "version": "[1.37.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.3, )"
+            },
+            "Microsoft.Identity.Client": {
+              "target": "Package",
+              "version": "[4.26.0, )"
+            },
+            "Microsoft.Rest.ClientRuntime": {
+              "target": "Package",
+              "version": "[2.3.22, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Logging\\CERA.Logging.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Logging\\CERA.Logging.csproj",
+        "projectName": "CERA.Logging",
+        "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Logging\\CERA.Logging.csproj",
+        "packagesPath": "C:\\Users\\v-vetam\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Logging\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\v-vetam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/DefaultCollection/_apis/packaging/Toolset/nuget/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/CoreXTMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/ManualMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/NugetMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/Official/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/synthetics/nuget/v3/index.json": {},
+          "https://msblox.pkgs.visualstudio.com/_packaging/AzureGenevaMonitoring/nuget/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
             "projectReferences": {}
           }
         },
@@ -40,11 +169,128 @@
         }
       },
       "frameworks": {
-        "netcoreapp3.1": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
           "dependencies": {
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[2.10.0, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[3.4.0, )"
+            },
+            "Serilog.Sinks.ApplicationInsights": {
+              "target": "Package",
+              "version": "[3.1.0, )"
+            },
+            "Serilog.Sinks.MSSqlServer": {
+              "target": "Package",
+              "version": "[5.6.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CeraWebApplication\\CeraWebApplication.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CeraWebApplication\\CeraWebApplication.csproj",
+        "projectName": "CeraWebApplication",
+        "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CeraWebApplication\\CeraWebApplication.csproj",
+        "packagesPath": "C:\\Users\\v-vetam\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CeraWebApplication\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\v-vetam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/DefaultCollection/_apis/packaging/Toolset/nuget/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/CoreXTMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/ManualMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/NugetMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/Official/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/synthetics/nuget/v3/index.json": {},
+          "https://msblox.pkgs.visualstudio.com/_packaging/AzureGenevaMonitoring/nuget/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "FontAwesome.MVC": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "Microsoft.AspNet.WebApi.Client": {
+              "target": "Package",
+              "version": "[5.2.7, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.4, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[3.1.5, )"
+            },
             "Newtonsoft.Json": {
               "target": "Package",
-              "version": "[12.0.3, )"
+              "version": "[13.0.1, )"
+            },
+            "System.Net.Http": {
+              "target": "Package",
+              "version": "[4.3.4, )"
             }
           },
           "imports": [
@@ -65,7 +311,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }
