@@ -23,7 +23,7 @@ namespace CERA.Logging
                                .Enrich.WithProperty("SessionId", Guid.NewGuid())
                                .WriteTo.MSSqlServer
                                  (
-                                   connectionString: "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=db_Cera; Integrated Security= true;",
+                                   connectionString: "Server=tcp:cera.database.windows.net,1433;Initial Catalog=db_Cera;Persist Security Info=False;User ID=ceraadmin;Password=Cera@123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
                                    sinkOptions: new Serilog.Sinks.MSSqlServer.MSSqlServerSinkOptions { TableName = "Logs" }
 
                                  )

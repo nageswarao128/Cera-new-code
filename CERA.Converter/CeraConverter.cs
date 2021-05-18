@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Reflection;
 
 namespace CERA.Converter
@@ -19,7 +20,8 @@ namespace CERA.Converter
         /// <returns>returns a object which contains instance of the dll path </returns>
         public dynamic CreateInstance(string DllPath , string TypeName )
         {
-            var assembly = Assembly.LoadFile(DllPath);
+            string fullPath = Path.GetFullPath(DllPath);
+            var assembly = Assembly.LoadFile(fullPath);
             if (assembly != null)
             {
                 var objectType = assembly.GetType(TypeName);
