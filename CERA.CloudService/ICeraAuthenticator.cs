@@ -10,5 +10,6 @@ namespace CERA.CloudService
         public string GetAuthToken(object Certificate);
         IAuthenticated GetAuthenticatedClientUsingAzureCredential();
         IAuthenticated GetAuthenticatedClient();
+        IAuthenticated GetAuthenticatedClientUsingAzureCredential(string token,string tenantId);
     }
 }

@@ -21,13 +21,22 @@ namespace CERASyncAPI.Controllers
             _logger = logger;
             _ceraCloud = ceraCloud;
         }
+        [HttpPost]
+        public object SyncCloudData(RequestInfoViewModel requestInfoViewModel)
+        {
+            string ClientName = "Quadrant";
+            //RequestInfoViewModel requestInfoViewModel = new RequestInfoViewModel();
+            //requestInfoViewModel.token = token;
+            //requestInfoViewModel.tenantId = tenantid;
+            _ceraCloud.ClientName = ClientName;
+            return _ceraCloud.SyncCloudData(requestInfoViewModel);
+        }
         /// <summary>
         /// Based on the cloud this method will retrives Subscription details from the cloud
         /// </summary>
         /// <param name="ClientName"></param>
         /// <returns>returns the list of Subscription data from cloud</returns>  
         [HttpGet]
-        //[Authorize]
         public IEnumerable<CeraSubscription> GetCloudSubscriptions(string ClientName = "Quadrant")
         {
             RequestInfoViewModel requestInfo = new RequestInfoViewModel();
@@ -169,6 +178,13 @@ namespace CERASyncAPI.Controllers
             RequestInfoViewModel requestInfo = new RequestInfoViewModel();
             _ceraCloud.ClientName = ClientName;
             return _ceraCloud.GetCloudDisksList(requestInfo);
+        }
+        [HttpGet]
+        public IEnumerable<CeraPolicy> GetCloudPolicies(string ClientName = "Quadrant")
+        {
+            RequestInfoViewModel requestInfo = new RequestInfoViewModel();
+            _ceraCloud.ClientName = ClientName;
+            return _ceraCloud.GetCloudPolicies(requestInfo);
         }
     }
 }

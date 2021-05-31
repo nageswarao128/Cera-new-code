@@ -1,75 +1,193 @@
 ﻿@model List<CeraWebApplication.Models.ResourceTypeCount>
-<style>
-    .my-custom-scrollbar {
-        position: relative;
-        height: 280px;
-        overflow: auto;
-    }
+<html>
+<head>
+    <style>
+        .my-custom-scrollbar {
+            position: relative;
+            height: 280px;
+            overflow: auto;
+        }
 
-    .table-wrapper-scroll-y {
-        display: block;
-    }
-</style>
-<h2>Dashboard</h2>
-<hr />
-<div>
+        .table-wrapper-scroll-y {
+            display: block;
+        }
+        #chartContainer {
+            width: 100%;
+            height: 230px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+        #Tags {
+            width: 100%;
+            height: 185px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+    </style>
+
+</head>
+<body>
     <div class="row">
         <div class="col-md-6">
-            <h4>Resources Overview</h4>
-            <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                <table class="table table-striped table-hover" style="margin-top:1%">
-                    <thead>
-                        <tr>
-                            <th>
-                                Resources
-                            </th>
-                            <th>
-                                Count
-                            </th>
-                            <th>
-                                Health
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in ViewBag.count)
-                        {
-                            <tr>
-                                <td>
-                                    @item.resourceType
-                                </td>
-                                <td>
-                                    @item.count
-                                </td>
-                                <td>
-                                    <a href="Cera/GetResourceHealth">
-                                        Available
-                                    </a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+            <h2>Dashboard</h2>
         </div>
         <div class="col-md-6">
-            <h4>Resource Spend</h4>
-            <iframe width="500" height="300" src="https://app.powerbi.com/view?r=eyJrIjoiOTY5MmE1NTgtOTcxMC00MTgzLWI3MTEtNGI3MTg2YWRmNjVhIiwidCI6IjBlYWRiNzdlLTQyZGMtNDdmOC1iYmUzLWVjMjM5NWUwNzEyYyIsImMiOjZ9&pageName=ReportSection" frameborder="0" allowFullScreen="true"></iframe>
+            <label>Select Cloud :</label>
+            <select style="width:30%" class="form-control" id="cloudName">
+                @foreach (var item in ViewBag.clouds)
+                {
+
+                    if (item.cloudName == "All Clouds")
+                    {
+                        <option value="@item.cloudName" selected>@item.cloudName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.cloudName">@item.cloudName</option>
+                    }
+
+                }
+            </select>
         </div>
     </div>
     <hr />
-    <div class="row">
-        <div class="col-md-6">
-            <h4>Resource Availability Map</h4>
-            <iframe width="500" height="300" src="https://app.powerbi.com/view?r=eyJrIjoiMmE3OWFhZDYtYjk4Ny00NDE1LWI5ZjUtNTJhYTI0MmIxNDNkIiwidCI6IjBlYWRiNzdlLTQyZGMtNDdmOC1iYmUzLWVjMjM5NWUwNzEyYyIsImMiOjZ9" frameborder="0" allowFullScreen="true"></iframe>
-        </div>
-        <div class="col-md-6">
-          
-            <h4>Resources with Tags</h4>
-            <div id="Tags" class="group">
-                <iframe width="500" height="300" src="https://app.powerbi.com/view?r=eyJrIjoiYWExYjczYmYtNWMyNC00NWM1LWFlZTYtYjczMWVjOThjNzBlIiwidCI6IjBlYWRiNzdlLTQyZGMtNDdmOC1iYmUzLWVjMjM5NWUwNzEyYyIsImMiOjZ9" frameborder="0" allowFullScreen="true"></iframe>
+    <div>
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Resources Overview</h4>
+                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                    <table class="table table-striped table-hover" style="margin-top:1%">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Resources
+                                </th>
+                                <th>
+                                    Count
+                                </th>
+                                <th>
+                                    Health
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.count)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.resourceType
+                                    </td>
+                                    <td>
+                                        @item.count
+                                    </td>
+                                    <td>
+                                        <a href="Cera/GetResourceHealth">
+                                            Available
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            
+            <div class="col-md-6">
+                <h4>Resource Spend</h4>
+                
+                <div id="chartContainer">
+                    
+                    @*<script src="~/js/chart.js"></script>*@
+                </div>
+            </div>
         </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Resource Availability Map</h4>
+                <iframe width="500" height="300" src="https://app.powerbi.com/view?r=eyJrIjoiYjY2N2Q5ODMtNWZjMi00MjY1LWIxMDQtMzBkMzNiNmUwYmYyIiwidCI6IjBlYWRiNzdlLTQyZGMtNDdmOC1iYmUzLWVjMjM5NWUwNzEyYyIsImMiOjZ9" frameborder="0" allowFullScreen="true"></iframe>
+            </div>
+            <div class="col-md-6">
+
+                <h4>Resources Tags</h4>
+                <div id="Tags" class="group">
+                    @*<iframe width="500" height="300" src="https://app.powerbi.com/view?r=eyJrIjoiNjcxZGQyNTUtMzI0NS00ZjU2LTgwZjMtYjM3MWMzNWE1YzBkIiwidCI6IjBlYWRiNzdlLTQyZGMtNDdmOC1iYmUzLWVjMjM5NWUwNzEyYyIsImMiOjZ9" frameborder="0" allowFullScreen="true"></iframe>*@
+                </div>
+
+            </div>
+        </div>
+
     </div>
-</div>
+</body>
+</html>
+
+<script src="~/ChartJS/core.js"></script>
+<script src="~/ChartJS/charts.js"></script>
+<script src="~/ChartJS/material.js"></script>
+<script src="~/ChartJS/animated.js"></script>
+
+<script>
+
+    debugger;
+    var resourcesarr = [];
+    var resourcesArrData = [];
+            resourcesarr.push((this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.usage))')));
+    for (var i = 0; i < resourcesarr[0].length; i++) {
+        resourcesArrData.push({ y: resourcesarr[0][i].pretaxCost, label: resourcesarr[0][i].resourceType });
+    }
+    
+
+    var resourceTags = [];
+    var resourceTagsData = [];
+    resourceTags.push((this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.tags))')));
+    for (var i = 0; i < resourceTags[0].length; i++) {
+        resourceTagsData.push({ y: resourceTags[0][i].count, label: resourceTags[0][i].tags });
+    }
+    
+    window.onload = function () {
+        loadChart();
+        renderTagsChart();
+    }
+    function loadChart() {
+        renderPieChartData();
+        
+    }
+    function renderPieChartData() {
+        var chart = am4core.create("chartContainer", am4charts.PieChart);
+
+        chart.data = resourcesArrData;
+
+        // Add and configure Series
+        var pieSeries = chart.series.push(new am4charts.PieSeries());
+        pieSeries.dataFields.value = "y";
+        pieSeries.dataFields.category = "label";
+
+        //Add legend
+        //chart.legend = new am4charts.Legend();
+
+
+        chart.logo.disabled = true;
+    }
+
+    function renderTagsChart() {
+        
+        var colorSet = new am4core.ColorSet();
+        colorSet.list = ["#FFA500", "#f0db4f", "#0288d1", "#F44336", "#8E24AA", "#388E3C", "#FBC02D",].map(function (color) {
+            return new am4core.color(color);
+        });
+        
+        var chart = am4core.create("Tags", am4charts.PieChart);
+
+        chart.data = resourceTagsData;
+
+        // Add and configure Series
+        var pieSeries = chart.series.push(new am4charts.PieSeries());
+        pieSeries.dataFields.value = "y";
+        pieSeries.dataFields.category = "label";
+        pieSeries.colors = colorSet;
+
+        //Add legend
+        //chart.legend = new am4charts.Legend();
+
+
+        chart.logo.disabled = true;
+    }
+</script>
+

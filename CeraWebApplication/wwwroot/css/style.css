@@ -1,13 +1,18 @@
-
 body {
     font-family: "Lato", sans-serif;
 }
 
-.fa-cloud {
-    /*background: -webkit-linear-gradient(top, #000428, #004e92);*/
-    font-size: 100px;
+/*.fa-cloud {*/
+/*background: -webkit-linear-gradient(top, #000428, #004e92);*/
+/*font-size: 100px;
     color: #2c3e50;
     margin-right: 85px;
+}*/
+
+.logo {
+    /*padding-right: 30px;*/
+    padding-left:20px;
+    padding-bottom:25px;
 }
 
 .container {
@@ -18,12 +23,20 @@ body {
     font-weight: bold;
 }
 
-.centered {
+.overview {
+    padding: 0px 0px 25px 60px;
+    font-size: x-large;
+}
+
+    .overview > a > i {
+        padding-left: 10px;
+    }
+/*.centered {
     position: absolute;
     top: 30%;
-    left: 30%;
-    /*transform: translate(-50%, -50%);*/
-}
+    left: 30%;*/
+/*transform: translate(-50%, -50%);*/
+/*}*/
 
 .sidenav {
     height: 100%;
@@ -34,15 +47,15 @@ body {
     left: 0;
     background: -webkit-linear-gradient(top, #000428, #004e92);
     overflow-x: scroll;
-    overflow-y:scroll;
+    overflow-y: scroll;
     padding-top: 30px;
     border: 1px solid white;
     border-radius: 0px;
 }
 
 .rightmenu {
-    height: 95%;
-    width: 75%;
+    height: 90.4%;
+    width: 76.5%;
     position: fixed;
     z-index: 1;
     top: 60px;
@@ -56,13 +69,20 @@ body {
 }
 
 
+/*.eye {
+    padding-right: 40px;
+}
+
+.dropdown-btn > a {
+    padding: 0px;
+}*/
 
 .sidenav a {
-    padding: 0px 40px 30px 56px;
+    /* padding: 0px 40px 20px 56px;*/
     text-decoration: none;
-    font-size: 20px;
+    /* font-size: 20px;*/
     color: #818181;
-    display: block;
+    /* display: block;*/
 }
 
 .dropdown-btn {
@@ -82,11 +102,18 @@ body {
 
 .dropdown-container {
     display: none;
-    padding: 2px;
+    padding: 3px;
     margin-top: 20px;
-    padding-left:28px;
+    padding-left: 35px;
     /* margin-bottom:30px;*/
 }
+
+    .dropdown-container a {
+        display: flex;
+        margin-left: 52px;
+        padding: 10px;
+    }
+
 
 
 .fa-eye {
@@ -103,18 +130,18 @@ body {
     width: 80%;
 }
 
-.topnav a {
+    .topnav a {
         float: right;
         color: lightgrey;
         text-align: center;
         padding: 14px 16px;
         text-decoration: none;
         font-size: 17px;
-}
+    }
 
 .one {
-    float: left;
-    padding-right: 10px;
+    /*float: left;*/
+    padding-right: 32px;
 }
 
 
@@ -130,16 +157,16 @@ body {
 }
 
 ::-webkit-scrollbar {
-    height: 5px;
     width: 5px;
+    height: 5px;
 }
 
 
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: gray;
+    /* #f1f1f1*/
 }
 
 ::-webkit-scrollbar-thumb {
     background: gray;
 }
-
