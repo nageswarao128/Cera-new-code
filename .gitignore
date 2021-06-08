@@ -1,7 +1,15 @@
 ﻿################################################################################
+# Default directory where NuGet packages are restored
+/packages
+
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
+# Visual Studio and VS Code local setting files
+**/.vs/
+**/*.suo
 
+/CERADataAPI/obj
+/CeraWebApplication/obj
 /CERA.Azure.API/obj
 /CERA.Azure.Data/obj
 /CERA.Azure.SDK/obj
@@ -18,6 +26,14 @@
 /CERA.CloudService/obj
 /CERA.DataOperation/obj
 /CERAPlatform/obj
+# More visual studio gitignore settings
+# Source: https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
 /.vs/slnx.sqlite
 /.vs/VSWorkspaceState.json
 /WebApplication1/obj
@@ -42,3 +58,90 @@
 /TestCERAClient/bin/Debug/netcoreapp3.1
 /TestCERAClient/obj/Debug/netcoreapp3.1
 /TestCERAClient/obj
+# build outputs
+/TestResults
+**/bin/
+**/obj/
+**/StyleCop.Cache
+**/bin/Debug/
+**/bin/Release/
+**/build.err
+**/build.log
+**/build.wrn
+**/*.binlog
+**/*.log
+
+# bulk get rid of assmblies and build artifacts. 
+*.mdf
+*.sdf
+*.ldf
+*.ndf
+*.mdb
+*.accdb
+*.msi
+*.msp
+*.dll
+*.pdb
+*.exe
+*.out
+*.app
+*.cab
+*.dpk
+*.xlsx
+*.docx
+*.gzip
+*.abf
+*.appxupload
+*.7z
+*.vsix
+*.nupkg
+*.cab
+*.msu
+*.chm
+*.bak
+*.zip
+*.metadata_dll
+*.dmp
+*.backup
+*.rtm
+*.dtr
+*.nupkg
+*.asmmeta
+*.msp
+*.atom
+*.asdatabase
+*.ilk
+*.dpk
+*.edb
+*.checkedindll
+*.checkedinexe
+*.blg
+*.ndf
+*.temporary
+*.wixpdb
+*.rpt
+*.vtx
+*.pod
+*.tbl
+*.vhd
+*.dbschema
+*.OLB
+*.d
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+# Precompiled Headers
+*.gch
+*.pch
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+*.jfm
