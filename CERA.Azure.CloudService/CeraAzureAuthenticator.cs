@@ -140,12 +140,19 @@ namespace CERA.Azure.CloudService
             var azureCredentials = new AzureCredentials(tokenCredentials, tokenCredentials, TenantId, AzureEnvironment.AzureGlobalCloud);
             return azureCredentials;
         }
+
         public IAuthenticated GetAuthenticatedClient()
         {
             var restClient = CreateRestClient();
             var azure = Microsoft.Azure.Management.Fluent.Azure.Authenticate(restClient, TenantId);
             //var azure = Azure.Authenticate(restClient, TenantId);
             return azure;
+        }
+        AzureCredentials GetAzureCredentials(string token,string tenantId)
+        {
+            TokenCredentials tokenCredentials = new TokenCredentials(token);
+            var azureCredentials = new AzureCredentials(tokenCredentials, tokenCredentials, tenantId, AzureEnvironment.AzureGlobalCloud);
+            return azureCredentials;
         }
         /// <summary>
         /// This method will comunicate the cloud and retrives the client details
@@ -156,6 +163,12 @@ namespace CERA.Azure.CloudService
             var azureCredentials = GetAzureCredentials();
             var azure = Microsoft.Azure.Management.Fluent.Azure.Authenticate(azureCredentials);
             //var azure = Azure.Authenticate(azureCredentials);
+            return azure;
+        }
+        public IAuthenticated GetAuthenticatedClientUsingAzureCredential(string token,string tenantId)
+        {
+            var azureCredentials = GetAzureCredentials(token,tenantId);
+            var azure = Microsoft.Azure.Management.Fluent.Azure.Authenticate(azureCredentials);
             return azure;
         }
     }

@@ -40,5 +40,6 @@ namespace CERA.DataOperation.Data
         public DbSet<CeraCompliances> Compliances { get; set; }
         public DbSet<CeraRateCard> RateCard { get; set; }
         public DbSet<CeraUsage> UsageDetails { get; set; }
+        public DbSet<CeraPolicy> Policies { get; set; }
     }
 }

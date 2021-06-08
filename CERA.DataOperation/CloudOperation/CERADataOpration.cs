@@ -566,6 +566,31 @@ namespace CERA.DataOperation
                 return 0;
             }
         }
+        public int AddPolicyData(List<CeraPolicy> data)
+        {
+            try
+            {
+                _logger.LogInfo("Receive Data");
+                var policies = _dbContext.Policies.ToList();
+                foreach (var item in policies)
+                {
+                    _dbContext.Policies.Remove(item);
+                }
+                _dbContext.SaveChanges();
+                foreach (var item in data)
+                {
+                    _dbContext.Policies.Add(item);
+                }
+                int record = _dbContext.SaveChanges();
+                _logger.LogInfo("Policy Data Imported Successfully");
+                return record;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return 0;
+            }
+        }
         public List<CeraCompliances> GetCompliances()
         {
             try
@@ -679,6 +704,20 @@ namespace CERA.DataOperation
                 var usage = _dbContext.UsageDetails.ToList();
                 _logger.LogInfo("Data retrieved for Usage Details List from Database");
                 return usage;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return null;
+            }
+        }
+        public List<CeraPolicy> GetPolicy()
+        {
+            try
+            {
+                var policy = _dbContext.Policies.ToList();
+                _logger.LogInfo("Data retrieved for Policy List from Database");
+                return policy;
             }
             catch (Exception ex)
             {

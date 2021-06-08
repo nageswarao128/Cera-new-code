@@ -12,6 +12,7 @@ using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using static Microsoft.Azure.Management.Fluent.Azure;
 using ICeraAuthenticator = CERA.CloudService.ICeraAuthenticator;
 
 namespace CERA.Azure.CloudService
@@ -32,7 +33,37 @@ namespace CERA.Azure.CloudService
             Logger = logger;
 
         }
-
+        public void Initialize(string tenantId, string clientID, string clientSecret, string authority)
+        {
+            authenticator = new CeraAzureAuthenticator(Logger);
+            authenticator.Initialize(tenantId, clientID, clientSecret, authority);
+        }
+        public void Initialize()
+        {
+            string clientId = AzureAuth.Default.ClientId;
+            string tenantId = AzureAuth.Default.tenantId;
+            string clientSecret = AzureAuth.Default.Clientsecert;
+            string authority = AzureAuth.Default.authority;
+            authenticator = new CeraAzureAuthenticator(Logger);
+            authenticator.Initialize(tenantId, clientId, clientSecret, authority);
+        }
+        public IAuthenticated GetToken(string token,string tenantId)
+        {
+            
+            if (token != null)
+            {
+                Logger.LogInfo("Obtained ID Token");
+                authenticator = new CeraAzureAuthenticator(Logger);
+                var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential(token, tenantId);
+                return authClient;
+            }
+            else
+            {
+                Initialize();
+                var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
+                return authClient;
+            }
+        }
         /// <summary>
         /// This method will calls the required authentication and after  authenticating it will 
         /// get the available Resources List from Azure cloud
@@ -44,8 +75,9 @@ namespace CERA.Azure.CloudService
         {
             try
             {
-                Initialize();
-                var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
+                //Initialize();
+                //var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
+                var authClient = GetToken(requestInfo.token, requestInfo.tenantId);
                 Logger.LogInfo("Auth Client Initialized");
                 List<CeraResources> ceraResources = new List<CeraResources>();
                 foreach (var sub in subscriptions)
@@ -259,20 +291,7 @@ namespace CERA.Azure.CloudService
         {
             return new object();
         }
-        public void Initialize(string tenantId, string clientID, string clientSecret, string authority)
-        {
-            authenticator = new CeraAzureAuthenticator(Logger);
-            authenticator.Initialize(tenantId, clientID, clientSecret, authority);
-        }
-        public void Initialize()
-        {
-            string clientId = AzureAuth.Default.ClientId;
-            string tenantId = AzureAuth.Default.tenantId;
-            string clientSecret = AzureAuth.Default.Clientsecert;
-            string authority = AzureAuth.Default.authority;
-            authenticator = new CeraAzureAuthenticator(Logger);
-            authenticator.Initialize(tenantId, clientId, clientSecret, authority);
-        }
+        
         /// <summary>
         /// This method will calls the required authentication and after  authenticating it will 
         /// get the available Subscriptions List from Azure cloud
@@ -283,8 +302,9 @@ namespace CERA.Azure.CloudService
         {
             try
             {
-                Initialize();
-                var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
+                //Initialize();
+                //var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
+                var authClient = GetToken(requestInfo.token, requestInfo.tenantId);
                 Logger.LogInfo("Auth Client Initialized");
                 var azureSubscriptions = authClient.Subscriptions.ListAsync().Result;
                 Logger.LogInfo("Got Subscription List from Azure Cloud Provider");
@@ -492,6 +512,46 @@ namespace CERA.Azure.CloudService
                     }
                 }
                 Logger.LogInfo("No WebApps List found");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                return null;
+            }
+        }
+        public List<CeraPolicy> GetCloudPolicies(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            try
+            {
+                Initialize();
+                var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
+                Logger.LogInfo("Auth Client Initialized");
+                foreach (var sub in subscriptions)
+                {
+                    var Policies = authClient.WithSubscription(sub.SubscriptionId).PolicyAssignments.ListAsync().Result;
+                    Logger.LogInfo("Got Policies List from Azure Cloud Provider");
+                    if (Policies != null)
+                    {
+                        Logger.LogInfo("Parsing Policies List To CERA Resources");
+                        List<CeraPolicy> policy = new List<CeraPolicy>();
+                        foreach (var item in Policies)
+                        {
+                            policy.Add(new CeraPolicy
+                            {
+                                 PolicyId = item.Id,
+                                 PrincipleName = item.DisplayName,
+                                 ResourceGroupName = item.Scope.Remove(0,67),
+                                 Scope = item.Scope,
+                                 Key = item.Key 
+                            });
+                        }
+                        Logger.LogInfo("Parsing Completed Policies List To CERA Resources");
+
+                        return policy;
+                    }
+                }
+                Logger.LogInfo("No Policies List found");
                 return null;
             }
             catch (Exception ex)
@@ -828,6 +888,23 @@ namespace CERA.Azure.CloudService
         }
 
         public List<ResourceTypeCount> GetResourceTypeCounts()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraPolicy> GetCloudPolicies(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        
+
+        public List<CeraPolicy> GetPolicies()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ResourceTagsCount> GetResourceTagsCount()
         {
             throw new NotImplementedException();
         }

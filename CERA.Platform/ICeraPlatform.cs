@@ -11,5 +11,8 @@ namespace CERA.Platform
         public int OnBoardClientPlatform(AddClientPlatformViewModel platform);
         public int OnBoardOrganization(AddOrganizationViewModel OrgDetails);
         public int OnBoardCloudProvider(AddCloudPluginViewModel plugin);
+        public List<UserClouds> GetUserClouds();
+        public List<ClientCloudDetails> GetClientCloudDetails(string clientName);
+        public string SyncCloudData(RequestInfoViewModel requestInfoViewModel);
     }
 }

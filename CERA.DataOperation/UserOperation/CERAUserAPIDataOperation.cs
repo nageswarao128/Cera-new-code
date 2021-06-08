@@ -16,6 +16,10 @@ namespace CERA.DataOperation
         /// <returns>returns a object containing PlatformName,APIClassName,DllPath</returns>
         public List<CeraPlatformConfigViewModel> GetClientOnboardedPlatforms(string ClientName)
         {
+            if (ClientName == null)
+            {
+                _logger.LogError("Client Name is null while calling GetClientOnboardedPlatforms");
+            }
             var onboradedPlatforms = from clientPlugin in _dbContext.ClientCloudPlugins
                                      where clientPlugin.Client.ClientName == ClientName
                                      join cloudPlugin in _dbContext.CloudPlugIns
@@ -28,6 +32,20 @@ namespace CERA.DataOperation
                                      };
             return onboradedPlatforms.ToList();
         }
+        public List<ClientCloudDetails> GetClientCloudDetails(string clientName)
+        {
+            var data = from client in _dbContext.Clients
+                       where
+                        client.ClientName == clientName
+                       join cloud in _dbContext.ClientCloudPlugins
+                        on client.Id equals cloud.Client.Id
+                       select new ClientCloudDetails
+                       {
+                           clientId = cloud.ClientId,
+                           TenantId= cloud.TenantId
+                       };
+            return data.ToList();
+        }
         /// <summary>
         /// This will adds a organisation details into database
         /// </summary>
@@ -35,6 +53,10 @@ namespace CERA.DataOperation
         /// <returns>returns 1 or 0</returns>
         public int OnBoardOrganization(AddOrganizationViewModel OrgDetails)
         {
+            if (_dbContext.Clients.Any(x => x.ClientName == OrgDetails.OrganizationName))
+            {
+                return 0;
+            }
             OrgDetails.UserId = Guid.NewGuid();
             _dbContext.Clients.Add(new Client()
             {
@@ -74,6 +96,11 @@ namespace CERA.DataOperation
         /// <returns>returns 1 or 0</returns>
         public int OnBoardCloudProvider(AddCloudPluginViewModel plugin)
         {
+            if (_dbContext.CloudPlugIns.Any(x => x.CloudProviderName == plugin.CloudProviderName))
+            {
+                return 0;
+            }
+
             _dbContext.CloudPlugIns.Add(new CloudPlugIn()
             {
                 CloudProviderName = plugin.CloudProviderName,
@@ -87,6 +114,19 @@ namespace CERA.DataOperation
             return _dbContext.SaveChanges();
         }
 
+        public List<UserClouds> GetUserClouds()
+        {
+            List<UserClouds> clouds = new List<UserClouds>();
+            var data = _dbContext.CloudPlugIns.ToList();
+            foreach (var item in data)
+            {
+                clouds.Add(new UserClouds
+                {
+                    cloudName = item.CloudProviderName
+                });
+            }
+            return clouds;
+        }
         public List<CeraResourceTypeUsage> ResourceUsage()
         {
             List<CeraResourceTypeUsage> resourceTypeUsages = new List<CeraResourceTypeUsage>();
@@ -135,6 +175,46 @@ namespace CERA.DataOperation
                 });
             }
             return resourceTypeUsages;
+        }
+        public List<ResourceTagsCount> GetResourceTagsCount()
+        {
+            List<ResourceTagsCount> tagsCounts = new List<ResourceTagsCount>();
+            var data = _dbContext.Resources.ToList();
+            Dictionary<string, int> keyValues = new Dictionary<string, int>();
+            foreach(var item in data)
+            {
+                if (item.Tags == true)
+                {
+                    if(!keyValues.ContainsKey("With Tags"))
+                    {
+                        keyValues.Add("With Tags", 1);
+                    }
+                    else
+                    {
+                        keyValues["With Tags"]++;
+                    }
+                }
+                else if (item.Tags == false) 
+                {
+                    if (!keyValues.ContainsKey("WithOut Tags"))
+                    {
+                        keyValues.Add("WithOut Tags", 1);
+                    }
+                    else
+                    {
+                        keyValues["WithOut Tags"]++;
+                    }
+                }
+            }
+            foreach(var item in keyValues)
+            {
+                tagsCounts.Add(new ResourceTagsCount
+                {
+                    tags = item.Key,
+                    count = item.Value
+                });
+            }
+            return tagsCounts;
         }
         public List<ResourceTypeCount> GetResourceTypeCount()
         {
@@ -191,5 +271,7 @@ namespace CERA.DataOperation
                                  };
             return ResourceHealth.ToList();
         }
+
+        
     }
 }
