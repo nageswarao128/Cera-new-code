@@ -190,7 +190,7 @@ namespace CERA.AWS.CloudService
             throw new NotImplementedException();
         }
 
-        public List<CeraResourceHealth> GetCeraResourceHealthList()
+        public List<ResourceHealthViewDTO> GetCeraResourceHealthList()
         {
             throw new NotImplementedException();
         }
@@ -246,6 +246,41 @@ namespace CERA.AWS.CloudService
         }
 
         public List<ResourceTypeCount> GetResourceTypeCounts()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraPolicy> GetCloudPolicies(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraPolicy> GetCloudPolicies(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CeraPolicy> GetPolicies()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ResourceTagsCount> GetResourceTagsCount()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<AzureLocations> GetCloudLocations(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<AzureLocations> GetCloudLocations(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<AzureLocations> GetLocations()
         {
             throw new NotImplementedException();
         }

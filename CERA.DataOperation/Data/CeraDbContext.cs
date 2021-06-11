@@ -1,6 +1,8 @@
 ﻿using CERA.Entities.Models;
+using CERA.Entities.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+
 
 namespace CERA.DataOperation.Data
 {
@@ -17,10 +19,12 @@ namespace CERA.DataOperation.Data
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            
             //optionsBuilder.UseSqlServer(_Config.GetConnectionString("")
                     //"Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=db_Cera; Integrated Security= true;"
                     //);
         }
+        
         public DbSet<CeraSubscription> Subscriptions { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<ClientCloudPlugin> ClientCloudPlugins { get; set; }
@@ -40,5 +44,8 @@ namespace CERA.DataOperation.Data
         public DbSet<CeraCompliances> Compliances { get; set; }
         public DbSet<CeraRateCard> RateCard { get; set; }
         public DbSet<CeraUsage> UsageDetails { get; set; }
+        public DbSet<CeraPolicy> Policies { get; set; }
+        public DbSet<AzureLocations> Locations { get; set; }
     }
+    
 }

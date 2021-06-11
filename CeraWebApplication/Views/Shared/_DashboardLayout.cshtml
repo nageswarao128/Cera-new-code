@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="/css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="shortcut icon" href="/cera.png" type="image/x-icon">
+</head>
+<body>
+    <div class="sidenav">
+        <div class="main">
+            <div class="container" style="width:150px">
+                <center><img class="logo" src="/img/CERA logo.svg" /></center>
+            </div>
+        </div>
+        <div class="overview">
+            <img class="one" src="/img/Overview.svg"><a asp-controller="Cera" asp-action="Dashboard">Overview</a>
+        </div>
+        <nobr>
+            <div class="dropdown-btn">
+                <img class="one" src="/img/Resources Svg.svg">Resources
+                <i class="fa fa-caret-down"></i>
+            </div>
+            <div class="dropdown-container">
+                <a asp-controller="Cera" asp-action="GetVMDetails">
+                    <img class="one"
+                         src="/img/Virtual Machine.svg">Virtual Machine
+                </a>
+                <a asp-controller="Cera" asp-action="GetStorageAccountsDetails">
+                    <img class="one"
+                         src="/img/Storagr Account.svg">Storage Account
+                </a>
+                <a asp-controller="Cera" asp-action="GetResourceGroupDetails">
+                    <img class="one"
+                         src="/img/Resource Group.svg">Resource Group
+                </a>
+                <a asp-controller="Cera" asp-action="GetResourceGroupDetails">
+                    <img class="one"
+                         src="/img/Web application.svg">Web Application
+                </a>
+                <a asp-controller="Cera" asp-action="GetResourceHealth">
+                    <img class="one"
+                         src="/img/Adviser.svg">Advisor
+                </a>
+                <a asp-controller="Cera" asp-action="GetPolicyDetails">
+                    <img class="one"
+                         src="/img/Adviser.svg">Policy
+                </a>
+            </div>
+
+            <div class="dropdown-btn">
+                <img class="one" src="/img/Resources Svg.svg">Admin
+                <i class="fa fa-caret-down"></i>
+            </div>
+            <div class="dropdown-container">
+                <a asp-controller="Cera" asp-action="AddUser">
+                    <img class="one" src="/img/Resource Group.svg">Manage
+                    User
+                </a>
+                <a asp-controller="Manage" asp-action="AddOrganisation">
+                    <img class="one"
+                         src="/img/picture (3).svg">Register Organisation
+                </a>
+
+            </div>
+        </nobr>
+    </div>
+
+
+    <div class="topnav">
+        <a href=""><img src="/img/power-button-icon-8348.png" width="20" height="20"></a>
+        <a style="color:black">
+            <img src="/img/ellipse-28-1@1x.png" paddding-right="20px" width="20" height="20"
+                 style="border-radius: 30%;"> @User.Identity.Name
+            </a>
+            <a href=""><img src="/img/bell-2-128-1@1x.png" width="20" height="20"></a>
+            <a href=""><img src="/img/email-12-128-1@1x.png" width="20" height="20"> </a>
+            <a href=""><img src="/img/help-128-1@1x.png" width="20" height="20"> </a>
+            <hr style="height:4px;border-width:1px;margin-top:50px;">
+        </div>
+
+        <div class="rightmenu">
+            @RenderBody()
+        </div>
+
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @RenderSection("Scripts", required: false)
+        <script>
+
+            var dropdown = document.getElementsByClassName("dropdown-btn");
+            var i;
+            console.log(dropdown)
+            for (i = 0; i < dropdown.length; i++) {
+                dropdown[i].addEventListener("click", function () {
+                    this.classList.toggle("active");
+                    var dropdownContent = this.nextElementSibling;
+                    if (dropdownContent.style.display === "block") {
+                        dropdownContent.style.display = "none";
+                    } else {
+                        dropdownContent.style.display = "block";
+                    }
+                });
+            }
+        </script>
+
+
+
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @RenderSection("Scripts", required: false)
+    </body>
+</html>

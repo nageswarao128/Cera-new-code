@@ -1,0 +1,42 @@
+﻿@model List<CeraPolicies>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<h1>Policies List</h1>
+@if (Model != null)
+{
+    <input style="width:30%" class="form-control" id="myInput" type="text" placeholder="Search..">
+    <table class="table table-striped table-hover sortable" style="margin-top:1%">
+        <thead>
+            <tr>
+
+                <th>
+                    Policy Name
+                </th>
+
+                <th>
+                    Resource Group
+                </th>
+
+            </tr>
+        </thead>
+        <tbody id="myTable">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PrincipleName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ResourceGroupName)
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<script src="~/js/tables.js"></script>
+<script src="~/js/sort.js"></script>

@@ -65,7 +65,7 @@ namespace CERAAPI.Controllers
             {
                 return result;
             }
-            return null;
+            return StatusCode(StatusCodes.Status500InternalServerError,new ResponseViewModel { Status = "Error", Message = "Invalid UserName or Password" });
         }
         [HttpPost]
         public async void Logout()

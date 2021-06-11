@@ -1,0 +1,160 @@
+body {
+    font-family: "Lato", sans-serif;
+}
+
+/*.fa-cloud {*/
+/*background: -webkit-linear-gradient(top, #000428, #004e92);*/
+/*font-size: 100px;
+    color: #2c3e50;
+    margin-right: 85px;
+}*/
+
+.logo {
+    /*padding-right: 30px;*/
+    padding-left:20px;
+    padding-bottom:25px;
+}
+
+.container {
+    position: relative;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.overview {
+    padding: 0px 0px 25px 30px;
+    font-size: x-large;
+}
+
+    .overview > a > i {
+        padding-left: 10px;
+    }
+/*.centered {
+    position: absolute;
+    top: 30%;
+    left: 30%;*/
+/*transform: translate(-50%, -50%);*/
+/*}*/
+
+.sidenav {
+    height: 100%;
+    width: 270px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background: -webkit-linear-gradient(top, #000428, #004e92);
+    overflow-x: scroll;
+    overflow-y: scroll;
+    padding-top: 30px;
+    border: 1px solid white;
+    border-radius: 0px;
+}
+
+.rightmenu {
+    height: 90.4%;
+    width: 78.1%;
+    position: fixed;
+    z-index: 1;
+    top: 60px;
+    left: 280px;
+    background-color: white;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    padding-top: 20px;
+    border: 1px solid white;
+    border-radius: 0px;
+}
+
+.sidenav a {
+   text-decoration: none;
+  color: white;
+   
+}
+
+.dropdown-btn {
+    padding: 3px 60px 0px 30px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+   display:block;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    outline: none;
+    margin-bottom: 20px;
+   
+}
+
+.dropdown-container{
+    display:block;
+    padding: 3px;
+    margin-top: 20px;
+    padding-left: 0px;
+}
+
+.dropdown-container a{
+    display:flex;
+    margin-left: 52px;
+    padding: 10px;
+    text-decoration:none;
+ }
+
+.fa-eye {
+   padding-right: 10px;
+    margin-left: 3px;
+}
+
+.topnav {
+    overflow: hidden;
+    background: white;
+    border-radius: 1%;
+    float: right;
+    width: 80%;
+}
+
+    .topnav a {
+        float: right;
+        color: lightgrey;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+    }
+
+.one {
+    /*float: left;*/
+    padding-right: 32px;
+}
+
+
+
+.sidenav a:hover, .dropdown-btn:hover {
+    color: #f1f1f1;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 200px;
+    color: white;
+    font-size: 15px;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+
+::-webkit-scrollbar-track {
+    background: gray;
+    /* #f1f1f1*/
+}
+
+::-webkit-scrollbar-thumb {
+    background: gray;
+}

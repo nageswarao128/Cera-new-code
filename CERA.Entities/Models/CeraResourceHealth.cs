@@ -11,6 +11,7 @@ namespace CERA.Entities.Models
     {
         [Key]
         public int? Id { get; set; }
+        public string ResourceId { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
         public string AvailabilityState { get; set; }

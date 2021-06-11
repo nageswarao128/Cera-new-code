@@ -117,9 +117,14 @@ namespace CERADataAPI.Controllers
             return _ceraCloud.GetDisksList();
         }
         [HttpGet]
-        public IEnumerable<CeraResourceHealth> GetDBResourceHealth()
+        public IEnumerable<ResourceHealthViewDTO> GetDBResourceHealth()
         {
             return _ceraCloud.GetCeraResourceHealthList();
+        }
+        [HttpGet]
+        public IEnumerable<CeraPolicy> GetDBPolicies()
+        {
+            return _ceraCloud.GetPolicies();
         }
         [HttpGet]
         public object GetResourceTypeUsageDetails()
@@ -130,6 +135,31 @@ namespace CERADataAPI.Controllers
         public IEnumerable<ResourceTypeCount> GetResourceTypeCount()
         {
             return _ceraCloud.GetResourceTypeCounts();
+        }
+        [HttpGet]
+        public IEnumerable<UserClouds> GetUserClouds()
+        {
+            return _ceraCloud.GetUserClouds();
+        }
+        [HttpGet]
+        public List<ClientCloudDetails> GetClientCloudDetails(string clientName="Quadrant")
+        {
+            return _ceraCloud.GetClientCloudDetails(clientName);
+        }
+        [HttpGet]
+        public List<ResourceTagsCount> GetResourceTagsCount()
+        {
+            return _ceraCloud.GetResourceTagsCount();
+        }
+        [HttpGet]
+        public IEnumerable<AzureLocations> GetLocations()
+        {
+            return _ceraCloud.GetLocations();
+        }
+        [HttpGet]
+        public IEnumerable<ResourceLocations> GetResourceLocations()
+        {
+            return _ceraCloud.GetResourceLocations();
         }
     }
 }

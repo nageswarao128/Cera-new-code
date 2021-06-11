@@ -10,8 +10,12 @@ namespace CERA.DataOperation
         public int OnBoardClientPlatform(AddClientPlatformViewModel platform);
         public int OnBoardOrganization(AddOrganizationViewModel OrgDetails);
         public int OnBoardCloudProvider(AddCloudPluginViewModel plugin);
-        //public List<CeraResourceTypeUsage> ResourceUsage();
         public List<CeraResourceTypeUsage> ResourceUsage();
         public List<ResourceTypeCount> GetResourceTypeCount();
+        public List<ResourceHealthViewDTO> ResourceHealth();
+        public List<UserClouds> GetUserClouds();
+        public List<ClientCloudDetails> GetClientCloudDetails(string clientName);
+        public List<ResourceTagsCount> GetResourceTagsCount();
+        public List<ResourceLocations> GetResourceLocations();
     }
 }

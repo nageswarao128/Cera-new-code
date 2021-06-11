@@ -20,5 +20,6 @@ namespace CERA.Entities.Models
         public string RegionName { get; set; }
         public string ResourceGroupName { get; set; }
         public string ResourceType { get; set; }
+        public bool Tags { get; set; }
     }
 }

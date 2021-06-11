@@ -24,10 +24,10 @@ namespace CeraWebApplication.Controllers
     public class CeraController : Controller
     {
         private readonly ILogger<CeraController> _logger;
-
+        
         public CeraController(ILogger<CeraController> logger)
         {
-            _logger = logger;
+            _logger = logger;            
         }
   
         const string SyncApiUrl = Utilities.SyncApiUrl;
@@ -36,7 +36,6 @@ namespace CeraWebApplication.Controllers
         /// This method gives the home page view
         /// </summary>
         /// <returns></returns>
-
         public IActionResult LandingPage()
         {
             return View();
@@ -50,16 +49,23 @@ namespace CeraWebApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
-            
+            UserDetails userDetails = new UserDetails();
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.PostAsJsonAsync<LoginModel>($"{SyncApiUrl}/api/Login/Login", loginModel))
                 {
                     var apiresponse = await response.Content.ReadAsStringAsync();
-                    if (response.IsSuccessStatusCode)
+                    if (apiresponse.Contains("userName"))
                     {
-                        var auth = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-                        auth.AddClaim(new Claim(ClaimTypes.Name, loginModel.UserName));
+                        userDetails = JsonConvert.DeserializeObject<UserDetails>(apiresponse);
+                        
+                        var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name,userDetails.userName),
+                            new Claim(ClaimTypes.Role,"Admin")
+                        };
+                        var auth = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        
                         var principle = new ClaimsPrincipal(auth);
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principle);
                         return RedirectToAction("DashBoard", "Cera");
@@ -70,6 +76,17 @@ namespace CeraWebApplication.Controllers
                     }
                 }
             }
+        }
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Logout(string username) 
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Login", "Cera");
         }
         [HttpGet]
         public async Task<IActionResult> ManageUsers()
@@ -227,6 +244,63 @@ namespace CeraWebApplication.Controllers
                     else
                     {
                         return RedirectToAction("ErrorPage", "Cera");
+                    }
+                }
+            }
+            List<UserCloud> clouds = new List<UserCloud>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CERAData/GetUserClouds"))
+                {
+                    var apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        clouds = JsonConvert.DeserializeObject<List<UserCloud>>(apiResponse);
+                        clouds.Add(new UserCloud
+                        {
+                            cloudName = "All Clouds"
+                        });
+                        ViewBag.clouds = clouds.ToList();
+                    }
+                    else
+                    {
+                        return View("ErrorPage", "Cera");
+                    }
+                }
+            }
+            List<ResourceTagsCountVM> resourceTags = new List<ResourceTagsCountVM>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CERAData/GetResourceTagsCount"))
+                {
+                    var apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        resourceTags = JsonConvert.DeserializeObject<List<ResourceTagsCountVM>>(apiResponse);
+                        
+                        ViewBag.tags = resourceTags.ToList();
+                    }
+                    else
+                    {
+                        return View("ErrorPage", "Cera");
+                    }
+                }
+            }
+            List<Locations> locations = new List<Locations>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CERAData/GetResourceLocations"))
+                {
+                    var apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        locations = JsonConvert.DeserializeObject<List<Locations>>(apiResponse);
+
+                        ViewBag.locations = locations.ToList();
+                    }
+                    else
+                    {
+                        return View("ErrorPage", "Cera");
                     }
                 }
             }
@@ -738,6 +812,27 @@ namespace CeraWebApplication.Controllers
             }
             return View(Disks.ToList());
         }
+        public async Task<IActionResult> GetPolicyDetails()
+        {
+            IEnumerable<CeraPolicies> policies = null;
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetDBPolicies"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        policies = JsonConvert.DeserializeObject<List<CeraPolicies>>(apiResponse);
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Home");
+                    }
+                }
+            }
+            return View(policies.ToList());
+        }
         /// <summary>
         /// This method will calls the API to sync the Disks data from cloud to db
         /// </summary>
@@ -760,7 +855,35 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
-
+        [HttpGet]
+        public async Task<IActionResult> SyncCloudData(string TenantId)
+        {
+            RequestBaseVm request = new RequestBaseVm();
+            using (var httpClient = new HttpClient())
+            {
+                
+                string accessToken = HttpContext.Session.GetString("accessToken");
+                request.tenantId = TenantId;
+                request.token = accessToken;
+                using (var response = await httpClient.PostAsJsonAsync<RequestBaseVm>($"{SyncApiUrl}/api/Cera/SyncCloudData",request))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return this.Json(response);
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Home");
+                    }
+                }
+            }
+        }
+        [HttpPost]
+        public JsonResult UpdateAccesstoken(string accessToken)
+        {
+            HttpContext.Session.SetString("accessToken", accessToken);
+            return Json("Session Created");
+        }
         public IActionResult Privacy()
         {
             return View();

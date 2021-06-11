@@ -1,38 +1,45 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERADataAPI\\CERADataAPI.csproj": {}
+    "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERADataAPI\\CERADataAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj": {
+    "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj",
+        "projectUniqueName": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj",
         "projectName": "CERA.AuthenticationService",
-        "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj",
-        "packagesPath": "C:\\Users\\Quadrant\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AuthenticationService\\obj\\",
+        "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj",
+        "packagesPath": "C:\\Users\\v-vetam\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AuthenticationService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Quadrant\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\v-vetam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.1"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/DefaultCollection/_apis/packaging/Toolset/nuget/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/CoreXTMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/ManualMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/NugetMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/Official/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/synthetics/nuget/v3/index.json": {},
+          "https://msblox.pkgs.visualstudio.com/_packaging/AzureGenevaMonitoring/nuget/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
             "projectReferences": {
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Logging\\CERA.Logging.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Logging\\CERA.Logging.csproj"
               }
             }
           }
@@ -45,7 +52,12 @@
       },
       "frameworks": {
         "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.Cookies": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[2.1.2, )"
@@ -110,39 +122,46 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj": {
+    "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj",
+        "projectUniqueName": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj",
         "projectName": "CERA.AWS.CloudService",
-        "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj",
-        "packagesPath": "C:\\Users\\Quadrant\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AWS.CloudServices\\obj\\",
+        "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj",
+        "packagesPath": "C:\\Users\\v-vetam\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AWS.CloudServices\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Quadrant\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\v-vetam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.1"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/DefaultCollection/_apis/packaging/Toolset/nuget/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/CoreXTMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/ManualMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/NugetMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/Official/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/synthetics/nuget/v3/index.json": {},
+          "https://msblox.pkgs.visualstudio.com/_packaging/AzureGenevaMonitoring/nuget/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
             "projectReferences": {
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.CloudService\\CERA.CloudService.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.CloudService\\CERA.CloudService.csproj"
               }
             }
           }
@@ -155,6 +174,7 @@
       },
       "frameworks": {
         "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
           "imports": [
             "net461",
             "net462",
@@ -170,42 +190,49 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj": {
+    "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj",
+        "projectUniqueName": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj",
         "projectName": "CERA.Azure.CloudService",
-        "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj",
-        "packagesPath": "C:\\Users\\Quadrant\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Azure.CloudService\\obj\\",
+        "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj",
+        "packagesPath": "C:\\Users\\v-vetam\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Azure.CloudService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Quadrant\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\v-vetam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.1"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/DefaultCollection/_apis/packaging/Toolset/nuget/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/CoreXTMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/ManualMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/NugetMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/Official/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/synthetics/nuget/v3/index.json": {},
+          "https://msblox.pkgs.visualstudio.com/_packaging/AzureGenevaMonitoring/nuget/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
             "projectReferences": {
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.CloudService\\CERA.CloudService.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.CloudService\\CERA.CloudService.csproj"
               },
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Logging\\CERA.Logging.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Logging\\CERA.Logging.csproj"
               }
             }
           }
@@ -218,6 +245,7 @@
       },
       "frameworks": {
         "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
           "dependencies": {
             "System.Configuration.ConfigurationManager": {
               "target": "Package",
@@ -239,42 +267,49 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj": {
+    "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.CloudService\\CERA.CloudService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj",
+        "projectUniqueName": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.CloudService\\CERA.CloudService.csproj",
         "projectName": "CERA.CloudService",
-        "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj",
-        "packagesPath": "C:\\Users\\Quadrant\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\obj\\",
+        "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.CloudService\\CERA.CloudService.csproj",
+        "packagesPath": "C:\\Users\\v-vetam\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.CloudService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Quadrant\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\v-vetam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.1"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/DefaultCollection/_apis/packaging/Toolset/nuget/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/CoreXTMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/ManualMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/NugetMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/Official/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/synthetics/nuget/v3/index.json": {},
+          "https://msblox.pkgs.visualstudio.com/_packaging/AzureGenevaMonitoring/nuget/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
             "projectReferences": {
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj"
               },
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Entities\\CERA.Entities.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Entities\\CERA.Entities.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Entities\\CERA.Entities.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Entities\\CERA.Entities.csproj"
               }
             }
           }
@@ -287,6 +322,7 @@
       },
       "frameworks": {
         "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
           "imports": [
             "net461",
             "net462",
@@ -302,36 +338,43 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Converter\\CERA.Converter.csproj": {
+    "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Converter\\CERA.Converter.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Converter\\CERA.Converter.csproj",
+        "projectUniqueName": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Converter\\CERA.Converter.csproj",
         "projectName": "CERA.Converter",
-        "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Converter\\CERA.Converter.csproj",
-        "packagesPath": "C:\\Users\\Quadrant\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Converter\\obj\\",
+        "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Converter\\CERA.Converter.csproj",
+        "packagesPath": "C:\\Users\\v-vetam\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Converter\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Quadrant\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\v-vetam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.1"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/DefaultCollection/_apis/packaging/Toolset/nuget/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/CoreXTMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/ManualMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/NugetMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/Official/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/synthetics/nuget/v3/index.json": {},
+          "https://msblox.pkgs.visualstudio.com/_packaging/AzureGenevaMonitoring/nuget/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
             "projectReferences": {}
           }
         },
@@ -343,6 +386,7 @@
       },
       "frameworks": {
         "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
           "dependencies": {
             "Newtonsoft.Json": {
               "target": "Package",
@@ -364,45 +408,52 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.DataOperation\\CERA.DataOperation.csproj": {
+    "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.DataOperation\\CERA.DataOperation.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.DataOperation\\CERA.DataOperation.csproj",
+        "projectUniqueName": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.DataOperation\\CERA.DataOperation.csproj",
         "projectName": "CERA.DataOperation",
-        "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.DataOperation\\CERA.DataOperation.csproj",
-        "packagesPath": "C:\\Users\\Quadrant\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.DataOperation\\obj\\",
+        "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.DataOperation\\CERA.DataOperation.csproj",
+        "packagesPath": "C:\\Users\\v-vetam\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.DataOperation\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Quadrant\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\v-vetam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.1"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/DefaultCollection/_apis/packaging/Toolset/nuget/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/CoreXTMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/ManualMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/NugetMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/Official/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/synthetics/nuget/v3/index.json": {},
+          "https://msblox.pkgs.visualstudio.com/_packaging/AzureGenevaMonitoring/nuget/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
             "projectReferences": {
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Converter\\CERA.Converter.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Converter\\CERA.Converter.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Converter\\CERA.Converter.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Converter\\CERA.Converter.csproj"
               },
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Entities\\CERA.Entities.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Entities\\CERA.Entities.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Entities\\CERA.Entities.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Entities\\CERA.Entities.csproj"
               },
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Logging\\CERA.Logging.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Logging\\CERA.Logging.csproj"
               }
             }
           }
@@ -415,6 +466,7 @@
       },
       "frameworks": {
         "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
           "dependencies": {
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -456,36 +508,43 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Entities\\CERA.Entities.csproj": {
+    "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Entities\\CERA.Entities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Entities\\CERA.Entities.csproj",
+        "projectUniqueName": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Entities\\CERA.Entities.csproj",
         "projectName": "CERA.Entities",
-        "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Entities\\CERA.Entities.csproj",
-        "packagesPath": "C:\\Users\\Quadrant\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Entities\\obj\\",
+        "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Entities\\CERA.Entities.csproj",
+        "packagesPath": "C:\\Users\\v-vetam\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Entities\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Quadrant\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\v-vetam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.1"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/DefaultCollection/_apis/packaging/Toolset/nuget/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/CoreXTMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/ManualMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/NugetMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/Official/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/synthetics/nuget/v3/index.json": {},
+          "https://msblox.pkgs.visualstudio.com/_packaging/AzureGenevaMonitoring/nuget/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
             "projectReferences": {}
           }
         },
@@ -497,7 +556,12 @@
       },
       "frameworks": {
         "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
           "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
             "System.ComponentModel.Annotations": {
               "target": "Package",
               "version": "[5.0.0, )"
@@ -518,36 +582,43 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj": {
+    "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Logging\\CERA.Logging.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj",
+        "projectUniqueName": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Logging\\CERA.Logging.csproj",
         "projectName": "CERA.Logging",
-        "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj",
-        "packagesPath": "C:\\Users\\Quadrant\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\obj\\",
+        "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Logging\\CERA.Logging.csproj",
+        "packagesPath": "C:\\Users\\v-vetam\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Logging\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Quadrant\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\v-vetam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.1"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/DefaultCollection/_apis/packaging/Toolset/nuget/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/CoreXTMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/ManualMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/NugetMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/Official/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/synthetics/nuget/v3/index.json": {},
+          "https://msblox.pkgs.visualstudio.com/_packaging/AzureGenevaMonitoring/nuget/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
             "projectReferences": {}
           }
         },
@@ -559,6 +630,7 @@
       },
       "frameworks": {
         "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
           "dependencies": {
             "Microsoft.Extensions.Logging.Abstractions": {
               "target": "Package",
@@ -596,54 +668,61 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Platform\\CERA.Platform.csproj": {
+    "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Platform\\CERA.Platform.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Platform\\CERA.Platform.csproj",
+        "projectUniqueName": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Platform\\CERA.Platform.csproj",
         "projectName": "CERA.Platform",
-        "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Platform\\CERA.Platform.csproj",
-        "packagesPath": "C:\\Users\\Quadrant\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Platform\\obj\\",
+        "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Platform\\CERA.Platform.csproj",
+        "packagesPath": "C:\\Users\\v-vetam\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Platform\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Quadrant\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\v-vetam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.1"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/DefaultCollection/_apis/packaging/Toolset/nuget/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/CoreXTMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/ManualMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/NugetMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/Official/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/synthetics/nuget/v3/index.json": {},
+          "https://msblox.pkgs.visualstudio.com/_packaging/AzureGenevaMonitoring/nuget/v3/index.json": {}
         },
         "frameworks": {
           "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
             "projectReferences": {
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AuthenticationService\\CERA.AuthenticationService.csproj"
               },
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj"
               },
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj"
               },
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.CloudService\\CERA.CloudService.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.CloudService\\CERA.CloudService.csproj"
               },
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.DataOperation\\CERA.DataOperation.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.DataOperation\\CERA.DataOperation.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.DataOperation\\CERA.DataOperation.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.DataOperation\\CERA.DataOperation.csproj"
               },
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Logging\\CERA.Logging.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Logging\\CERA.Logging.csproj"
               }
             }
           }
@@ -656,6 +735,7 @@
       },
       "frameworks": {
         "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
           "imports": [
             "net461",
             "net462",
@@ -671,60 +751,64 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERADataAPI\\CERADataAPI.csproj": {
+    "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERADataAPI\\CERADataAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERADataAPI\\CERADataAPI.csproj",
+        "projectUniqueName": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERADataAPI\\CERADataAPI.csproj",
         "projectName": "CERADataAPI",
-        "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERADataAPI\\CERADataAPI.csproj",
-        "packagesPath": "C:\\Users\\Quadrant\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERADataAPI\\obj\\",
+        "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERADataAPI\\CERADataAPI.csproj",
+        "packagesPath": "C:\\Users\\v-vetam\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERADataAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Quadrant\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\v-vetam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/DefaultCollection/_apis/packaging/Toolset/nuget/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/CoreXTMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/ManualMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/NugetMirror/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/Official/nuget/v3/index.json": {},
+          "https://msazure.pkgs.visualstudio.com/_packaging/synthetics/nuget/v3/index.json": {},
+          "https://msblox.pkgs.visualstudio.com/_packaging/AzureGenevaMonitoring/nuget/v3/index.json": {}
         },
         "frameworks": {
           "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.AWS.CloudServices\\CERA.AWS.CloudService.csproj"
               },
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Azure.CloudService\\CERA.Azure.CloudService.csproj"
               },
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.CloudService\\CERA.CloudService.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.CloudService\\CERA.CloudService.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.CloudService\\CERA.CloudService.csproj"
               },
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Converter\\CERA.Converter.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Converter\\CERA.Converter.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Converter\\CERA.Converter.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Converter\\CERA.Converter.csproj"
               },
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.DataOperation\\CERA.DataOperation.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.DataOperation\\CERA.DataOperation.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.DataOperation\\CERA.DataOperation.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.DataOperation\\CERA.DataOperation.csproj"
               },
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Entities\\CERA.Entities.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Entities\\CERA.Entities.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Entities\\CERA.Entities.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Entities\\CERA.Entities.csproj"
               },
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Logging\\CERA.Logging.csproj"
-              },
-              "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Platform\\CERA.Platform.csproj": {
-                "projectPath": "C:\\Users\\Quadrant\\Source\\Repos\\Cloud Enablement And Risk Assessment (CERA)\\CERA.Platform\\CERA.Platform.csproj"
+              "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Platform\\CERA.Platform.csproj": {
+                "projectPath": "C:\\Users\\v-vetam\\source\\repos\\Cloud Enablement And Risk Assessment (CERA)2\\CERA.Platform\\CERA.Platform.csproj"
               }
             }
           }
@@ -737,6 +821,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
@@ -767,7 +852,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }

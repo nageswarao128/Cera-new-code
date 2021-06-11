@@ -44,7 +44,7 @@ namespace CERADataAPI
             services.AddTransient<ICeraAzureApiService, CeraAzureApiService>();
             services.AddTransient<ICeraAwsApiService, CeraAWSApiService>();
             services.AddDbContext<CeraDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DbCS")));
-
+            services.AddDbContext<CeraSpContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DbCS")));
             services.AddDbContext<CeraClientAuthenticatorContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DbCS")));
             services.AddTransient<ICeraClientAuthenticator, CeraClientAuthenticator>();
 
