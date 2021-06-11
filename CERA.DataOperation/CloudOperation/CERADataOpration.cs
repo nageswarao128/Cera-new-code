@@ -16,12 +16,14 @@ namespace CERA.DataOperation
         private readonly ICeraLogger _logger;
         protected readonly CeraDbContext _dbContext;
         private readonly ICeraConverter _converter;
+        private readonly CeraSpContext _spContext;
 
-        public CERADataOperation(CeraDbContext dbContext, ICeraLogger logger, ICeraConverter converter)
+        public CERADataOperation(CeraDbContext dbContext, ICeraLogger logger, ICeraConverter converter,CeraSpContext spContext)
         {
             _logger = logger;
             _dbContext = dbContext;
             _converter = converter;
+            _spContext = spContext;
         }
       
         public object AddServicePlanData(object data)
@@ -725,6 +727,45 @@ namespace CERA.DataOperation
                 return null;
             }
         }
+        public int AddLocationsData(List<AzureLocations> data)
+        {
+            try
+            {
+                _logger.LogInfo("Receive Data");
+                var locations = _dbContext.Locations.ToList();
+                foreach (var item in locations)
+                {
+                    _dbContext.Locations.Remove(item);
+                }
+                _dbContext.SaveChanges();
+                foreach (var item in data)
+                {
+                    _dbContext.Locations.Add(item);
+                }
+                int record = _dbContext.SaveChanges();
+                _logger.LogInfo("Data Imported Successfully");
+                return record;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return 0;
+            }
+        }
+        public List<AzureLocations> GetLocations()
+        {
+            try
+            {
+                var locations = _dbContext.Locations.ToList();
+                _logger.LogInfo("Data retrieved for locations List from Database");
+                return locations;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return null;
+            }
+        }
         public object UpdateResourceData(object data)
         {
             return new object();
@@ -774,6 +815,9 @@ namespace CERA.DataOperation
         {
             throw new NotImplementedException();
         }
-  
+
+        
+
+        
     }
 }

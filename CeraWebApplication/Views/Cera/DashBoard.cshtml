@@ -11,14 +11,10 @@
         .table-wrapper-scroll-y {
             display: block;
         }
+
         #chartContainer {
             width: 100%;
-            height: 230px;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-        }
-        #Tags {
-            width: 100%;
-            height: 185px;
+            height: 200px;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
         }
     </style>
@@ -29,9 +25,9 @@
         <div class="col-md-6">
             <h2>Dashboard</h2>
         </div>
-        <div class="col-md-6">
-            <label>Select Cloud :</label>
-            <select style="width:30%" class="form-control" id="cloudName">
+        <div class="col-md-3">
+            <label>Select Provider :</label>
+            <select class="form-control" id="cloudName">
                 @foreach (var item in ViewBag.clouds)
                 {
 
@@ -47,6 +43,13 @@
                 }
             </select>
         </div>
+        @*<div class="col-md-3">
+                <label>Select Location:</label>
+                <select class="form-control" id="ddlLocation">
+                    <option value="0" selected></option>
+                    <option value=""></option>
+                </select>
+            </div>*@
     </div>
     <hr />
     <div>
@@ -66,6 +69,9 @@
                                 <th>
                                     Health
                                 </th>
+                                <th>
+                                    Spent
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -73,15 +79,18 @@
                             {
                                 <tr>
                                     <td>
-                                        @item.resourceType
+                                        @item.ResourceType
                                     </td>
                                     <td>
-                                        @item.count
+                                        @item.ResourceCount
                                     </td>
                                     <td>
-                                        <a href="Cera/GetResourceHealth">
+                                        <a style="color:@item.Color" href="Cera/GetResourceHealth">
                                             Available
                                         </a>
+                                    </td>
+                                    <td>
+                                        @(item.ConsumedPercent+"%")
                                     </td>
                                 </tr>
                             }
@@ -90,28 +99,32 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <h4>Resource Spend</h4>
-                
-                <div id="chartContainer">
-                    
-                    @*<script src="~/js/chart.js"></script>*@
+                <div class="col-md-12 text-center">
+                    <select class="form-control" style="width:30%; margin-left:30%" onchange="dropdownChange();" id="drpFilterBy">
+                        <option value="0">--Select--</option>
+                        <option value="Spend">Spend</option>
+                        <option value="Tags">Tags</option>
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <h4 id="lblChart" style="margin-top:10px"></h4>
+
+                    <div id="chartContainer">
+
+                    </div>
                 </div>
             </div>
         </div>
         <hr />
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <h4>Resource Availability Map</h4>
-                <iframe width="500" height="300" src="https://app.powerbi.com/view?r=eyJrIjoiYjY2N2Q5ODMtNWZjMi00MjY1LWIxMDQtMzBkMzNiNmUwYmYyIiwidCI6IjBlYWRiNzdlLTQyZGMtNDdmOC1iYmUzLWVjMjM5NWUwNzEyYyIsImMiOjZ9" frameborder="0" allowFullScreen="true"></iframe>
-            </div>
-            <div class="col-md-6">
-
-                <h4>Resources Tags</h4>
-                <div id="Tags" class="group">
-                    @*<iframe width="500" height="300" src="https://app.powerbi.com/view?r=eyJrIjoiNjcxZGQyNTUtMzI0NS00ZjU2LTgwZjMtYjM3MWMzNWE1YzBkIiwidCI6IjBlYWRiNzdlLTQyZGMtNDdmOC1iYmUzLWVjMjM5NWUwNzEyYyIsImMiOjZ9" frameborder="0" allowFullScreen="true"></iframe>*@
+                <div class="card-body" style="padding:0% !important">
+                    <iframe src="~/azureWorldMap.html" width="1000" height="420"></iframe>
                 </div>
 
             </div>
+
         </div>
 
     </div>
@@ -126,32 +139,67 @@
 <script>
 
     debugger;
-    var resourcesarr = [];
-    var resourcesArrData = [];
-            resourcesarr.push((this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.usage))')));
-    for (var i = 0; i < resourcesarr[0].length; i++) {
-        resourcesArrData.push({ y: resourcesarr[0][i].pretaxCost, label: resourcesarr[0][i].resourceType });
-    }
-    
-
+    var dataVal = [];
+    var resourcesSpentarr = [];
+    var resourcesSpentArrData = [];
     var resourceTags = [];
     var resourceTagsData = [];
+
+    function loadChartData() {
+    resourcesSpentarr.push((this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.usage))')));
+    for (var i = 0; i < resourcesSpentarr[0].length; i++) {
+        resourcesSpentArrData.push({ y: resourcesSpentarr[0][i].pretaxCost, label: resourcesSpentarr[0][i].resourceType });
+    }
+
     resourceTags.push((this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.tags))')));
     for (var i = 0; i < resourceTags[0].length; i++) {
         resourceTagsData.push({ y: resourceTags[0][i].count, label: resourceTags[0][i].tags });
     }
-    
+    }
+
+    var mapData = [];
+        var mapDataArray = [];
+    function getMapData() {
+        debugger;
+            mapData = [];
+            mapDataArray = [];
+            mapData.push((this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.locations))')));
+            for (var i = 0; i < mapData[0].length; i++) {
+                mapDataArray.push({
+                    radius: mapData[0][i].radius, locationName: mapData[0][i].locationName, fillKey: mapData[0][i].fillKey, latitude: mapData[0][i].latitude, longitude: mapData[0][i].longitude, resources: mapData[0][i].resources
+                });
+            }
+            console.log(mapDataArray);
+            return mapDataArray;
+    }
+
     window.onload = function () {
-        loadChart();
-        renderTagsChart();
+        $('#drpFilterBy').val('Spend');
+        dropdownChange();
     }
-    function loadChart() {
-        renderPieChartData();    
+
+    function dropdownChange() {
+        if (dataVal === undefined || dataVal.length === 0) {
+            loadChartData();
+        }
+        var drpval = $('#drpFilterBy').val();
+        if (drpval == "Spend") {
+            dataVal = resourcesSpentArrData;
+            $('#lblChart').text("Resources Spend");
+            console.log(dataVal);
+        }
+        if (drpval == "Tags") {
+            dataVal = resourceTagsData;
+            $('#lblChart').text("Resources Tags");
+        }
+        renderPieChartData();
     }
+
+
     function renderPieChartData() {
         var chart = am4core.create("chartContainer", am4charts.PieChart);
 
-        chart.data = resourcesArrData;
+        chart.data = dataVal;
 
         // Add and configure Series
         var pieSeries = chart.series.push(new am4charts.PieSeries());
@@ -165,28 +213,28 @@
         chart.logo.disabled = true;
     }
 
-    function renderTagsChart() {
-        
-        var colorSet = new am4core.ColorSet();
-        colorSet.list = ["#FFA500", "#f0db4f", "#0288d1", "#F44336", "#8E24AA", "#388E3C", "#FBC02D",].map(function (color) {
-            return new am4core.color(color);
-        });
-        
-        var chart = am4core.create("Tags", am4charts.PieChart);
+    //function renderTagsChart() {
 
-        chart.data = resourceTagsData;
+    //    var colorSet = new am4core.ColorSet();
+    //    colorSet.list = ["#FFA500", "#f0db4f", "#0288d1", "#F44336", "#8E24AA", "#388E3C", "#FBC02D",].map(function (color) {
+    //        return new am4core.color(color);
+    //    });
 
-        // Add and configure Series
-        var pieSeries = chart.series.push(new am4charts.PieSeries());
-        pieSeries.dataFields.value = "y";
-        pieSeries.dataFields.category = "label";
-        pieSeries.colors = colorSet;
+    //    var chart = am4core.create("Tags", am4charts.PieChart);
 
-        //Add legend
-        //chart.legend = new am4charts.Legend();
+    //    chart.data = resourceTagsData;
+
+    //    // Add and configure Series
+    //    var pieSeries = chart.series.push(new am4charts.PieSeries());
+    //    pieSeries.dataFields.value = "y";
+    //    pieSeries.dataFields.category = "label";
+    //    pieSeries.colors = colorSet;
+
+    //    //Add legend
+    //    //chart.legend = new am4charts.Legend();
 
 
-        chart.logo.disabled = true;
-    }
+    //    chart.logo.disabled = true;
+    //}
 </script>
 

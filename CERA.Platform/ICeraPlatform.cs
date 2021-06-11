@@ -14,5 +14,6 @@ namespace CERA.Platform
         public List<UserClouds> GetUserClouds();
         public List<ClientCloudDetails> GetClientCloudDetails(string clientName);
         public string SyncCloudData(RequestInfoViewModel requestInfoViewModel);
+        public List<ResourceLocations> GetResourceLocations();
     }
 }

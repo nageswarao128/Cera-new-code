@@ -269,5 +269,20 @@ namespace CERA.AWS.CloudService
         {
             throw new NotImplementedException();
         }
+
+        public List<AzureLocations> GetCloudLocations(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<AzureLocations> GetCloudLocations(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<AzureLocations> GetLocations()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

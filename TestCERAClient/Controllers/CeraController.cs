@@ -31,6 +31,13 @@ namespace CERASyncAPI.Controllers
             _ceraCloud.ClientName = ClientName;
             return _ceraCloud.SyncCloudData(requestInfoViewModel);
         }
+        [HttpGet]
+        public IEnumerable<AzureLocations> GetCloudLocations(string ClientName = "Quadrant")
+        {
+            RequestInfoViewModel requestInfo = new RequestInfoViewModel();
+            _ceraCloud.ClientName = ClientName;
+            return _ceraCloud.GetCloudLocations(requestInfo);
+        }
         /// <summary>
         /// Based on the cloud this method will retrives Subscription details from the cloud
         /// </summary>
@@ -186,5 +193,6 @@ namespace CERASyncAPI.Controllers
             _ceraCloud.ClientName = ClientName;
             return _ceraCloud.GetCloudPolicies(requestInfo);
         }
+        
     }
 }

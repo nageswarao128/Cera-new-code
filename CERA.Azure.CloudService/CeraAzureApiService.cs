@@ -609,7 +609,6 @@ namespace CERA.Azure.CloudService
         }
         public List<CeraResourceHealth> GetCloudResourceHealth(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
-            string trim = "/providers/Microsoft.ResourceHealth/availabilityStatuses/current";
             const string url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.ResourceHealth/availabilityStatuses?api-version=2020-05-01-preview";
             var data = CallAzureEndPoint(url, subscriptions);
             if (data == null)
@@ -711,6 +710,39 @@ namespace CERA.Azure.CloudService
             }
 
             return usageDetails;
+        }
+        public List<AzureLocations> GetCloudLocations(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            const string url = "https://management.azure.com/subscriptions/{0}/locations?api-version=2020-01-01";
+            var data = CallAzureEndPoint(url, subscriptions);
+            if (data == null)
+            {
+                return null;
+            }
+
+            List<AzureLocationsDTO> locationsDTO = new List<AzureLocationsDTO>();
+            JObject result = JObject.Parse(data.Result);
+            var clientarray = result["value"].Value<JArray>();
+            locationsDTO = clientarray.ToObject<List<AzureLocationsDTO>>();
+
+            List<AzureLocations> locations = new List<AzureLocations>();
+            foreach (var item in locationsDTO)
+            {
+                locations.Add(new AzureLocations
+                {
+                    LocationId = item.id,
+                    displayName = item.displayName,
+                    geographyGroup = item.metadata.geographyGroup,
+                    latitude = item.metadata.latitude,
+                    longitude = item.metadata.longitude,
+                    name = item.name,
+                    regionalDisplayName = item.regionalDisplayName,
+                    physicalLocation = item.metadata.physicalLocation,
+                    regionType = item.metadata.regionType 
+                });
+            }
+
+            return locations;
         }
         public List<CeraCompliances> GetCloudCompliances(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
@@ -905,6 +937,18 @@ namespace CERA.Azure.CloudService
         }
 
         public List<ResourceTagsCount> GetResourceTagsCount()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<AzureLocations> GetCloudLocations(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        
+
+        public List<AzureLocations> GetLocations()
         {
             throw new NotImplementedException();
         }

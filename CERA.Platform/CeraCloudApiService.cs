@@ -548,6 +548,33 @@ namespace CERA.CloudService
             }
             
         }
+        public List<AzureLocations> GetCloudLocations(RequestInfoViewModel requestInfo)
+        {
+            try
+            {
+                Logger.LogInfo("Get Location Details List Called");
+                List<AzureLocations> locations = new List<AzureLocations>();
+                GetPlatforms();
+                List<CeraSubscription> subscriptions = new List<CeraSubscription>();
+                subscriptions = GetSubscriptionList();
+                foreach (var platformConfig in PlatformConfigs)
+                {
+                    _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
+                    _cloudApiServices.Logger = Logger;
+                    locations = _cloudApiServices.GetCloudLocations(requestInfo, subscriptions);
+                    Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Ratecard");
+                    _dataOps.AddLocationsData(locations);
+                    locations.Clear();
+                    Logger.LogInfo($"Imported data for {platformConfig.PlatformName} Cloud RateCard to DB");
+                }
+                return locations;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
         public string SyncCloudData(RequestInfoViewModel requestInfoViewModel)
         {
             try
@@ -852,6 +879,30 @@ namespace CERA.CloudService
                 throw ex;
             }
         }
+        public List<AzureLocations> GetLocations()
+        {
+            try
+            {
+                return _dataOps.GetLocations();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+        public List<ResourceLocations> GetResourceLocations()
+        {
+            try
+            {
+                return _dataOps.GetResourceLocations();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
         public void Initialize(string tenantId, string clientID, string clientSecret,string authority)
         {
             _cloudApiServices.Initialize(tenantId, clientID, clientSecret,authority);
@@ -948,6 +999,13 @@ namespace CERA.CloudService
 
 
         public List<CeraPolicy> GetCloudPolicies(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        
+
+        public List<AzureLocations> GetCloudLocations(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             throw new NotImplementedException();
         }

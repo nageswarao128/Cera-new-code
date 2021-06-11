@@ -286,6 +286,24 @@ namespace CeraWebApplication.Controllers
                     }
                 }
             }
+            List<Locations> locations = new List<Locations>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CERAData/GetResourceLocations"))
+                {
+                    var apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        locations = JsonConvert.DeserializeObject<List<Locations>>(apiResponse);
+
+                        ViewBag.locations = locations.ToList();
+                    }
+                    else
+                    {
+                        return View("ErrorPage", "Cera");
+                    }
+                }
+            }
             ViewBag.count = resourceCount;
             ViewBag.usage = resourceUsage;
             return View();

@@ -21,12 +21,11 @@ namespace CERA.DataOperation
         public int AddCompliances(List<CeraCompliances> data);
         public int AddRateCard(List<CeraRateCard> data);
         public int AddUsageDetails(List<CeraUsage> data);
-
+        public int AddLocationsData(List<AzureLocations> data);
         public int AddPolicyData(List<CeraPolicy> data);
         public object AddSqlServerData(object data);
         public object AddSqlDbData(object data);
 
-        
         public object UpdateTenantData(object data);
         public object UpdateSubscriptionData(object data);
         public object UpdateResourceData(object data);
@@ -50,6 +49,6 @@ namespace CERA.DataOperation
         public List<CeraRateCard> GetRateCard();
         public List<CeraUsage> GetUsageDetails();
         public List<CeraPolicy> GetPolicy();
-        
+        public List<AzureLocations> GetLocations();
     }
 }

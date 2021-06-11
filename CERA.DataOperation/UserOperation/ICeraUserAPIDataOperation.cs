@@ -16,5 +16,6 @@ namespace CERA.DataOperation
         public List<UserClouds> GetUserClouds();
         public List<ClientCloudDetails> GetClientCloudDetails(string clientName);
         public List<ResourceTagsCount> GetResourceTagsCount();
+        public List<ResourceLocations> GetResourceLocations();
     }
 }

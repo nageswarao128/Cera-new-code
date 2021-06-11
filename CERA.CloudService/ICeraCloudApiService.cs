@@ -39,6 +39,8 @@ namespace CERA.CloudService
         public List<CeraUsage> GetCloudUsageDetails(RequestInfoViewModel requestInfo);
         public List<CeraPolicy> GetCloudPolicies(RequestInfoViewModel requestInfo);
         public List<CeraPolicy> GetCloudPolicies(RequestInfoViewModel requestInfo,List<CeraSubscription> subscriptions);
+        public List<AzureLocations> GetCloudLocations(RequestInfoViewModel requestInfo);
+        public List<AzureLocations> GetCloudLocations(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions);
         public object GetCloudServicePlanList();
         public object GetCloudSqlDbList();
         public object GetCloudMonthlyBillingList();
@@ -60,7 +62,7 @@ namespace CERA.CloudService
         public List<ResourceTypeCount> GetResourceTypeCounts();
         public List<CeraPolicy> GetPolicies();
         public List<ResourceTagsCount> GetResourceTagsCount();
-
+        public List<AzureLocations> GetLocations();
 
     }
 }

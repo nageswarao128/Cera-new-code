@@ -151,5 +151,15 @@ namespace CERADataAPI.Controllers
         {
             return _ceraCloud.GetResourceTagsCount();
         }
+        [HttpGet]
+        public IEnumerable<AzureLocations> GetLocations()
+        {
+            return _ceraCloud.GetLocations();
+        }
+        [HttpGet]
+        public IEnumerable<ResourceLocations> GetResourceLocations()
+        {
+            return _ceraCloud.GetResourceLocations();
+        }
     }
 }

@@ -46,6 +46,7 @@ namespace CERASyncAPI
             services.AddTransient<ICeraAwsApiService, CeraAWSApiService>();
             //services.AddDbContext<CeraDbContext>(x => x.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=db_Cera; Integrated Security= true;"));
             services.AddDbContext<CeraClientAuthenticatorContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DbCS")));
+            services.AddDbContext<CeraSpContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DbCS")));
             services.AddDbContext<CeraDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DbCS")));
             services.AddTransient<ICeraConverter, CeraConverter>();
             services.AddTransient<ICeraClientAuthenticator, CeraClientAuthenticator>();
