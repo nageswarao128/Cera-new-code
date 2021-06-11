@@ -1,118 +1,234 @@
 ﻿@model CeraWebApplication.Models.AddOrgModel
-
-@{
-    ViewData["Title"] = "AddOrganisation";
-}
-
+@{ ViewData["Title"] = "AddOrganisation"; }
+<head>
+    <script type="text/javascript" src="https://alcdn.msauth.net/lib/1.3.0/js/msal.js"></script>
+</head>
 <h1>Add Organisation</h1>
-
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="AddOrganisation">
+        <form id="AddOrg">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <h6>Enter Organisation Details:</h6>
             </div>
             <div class="form-group">
                 <label asp-for="OrganizationName" class="control-label"></label>
-                <input asp-for="OrganizationName" class="form-control" />
+                <input id="organisationName" asp-for="OrganizationName" class="form-control" required />
                 <span asp-validation-for="OrganizationName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PrimaryAddress" class="control-label"></label>
-                <input asp-for="PrimaryAddress" class="form-control" />
+                <input id="primaryAddress" asp-for="PrimaryAddress" class="form-control" />
                 <span asp-validation-for="PrimaryAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="OrgDescription" class="control-label"></label>
-                <input asp-for="OrgDescription" class="form-control" />
+                <input id="orgDescription" asp-for="OrgDescription" class="form-control" />
                 <span asp-validation-for="OrgDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ContactPersonName" class="control-label"></label>
-                <input asp-for="ContactPersonName" class="form-control" />
+                <input id="contactPersonName" asp-for="ContactPersonName" class="form-control" />
                 <span asp-validation-for="ContactPersonName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EmailId" class="control-label"></label>
-                <input asp-for="EmailId" class="form-control" />
+                <input id="emailId" asp-for="EmailId" class="form-control" />
                 <span asp-validation-for="EmailId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PhoneNo" class="control-label"></label>
-                <input asp-for="PhoneNo" class="form-control" />
+                <input id="phoneNo" asp-for="PhoneNo" class="form-control" />
                 <span asp-validation-for="PhoneNo" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <input asp-for="UserId" class="form-control" />
-                <span asp-validation-for="UserId" class="text-danger"></span>
-            </div>*@
             <div class="form-group">
                 <h6>Enter Cloud Details:</h6>
             </div>
             <div class="form-group">
                 <label asp-for="CloudProviderName" class="control-label"></label>
-                <input asp-for="CloudProviderName" class="form-control" />
+                <select id="cloudProviderName" class="form-control" asp-for="CloudProviderName" required>
+                    <optgroup label="Select Cloud">
+                        <option></option>
+                        <option>Azure</option>
+                        <option>AWS</option>
+                    </optgroup>
+                </select>
                 <span asp-validation-for="CloudProviderName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DllPath" class="control-label"></label>
-                <input asp-for="DllPath" class="form-control" />
-                <span asp-validation-for="DllPath" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FullyQualifiedClassName" class="control-label"></label>
-                <input asp-for="FullyQualifiedClassName" class="form-control" />
-                <span asp-validation-for="FullyQualifiedClassName" class="text-danger"></span>
-            </div>
-            @*<div class="form-group">
-                <label asp-for="DateEnabled" class="control-label"></label>
-                <input asp-for="DateEnabled" class="form-control" />
-                <span asp-validation-for="DateEnabled" class="text-danger"></span>
-            </div>*@
-            <div class="form-group">
                 <label asp-for="DevContact" class="control-label"></label>
-                <input asp-for="DevContact" class="form-control" />
+                <input id="devContact" asp-for="DevContact" class="form-control" />
                 <span asp-validation-for="DevContact" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SupportContact" class="control-label"></label>
-                <input asp-for="SupportContact" class="form-control" />
+                <input id="supportContact" asp-for="SupportContact" class="form-control" />
                 <span asp-validation-for="SupportContact" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <input id="description" asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="TenantId" class="control-label"></label>
-                <input asp-for="TenantId" class="form-control" />
+                <input id="tenantId" asp-for="TenantId" class="form-control" required />
                 <span asp-validation-for="TenantId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ClientId" class="control-label"></label>
-                <input asp-for="ClientId" class="form-control" />
+                <input id="clientId" asp-for="ClientId" class="form-control" required />
                 <span asp-validation-for="ClientId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ClientSecret" class="control-label"></label>
-                <input asp-for="ClientSecret" class="form-control" />
-                <span asp-validation-for="ClientSecret" class="text-danger"></span>
+                <button type="button" onclick="addData()" class="btn btn-primary">Add</button>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Add" class="btn btn-primary" />
-            </div>
+
+          
+
         </form>
+        <div id="ddnAuthType" style="display:none">
+
+        </div>
+        
+        <button id="btnSignIn" style="display:none" type="button" class="btn btn-outline-primary" onclick="getDetails()">Sign-In</button>
+        
+            <a id="btnClient" style="display:none" href="#">Get Client Secret</a>
+        
     </div>
 </div>
+<script>
+    function authOnChange() {
+        $('#btnSignIn').hide();
+        $('#btnClient').hide();
+        let selectedOpt = $('#selectAuthType').val();
+        if (selectedOpt == "AAD") {
+            $('#btnSignIn').show();
+        }
+        else if (selectedOpt == "CloudPrinciple") {
+            $('#btnClient').show();
+        }
+        else {
+            alert("Authentication Type Is Required")
+        }
+    }
+    function getDetails() {
+        /*var clientId = document.getElementById('clientId').value;*/
+        var clientId = sessionStorage.getItem("clientId");
+        /*var tenantId = document.getElementById('tenantId').value;*/
+        var tenantId = sessionStorage.getItem("tenantId");
+        var authorityUrl = "https://login.microsoftonline.com/";
+        var authority = authorityUrl.concat(tenantId);
+        run(clientId, authority, tenantId)
+    }
+    function addData() {
+        var data = new Array();
+        data = {
+            OrganizationName: document.getElementById('organisationName').value,
+            PrimaryAddress: document.getElementById('primaryAddress').value,
+            OrgDescription: document.getElementById('orgDescription').value,
+            ContactPersonName: document.getElementById('contactPersonName').value,
+            EmailId: document.getElementById('emailId').value,
+            PhoneNo: document.getElementById('phoneNo').value,
+            CloudProvidername: document.getElementById('cloudProviderName').value,
+            DevContact: document.getElementById('devContact').value,
+            SupportContact: document.getElementById('supportContact').value,
+            Description: document.getElementById('description').value,
+            TenantId: document.getElementById('tenantId').value,
+            ClientId: document.getElementById('clientId').value
+        };
+        postData(data);
+        sessionStorage.setItem("tenantId", data.TenantId);
+        sessionStorage.setItem("clientId", data.ClientId);
+       
+    }
+    function postData(data) {
+        console.log(data);
+        $.ajax({
+            async: true,
+            type: "POST",
+            url: "/Manage/AddOrganisation",
+            data: { orgModel: data },
+            //dataType: "json",
+            //contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data != null) {
+                    alert("Data Inserted Sucessfully");
+                    //$('#OrgAdd').reset();
+                    let html = '<select id="selectAuthType" onchange="authOnChange()">';
+                    html += '<option value="0" selected>Select Authentication Type</option>';
+                    html += '<option value="AAD">Microsoft Authentication</option>';
+                    html += '<option value="CloudPrinciple">Client Cloud Principle</option>';
+                    html += '</select>';
+                    $('#ddnAuthType').append(html);
+                    $('#ddnAuthType').show();
 
-@*<div>
-    <a asp-action="Index">Back to List</a>
-</div>*@
+                }
+            },
+            error: function (err) {
+                console.log(err.responseText);
+            }
+        });
+    }
+    async function run(clientId, authority, tenantId) {
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+        debugger;
+        const msalConfig = {
+            auth: {
+                clientId: clientId,
+                authority: authority,
+            /*redirectUri: "https://localhost:44329/"*/
+                redirectUri: "https://cera.azurewebsites.net/"
+            },
+
+            cache: {
+                cacheLocation: "sessionStorage", // This configures where your cache will be stored
+                storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
+            },
+        };
+
+        const myMSALObj = new Msal.UserAgentApplication(msalConfig);
+        debugger;
+        const loginRequest = {
+            scopes: ["https://management.core.windows.net//.default"],
+            prompt: "select_account"
+        };
+        let loginresponse = await myMSALObj.loginPopup(loginRequest);
+        console.dir(loginresponse);
+        let tokenresponse = await myMSALObj.acquireTokenSilent(loginRequest);
+
+        console.log(tokenresponse.accessToken);
+        console.dir(tokenresponse);
+        $.ajax({
+            url: "/Cera/UpdateAccesstoken",
+            type: "POST",
+            data: { accessToken: tokenresponse.accessToken },
+            success: function (data) {
+                console.log(data);
+                syncCloud(tenantId);
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+        /*syncCloud(tenantId);*/
+    }
+     function syncCloud(tenantId) {
+        var getSelectParams = {TenantId: tenantId };
+        $.ajax({
+            type: "GET",
+            url: "/Cera/SyncCloudData",
+            data: getSelectParams,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data != null) {
+                    alert("Cloud Data Synced Successfully");
+                }
+            },
+            error: function (err) {
+                console.log(err.responseText);
+            }
+        });
+    }
+</script>

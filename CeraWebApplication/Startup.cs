@@ -34,6 +34,7 @@ namespace CeraWebApplication
                     x.Cookie.Name = "CeraWebApp";
                     x.ExpireTimeSpan = TimeSpan.FromMinutes(30);
                 });
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,7 +53,7 @@ namespace CeraWebApplication
             
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

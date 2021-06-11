@@ -13,5 +13,9 @@ namespace CERA.DataOperation
         public List<CeraResourceTypeUsage> ResourceUsage();
         public List<ResourceTypeCount> GetResourceTypeCount();
         public List<ResourceHealthViewDTO> ResourceHealth();
+        public List<UserClouds> GetUserClouds();
+        public List<ClientCloudDetails> GetClientCloudDetails(string clientName);
+        public List<ResourceTagsCount> GetResourceTagsCount();
+        public List<ResourceLocations> GetResourceLocations();
     }
 }

@@ -88,9 +88,9 @@ namespace CERAAPI.Controllers
                 ClientId = orgModel.ClientId,
                 ClientSecret = orgModel.ClientSecret
             };
-            if (_platform.OnBoardOrganization(organizationViewModel) > 0)
+            if (_platform.OnBoardOrganization(organizationViewModel) >= 0)
             {
-                if (_platform.OnBoardCloudProvider(cloudPluginViewModel) > 0)
+                if (_platform.OnBoardCloudProvider(cloudPluginViewModel) >= 0)
                 {
                     if (_platform.OnBoardClientPlatform(clientPlatformViewModel) > 0)
                     {
