@@ -309,6 +309,70 @@ namespace CeraWebApplication.Controllers
             return View();
         }
         [HttpGet]
+        public async Task<JsonResult> GetResourceUsageByLocation(string location)
+        {
+            using(var httpclient = new HttpClient())
+            {
+                using(var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/ResourceUsageByLocation?location="+location))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+        [HttpGet]
+        public async Task<JsonResult> GetResourceCountByLocation(string location)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetResourceTypeCountByLocation?location=" + location))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+        [HttpGet]
+        public async Task<JsonResult> GetResourceTagsByLocation(string location)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetResourceTagsCountByLocation?location=" + location))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+        [HttpGet]
+        public async Task<JsonResult> GetResourceByLocation(string location)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetResourceByLocations?location=" + location))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+        [HttpGet]
         public async Task<IActionResult> GetResourceTypeUsage()
         {
             IEnumerable<ResourceTypeUsage> resourceTypeUsages = null;

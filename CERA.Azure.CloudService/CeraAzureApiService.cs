@@ -681,6 +681,7 @@ namespace CERA.Azure.CloudService
             List<CeraUsage> usageDetails = new List<CeraUsage>();
             foreach (var item in usageDetailsDTO)
             {
+                string location = MapLocation(item.usageProperties.instanceLocation);
                 usageDetails.Add(new CeraUsage
                 {
                     id = item.id,
@@ -691,7 +692,7 @@ namespace CERA.Azure.CloudService
                     usageEnd = item.usageProperties.usageEnd,
                     instanceId = item.usageProperties.instanceId,
                     instanceName = item.usageProperties.instanceName,
-                    instanceLocation = item.usageProperties.instanceLocation,
+                    instanceLocation = location,
                     meterId = item.usageProperties.meterId,
                     usageQuantity = item.usageProperties.usageQuantity,
                     pretaxCost = item.usageProperties.pretaxCost,
@@ -796,6 +797,23 @@ namespace CERA.Azure.CloudService
 
                 return null;
             }
+        }
+
+        public string MapLocation(string location)
+        {
+            Dictionary<string, string> keyValues = new Dictionary<string, string>();
+            keyValues.Add("US East", "eastus");
+            keyValues.Add("US West", "westus");
+            keyValues.Add("IN Central", "centralindia");
+            keyValues.Add("Unknown", "global");
+            keyValues.Add("IN South", "southindia");
+            keyValues.Add("US Central", "centralus");
+            keyValues.Add("Intercontinental", "southindia");
+            if (keyValues.ContainsKey(location))
+            {
+                return keyValues[location];
+            }
+            return null;
         }
 
         public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo)

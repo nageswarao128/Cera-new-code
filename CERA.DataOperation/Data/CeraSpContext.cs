@@ -17,8 +17,12 @@ namespace CERA.DataOperation.Data
         {
             modelBuilder.Entity<ResourceTypeCount>().HasNoKey();
             modelBuilder.Entity<ResourceLocations>().HasNoKey();
+            modelBuilder.Entity<ResourceTagsCount>().HasNoKey();
+            modelBuilder.Entity<CeraResourceTypeUsage>().HasNoKey();
         }
         public DbSet<ResourceTypeCount> resourceTypeCount { get; set; }
         public DbSet<ResourceLocations> Locations { get; set; }
+        public DbSet<ResourceTagsCount> resourceTags { get; set; }
+        public DbSet<CeraResourceTypeUsage> resourceUsage { get; set; }
     }
 }
