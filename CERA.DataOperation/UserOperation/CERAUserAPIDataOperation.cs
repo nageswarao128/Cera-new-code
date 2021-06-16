@@ -1,5 +1,6 @@
 ﻿using CERA.Entities.Models;
 using CERA.Entities.ViewModels;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -137,7 +138,7 @@ namespace CERA.DataOperation
 
             foreach (var item in data)
             {
-                if (item.consumedService == "Microsoft.Automation" || item.consumedService == "Microsoft.Network" || item.consumedService == "Microsoft.Storage" || item.consumedService == "Microsoft.Compute")
+                if (item.consumedService == "Microsoft.Network" || item.consumedService == "Microsoft.Storage" || item.consumedService == "Microsoft.Compute")
                 {
                     if (keyValues.ContainsKey(item.consumedService))
                     {
@@ -219,16 +220,14 @@ namespace CERA.DataOperation
         }
         public List<ResourceTypeCount> GetResourceTypeCount()
         {
-            List<ResourceTypeCount> resourceTypeCount = new List<ResourceTypeCount>();
-            var data = _spContext.resourceTypeCount.FromSqlRaw<ResourceTypeCount>("Sp_ResourceCount").ToList();
+            
+            var data = _spContext.resourceTypeCount.FromSqlRaw<ResourceTypeCount>("[dbo].[Sp_ResourceCount]").ToList();
             
             return data;
         }
         public List<ResourceHealthViewDTO> ResourceHealth()
         {
             
-
-
             var ResourceHealth = from resources in _dbContext.Resources
                                  join healths in _dbContext.ResourceHealth
                                  on resources.Id equals healths.ResourceId
@@ -245,21 +244,21 @@ namespace CERA.DataOperation
 
         public List<ResourceLocations> GetResourceLocations()
         {
-            List<ResourceLocations> resourceLocations = new List<ResourceLocations>();
-            var data = from resources in _dbContext.Resources
-                       join location in _dbContext.Locations
-                       on resources.RegionName equals location.name
-                       select new ResourceLocations
-                       {
-                           locationName = location.name,
-                           latitude = location.latitude,
-                           longitude = location.longitude,
-                           fillKey = "pin",
-                           radius = 6,
-                           resources = resources.Name,
-                       };
-            
-            return data.ToList();
+            var data = _spContext.Locations.FromSqlRaw<ResourceLocations>("[dbo].[Sp_MapData]").ToList();
+            //List<ResourceLocations> resourceLocations = new List<ResourceLocations>();
+            //var data = from resources in _dbContext.Resources
+            //           join location in _dbContext.Locations
+            //           on resources.RegionName equals location.name
+            //           select new ResourceLocations
+            //           {
+            //               locationName = location.name,
+            //               latitude = location.latitude,
+            //               longitude = location.longitude,
+            //               fillKey = "pin",
+            //               radius = 6,
+            //           };
+
+            return data;
         }
     }
 }

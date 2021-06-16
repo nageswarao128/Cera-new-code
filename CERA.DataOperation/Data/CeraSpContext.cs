@@ -1,4 +1,5 @@
-﻿using CERA.Entities.ViewModels;
+﻿using CERA.Entities.Models;
+using CERA.Entities.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,9 @@ namespace CERA.DataOperation.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ResourceTypeCount>().HasNoKey();
+            modelBuilder.Entity<ResourceLocations>().HasNoKey();
         }
         public DbSet<ResourceTypeCount> resourceTypeCount { get; set; }
+        public DbSet<ResourceLocations> Locations { get; set; }
     }
 }

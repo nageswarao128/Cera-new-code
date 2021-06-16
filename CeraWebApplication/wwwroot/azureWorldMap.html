@@ -75,9 +75,9 @@
         ceraWorldMap.bubbles(mapData, {
             popupTemplate: function (geo, data) {
                 debugger;
-                return ['<div class="hoverinfo"> Region Name:' + data.locationName,
-
-                    '<br/> ' + (data.resources === null ? '' : data.resources) +
+                return ['<div class="hoverinfo"> Location Name: ' + data.locationName,
+                    '<br/> No.Of Resource: ' + data.resourceCount +
+                    /*'<br/> ' + (data.noofResources === null ? '' : data.noofResources) +*/
                 //'<br/>Country: ' + data.country + '',
                 //'<br/>Date: ' + data.date + '',
                 '</div>'].join('');
