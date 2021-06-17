@@ -161,5 +161,25 @@ namespace CERADataAPI.Controllers
         {
             return _ceraCloud.GetResourceLocations();
         }
+        [HttpGet]
+        public List<CeraResourceTypeUsage> ResourceUsageByLocation(string location)
+        {
+            return _ceraCloud.ResourceUsage(location);
+        }
+        [HttpGet]
+        public List<ResourceTypeCount> GetResourceTypeCountByLocation(string location)
+        {
+            return _ceraCloud.GetResourceTypeCount(location);
+        }
+        [HttpGet]
+        public List<ResourceTagsCount> GetResourceTagsCountByLocation(string location)
+        {
+            return _ceraCloud.GetResourceTagsCount(location);
+        }
+        [HttpGet]
+        public List<ResourceLocations> GetResourceByLocations(string location)
+        {
+            return _ceraCloud.GetResourceLocations(location);
+        }
     }
 }

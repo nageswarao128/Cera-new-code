@@ -131,98 +131,47 @@ namespace CERA.DataOperation
         }
         public List<CeraResourceTypeUsage> ResourceUsage()
         {
-            List<CeraResourceTypeUsage> resourceTypeUsages = new List<CeraResourceTypeUsage>();
-            var data = _dbContext.UsageDetails.ToList();
-            Dictionary<string, decimal> keyValues = new Dictionary<string, decimal>();
-
-
-            foreach (var item in data)
-            {
-                if (item.consumedService == "Microsoft.Network" || item.consumedService == "Microsoft.Storage" || item.consumedService == "Microsoft.Compute")
-                {
-                    if (keyValues.ContainsKey(item.consumedService))
-                    {
-                        keyValues[item.consumedService] = keyValues[item.consumedService] + item.pretaxCost;
-                    }
-                    else
-                    {
-                        keyValues.Add(item.consumedService, item.pretaxCost);
-                    }
-                }
-
-                else
-                {
-                    if (!keyValues.ContainsKey("Microsoft.Others"))
-                    {
-
-                        keyValues.Add("Microsoft.Others", item.pretaxCost);
-
-                    }
-                    else
-                    {
-                        keyValues["Microsoft.Others"] = keyValues["Microsoft.Others"] + item.pretaxCost;
-
-                    }
-                }
-            }
-
-
-
-            foreach (var item in keyValues)
-            {
-                resourceTypeUsages.Add(new CeraResourceTypeUsage
-                {
-                    resourceType = item.Key.Remove(0, 10),
-                    pretaxCost = item.Value
-                });
-            }
-            return resourceTypeUsages;
+            var data = _spContext.resourceUsage.FromSqlRaw<CeraResourceTypeUsage>("[dbo].[Sp_ResourceSpent]").ToList();
+            return data;
+        }
+        public List<CeraResourceTypeUsage> ResourceUsage(string location)
+        {
+            SqlParameter parameter = new SqlParameter();
+            parameter.ParameterName = "@location";
+            parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter.Value = location;
+            var data = _spContext.resourceUsage.FromSqlRaw<CeraResourceTypeUsage>("[dbo].[Sp_ResourceLocationSpent] @location", parameter).ToList();
+            return data;
         }
         public List<ResourceTagsCount> GetResourceTagsCount()
         {
-            List<ResourceTagsCount> tagsCounts = new List<ResourceTagsCount>();
-            var data = _dbContext.Resources.ToList();
-            Dictionary<string, int> keyValues = new Dictionary<string, int>();
-            foreach(var item in data)
-            {
-                if (item.Tags == true)
-                {
-                    if(!keyValues.ContainsKey("With Tags"))
-                    {
-                        keyValues.Add("With Tags", 1);
-                    }
-                    else
-                    {
-                        keyValues["With Tags"]++;
-                    }
-                }
-                else if (item.Tags == false) 
-                {
-                    if (!keyValues.ContainsKey("WithOut Tags"))
-                    {
-                        keyValues.Add("WithOut Tags", 1);
-                    }
-                    else
-                    {
-                        keyValues["WithOut Tags"]++;
-                    }
-                }
-            }
-            foreach(var item in keyValues)
-            {
-                tagsCounts.Add(new ResourceTagsCount
-                {
-                    tags = item.Key,
-                    count = item.Value
-                });
-            }
-            return tagsCounts;
+            var data = _spContext.resourceTags.FromSqlRaw<ResourceTagsCount>("[dbo].[Sp_ResourceTags]").ToList();
+            return data;
+        }
+        public List<ResourceTagsCount> GetResourceTagsCount(string location)
+        {
+            SqlParameter parameter = new SqlParameter();
+            parameter.ParameterName = "@location";
+            parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter.Value = location;
+            var data = _spContext.resourceTags.FromSqlRaw<ResourceTagsCount>("[dbo].[Sp_ResourceLocationTags] @location", parameter).ToList();
+            return data;
         }
         public List<ResourceTypeCount> GetResourceTypeCount()
+        
         {
             
             var data = _spContext.resourceTypeCount.FromSqlRaw<ResourceTypeCount>("[dbo].[Sp_ResourceCount]").ToList();
             
+            return data;
+        }
+        public List<ResourceTypeCount> GetResourceTypeCount(string location)
+        {
+            SqlParameter parameter = new SqlParameter();
+            parameter.ParameterName = "@location";
+            parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter.Value = location;
+            var data = _spContext.resourceTypeCount.FromSqlRaw<ResourceTypeCount>("[dbo].[Sp_ResourceLocationCount] @location", parameter).ToList();
             return data;
         }
         public List<ResourceHealthViewDTO> ResourceHealth()
@@ -245,19 +194,17 @@ namespace CERA.DataOperation
         public List<ResourceLocations> GetResourceLocations()
         {
             var data = _spContext.Locations.FromSqlRaw<ResourceLocations>("[dbo].[Sp_MapData]").ToList();
-            //List<ResourceLocations> resourceLocations = new List<ResourceLocations>();
-            //var data = from resources in _dbContext.Resources
-            //           join location in _dbContext.Locations
-            //           on resources.RegionName equals location.name
-            //           select new ResourceLocations
-            //           {
-            //               locationName = location.name,
-            //               latitude = location.latitude,
-            //               longitude = location.longitude,
-            //               fillKey = "pin",
-            //               radius = 6,
-            //           };
+          
+            return data;
+        }
 
+        public List<ResourceLocations> GetResourceLocations(string location)
+        {
+            SqlParameter parameter = new SqlParameter();
+            parameter.ParameterName = "@location";
+            parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter.Value = location;
+            var data = _spContext.Locations.FromSqlRaw<ResourceLocations>("[dbo].[Sp_MapLocationData] @location", parameter).ToList();
             return data;
         }
     }

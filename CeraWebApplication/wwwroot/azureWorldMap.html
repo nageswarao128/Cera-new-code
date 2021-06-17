@@ -11,7 +11,14 @@
     <div id="container" style="position: relative; width: 900px; height: 400px; margin:auto;"></div>
 
     <script>
-        
+        //let location = $('#ddlLocation').val();
+        //var mapData = [];
+        //if (location === "AllLocations") {
+        //    mapData = this.window.parent.getMapData();
+        //}
+        //else {
+        //    mapData = this.window.parent.loadMapData(location);
+        //}
         var mapData = this.window.parent.getMapData();
         var ceraWorldMap = new Datamap({
             element: document.getElementById('container'),
@@ -84,6 +91,81 @@
             }
         });
 
+        function updateMapOnChange(location) {
+            /*let location = $('#ddlLocation').val();*/
+        
+            var mapData = this.window.parent.loadMapData(location);
+            var ceraWorldMap = new Datamap({
+                element: document.getElementById('container'),
+                scope: 'world',
+                height: null, //if not null, datamaps will grab the height of 'element'
+                width: null, //if not null, datamaps will grab the width of 'element'
+                responsive: false, //if true, call `resize()` on the map object when it should adjust it's size
+                done: function () { }, //callback when the map is done drawing
+                geographyConfig: {
+                    popupOnHover: true,
+                    highlightOnHover: true,
+                    borderWidth: 1,
+                },
+                fills: {
+                    'USA': '#1f77b4',
+                    'RUS': '#9467bd',
+                    'PRK': '#ff7f0e',
+                    'PRC': '#2ca02c',
+                    'IND': '#e377c2',
+                    'GBR': '#8c564b',
+                    'FRA': '#d62728',
+                    'PAK': '#7f7f7f',
+                    defaultFill: '#EDDC4E',
+                    'pin': '#51e3fe'
+                },
+                data: {
+                    'RUS': { fillKey: 'RUS' },
+                    'PRK': { fillKey: 'PRK' },
+                    'PRC': { fillKey: 'PRC' },
+                    'IND': { fillKey: 'IND' },
+                    'GBR': { fillKey: 'GBR' },
+                    'FRA': { fillKey: 'FRA' },
+                    'PAK': { fillKey: 'PAK' },
+                    'USA': { fillKey: 'USA' }
+                }
+            });
+
+            //var mapDatas =
+            //    [
+            //        { radius: 3, displayName: 'South India', latitude: 12.9822, longitude: 80.1636 }
+            //        , { radius: 3, displayName: 'Central India', latitude: 18.5822, longitude: 73.9197 }
+            //        , { radius: 3, displayName: 'West India', latitude: 19.088, longitude: 72.868 }
+            //        , { radius: 3, displayName: 'Canada Central', latitude: 43.653, longitude: -79.383 },
+            //    ];
+            //var mapDatas = [{ "radius": 6, "displayName": "East Asia", fillKey: 'pin', "latitude": 22.267, "longitude": 114.188 }, { "radius": 6, "displayName": "Southeast Asia", fillKey: 'pin', "latitude": 1.283, "longitude": 103.833 }, { "radius": 6, "displayName": "Central US", fillKey: 'pin', "latitude": 41.5908, "longitude": -93.6208 }, { "radius": 6, "displayName": "East US", fillKey: 'pin', "latitude": 37.3719, "longitude": -79.8164 }, { "radius": 6, "displayName": "East US 2", fillKey: 'pin', "latitude": 36.6681, "longitude": -78.3889 }, { "radius": 6, "displayName": "West US", fillKey: 'pin', "latitude": 37.783, "longitude": -122.417 }, { "radius": 6, "displayName": "North Central US", fillKey: 'pin', "latitude": 41.8819, "longitude": -87.6278 }, { "radius": 6, "displayName": "South Central US", fillKey: 'pin', "latitude": 29.4167, "longitude": -98.5 }, { "radius": 6, "displayName": "North Europe", fillKey: 'pin', "latitude": 53.3478, "longitude": -6.2597 }, { "radius": 6, "displayName": "West Europe", fillKey: 'pin', "latitude": 52.3667, "longitude": 4.9 }, { "radius": 6, "displayName": "Japan West", fillKey: 'pin', "latitude": 34.6939, "longitude": 135.5022 }, { "radius": 6, "displayName": "Japan East", fillKey: 'pin', "latitude": 35.68, "longitude": 139.77 }, { "radius": 6, "displayName": "Brazil South", fillKey: 'pin', "latitude": -23.55, "longitude": -46.633 }, { "radius": 6, "displayName": "Australia East", fillKey: 'pin', "latitude": -33.86, "longitude": 151.2094 }, { "radius": 6, "displayName": "Australia Southeast", fillKey: 'pin', "latitude": -37.8136, "longitude": 144.9631 }, { "radius": 6, "displayName": "South India", fillKey: 'pin', "latitude": 12.9822, "longitude": 80.1636 }, { "radius": 6, "displayName": "Central India", fillKey: 'pin', "latitude": 18.5822, "longitude": 73.9197 }, { "radius": 6, "displayName": "West India", fillKey: 'pin', "latitude": 19.088, "longitude": 72.868 }, { "radius": 6, "displayName": "Canada Central", fillKey: 'pin', "latitude": 43.653, "longitude": -79.383 }, { "radius": 6, "displayName": "Canada East", fillKey: 'pin', "latitude": 46.817, "longitude": -71.217 }, { "radius": 6, "displayName": "UK South", fillKey: 'pin', "latitude": 50.941, "longitude": -0.799 }, { "radius": 6, "displayName": "UK West", fillKey: 'pin', "latitude": 53.427, "longitude": -3.084 }, { "radius": 6, "displayName": "West Central US", fillKey: 'pin', "latitude": 40.89, "longitude": -110.234 }, { "radius": 6, "displayName": "West US 2", fillKey: 'pin', "latitude": 47.233, "longitude": -119.852 }, { "radius": 6, "displayName": "Korea Central", fillKey: 'pin', "latitude": 37.5665, "longitude": 126.978 }, { "radius": 6, "displayName": "Korea South", fillKey: 'pin', "latitude": 35.1796, "longitude": 129.0756 }, { "radius": 6, "displayName": "France Central", fillKey: 'pin', "latitude": 46.3772, "longitude": 2.373 }, { "radius": 6, "displayName": "France South", fillKey: 'pin', "latitude": 43.8345, "longitude": 2.1972 }, { "radius": 6, "displayName": "Australia Central", fillKey: 'pin', "latitude": -35.3075, "longitude": 149.1244 }, { "radius": 6, "displayName": "Australia Central 2", fillKey: 'pin', "latitude": -35.3075, "longitude": 149.1244 }, { "radius": 6, "displayName": "UAE Central", fillKey: 'pin', "latitude": 24.466667, "longitude": 54.366669 }, { "radius": 6, "displayName": "UAE North", fillKey: 'pin', "latitude": 25.266666, "longitude": 55.316666 }, { "radius": 6, "displayName": "South Africa North", fillKey: 'pin', "latitude": -25.73134, "longitude": 28.21837 }, { "radius": 6, "displayName": "South Africa West", fillKey: 'pin', "latitude": -34.075691, "longitude": 18.843266 }, { "radius": 6, "displayName": "Switzerland North", fillKey: 'pin', "latitude": 47.451542, "longitude": 8.564572 }, { "radius": 6, "displayName": "Switzerland West", fillKey: 'pin', "latitude": 46.204391, "longitude": 6.143158 }, { "radius": 6, "displayName": "Germany North", fillKey: 'pin', "latitude": 53.073635, "longitude": 8.806422 }, { "radius": 6, "displayName": "Germany West Central", fillKey: 'pin', "latitude": 50.110924, "longitude": 8.682127 }, { "radius": 6, "displayName": "Norway West", fillKey: 'pin', "latitude": 58.969975, "longitude": 5.733107 }, { "radius": 6, "displayName": "Norway East", fillKey: 'pin', "latitude": 59.913868, "longitude": 10.752245 }]
+
+            //var mapDatas = [{ "radius": "6", "DisplayName": "Australia Central", fillKey: 'pin', "latitude": "-35.3075", "longitude": "149.1244", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "Australia Central 2", fillKey: 'pin', "latitude": "-35.3075", "longitude": "149.1244", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "Australia East", fillKey: 'pin', "latitude": "-33.86", "longitude": "151.2094", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "Australia Southeast", fillKey: 'pin', "latitude": "-37.8136", "longitude": "144.9631", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "Brazil South", fillKey: 'pin', "latitude": "-23.55", "longitude": "-46.633", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "Canada Central", fillKey: 'pin', "latitude": "43.653", "longitude": "-79.383", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "Canada East", fillKey: 'pin', "latitude": "46.817", "longitude": "-71.217", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "Central India", fillKey: 'pin', "latitude": "18.5822", "longitude": "73.9197", "NoOfResource": 1 }, { "radius": "6", "DisplayName": "Central US", fillKey: 'pin', "latitude": "41.5908", "longitude": "-93.6208", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "East Asia", fillKey: 'pin', "latitude": "22.267", "longitude": "114.188", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "East US", fillKey: 'pin', "latitude": "37.3719", "longitude": "-79.8164", "NoOfResource": 1 }, { "radius": "6", "DisplayName": "East US", fillKey: 'pin', "latitude": "37.3719", "longitude": "-79.8164", "NoOfResource": 2 }, { "radius": "6", "DisplayName": "East US", fillKey: 'pin', "latitude": "37.3719", "longitude": "-79.8164", "NoOfResource": 10 }, { "radius": "6", "DisplayName": "East US 2", fillKey: 'pin', "latitude": "36.6681", "longitude": "-78.3889", "NoOfResource": 1 }, { "radius": "6", "DisplayName": "France Central", fillKey: 'pin', "latitude": "46.3772", "longitude": "2.3730", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "France South", fillKey: 'pin', "latitude": "43.8345", "longitude": "2.1972", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "Germany North", fillKey: 'pin', "latitude": "53.073635", "longitude": "8.806422", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "Germany West Central", fillKey: 'pin', "latitude": "50.110924", "longitude": "8.682127", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "Japan East", fillKey: 'pin', "latitude": "35.68", "longitude": "139.77", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "Japan West", fillKey: 'pin', "latitude": "34.6939", "longitude": "135.5022", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "Korea Central", fillKey: 'pin', "latitude": "37.5665", "longitude": "126.9780", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "Korea South", fillKey: 'pin', "latitude": "35.1796", "longitude": "129.0756", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "North Central US", fillKey: 'pin', "latitude": "41.8819", "longitude": "-87.6278", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "North Europe", fillKey: 'pin', "latitude": "53.3478", "longitude": "-6.2597", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "Norway East", fillKey: 'pin', "latitude": "59.913868", "longitude": "10.752245", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "Norway West", fillKey: 'pin', "latitude": "58.969975", "longitude": "5.733107", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "South Africa North", fillKey: 'pin', "latitude": "-25.731340", "longitude": "28.218370", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "South Africa West", fillKey: 'pin', "latitude": "-34.075691", "longitude": "18.843266", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "South Central US", fillKey: 'pin', "latitude": "29.4167", "longitude": "-98.5", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "South India", fillKey: 'pin', "latitude": "12.9822", "longitude": "80.1636", "NoOfResource": 1 }, { "radius": "6", "DisplayName": "South India", fillKey: 'pin', "latitude": "12.9822", "longitude": "80.1636", "NoOfResource": 2 }, { "radius": "6", "DisplayName": "South India", fillKey: 'pin', "latitude": "12.9822", "longitude": "80.1636", "NoOfResource": 4 }, { "radius": "6", "DisplayName": "Southeast Asia", fillKey: 'pin', "latitude": "1.283", "longitude": "103.833", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "Switzerland North", fillKey: 'pin', "latitude": "47.451542", "longitude": "8.564572", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "Switzerland West", fillKey: 'pin', "latitude": "46.204391", "longitude": "6.143158", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "UAE Central", fillKey: 'pin', "latitude": "24.466667", "longitude": "54.366669", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "UAE North", fillKey: 'pin', "latitude": "25.266666", "longitude": "55.316666", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "UK South", fillKey: 'pin', "latitude": "50.941", "longitude": "-0.799", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "UK West", fillKey: 'pin', "latitude": "53.427", "longitude": "-3.084", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "West Central US", fillKey: 'pin', "latitude": "40.890", "longitude": "-110.234", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "West Europe", fillKey: 'pin', "latitude": "52.3667", "longitude": "4.9", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "West India", fillKey: 'pin', "latitude": "19.088", "longitude": "72.868", "NoOfResource": 1 }, { "radius": "6", "DisplayName": "West US", fillKey: 'pin', "latitude": "37.783", "longitude": "-122.417", "NoOfResource": 0 }, { "radius": "6", "DisplayName": "West US 2", fillKey: 'pin', "latitude": "47.233", "longitude": "-119.852", "NoOfResource": 0 }];
+
+            ////draw bubbles for mapDatas
+            //ceraWorldMap.bubbles(mapDatas, {
+            //    popupTemplate: function (geo, data) {
+            //        return ['<div class="hoverinfo"> Region Name:' + data.DisplayName,
+            //        '<br/>NoOfResource: ' + data.NoOfResource,
+            //            //'<br/>Country: ' + data.country + '',
+            //            //'<br/>Date: ' + data.date + '',
+            //            '</div>'].join('');
+            //    }
+            //});
+
+            //draw bubbles for mapDatas
+            ceraWorldMap.bubbles(mapData, {
+                popupTemplate: function (geo, data) {
+                    debugger;
+                    return ['<div class="hoverinfo"> Location Name: ' + data.locationName,
+                    '<br/> No.Of Resource: ' + data.resourceCount +
+                    /*'<br/> ' + (data.noofResources === null ? '' : data.noofResources) +*/
+                    //'<br/>Country: ' + data.country + '',
+                    //'<br/>Date: ' + data.date + '',
+                    '</div>'].join('');
+                }
+            });
+        }
     </script>
 </body>
 </html>

@@ -931,7 +931,25 @@ namespace CERA.CloudService
         {
             return _dataOps.GetClientCloudDetails(clientName);
         }
+        public List<CeraResourceTypeUsage> ResourceUsage(string location)
+        {
+            return _dataOps.ResourceUsage(location);
+        }
 
+        public List<ResourceTypeCount> GetResourceTypeCount(string location)
+        {
+            return _dataOps.GetResourceTypeCount(location);
+        }
+
+        public List<ResourceTagsCount> GetResourceTagsCount(string location)
+        {
+            return _dataOps.GetResourceTagsCount(location);
+        }
+
+        public List<ResourceLocations> GetResourceLocations(string location)
+        {
+            return _dataOps.GetResourceLocations(location);
+        }
         public List<CeraResources> GetCloudResourceList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             throw new NotImplementedException();

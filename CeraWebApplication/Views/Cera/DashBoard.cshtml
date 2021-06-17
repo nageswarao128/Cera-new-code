@@ -44,16 +44,16 @@
             </select>
         </div>
         <div class="col-md-3">
-                <label>Select Location:</label>
-                <select class="form-control" id="ddlLocation">
-                    <option value="AllLocations" selected>All Locations</option>
-                    @foreach (var item in ViewBag.locations)
-                    {
-                        <option value="@item.locationName">@item.locationName</option>
-                    }
+            <label>Select Location:</label>
+            <select class="form-control" id="ddlLocation" onchange="getDataByLocation()">
+                <option value="AllLocations" selected>All Locations</option>
+                @foreach (var item in ViewBag.locations)
+                {
+                    <option value="@item.locationName">@item.locationName</option>
+                }
 
-                </select>
-            </div>
+            </select>
+        </div>
     </div>
     <hr />
     <div>
@@ -61,8 +61,8 @@
             <div class="col-md-6">
                 <h4>Resources Overview</h4>
                 <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                    <table class="table table-striped table-hover sortable" style="margin-top:1%">
-                        <thead>
+                    <table id="myTable" class="table table-striped table-hover sortable" style="margin-top:1%">
+                        <thead style="text-align:center">
                             <tr>
                                 <th>
                                     Resources
@@ -70,15 +70,20 @@
                                 <th>
                                     Count
                                 </th>
+
                                 <th>
                                     Health
                                 </th>
+
                                 <th>
                                     Spent
                                 </th>
+                                <th>
+                                    Recommendations
+                                </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tblBody">
                             @foreach (var item in ViewBag.count)
                             {
                                 <tr>
@@ -88,13 +93,20 @@
                                     <td>
                                         @item.ResourceCount
                                     </td>
+
                                     <td>
-                                        <a style="color:@item.Color" href="Cera/GetResourceHealth">
-                                            Available
-                                        </a>
+                                        <img src="/img/healthicon (1).jpg" width="15" height="21">
+                                        <img src="/img/Heart1.png" width="12" height="21">
+                                        <img src="/img/Dot1.png" width="15" height="31">
+                                        @*<a style="color:@item.Color" href="Cera/GetResourceHealth">
+                                                Available
+                                            </a>*@
                                     </td>
                                     <td>
                                         @(item.ConsumedPercent+"%")
+                                    </td>
+                                    <td>
+                                        >5000
                                     </td>
                                 </tr>
                             }
@@ -123,7 +135,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h4>Resource Availability Map</h4>
-                <div class="card-body" style="padding:0% !important">
+                <div id="resourceMap" class="card-body" style="padding:0% !important">
                     <iframe src="~/azureWorldMap.html" width="1000" height="420"></iframe>
                 </div>
 
@@ -139,6 +151,7 @@
 <script src="~/ChartJS/charts.js"></script>
 <script src="~/ChartJS/material.js"></script>
 <script src="~/ChartJS/animated.js"></script>
+@*<script src="~/js/scroll.js"></script>*@
 
 <script>
 
@@ -148,8 +161,14 @@
     var resourcesSpentArrData = [];
     var resourceTags = [];
     var resourceTagsData = [];
+    var resourceCount = [];
+    var spentOnChange = [];
+    var tagsOnChange = [];
+    var mapDataOnChange = [];
+    resourceCount = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.count))');
 
     function loadChartData() {
+        debugger;
     resourcesSpentarr.push((this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.usage))')));
     for (var i = 0; i < resourcesSpentarr[0].length; i++) {
         resourcesSpentArrData.push({ y: resourcesSpentarr[0][i].pretaxCost, label: resourcesSpentarr[0][i].resourceType });
@@ -162,9 +181,11 @@
     }
 
     var mapData = [];
-        var mapDataArray = [];
-    function getMapData() {
+    var mapDataArray = [];
+     function getMapData() {
         debugger;
+        let location = $('#ddlLocation').val();
+        if (location === "AllLocations") {
             mapData = [];
             mapDataArray = [];
             mapData.push((this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.locations))')));
@@ -173,30 +194,51 @@
                     radius: mapData[0][i].radius, locationName: mapData[0][i].locationName, fillKey: mapData[0][i].fillKey, latitude: mapData[0][i].latitude, longitude: mapData[0][i].longitude, resourceCount: mapData[0][i].resourceCount
                 });
             }
-            console.log(mapDataArray);
+            console.log("mapDataArray",mapDataArray);
             return mapDataArray;
+         }
+         function getLoadMapData(){
+         let tempMapData = [];
+         tempMapData = loadMapData(location);
+
+         console.log("tempMapData->", tempMapData);
+             return tempMapData;
+         }
+        //const result = loadMapData(location).then((data) => {
+        //    console.log(data);
+        //    return data;
+        //});
+        //console.log("mapdataResult->", result.PromiseValue);
+        //return result.PromiseValue;
     }
 
     window.onload = function () {
+        $('.dataTables_length').addClass('bs-select');
         $('#drpFilterBy').val('Spend');
         dropdownChange();
     }
 
     function dropdownChange() {
-        if (dataVal === undefined || dataVal.length === 0) {
-            loadChartData();
+        let location = $('#ddlLocation').val();
+        let filterBy = $('#drpFilterBy').val();
+        if (location === "AllLocations") {
+            if (dataVal === undefined || dataVal.length === 0) {
+                loadChartData();
+            }
+            var drpval = $('#drpFilterBy').val();
+            if (drpval == "Spend") {
+                dataVal = resourcesSpentArrData;
+                $('#lblChart').text("Resources Spend");
+                console.log(dataVal);
+            }
+            if (drpval == "Tags") {
+                dataVal = resourceTagsData;
+                $('#lblChart').text("Resources Tags");
+            }
+            renderPieChartData();
+
         }
-        var drpval = $('#drpFilterBy').val();
-        if (drpval == "Spend") {
-            dataVal = resourcesSpentArrData;
-            $('#lblChart').text("Resources Spend");
-            console.log(dataVal);
-        }
-        if (drpval == "Tags") {
-            dataVal = resourceTagsData;
-            $('#lblChart').text("Resources Tags");
-        }
-        renderPieChartData();
+        loadPieChartData(filterBy, location);
     }
 
 
@@ -215,6 +257,187 @@
 
 
         chart.logo.disabled = true;
+    }
+    function getDataByLocation() {
+        let location = $('#ddlLocation').val();
+        let filterBy = $('#drpFilterBy').val();
+        console.log(location);
+        if (location === "AllLocations") {
+            $('#drpFilterBy').val('Spend');
+            dropdownChange();
+            console.log(resourceCount);
+            appendHtmlforResourceCount(resourceCount);
+            return;
+        }
+        $.ajax({
+            async: true,
+            type: "GET",
+            url: "/Cera/GetResourceCountByLocation",
+            data: { location: location },
+            //dataType: "json",
+            //contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = JSON.parse(data);
+                appendHtmlforResourceCount(data);
+
+            },
+            error: function (err) {
+                console.log(err.responseText);
+            }
+        });
+        loadPieChartData(filterBy, location);
+    /*loadMapData(location);*/
+        /*updateMapOnChange(location);*/
+        $('#resourceMap').empty();
+        $('#resourceMap').append('<iframe src="/azureWorldMap.html" width="1000" height="420"></iframe>');
+
+    }
+    function appendHtmlforResourceCount(data) {
+        if (data != null) {
+            console.log("GetResourceCountByLocation");
+            console.log(data);
+
+            let html = '';
+
+            for (let i = 0; i < data.length; i++) {
+                html += '<tr>';
+                html += '<td>' + data[i].resourceType + '</td>';
+                html += '<td>' + data[i].resourceCount + '</td>';
+                html += '<td><img src = "/img/healthicon (1).jpg" width = "15" height = "21"><img src="/img/Heart1.png" width="12" height="21"><img src="/img/Dot1.png" width="15" height="31"></td>'
+                html += '<td>' + data[i].consumedPercent + '%</td>';
+                html += '<td>>5000</td>';
+                html += '</tr>';
+            }
+            $('#tblBody').empty();
+            $('#tblBody').append(html);
+
+        }
+    }
+    function loadPieChartData(filterBy, location) {
+        if (filterBy === "Spend" && location !== "AllLocations") {
+            $.ajax({
+                async: true,
+                type: "GET",
+                url: "/Cera/GetResourceUsageByLocation",
+                data: { location: location },
+                //dataType: "json",
+                //contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data != null) {
+                        console.log("GetResourceUsageByLocation");
+                        console.log(data);
+                        let response = JSON.parse(data);
+                        data = [];
+                        data.push(response);
+                        spentOnChange = [];
+                        for (var i = 0; i < data[0].length; i++) {
+                            spentOnChange.push({ y: data[0][i].pretaxCost, label: data[0][i].resourceType });
+                        }
+                        console.log("spentOnChange ->", spentOnChange);
+
+                        dataVal = spentOnChange;
+                        renderPieChartData();
+                    }
+                },
+                error: function (err) {
+                    console.log(err.responseText);
+                }
+            });
+        }
+        if (filterBy === "Tags" && location !== "AllLocations") {
+            $.ajax({
+                async: true,
+                type: "GET",
+                url: "/Cera/GetResourceTagsByLocation",
+                data: { location: location },
+                //dataType: "json",
+                //contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data != null) {
+                        console.log("GetResourceTagsByLocation");
+                        console.log(data);
+                        let response = JSON.parse(data);
+                        data = [];
+                        data.push(response);
+                        tagsOnChange = [];
+                        for (var i = 0; i < data[0].length; i++) {
+                            tagsOnChange.push({ y: data[0][i].count, label: data[0][i].tags });
+                        }
+                        console.log("tagsOnChange ->", tagsOnChange);
+
+                        dataVal = tagsOnChange;
+                        renderPieChartData();
+                    }
+                },
+                error: function (err) {
+                    console.log(err.responseText);
+                }
+            });
+        }
+    }
+    // function loadMapData(location) {
+    //    const result =  $.ajax({
+    //        //async: true,
+    //        type: "GET",
+    //        url: "/Cera/GetResourceByLocation",
+    //        data: { location: location },
+    //        dataType: "json",
+    //        //contentType: "application/json; charset=utf-8",
+    //        success: function (data) {
+    //            if (data != null) {
+    //                console.log("GetResourceByLocation");
+    //                console.log(data);
+    //                mapData = [];
+    //                mapDataArray = [];
+
+    //                mapData.push(JSON.parse(data));
+    //        for (var i = 0; i < mapData[0].length; i++) {
+    //            mapDataArray.push({
+    //                radius: mapData[0][i].radius, locationName: mapData[0][i].locationName, fillKey: mapData[0][i].fillKey, latitude: mapData[0][i].latitude, longitude: mapData[0][i].longitude, resourceCount: mapData[0][i].resourceCount
+    //            });
+    //        }
+    //                console.log("OnChangeMapData->", mapDataArray);
+    //                mapDataOnChange = [];
+    //                mapDataOnChange = mapDataArray;
+
+    //        return mapDataArray;
+
+    //            }
+    //        },
+    //        error: function (err) {
+    //            console.log(err.responseText);
+    //        }
+
+    //    }).responseText;
+    //    console.log("result->", result);
+    //    return result;
+    //}
+
+    function loadMapData(location) {
+        return $.ajax({
+            async:false,
+            url: '/Cera/GetResourceByLocation',
+            data: { location: location },
+            type: 'get',
+            dataType: 'json'
+        }).then(function (data) {
+            console.log("getRecord response: " + data);
+            //mapData = [];
+            //        mapDataArray = [];
+
+            //        mapData.push(JSON.parse(data));
+            //for (var i = 0; i < mapData[0].length; i++) {
+            //    mapDataArray.push({
+            //        radius: mapData[0][i].radius, locationName: mapData[0][i].locationName, fillKey: mapData[0][i].fillKey, latitude: mapData[0][i].latitude, longitude: mapData[0][i].longitude, resourceCount: mapData[0][i].resourceCount
+            //    });
+            //}
+            //        console.log("OnChangeMapData->", mapDataArray);
+            //        mapDataOnChange = [];
+            //        mapDataOnChange = mapDataArray;
+
+            //return mapDataArray;
+            return data;
+        }).responseText;
     }
 
     //function renderTagsChart() {
