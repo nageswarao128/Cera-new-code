@@ -95,9 +95,9 @@
                                     </td>
 
                                     <td>
-                                        <img src="/img/healthicon (1).jpg" width="15" height="21">
-                                        <img src="/img/Heart1.png" width="12" height="21">
-                                        <img src="/img/Dot1.png" width="15" height="31">
+                                        <img src="/img/SecurityYellow.png"style="width:15px">
+                                        <img src="/img/HealthRed.png"style="width:12px">
+                                        <img src="/img/AvailabilityGreen.png"style="height:15px;width:12px">
                                         @*<a style="color:@item.Color" href="Cera/GetResourceHealth">
                                                 Available
                                             </a>*@
@@ -116,7 +116,7 @@
             </div>
             <div class="col-md-6">
                 <div class="col-md-12 text-center">
-                    <select class="form-control" style="width:30%; margin-left:30%" onchange="dropdownChange();" id="drpFilterBy">
+                    <select class="form-control" style="width:30%; margin-left:70%" onchange="dropdownChange();" id="drpFilterBy">
                         <option value="0">--Select--</option>
                         <option value="Spend">Spend</option>
                         <option value="Tags">Tags</option>
@@ -182,6 +182,7 @@
 
     var mapData = [];
     var mapDataArray = [];
+    var selectedMapData = [];
      function getMapData() {
         debugger;
         let location = $('#ddlLocation').val();
@@ -197,19 +198,13 @@
             console.log("mapDataArray",mapDataArray);
             return mapDataArray;
          }
-         function getLoadMapData(){
-         let tempMapData = [];
-         tempMapData = loadMapData(location);
 
-         console.log("tempMapData->", tempMapData);
-             return tempMapData;
-         }
-        //const result = loadMapData(location).then((data) => {
-        //    console.log(data);
-        //    return data;
-        //});
-        //console.log("mapdataResult->", result.PromiseValue);
-        //return result.PromiseValue;
+         selectedMapData = mapDataArray.filter(function (data) {
+             return data.locationName == location;
+         });
+         console.log("selected location data -> ", selectedMapData);
+         return selectedMapData;
+
     }
 
     window.onload = function () {
@@ -286,10 +281,10 @@
             }
         });
         loadPieChartData(filterBy, location);
-    /*loadMapData(location);*/
-        /*updateMapOnChange(location);*/
+
+
         $('#resourceMap').empty();
-        $('#resourceMap').append('<iframe src="/azureWorldMap.html" width="1000" height="420"></iframe>');
+    $('#resourceMap').append('<iframe src="/azureWorldMap.html" width="1000" height="420"></iframe>');
 
     }
     function appendHtmlforResourceCount(data) {
@@ -303,7 +298,7 @@
                 html += '<tr>';
                 html += '<td>' + data[i].resourceType + '</td>';
                 html += '<td>' + data[i].resourceCount + '</td>';
-                html += '<td><img src = "/img/healthicon (1).jpg" width = "15" height = "21"><img src="/img/Heart1.png" width="12" height="21"><img src="/img/Dot1.png" width="15" height="31"></td>'
+                html += '<td><img src = "/img/SecurityYellow.png"style="width:15px"> <img src="/img/HealthRed.png"style="width:12px"> <img src="/img/AvailabilityGreen.png"style="height:15px;width:12px"></td>'
                 html += '<td>' + data[i].consumedPercent + '%</td>';
                 html += '<td>>5000</td>';
                 html += '</tr>';
@@ -375,70 +370,7 @@
             });
         }
     }
-    // function loadMapData(location) {
-    //    const result =  $.ajax({
-    //        //async: true,
-    //        type: "GET",
-    //        url: "/Cera/GetResourceByLocation",
-    //        data: { location: location },
-    //        dataType: "json",
-    //        //contentType: "application/json; charset=utf-8",
-    //        success: function (data) {
-    //            if (data != null) {
-    //                console.log("GetResourceByLocation");
-    //                console.log(data);
-    //                mapData = [];
-    //                mapDataArray = [];
 
-    //                mapData.push(JSON.parse(data));
-    //        for (var i = 0; i < mapData[0].length; i++) {
-    //            mapDataArray.push({
-    //                radius: mapData[0][i].radius, locationName: mapData[0][i].locationName, fillKey: mapData[0][i].fillKey, latitude: mapData[0][i].latitude, longitude: mapData[0][i].longitude, resourceCount: mapData[0][i].resourceCount
-    //            });
-    //        }
-    //                console.log("OnChangeMapData->", mapDataArray);
-    //                mapDataOnChange = [];
-    //                mapDataOnChange = mapDataArray;
-
-    //        return mapDataArray;
-
-    //            }
-    //        },
-    //        error: function (err) {
-    //            console.log(err.responseText);
-    //        }
-
-    //    }).responseText;
-    //    console.log("result->", result);
-    //    return result;
-    //}
-
-    function loadMapData(location) {
-        return $.ajax({
-            async:false,
-            url: '/Cera/GetResourceByLocation',
-            data: { location: location },
-            type: 'get',
-            dataType: 'json'
-        }).then(function (data) {
-            console.log("getRecord response: " + data);
-            //mapData = [];
-            //        mapDataArray = [];
-
-            //        mapData.push(JSON.parse(data));
-            //for (var i = 0; i < mapData[0].length; i++) {
-            //    mapDataArray.push({
-            //        radius: mapData[0][i].radius, locationName: mapData[0][i].locationName, fillKey: mapData[0][i].fillKey, latitude: mapData[0][i].latitude, longitude: mapData[0][i].longitude, resourceCount: mapData[0][i].resourceCount
-            //    });
-            //}
-            //        console.log("OnChangeMapData->", mapDataArray);
-            //        mapDataOnChange = [];
-            //        mapDataOnChange = mapDataArray;
-
-            //return mapDataArray;
-            return data;
-        }).responseText;
-    }
 
     //function renderTagsChart() {
 

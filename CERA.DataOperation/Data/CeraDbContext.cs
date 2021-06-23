@@ -46,6 +46,7 @@ namespace CERA.DataOperation.Data
         public DbSet<CeraUsage> UsageDetails { get; set; }
         public DbSet<CeraPolicy> Policies { get; set; }
         public DbSet<AzureLocations> Locations { get; set; }
+        public DbSet<AdvisorRecommendations> AdvisorRecommendations { get; set; }
     }
     
 }

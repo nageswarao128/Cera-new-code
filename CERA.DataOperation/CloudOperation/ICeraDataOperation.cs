@@ -23,6 +23,7 @@ namespace CERA.DataOperation
         public int AddUsageDetails(List<CeraUsage> data);
         public int AddLocationsData(List<AzureLocations> data);
         public int AddPolicyData(List<CeraPolicy> data);
+        public int AddAdvisorRecommendations(List<AdvisorRecommendations> data);
         public object AddSqlServerData(object data);
         public object AddSqlDbData(object data);
 
@@ -50,5 +51,6 @@ namespace CERA.DataOperation
         public List<CeraUsage> GetUsageDetails();
         public List<CeraPolicy> GetPolicy();
         public List<AzureLocations> GetLocations();
+        public List<AdvisorRecommendations> GetAdvisorRecommendations();
     }
 }

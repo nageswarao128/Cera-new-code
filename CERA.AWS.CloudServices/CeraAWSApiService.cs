@@ -284,5 +284,20 @@ namespace CERA.AWS.CloudService
         {
             throw new NotImplementedException();
         }
+
+        public List<AdvisorRecommendations> GetAdvisorRecommendations()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<AdvisorRecommendations> GetCloudAdvisorRecommendations(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<AdvisorRecommendations> GetCloudAdvisorRecommendations(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -193,6 +193,12 @@ namespace CERASyncAPI.Controllers
             _ceraCloud.ClientName = ClientName;
             return _ceraCloud.GetCloudPolicies(requestInfo);
         }
-        
+        [HttpGet]
+        public IEnumerable<AdvisorRecommendations> GetCloudAdvisorRecommendations(string ClientName = "Quadrant")
+        {
+            RequestInfoViewModel requestInfo = new RequestInfoViewModel();
+            _ceraCloud.ClientName = ClientName;
+            return _ceraCloud.GetCloudAdvisorRecommendations(requestInfo);
+        }
     }
 }

@@ -876,6 +876,29 @@ namespace CeraWebApplication.Controllers
             }
             return View(Disks.ToList());
         }
+        [HttpGet]
+        public async Task<IActionResult> GetAdvisorRecommendationsDetails()
+        {
+            IEnumerable<AdvisorRecommendations> advisorRecommendations  = null;
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetAdvisorRecommendations"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        advisorRecommendations = JsonConvert.DeserializeObject<List<AdvisorRecommendations>>(apiResponse);
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Home");
+                    }
+                }
+            }
+            return View(advisorRecommendations.ToList());
+        }
+        [HttpGet]
         public async Task<IActionResult> GetPolicyDetails()
         {
             IEnumerable<CeraPolicies> policies = null;

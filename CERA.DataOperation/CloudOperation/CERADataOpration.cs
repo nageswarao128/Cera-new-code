@@ -502,6 +502,31 @@ namespace CERA.DataOperation
                 return 0;
             }
         }
+        public int AddAdvisorRecommendations(List<AdvisorRecommendations> recommendations)
+        {
+            try
+            {
+                _logger.LogInfo("Receive Data");
+                var advisorRecommendations = _dbContext.AdvisorRecommendations.ToList();
+                foreach (var item in advisorRecommendations)
+                {
+                    _dbContext.AdvisorRecommendations.Remove(item);
+                }
+                _dbContext.SaveChanges();
+                foreach (var item in recommendations)
+                {
+                    _dbContext.AdvisorRecommendations.Add(item);
+                }
+                int record = _dbContext.SaveChanges();
+                _logger.LogInfo("Data Imported Successfully");
+                return record;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return 0;
+            }
+        }
         public int AddResourceHealth(List<CeraResourceHealth> resourceHealth)
         {
             try
@@ -759,6 +784,18 @@ namespace CERA.DataOperation
                 var locations = _dbContext.Locations.ToList();
                 _logger.LogInfo("Data retrieved for locations List from Database");
                 return locations;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return null;
+            }
+        }
+        public List<AdvisorRecommendations> GetAdvisorRecommendations()
+        {
+            try
+            {
+                return _dbContext.AdvisorRecommendations.ToList();
             }
             catch (Exception ex)
             {

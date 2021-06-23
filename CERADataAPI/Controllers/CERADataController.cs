@@ -181,5 +181,10 @@ namespace CERADataAPI.Controllers
         {
             return _ceraCloud.GetResourceLocations(location);
         }
+        [HttpGet]
+        public List<AdvisorRecommendations> GetAdvisorRecommendations()
+        {
+            return _ceraCloud.GetAdvisorRecommendations();
+        }
     }
 }

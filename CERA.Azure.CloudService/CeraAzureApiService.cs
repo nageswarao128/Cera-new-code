@@ -769,6 +769,31 @@ namespace CERA.Azure.CloudService
             }
             return ceraCompliances;
         }
+        public List<AdvisorRecommendations> GetCloudAdvisorRecommendations(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            const string url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.Security/compliances?api-version=2017-08-01-preview";
+            var data = CallAzureEndPoint(url, subscriptions);
+            if (data == null)
+            {
+                return null;
+            }
+
+           List<AdvisorRecommendationsDTO> advisorRecommendationsDTO = new List<AdvisorRecommendationsDTO>();
+            advisorRecommendationsDTO = JsonConvert.DeserializeObject<List<AdvisorRecommendationsDTO>>(data.Result);
+            List<AdvisorRecommendations> recommendations = new List<AdvisorRecommendations>();
+            foreach (var item in advisorRecommendationsDTO)
+            {
+                recommendations.Add(new AdvisorRecommendations
+                {
+                    recommendationId = item.id,
+                    resourceId=item.properties.resourceMetadata.resourceId,
+                    location=item.properties.extendedProperties.location,
+                    category = item.properties.category,
+                    impact = item.properties.impact
+                });
+            }
+            return recommendations;
+        }
         public async Task<string> CallAzureEndPoint(string url, List<CeraSubscription> subscriptions)
         {
             try
@@ -968,6 +993,16 @@ namespace CERA.Azure.CloudService
         
 
         public List<AzureLocations> GetLocations()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<AdvisorRecommendations> GetAdvisorRecommendations()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<AdvisorRecommendations> GetCloudAdvisorRecommendations(RequestInfoViewModel requestInfo)
         {
             throw new NotImplementedException();
         }

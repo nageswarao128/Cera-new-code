@@ -534,10 +534,10 @@ namespace CERA.CloudService
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     usage = _cloudApiServices.GetCloudUsageDetails(requestInfo, subscriptions);
-                    Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Ratecard");
+                    Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Usage Details");
                     _dataOps.AddUsageDetails(usage);
                     usage.Clear();
-                    Logger.LogInfo($"Imported data for {platformConfig.PlatformName} Cloud RateCard to DB");
+                    Logger.LogInfo($"Imported data for {platformConfig.PlatformName} Cloud Usage Details to DB");
                 }
                 return usage;
             }
@@ -547,6 +547,33 @@ namespace CERA.CloudService
                 throw ex;
             }
             
+        }
+        public List<AdvisorRecommendations> GetCloudAdvisorRecommendations(RequestInfoViewModel requestInfo)
+        {
+            try
+            {
+                Logger.LogInfo("Get Avisor Recommendations Details List Called");
+                List<AdvisorRecommendations> recommendations  = new List<AdvisorRecommendations>();
+                GetPlatforms();
+                List<CeraSubscription> subscriptions = new List<CeraSubscription>();
+                subscriptions = GetSubscriptionList();
+                foreach (var platformConfig in PlatformConfigs)
+                {
+                    _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
+                    _cloudApiServices.Logger = Logger;
+                    recommendations = _cloudApiServices.GetCloudAdvisorRecommendations(requestInfo, subscriptions);
+                    Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Advisor Recommendations");
+                    _dataOps.AddAdvisorRecommendations(recommendations);
+                    recommendations.Clear();
+                    Logger.LogInfo($"Imported data for {platformConfig.PlatformName} Cloud Advisor Recommendations to DB");
+                }
+                return recommendations;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
         }
         public List<AzureLocations> GetCloudLocations(RequestInfoViewModel requestInfo)
         {
@@ -562,10 +589,10 @@ namespace CERA.CloudService
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     locations = _cloudApiServices.GetCloudLocations(requestInfo, subscriptions);
-                    Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Ratecard");
+                    Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Location");
                     _dataOps.AddLocationsData(locations);
                     locations.Clear();
-                    Logger.LogInfo($"Imported data for {platformConfig.PlatformName} Cloud RateCard to DB");
+                    Logger.LogInfo($"Imported data for {platformConfig.PlatformName} Cloud Location to DB");
                 }
                 return locations;
             }
@@ -879,6 +906,18 @@ namespace CERA.CloudService
                 throw ex;
             }
         }
+        public List<AdvisorRecommendations> GetAdvisorRecommendations()
+        {
+            try
+            {
+                return _dataOps.GetAdvisorRecommendations();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
         public List<AzureLocations> GetLocations()
         {
             try
@@ -1022,6 +1061,12 @@ namespace CERA.CloudService
         }
 
         public List<AzureLocations> GetCloudLocations(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public List<AdvisorRecommendations> GetCloudAdvisorRecommendations(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             throw new NotImplementedException();
         }
