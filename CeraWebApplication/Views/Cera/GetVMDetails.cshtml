@@ -1,48 +1,181 @@
 ﻿@model List<CeraWebApplication.Models.CeraVM>
-<head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
-<h1>AzureVM List</h1>
-@if (Model != null)
-{
-    <input style="width:30%" class="form-control" id="myInput" type="text" placeholder="Search..">
-    <table class="table table-striped table-hover sortable" style="margin-top:1%">
-        <thead>
-            <tr>
 
-                <th>
-                    VMName
-                </th>
-
-                <th>
-                    RegionName
-                </th>
-
-                <th>
-                    ResourceGroupName
-                </th>
-            </tr>
-        </thead>
-        <tbody id="myTable">
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.VMName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RegionName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ResourceGroupName)
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+@{
+    Layout = "~/Views/Shared/_ResourcesLayout.cshtml";
+    //ViewData["Title"] = "Login";
 }
-<script src="~/js/tables.js"></script>
-<script src="~/js/sort.js"></script>
+
+
+    <div>
+        <div class="row">
+            <div class="col-md-4">
+                <ul class="cera-breadCrumb">
+                    <li><a asp-controller="Cera" asp-action="DashBoard">Home </a></li>
+                    <li><a href="#">Resources</a></li>
+                    <li>Virtual Machine</li>
+                </ul>
+            </div>
+        </div>
+        <div class="cera-rightContent">
+            <h3 class="main_h">Virtual Machine </h3>
+            <table class="table display" id="example" style="width:100%">
+                <thead>
+                    <tr>
+
+                        <th>
+                            VMName
+                        </th>
+
+                        <th>
+                            ResourceGroupName
+                        </th>
+
+                        <th>
+                            
+                            RegionName
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="ddlVM">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VMName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ResourceGroupName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RegionName)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
+<script type="text/javascript">
+    (function () {
+        $('.toggle-wrap').on('click', function () {
+            $(this).toggleClass('active');
+            $('.cera-col3, .cera-col9').toggleClass('menu-open');
+        });
+    })();
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+     var cloud;
+    var data = [];
+    var dataarr = [];
+    var clouddata = [];
+    function getdataCloud() {
+        debugger;
+        cloud = $('#ddlCloud').val();
+        console.log('selected cloud', cloud);
+        let subscriptionid = $('#ddlSub').val();
+        if (subscriptionid == "AllSubscriptions") {
+            if (cloud == "AllClouds") {
+                $('#subscriptionFilter').hide();
+                debugger;
+                clouddata = [];
+                clouddata = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.data))');
+                console.log('AllCloudsdata', clouddata);
+                appendhtmldata(clouddata);
+            }
+            else if (cloud == "Azure") {
+                $('#subscriptionFilter').show();
+                data = [];
+                dataarr = [];
+                data = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.data))');
+                dataarr = data.filter(function (data) {
+                    return data.cloudProvider == cloud;
+
+                });
+                console.log('Selectedcloud', dataarr);
+                appendhtmldata(dataarr);
+            }
+
+            else {
+                $('#subscriptionFilter').hide();
+                data = [];
+                dataarr = [];
+                data = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.data))');
+                dataarr = data.filter(function (data) {
+                    return data.cloudProvider == cloud;
+
+                });
+                console.log('Selectedcloud', dataarr);
+                appendhtmldata(dataarr);
+            }
+        }
+        else {
+            if (cloud == "AllClouds") {
+                $('#subscriptionFilter').hide();
+                debugger;
+                clouddata = [];
+                clouddata = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.data))');
+                console.log('AllCloudsdata', clouddata);
+                appendhtmldata(clouddata);
+            }
+            else if (cloud == "Azure") {
+                $('#subscriptionFilter').show();
+                data = [];
+                dataarr = [];
+                data = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.data))');
+                dataarr = data.filter(function (data) {
+                    return data.cloudProvider == cloud && data.subscriptionId == subscriptionid;
+
+                });
+                console.log('Selectedcloud', dataarr);
+                appendhtmldata(dataarr);
+            }
+
+            else {
+                $('#subscriptionFilter').hide();
+                data = [];
+                dataarr = [];
+                data = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.data))');
+                dataarr = data.filter(function (data) {
+                    return data.cloudProvider == cloud;
+
+                });
+                console.log('Selectedcloud', dataarr);
+                appendhtmldata(dataarr);
+            }
+        }
+
+    }
+    function getDataBySubscription() {
+        getdataCloud();
+    }
+
+    function appendhtmldata(data) {
+        console.log('appendhtmlhit');
+        if (data != null) {
+
+            let html = '';
+            debugger;
+
+            for (let i = 0; i < data.length; i++) {
+                html += '<tr>';
+                html += '<td>' + data[i].vmName + '</td>';
+                html += '<td>' + data[i].resourceGroupName + '</td>';
+                html += '<td>' + data[i].regionName + '</td>';
+                html += '</tr>';
+            }
+            $('#ddlVM').empty();
+            $('#ddlVM').append(html);
+
+        }
+    }
+</script>
+
 

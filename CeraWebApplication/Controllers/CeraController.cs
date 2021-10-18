@@ -50,6 +50,7 @@ namespace CeraWebApplication.Controllers
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
             UserDetails userDetails = new UserDetails();
+            UserModel user = new UserModel();
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.PostAsJsonAsync<LoginModel>($"{SyncApiUrl}/api/Login/Login", loginModel))
@@ -58,12 +59,27 @@ namespace CeraWebApplication.Controllers
                     if (apiresponse.Contains("userName"))
                     {
                         userDetails = JsonConvert.DeserializeObject<UserDetails>(apiresponse);
-                        
-                        var claims = new List<Claim>
+                        HttpContext.Session.SetString("userId", userDetails.id);
+                        using (var result = await httpClient.GetAsync($"{SyncApiUrl}/api/Manage/GetUserProfile?name=" + userDetails.userName))
                         {
-                            new Claim(ClaimTypes.Name,userDetails.userName),
-                            new Claim(ClaimTypes.Role,"Admin")
-                        };
+                            if (result.IsSuccessStatusCode)
+                            {
+                                string apiResult = await result.Content.ReadAsStringAsync();
+                                user = JsonConvert.DeserializeObject<UserModel>(apiResult);
+
+                            }
+                        }
+                        List<Claim> claims = new List<Claim>();
+                        claims.Add(new Claim(ClaimTypes.Name, userDetails.userName));
+                        foreach(var item in user.roles)
+                        {
+                            claims.Add(new Claim(ClaimTypes.Role, item));
+                        }
+                        //var claims = new List<Claim>
+                        //{
+                        //    new Claim(ClaimTypes.Name,userDetails.userName),
+                        //    new Claim(ClaimTypes.Role,userDetails.roles)
+                        //};
                         var auth = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                         
                         var principle = new ClaimsPrincipal(auth);
@@ -72,21 +88,22 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Cera");
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
         }
+        //[HttpGet]
+        //public IActionResult Logout()
+        //{
+        //    return View();
+        //}
         [HttpGet]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout() 
         {
+                HttpContext.Session.Clear();
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return View();
-        }
-        [HttpPost]
-        public async Task<IActionResult> Logout(string username) 
-        {
-            await HttpContext.SignOutAsync();
-            return RedirectToAction("Login", "Cera");
         }
         [HttpGet]
         public async Task<IActionResult> ManageUsers()
@@ -103,16 +120,18 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Cera");
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
             return View(users.ToList());
         }
+        [AllowAnonymous]
         public IActionResult AddUser()
         {
             return View();
         }
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> AddUser(AddCeraUser ceraUser)
         {
@@ -128,7 +147,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Cera");
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
@@ -148,7 +167,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Cera");
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
@@ -168,7 +187,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Cera");
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
@@ -188,7 +207,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Cera");
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
@@ -208,7 +227,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Cera");
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
@@ -228,13 +247,14 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Cera");
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
+
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetResourceTypeUsageDetails"))
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/UsageByMonth"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -243,10 +263,29 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Cera");
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
+            IEnumerable<CeraSubscription> subscriptions = null;
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetDBSubscriptions"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        subscriptions = JsonConvert.DeserializeObject<List<CeraSubscription>>(apiResponse);
+                        ViewBag.subscriptions = subscriptions.ToList();
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Cera");
+                    }
+                }
+            }
+            
             List<UserCloud> clouds = new List<UserCloud>();
             using (var httpClient = new HttpClient())
             {
@@ -256,15 +295,12 @@ namespace CeraWebApplication.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         clouds = JsonConvert.DeserializeObject<List<UserCloud>>(apiResponse);
-                        clouds.Add(new UserCloud
-                        {
-                            cloudName = "All Clouds"
-                        });
+                        
                         ViewBag.clouds = clouds.ToList();
                     }
                     else
                     {
-                        return View("ErrorPage", "Cera");
+                        return View("Error", "Cera");
                     }
                 }
             }
@@ -282,7 +318,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return View("ErrorPage", "Cera");
+                        return View("Error", "Cera");
                     }
                 }
             }
@@ -300,13 +336,84 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return View("ErrorPage", "Cera");
+                        return View("Error", "Cera");
                     }
                 }
             }
-            ViewBag.count = resourceCount;
+            List<locationFilter> filter = new List<locationFilter>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CERAData/GetMapLocationsFilter"))
+                {
+                    var apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        filter = JsonConvert.DeserializeObject<List<locationFilter>>(apiResponse);
+
+                        ViewBag.mapdataFilter = filter.ToList();
+                    }
+                    else
+                    {
+                        return View("Error", "Cera");
+                    }
+                }
+            }
+
+            List<DashboardCountModel> dashboardCount = new List<DashboardCountModel>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CERAData/GetDashboardCount"))
+                {
+                    var apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        dashboardCount = JsonConvert.DeserializeObject<List<DashboardCountModel>>(apiResponse);
+
+                        ViewBag.dashboardCount = dashboardCount.ToList();
+                    }
+                    else
+                    {
+                        return View("Error", "Cera");
+                    }
+                }
+            }
+
+            ViewBag.count = resourceCount.OrderBy(x=>x.ResourceType== "Others").ThenBy(x=>x.ResourceType=="Network").ThenBy(x=>x.ResourceType== "Storage").ThenBy(x=>x.ResourceType=="Compute");
             ViewBag.usage = resourceUsage;
             return View();
+        }
+        [HttpGet]
+        public async Task<JsonResult> UsageCloudByMonth(string cloudprovider)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/UsageCloudByMonth?cloudprovider=" + cloudprovider))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+
+        }
+        [HttpGet]
+        public async Task<JsonResult> GetResourceTagsCloudCount(string cloudprovider)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetResourceTagsCloudCount?cloudprovider=" + cloudprovider))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
         }
         [HttpGet]
         public async Task<JsonResult> GetResourceUsageByLocation(string location)
@@ -314,6 +421,299 @@ namespace CeraWebApplication.Controllers
             using(var httpclient = new HttpClient())
             {
                 using(var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/ResourceUsageByLocation?location="+location))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetResourceCloudCount(string cloudprovider)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetResourceCloudCount?cloudprovider=" + cloudprovider))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+        [HttpGet]
+        public async Task<JsonResult> GetResourcetypeCloudCount(string location,string cloudprovider)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetResourceTypecloudCount?location=" + location+"&cloudprovider="+cloudprovider))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+        public async Task<JsonResult> ResourceSubscriptionCloudspentUsage(string cloudprovider, string subscriptionid)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/ResourceSubscriptionCloudspentUsage?cloudprovider=" + cloudprovider + "&subscriptionid=" + subscriptionid))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+        public async Task<JsonResult> GetResourceSubscriptionCloudTagsCount(string cloudprovider, string subscriptionid)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetResourceSubscriptionCloudTagsCount?cloudprovider=" + cloudprovider + "&subscriptionid=" + subscriptionid))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+  public async Task<JsonResult> UsageSubscriptionByMonth(string cloudprovider, string subscriptionid)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/UsageSubscriptionByMonth?cloudprovider=" + cloudprovider + "&subscriptionid=" + subscriptionid))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+        [HttpGet]
+        public async Task<JsonResult> GetResourceCloudTagsCount(string location, string cloudprovider)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetResourceCloudTagsCount?location=" + location + "&cloudprovider=" + cloudprovider))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+
+        public async Task<JsonResult> GetSubscriptionLocationList(string location, string cloudprovider, string subscriptionid)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetSubscriptionLocationList?location=" + location + "&cloudprovider=" + cloudprovider + "&subscriptionid="+ subscriptionid))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+        public async Task<JsonResult> ResourceSubscriptionCloudUsage(string location, string cloudprovider, string subscriptionid)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/ResourceSubscriptionCloudUsage?location=" + location + "&cloudprovider=" + cloudprovider + "&subscriptionid=" + subscriptionid))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+        public async Task<JsonResult> GetResourceSubscriptionCloudTagsCount(string location, string cloudprovider, string subscriptionid)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetResourceSubscriptionCloudTagsCounts?location=" + location + "&cloudprovider=" + cloudprovider + "&subscriptionid=" + subscriptionid))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+         public async Task<JsonResult> GetSubscriptionTypeList(string subscriptionId, string cloudprovider)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetSubscriptionTypeList?subscriptionid=" + subscriptionId + "&cloudprovider=" + cloudprovider))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+        public async Task<JsonResult> GetDashboardCountFilters(string location, string cloudprovider)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetDashboardCountFilters?location=" + location + "&cloudprovider=" + cloudprovider))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> userprofile()
+        {
+            string name = HttpContext.User.Identity.Name;
+           
+          UserModel user = new UserModel();
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{SyncApiUrl}/api/Manage/GetUserProfile?name=" +name))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {                      
+                        string apiResponse = await response.Content.ReadAsStringAsync();                      
+                       user = JsonConvert.DeserializeObject<UserModel>(apiResponse);
+                        ViewBag.data = user;
+                        return View(user);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Cera");
+                    }
+                }
+            }
+
+           
+        }
+        
+  public async Task<JsonResult> GetDashboardCountLocation(string location)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetDashboardCountLocation?location=" + location))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+        public async Task<JsonResult> GetSubscription()
+        {
+            IEnumerable<CeraSubscription> subscriptions = null;
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetDBSubscriptions"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        subscriptions = JsonConvert.DeserializeObject<List<CeraSubscription>>(apiResponse);
+                    }
+                   
+                }
+            }
+            return Json(subscriptions);
+        }
+        public async Task<JsonResult> GetDashboardCountCloud(string cloudprovider)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetDashboardCountCloud?cloudprovider=" + cloudprovider))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+        public async Task<JsonResult> GetDashboardSubscriptionCountFilters(string cloudprovider, string subscriptionid)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetDashboardSubscriptionCountFilters?cloudprovider=" + cloudprovider + "&subscriptionid=" + subscriptionid))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+  public async Task<JsonResult> GetDashboardSubscriptionLocationFilters(string location, string cloudprovider, string subscriptionid)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetDashboardSubscriptionLocationFilters?location=" + location + "&cloudprovider=" + cloudprovider +"&subscriptionid=" + subscriptionid))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> ResourceCloudUsage(string location, string cloudprovider)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/ResourceCloudUsage?location=" + location + "&cloudprovider=" + cloudprovider))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -387,7 +787,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Cera");
+                        return RedirectToAction("Error", "Cera");
                     }
                     ViewBag.usage = apiResponse;
                 }
@@ -410,7 +810,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Cera");
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
@@ -436,12 +836,13 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Cera");
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
             return View(subscriptions.ToList());
         }
+        
         /// <summary>
         /// This method will calls the API to sync the subscription data from cloud to db
         /// </summary>
@@ -459,7 +860,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Home");
                     }
                 }
             }
@@ -484,10 +885,11 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Home");
                     }
                 }
             }
+            ViewBag.data = ResourceGroups.ToList();
             return View(ResourceGroups.ToList());
         }
         /// <summary>
@@ -507,7 +909,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Home");
                     }
                 }
             }
@@ -532,10 +934,11 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Home");
                     }
                 }
             }
+            ViewBag.data = StorageAccounts.ToList();
             return View(StorageAccounts.ToList());
         }
         /// <summary>
@@ -556,7 +959,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Home");
                     }
                 }
             }
@@ -581,7 +984,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Home");
                     }
                 }
             }
@@ -605,7 +1008,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Home");
                     }
                 }
             }
@@ -630,10 +1033,11 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Home");
                     }
                 }
             }
+            ViewBag.data = CeraVMs.ToList();
             return View(CeraVMs.ToList());
         }
         /// <summary>
@@ -653,7 +1057,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Home");
                     }
                 }
             }
@@ -678,7 +1082,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Home");
                     }
                 }
             }
@@ -701,7 +1105,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Home");
                     }
                 }
             }
@@ -726,7 +1130,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
@@ -749,7 +1153,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
@@ -774,10 +1178,11 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
+            ViewBag.data = webApps.ToList();
             return View(webApps.ToList());
         }
         /// <summary>
@@ -797,7 +1202,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
@@ -822,7 +1227,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
@@ -845,7 +1250,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
@@ -870,11 +1275,15 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
             return View(Disks.ToList());
+        }
+        public IActionResult Notifications()
+        {
+            return View();
         }
         [HttpGet]
         public async Task<IActionResult> GetAdvisorRecommendationsDetails()
@@ -892,7 +1301,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
@@ -911,10 +1320,47 @@ namespace CeraWebApplication.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         policies = JsonConvert.DeserializeObject<List<CeraPolicies>>(apiResponse);
+                        ViewBag.data = policies.ToList();
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Cera");
+                    }
+                }
+            }
+            IEnumerable<CeraSubscription> subscriptions = null;
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetDBSubscriptions"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        subscriptions = JsonConvert.DeserializeObject<List<CeraSubscription>>(apiResponse);
+                        ViewBag.subscriptions = subscriptions;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Cera");
+                    }
+                }
+            }
+            IEnumerable<PolicyRules> policyRules = null;
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetPolicyRules"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        policyRules = JsonConvert.DeserializeObject<List<PolicyRules>>(apiResponse);
+                        ViewBag.policyRules = policyRules;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
@@ -937,7 +1383,7 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Cera");
                     }
                 }
             }
@@ -960,7 +1406,232 @@ namespace CeraWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("ErrorPage", "Home");
+                        return RedirectToAction("Error", "Cera");
+                    }
+                }
+            }
+        }
+        [HttpPost]
+        public async Task<ActionResult> AddPolicyRules(List<PolicyRules> data)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.PostAsJsonAsync<List<PolicyRules>>($"{SyncApiUrl}/api/cera/AddPolicyRules",data))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("GetPolicyDetails","Cera");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Cera");
+                    }
+                }
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetUsageReportsData()
+        {
+            IEnumerable<CostUsage> costUsage = null;
+            IEnumerable<UsageByLocation> usageByLocations = null;
+            IEnumerable<UsageByResourceGroup> usageByResourceGroups = null;
+            IEnumerable<UsageHistoryBymonth> usageHistoryBymonth = null;
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/UsageByMonth"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        costUsage = JsonConvert.DeserializeObject<List<CostUsage>>(apiResponse);
+                        ViewBag.UsageByMonth = costUsage;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Cera");
+                    }
+                }
+            }
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/UsageHistory"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        costUsage = JsonConvert.DeserializeObject<List<CostUsage>>(apiResponse);
+                        ViewBag.UsageHistory = costUsage;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Cera");
+                    }
+                }
+            }
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetUsageByLocation"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        usageByLocations = JsonConvert.DeserializeObject<List<UsageByLocation>>(apiResponse);
+                        ViewBag.UsageByLocation = usageByLocations;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Cera");
+                    }
+                }
+            }
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetUsageByResourceGroup"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        usageByResourceGroups = JsonConvert.DeserializeObject<List<UsageByResourceGroup>>(apiResponse);
+                        ViewBag.UsageByResourceGroup = usageByResourceGroups;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Cera");
+                    }
+                }
+            }
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/UsageHistoryByMonth"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        usageHistoryBymonth = JsonConvert.DeserializeObject<List<UsageHistoryBymonth>>(apiResponse);
+                        ViewBag.UsageHistoryByMonth = usageHistoryBymonth;
+                        ViewBag.Months = usageHistoryBymonth.Select(x => x.usageMonth).Distinct();
+                        var abc = usageHistoryBymonth.OrderBy(o => DateTime.Parse(o.usageMonth.ToString()));
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Cera");
+                    }
+                }
+            }
+            return View();
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetUsageChartsData()
+        {
+            IEnumerable<CostUsage> costUsage = null;
+            IEnumerable<UsageByLocation> usageByLocations = null;
+            IEnumerable<UsageByResourceGroup> usageByResourceGroups = null;
+            IEnumerable<UsageHistoryBymonth> usageHistoryBymonth = null;
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/UsageByMonth"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        costUsage = JsonConvert.DeserializeObject<List<CostUsage>>(apiResponse);
+                        ViewBag.UsageByMonth = costUsage;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Cera");
+                    }
+                }
+            }
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/UsageHistory"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        costUsage = JsonConvert.DeserializeObject<List<CostUsage>>(apiResponse);
+                        ViewBag.UsageHistory = costUsage;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Cera");
+                    }
+                }
+            }
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetUsageByLocation"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        usageByLocations = JsonConvert.DeserializeObject<List<UsageByLocation>>(apiResponse);
+                        ViewBag.UsageByLocation = usageByLocations;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Cera");
+                    }
+                }
+            }
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetUsageByResourceGroup"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        usageByResourceGroups = JsonConvert.DeserializeObject<List<UsageByResourceGroup>>(apiResponse);
+                        ViewBag.UsageByResourceGroup = usageByResourceGroups;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Cera");
+                    }
+                }
+            }
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/UsageHistoryByMonth"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        usageHistoryBymonth = JsonConvert.DeserializeObject<List<UsageHistoryBymonth>>(apiResponse);
+                        ViewBag.UsageHistoryByMonth = usageHistoryBymonth;
+                        ViewBag.Months = usageHistoryBymonth.Select(x => x.usageMonth).Distinct();
+                        var abc = usageHistoryBymonth.OrderBy(o => DateTime.Parse(o.usageMonth.ToString()));
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Cera");
+                    }
+                }
+            }
+            return View();
+
+        }
+        public async Task<JsonResult> GetUserClouds()
+        {
+
+            List<UserCloud> clouds = new List<UserCloud>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CERAData/GetUserClouds"))
+                {
+                    var apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        clouds = JsonConvert.DeserializeObject<List<UserCloud>>(apiResponse);
+                        
+                        //ViewBag.clouds = clouds.Select(x => x.cloudName).ToList();
+                        return Json(clouds);
+                    }
+                    else
+                    {
+                        return null;
                     }
                 }
             }
@@ -975,11 +1646,11 @@ namespace CeraWebApplication.Controllers
         {
             return View();
         }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [AllowAnonymous]
+        [HttpGet]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
         }
     }
 }

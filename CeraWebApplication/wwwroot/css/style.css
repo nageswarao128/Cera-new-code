@@ -17,10 +17,6 @@ body {
 
 .container {
     position: relative;
-    text-align: center;
-    color: white;
-    font-size: 20px;
-    font-weight: bold;
 }
 
 .overview {

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CERADataAPI.Controllers
 {
-   
+
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class CERADataController : ControllerBase
@@ -30,7 +30,7 @@ namespace CERADataAPI.Controllers
         /// </summary>
         /// <returns>returns Subscription data from database</returns>
         [HttpGet]
-        //[Authorize]
+       
         public IEnumerable<CeraSubscription> GetDBSubscriptions()
         {
             return _ceraCloud.GetSubscriptionList();
@@ -142,7 +142,7 @@ namespace CERADataAPI.Controllers
             return _ceraCloud.GetUserClouds();
         }
         [HttpGet]
-        public List<ClientCloudDetails> GetClientCloudDetails(string clientName="Quadrant")
+        public List<ClientCloudDetails> GetClientCloudDetails(string clientName = "Quadrant")
         {
             return _ceraCloud.GetClientCloudDetails(clientName);
         }
@@ -150,6 +150,11 @@ namespace CERADataAPI.Controllers
         public List<ResourceTagsCount> GetResourceTagsCount()
         {
             return _ceraCloud.GetResourceTagsCount();
+        }
+        [HttpGet]
+        public List<ResourceTagsCount> GetResourceTagsCloudCount(string cloudprovider)
+        {
+            return _ceraCloud.GetResourceTagsCloudCount(cloudprovider);
         }
         [HttpGet]
         public IEnumerable<AzureLocations> GetLocations()
@@ -162,9 +167,40 @@ namespace CERADataAPI.Controllers
             return _ceraCloud.GetResourceLocations();
         }
         [HttpGet]
+        public List<locationFilter> GetMapLocationsFilter()
+        {
+            return _ceraCloud.GetMapLocationsFilter();
+        }
+        [HttpGet]
+        public List<ResourceTagsCount> GetResourceSubscriptionCloudTagsCount(string cloudprovider, string subscriptionid)
+        {
+            return _ceraCloud.GetResourceSubscriptionCloudTagsCount(cloudprovider, subscriptionid);
+        }
+        [HttpGet]
+        public List<CostUsage> UsageSubscriptionByMonth(string cloudprovider, string subscriptionid)
+        {
+            return _ceraCloud.UsageSubscriptionByMonth(cloudprovider, subscriptionid);
+        }
+
+        [HttpGet]
         public List<CeraResourceTypeUsage> ResourceUsageByLocation(string location)
         {
             return _ceraCloud.ResourceUsage(location);
+        }
+        [HttpGet]
+        public List<CeraResourceTypeUsage> ResourceCloudUsage(string location, string cloudprovider)
+        {
+            return _ceraCloud.ResourceCloudUsage(location, cloudprovider);
+        }
+        [HttpGet]
+        public List<CeraResourceTypeUsage> ResourceSubscriptionCloudUsage(string location, string cloudprovider, string subscriptionid)
+        {
+            return _ceraCloud.ResourceSubscriptionCloudUsage(location, cloudprovider, subscriptionid);
+        }
+        [HttpGet]
+        public List<ResourceTagsCount> GetResourceSubscriptionCloudTagsCounts(string location, string cloudprovider, string subscriptionid)
+        {
+            return _ceraCloud.GetResourceSubscriptionCloudTagsCount(location, cloudprovider, subscriptionid);
         }
         [HttpGet]
         public List<ResourceTypeCount> GetResourceTypeCountByLocation(string location)
@@ -177,14 +213,115 @@ namespace CERADataAPI.Controllers
             return _ceraCloud.GetResourceTagsCount(location);
         }
         [HttpGet]
+        public List<ResourceTagsCount> GetResourceCloudTagsCount(string location, string cloudprovider)
+        {
+            return _ceraCloud.GetResourceCloudTagsCount(location, cloudprovider);
+        }
+        [HttpGet]
         public List<ResourceLocations> GetResourceByLocations(string location)
         {
             return _ceraCloud.GetResourceLocations(location);
         }
         [HttpGet]
+        public List<ResourceTypeCount> GetResourceCloudCount(string cloudprovider)
+        {
+            return _ceraCloud.GetResourceCloudCount(cloudprovider);
+        }
+        [HttpGet]
+        public List<CeraResourceTypeUsage> ResourceSubscriptionCloudspentUsage(string cloudprovider, string subscriptionid)
+        {
+            return _ceraCloud.ResourceSubscriptionCloudspentUsage(cloudprovider, subscriptionid);
+        }
+        [HttpGet]
+        public List<ResourceTypeCount> GetSubscriptionLocationList(string location, string cloudprovider, string subscriptionid)
+        {
+            return _ceraCloud.GetSubscriptionLocationList(location, cloudprovider, subscriptionid);
+        }
+        [HttpGet]
+        public List<ResourceTypeCount> GetSubscriptionTypeList(string subscriptionId, string cloudprovider)
+        {
+            return _ceraCloud.GetSubscriptionTypeList(subscriptionId, cloudprovider);
+        }
+        [HttpGet]
+        public List<ResourceTypeCount> GetResourceTypecloudCount(string location, string cloudprovider)
+        {
+            return _ceraCloud.GetResourceTypecloudCount(location, cloudprovider);
+        }
+        [HttpGet]
         public List<AdvisorRecommendations> GetAdvisorRecommendations()
         {
             return _ceraCloud.GetAdvisorRecommendations();
+        }
+        [HttpGet]
+        public List<PolicyRules> GetPolicyRules()
+        {
+            return _ceraCloud.GetPolicyRules();
+        }
+        [HttpGet]
+        public List<CostUsage> UsageByMonth()
+        {
+            return _ceraCloud.UsageByMonth();
+        }
+        [HttpGet]
+        public List<CostUsage> UsageCloudByMonth(string cloudprovider)
+        {
+            return _ceraCloud.UsageCloudByMonth(cloudprovider);
+        }
+        [HttpGet]
+        public List<CostUsage> UsageHistory()
+        {
+            return _ceraCloud.UsageHistory();
+        }
+        [HttpGet]
+        public List<UsageHistoryByMonth> UsageHistoryByMonth()
+        {
+            return _ceraCloud.UsageHistoryByMonth();
+        }
+        [HttpGet]
+        public List<UsageByLocation> GetUsageByLocation()
+        {
+            return _ceraCloud.GetUsageByLocation();
+        }
+        [HttpGet]
+        public List<UsageByResourceGroup> GetUsageByResourceGroup()
+        {
+            return _ceraCloud.GetUsageByResourceGroup();
+        }
+        [HttpGet]
+        public List<ManageOrg> ManageOrganization()
+        {
+            return _ceraCloud.ManageOrganization();
+
+        }
+        [HttpGet]
+        public List<DashboardCountModel> GetDashboardCount()
+        {
+            return _ceraCloud.GetDashboardCount();
+        }
+        [HttpGet]
+        public List<DashboardCountModel> GetDashboardCountFilters(string location, string cloudprovider)
+        {
+            return _ceraCloud.GetDashboardCountFilters(location, cloudprovider);
+        }
+        [HttpGet]
+        public List<DashboardCountModel> GetDashboardCountLocation(string location)
+        {
+            return _ceraCloud.GetDashboardCountLocation(location);
+        }
+        [HttpGet]
+        public List<DashboardCountModel> GetDashboardCountCloud(string cloudprovider)
+        {
+            return _ceraCloud.GetDashboardCountCloud(cloudprovider);
+        }
+        [HttpGet]
+        public List<DashboardCountModel> GetDashboardSubscriptionCountFilters(string cloudprovider, string subscriptionid)
+        {
+            return _ceraCloud.GetDashboardSubscriptionCountFilters(cloudprovider, subscriptionid);
+        }
+        [HttpGet]
+        public List<DashboardCountModel> GetDashboardSubscriptionLocationFilters(string location, string cloudprovider, string subscriptionid)
+        {
+            return _ceraCloud.GetDashboardSubscriptionLocationFilters(location, cloudprovider, subscriptionid);
         }
     }
 }

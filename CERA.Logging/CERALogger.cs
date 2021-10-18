@@ -16,8 +16,8 @@ namespace CERA.Logging
         public void CERALogging()
         {
 
-            string InstrumentationKey = "992f17de-b9e2-4f34-91f8-a7f453b3de70";
-            
+             string InstrumentationKey = "f0c7be91-e0c0-43e1-8d27-7043ed0c3023";
+           // string InstrumentationKey = "7b9f7e40-40eb-4d17-91d4-043f65e93981";
             Log.Logger = new LoggerConfiguration()
                                .MinimumLevel.Debug()
                                .Enrich.WithProperty("SessionId", Guid.NewGuid())

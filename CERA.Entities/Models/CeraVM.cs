@@ -7,7 +7,7 @@ namespace CERA.Entities.Models
     /// This class is used as a object for Virtual Machines
     /// </summary>
     [Table("tbl_VirtualMachines")]
-    public class CeraVM
+    public class CeraVM:UtilityModel
     {
         [Key]
         public int VMId { get; set; }

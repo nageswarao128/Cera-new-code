@@ -7,12 +7,13 @@ using System.Text;
 namespace CERA.Entities.Models
 {
     [Table("tbl_Compliances")]
-    public class CeraCompliances
+    public class CeraCompliances:UtilityModel
     {
         [Key]
         public int? Id { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
         public string AssessmentType { get; set; }
+        public string CompliancesId { get; set; }
     }
 }

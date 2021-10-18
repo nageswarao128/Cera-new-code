@@ -101,7 +101,7 @@ namespace CERA.CloudService
         /// </summary>
         /// <param name="requestInfo"></param>
         /// <returns>This method returns the list of ResourceGroups data</returns>
-        public List<CeraResourceGroups> GetCloudResourceGroups(RequestInfoViewModel requestInfo)
+        public async Task<List<CeraResourceGroups>> GetCloudResourceGroups(RequestInfoViewModel requestInfo)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace CERA.CloudService
                 {
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
-                    resources = _cloudApiServices.GetCloudResourceGroups(requestInfo, subscriptions);
+                    resources = await _cloudApiServices.GetCloudResourceGroups(requestInfo, subscriptions);
                     Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Resources");
                     _dataOps.AddResourceGroupData(resources);
                     resources.Clear();
@@ -137,7 +137,7 @@ namespace CERA.CloudService
         /// </summary>
         /// <param name="requestInfo"></param>
         /// <returns>This method returns the list of StorageAccount data</returns>
-        public List<CeraStorageAccount> GetCloudStorageAccountList(RequestInfoViewModel requestInfo)
+        public async Task<List<CeraStorageAccount>> GetCloudStorageAccountList(RequestInfoViewModel requestInfo)
         {
             try
             {
@@ -150,7 +150,7 @@ namespace CERA.CloudService
                 {
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
-                    storageAccount = _cloudApiServices.GetCloudStorageAccountList(requestInfo, subscriptions);
+                    storageAccount = await _cloudApiServices.GetCloudStorageAccountList(requestInfo, subscriptions);
                     Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Resources");
                     _dataOps.AddStorageAccountData(storageAccount);
                     storageAccount.Clear();
@@ -245,7 +245,7 @@ namespace CERA.CloudService
         /// </summary>
         /// <param name="requestInfo"></param>
         /// <returns>This method returns the list of Virtual Machines data</returns>
-        public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo)
+        public async Task<List<CeraVM>> GetCloudVMList(RequestInfoViewModel requestInfo)
         {
             try
             {
@@ -258,7 +258,7 @@ namespace CERA.CloudService
                 {
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
-                    vM = _cloudApiServices.GetCloudVMList(requestInfo, subscriptions);
+                    vM = await _cloudApiServices.GetCloudVMList(requestInfo, subscriptions);
                     Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud virtual Machines");
                     _dataOps.AddVMData(vM);
                     vM.Clear();
@@ -341,7 +341,7 @@ namespace CERA.CloudService
         /// </summary>
         /// <param name="requestInfo"></param>
         /// <returns>This method returns the list of WebApps data</returns>
-        public List<CeraWebApps> GetCloudWebAppList(RequestInfoViewModel requestInfo)
+        public async Task<List<CeraWebApps>> GetCloudWebAppList(RequestInfoViewModel requestInfo)
         {
             try
             {
@@ -354,7 +354,7 @@ namespace CERA.CloudService
                 {
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
-                    webApps = _cloudApiServices.GetCloudWebAppList(requestInfo, subscriptions);
+                    webApps = await _cloudApiServices.GetCloudWebAppList(requestInfo, subscriptions);
                     Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud sql servers");
                     _dataOps.AddWebAppData(webApps);
                     webApps.Clear();
@@ -464,6 +464,11 @@ namespace CERA.CloudService
                 throw ex;
             }
         }
+        public int AddPolicyRules(List<PolicyRules> data)
+        {
+            Logger.LogInfo("Add Policy Rules Called");
+            return _dataOps.AddPolicyRules(data);
+        }
         public List<CeraCompliances> GetCloudCompliances(RequestInfoViewModel requestInfo)
         {
             try
@@ -520,7 +525,7 @@ namespace CERA.CloudService
             }
             
         }
-        public List<CeraUsage> GetCloudUsageDetails(RequestInfoViewModel requestInfo)
+        public async Task<List<CeraUsage>> GetCloudUsageDetails(RequestInfoViewModel requestInfo)
         {
             try
             {
@@ -533,7 +538,7 @@ namespace CERA.CloudService
                 {
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
-                    usage = _cloudApiServices.GetCloudUsageDetails(requestInfo, subscriptions);
+                    usage = await _cloudApiServices.GetCloudUsageDetails(requestInfo, subscriptions);
                     Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Usage Details");
                     _dataOps.AddUsageDetails(usage);
                     usage.Clear();
@@ -547,6 +552,60 @@ namespace CERA.CloudService
                 throw ex;
             }
             
+        }
+        public List<UsageByMonth> GetCloudUsageByMonth(RequestInfoViewModel requestInfo)
+        {
+            try
+            {
+                Logger.LogInfo("Get Usage Details By Month List Called");
+                List<UsageByMonth> usage = new List<UsageByMonth>();
+                GetPlatforms();
+                List<CeraSubscription> subscriptions = new List<CeraSubscription>();
+                subscriptions = GetSubscriptionList();
+                foreach (var platformConfig in PlatformConfigs)
+                {
+                    _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
+                    _cloudApiServices.Logger = Logger;
+                    usage = _cloudApiServices.GetCloudUsageByMonth(requestInfo, subscriptions);
+                    Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Usage Details By Month");
+                    _dataOps.AddUsageByMonth(usage);
+                    usage.Clear();
+                    Logger.LogInfo($"Imported data for {platformConfig.PlatformName} Cloud Usage Details By Month to DB");
+                }
+                return usage;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+        public List<UsageHistory> GetCloudUsageHistory(RequestInfoViewModel requestInfo)
+        {
+            try
+            {
+                Logger.LogInfo("Get Usage History List Called");
+                List<UsageHistory> usage = new List<UsageHistory>();
+                GetPlatforms();
+                List<CeraSubscription> subscriptions = new List<CeraSubscription>();
+                subscriptions = GetSubscriptionList();
+                foreach (var platformConfig in PlatformConfigs)
+                {
+                    _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
+                    _cloudApiServices.Logger = Logger;
+                    usage = _cloudApiServices.GetCloudUsageHistory(requestInfo, subscriptions);
+                    Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Usage History Month");
+                    _dataOps.AddUsageHistory(usage);
+                    usage.Clear();
+                    Logger.LogInfo($"Imported data for {platformConfig.PlatformName} Cloud Usage History to DB");
+                }
+                return usage;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
         }
         public List<AdvisorRecommendations> GetCloudAdvisorRecommendations(RequestInfoViewModel requestInfo)
         {
@@ -894,6 +953,32 @@ namespace CERA.CloudService
             }
             
         }
+        public List<ResourceTypeCount> GetSubscriptionLocationList(string location, string cloudprovider, string subscriptionid)
+        {
+            try
+            {
+                Logger.LogInfo("Requested data for ResourceType count Details from Database called");
+                return _dataOps.GetSubscriptionLocationList(location,cloudprovider,subscriptionid);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+          public List<ResourceTypeCount> GetSubscriptionTypeList(string subscriptionId, string cloudprovider)
+           {
+            try
+            {
+                Logger.LogInfo("Requested data for ResourceType count Details from Database called");
+                return _dataOps.GetSubscriptionTypeList(subscriptionId,cloudprovider);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
         public List<ResourceTagsCount> GetResourceTagsCount()
         {
             try
@@ -901,6 +986,18 @@ namespace CERA.CloudService
                 return _dataOps.GetResourceTagsCount();
             }
             catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+        public List<ResourceTagsCount> GetResourceTagsCloudCount(string cloudprovider)
+        {
+            try
+            {
+                return _dataOps.GetResourceTagsCloudCount(cloudprovider);
+            }
+            catch(Exception ex)
             {
                 Logger.LogException(ex);
                 throw ex;
@@ -942,6 +1039,244 @@ namespace CERA.CloudService
                 throw ex;
             }
         }
+        public List<CostUsage> UsageByMonth()
+        {
+            try
+            {
+                return _dataOps.UsageByMonth();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+
+        public List<CostUsage> UsageCloudByMonth(string cloudprovider)
+        {
+            try
+            {
+                return _dataOps.UsageCloudByMonth(cloudprovider);
+            }
+            catch(Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+
+        public List<CostUsage> UsageHistory()
+        {
+            try
+            {
+                return _dataOps.UsageHistory();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+
+        public List<UsageHistoryByMonth> UsageHistoryByMonth()
+        {
+            try
+            {
+                return _dataOps.UsageHistoryByMonth();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+
+        public List<UsageByLocation> GetUsageByLocation()
+        {
+            try
+            {
+                return _dataOps.GetUsageByLocation();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+
+        public List<UsageByResourceGroup> GetUsageByResourceGroup()
+        {
+            try
+            {
+                return _dataOps.GetUsageByResourceGroup();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+        public List<ResourceTagsCount> GetResourceSubscriptionCloudTagsCount(string cloudprovider, string subscriptionid)
+        {
+            try
+            {
+                return _dataOps.GetResourceSubscriptionCloudTagsCount(cloudprovider,subscriptionid);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+  public List<CostUsage> UsageSubscriptionByMonth(string cloudprovider, string subscriptionid)
+        {
+            try
+            {
+                return _dataOps.UsageSubscriptionByMonth(cloudprovider,subscriptionid);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+        public List<PolicyRules> GetPolicyRules()
+        {
+            try
+            {
+                return _dataOps.GetPolicyRules();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+        public List<UsageByMonth> GetUsageByMonth()
+        {
+            try
+            {
+                return _dataOps.GetUsageByMonth();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            };
+        }
+
+        public List<UsageHistory> GetUsageHistory()
+        {
+            try
+            {
+                return _dataOps.GetUsageHistory();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+
+        public List<DashboardCountModel> GetDashboardCount()
+        {
+            try
+            {
+                return _dataOps.GetDashboardCount();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+
+        public List<DashboardCountModel> GetDashboardSubscriptionCountFilters(string cloudprovider, string subscriptionid)
+        {
+            try
+            {
+                return _dataOps.GetDashboardSubscriptionCountFilters(cloudprovider,subscriptionid);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+  public List<DashboardCountModel> GetDashboardSubscriptionLocationFilters(string location, string cloudprovider, string subscriptionid)
+        {
+            try
+            {
+                return _dataOps.GetDashboardSubscriptionLocationFilters(location,cloudprovider,subscriptionid);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+        public List<ManageOrg> ManageOrganization()
+        {
+            try
+            {
+                return _dataOps.ManageOrganization();
+            }
+            catch(Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+        public List<DashboardCountModel> GetDashboardCountFilters(string location, string cloudprovider)
+        {
+            try
+            {
+                return _dataOps.GetDashboardCountFilters(location, cloudprovider);
+            }
+            catch(Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+        public List<CeraResourceTypeUsage> ResourceSubscriptionCloudspentUsage(string cloudprovider, string subscriptionid)
+        {
+            try
+            {
+                return _dataOps.ResourceSubscriptionCloudspentUsage(cloudprovider, subscriptionid);
+            }
+            catch(Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+          public List<DashboardCountModel> GetDashboardCountLocation(string location)
+          {
+            try
+            {
+                return _dataOps.GetDashboardCountLocation(location);
+            }
+            catch(Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+        }
+  public List<DashboardCountModel> GetDashboardCountCloud(string cloudprovider)
+        {
+            try
+            {
+                return _dataOps.GetDashboardCountCloud(cloudprovider);
+            }
+            catch(Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
+
+        }
+
         public void Initialize(string tenantId, string clientID, string clientSecret,string authority)
         {
             _cloudApiServices.Initialize(tenantId, clientID, clientSecret,authority);
@@ -974,37 +1309,64 @@ namespace CERA.CloudService
         {
             return _dataOps.ResourceUsage(location);
         }
+        public List<CeraResourceTypeUsage> ResourceCloudUsage(string location, string cloudprovider)
+        {
+            return _dataOps.ResourceCloudUsage(location, cloudprovider);
+        }
 
+        public List<CeraResourceTypeUsage> ResourceSubscriptionCloudUsage(string location, string cloudprovider, string subscriptionid)
+        {
+            return _dataOps.ResourceSubscriptionCloudUsage(location, cloudprovider, subscriptionid);
+        }
+  public List<ResourceTagsCount> GetResourceSubscriptionCloudTagsCount(string location, string cloudprovider, string subscriptionid)
+        {
+            return _dataOps.GetResourceSubscriptionCloudTagsCount(location, cloudprovider, subscriptionid);
+        }
         public List<ResourceTypeCount> GetResourceTypeCount(string location)
         {
             return _dataOps.GetResourceTypeCount(location);
         }
-
+        public List<ResourceTypeCount> GetResourceCloudCount(string cloudprovider)
+        {
+            return _dataOps.GetResourceCloudCount(cloudprovider);
+        }
         public List<ResourceTagsCount> GetResourceTagsCount(string location)
         {
             return _dataOps.GetResourceTagsCount(location);
+        }
+        public List<ResourceTagsCount> GetResourceCloudTagsCount(string location, string cloudprovider)
+        {
+            return _dataOps.GetResourceCloudTagsCount(location, cloudprovider);
         }
 
         public List<ResourceLocations> GetResourceLocations(string location)
         {
             return _dataOps.GetResourceLocations(location);
         }
+        public List<locationFilter> GetMapLocationsFilter()
+        {
+            return _dataOps.GetMapLocationsFilter();
+        }
+        public List<ResourceTypeCount> GetResourceTypecloudCount(string location, string cloudprovider)
+        {
+            return _dataOps.GetResourceTypecloudCount(location, cloudprovider);
+        }
         public List<CeraResources> GetCloudResourceList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             throw new NotImplementedException();
         }
 
-        public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        public Task<List<CeraVM>> GetCloudVMList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             throw new NotImplementedException();
         }
 
-        public List<CeraResourceGroups> GetCloudResourceGroups(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        public Task<List<CeraResourceGroups>> GetCloudResourceGroups(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             throw new NotImplementedException();
         }
 
-        public List<CeraStorageAccount> GetCloudStorageAccountList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        public Task<List<CeraStorageAccount>> GetCloudStorageAccountList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             throw new NotImplementedException();
         }
@@ -1014,7 +1376,7 @@ namespace CERA.CloudService
             throw new NotImplementedException();
         }
 
-        public List<CeraWebApps> GetCloudWebAppList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        public Task<List<CeraWebApps>> GetCloudWebAppList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             throw new NotImplementedException();
         }
@@ -1044,7 +1406,7 @@ namespace CERA.CloudService
             throw new NotImplementedException();
         }
 
-        public List<CeraUsage> GetCloudUsageDetails(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        public Task<List<CeraUsage>> GetCloudUsageDetails(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             throw new NotImplementedException();
         }
@@ -1067,6 +1429,16 @@ namespace CERA.CloudService
 
 
         public List<AdvisorRecommendations> GetCloudAdvisorRecommendations(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UsageByMonth> GetCloudUsageByMonth(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UsageHistory> GetCloudUsageHistory(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             throw new NotImplementedException();
         }

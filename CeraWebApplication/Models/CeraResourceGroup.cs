@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 
 namespace CeraWebApplication.Models
 {
-    public class CeraResourceGroup
+    public class CeraResourceGroup:UtilityModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string RegionName { get; set; }
         public string provisioningstate { get; set; }
+        public string Resourcegroupid { get; set; }
     }
 }

@@ -5,7 +5,32 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AWSSDK.CostExplorer" Version="3.7.2.24" />
+    <PackageReference Include="AWSSDK.EC2" Version="3.7.20.4" />
+    <PackageReference Include="AWSSDK.ElasticBeanstalk" Version="3.7.0.50" />
+    <PackageReference Include="AWSSDK.RDS" Version="3.7.4.2" />
+    <PackageReference Include="AWSSDK.ResourceGroups" Version="3.7.0.50" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.1.19" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CERA.CloudService\CERA.CloudService.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="AWSAuth.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AWSAuth.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="AWSAuth.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>AWSAuth.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>

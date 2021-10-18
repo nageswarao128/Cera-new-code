@@ -1,0 +1,259 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Cera </title>
+
+    <!---- Meta Data --->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="title" content="Cera" />
+    <meta name="subject" content="Cera" />
+    <meta name="description" content="Cera" />
+    <meta name="format" content="text/html" />
+    <meta name="publisher" content="QuadrentResources" />
+    <meta name="language" content="en" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+
+    <!---- Style Sheets -->
+    <link rel="icon" href="img/logo.svg">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/css/main.css">
+    <link rel="stylesheet" type="text/css" href="~/css/responsive.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="~/img/logo.svg" type="image/x-icon">
+    <!---- Script tags ---->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!---- Data Tables --->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+</head>
+<body>
+
+    <header class="header2">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <nav class="navbar navbar-expand-xl navbar-left">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample06" aria-controls="navbarsExample06" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarsExample06">
+                            <ul class="navbar-nav mr-auto">
+                                <li class="nav-item active">
+                                    <a class="nav-link logo-img" asp-controller="Cera" asp-action="DashBoard"><img src="~/img/logo.svg"></a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="dropdownI" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Resources</a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownI">
+                                        <a class="dropdown-item active" asp-controller="Cera" asp-action="GetVMDetails"><i class="fa fa-television"></i><span>Virtual Machine </span> </a>
+                                        <a class="dropdown-item" asp-controller="Cera" asp-action="GetStorageAccountsDetails"><i class="fa fa-database"></i> <span>Storage Account </span></a>
+                                        <a class="dropdown-item" asp-controller="Cera" asp-action="GetResourceGroupDetails"><i class="fa fa-tasks"></i> <span>Resources Group </span></a>
+                                        <a class="dropdown-item" asp-controller="Cera" asp-action="GetWebAppsDetails"><i class="fa fa-globe"></i> <span>Web Application </span></a>
+                                        <a class="dropdown-item" asp-controller="Cera" asp-action="GetAdvisorRecommendationsDetails"><i class="fa fa-user-circle-o"></i> <span>Advisor </span></a>
+                                        <a class="dropdown-item" asp-controller="Cera" asp-action="GetPolicyDetails"><i class="fa fa-gavel"></i> <span>Policy </span></a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="dropdownI" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownI">
+                                        <a class="dropdown-item active" asp-controller="Cera" asp-action="ManageUsers"><i class="fa fa-users" aria-hidden="true"></i> <span>Manage User </span> </a>
+                                        <a class="dropdown-item" asp-controller="Manage" asp-action="ManageOrganization"><i class="fa fa-registered" aria-hidden="true"></i> <span>Manage Organization</span></a>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Cera" asp-action="GetUsageReportsData">Insights</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <div class="col-md-6">
+                    <nav class="navbar navbar-expand-xl navbar-right">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample06" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarsExample07">
+                            <ul class="navbar-nav ml-auto">
+                                <!-- <li class="nav-item active">
+                                  <a class="nav-link" href="#"><img src="img/search.png"><span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link" href="#"><img src="img/question.png"></a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link" href="#"><img src="img/mail.png"></a>
+                                </li>-->
+                                @*<li>
+                                    <div class="location-sel">
+                                        <label>Select Clouds:</label>
+                                        <select class="form-control" id="ddlCloud" onchange="getdataCloud()">
+                                            <option value="AllClouds" selected>All Clouds</option>
+                                            <option value="Azure">Azure</option>
+                                            <option value="AWS">AWS</option>
+                                        </select>
+                                    </div>
+                                </li>*@
+                                @*<li>
+                                        <div class="location-sel">
+                                            <label>Select Location:</label>
+                                            <select class="form-control" id="ddlLocation">
+                                                <option value="AllLocations" selected>All Locations</option>
+
+
+                                            </select>
+                                        </div>
+                                    </li>*@
+                                <li class="nav-item dropdown notif_dropdown">
+                                    <a class="nav-link" href="#" data-toggle="dropdown" type="button"><i class="fa fa-bell-o" aria-hidden="true"></i> <span class="badge badge-pill">10</span></a>
+
+                                    <div class="dropdown-menu">
+                                        <div class="notif_list">
+                                            <div class="notif_card n_open">
+                                                <div class="media">
+                                                    <img src="/img/profile.jpg" class="noti_img" alt="img">
+                                                    <div class="media-body">
+                                                        <span class="notif_time">5 min ago</span>
+                                                        <h4>User Account</h4>
+                                                        <p>Your Account Password changed successfully .Shortly you got mail please check </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="notif_card n_open">
+                                                <div class="media">
+                                                    <img src="/img/noti1.jpg" class="noti_img" alt="img">
+                                                    <div class="media-body">
+                                                        <span class="notif_time">10 min ago</span>
+                                                        <h4>User Account</h4>
+                                                        <p>Your Account Password changed successfully .Shortly you got mail please check </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="notif_card ">
+                                                <div class="media">
+                                                    <img src="/img/noti2.jpg" class="noti_img" alt="img">
+                                                    <div class="media-body">
+                                                        <span class="notif_time">55 min ago</span>
+                                                        <h4>User Account</h4>
+                                                        <p>Your Account Password changed successfully .Shortly you got mail please check </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="notif_card ">
+                                                <div class="media">
+                                                    <img src="/img/noti3.jpg" class="noti_img" alt="img">
+                                                    <div class="media-body">
+                                                        <span class="notif_time">1 Hour ago</span>
+                                                        <h4>User Account</h4>
+                                                        <p>Your Account Password changed successfully .Shortly you got mail please check </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="notif_card ">
+                                                <div class="media">
+                                                    <img src="/img/noti4.jpg" class="noti_img" alt="img">
+                                                    <div class="media-body">
+                                                        <span class="notif_time">2 Hour ago</span>
+                                                        <h4>User Account</h4>
+                                                        <p>Your Account Password changed successfully .Shortly you got mail please check </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="notif_foot">
+                                            <a asp-controller="Cera" asp-action="Notifications">See All incoming Activity</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Cera" asp-action="userprofile"><i class="fa fa-user-o" data-toggle="tooltip" data-placement="bottom" title="User" aria-hidden="true"></i></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Cera" asp-action="Logout"><i class="fa fa-power-off" data-toggle="tooltip" data-placement="bottom" title="Log Out" aria-hidden="true"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!---- Main Body ---->
+    <section class="cera_section">
+        <div class="container">
+            <div class="row">
+                @*<div class="col-md-3 px-0 cera-col3">
+
+                        <div class="cera-sideMenu">
+                            <div class="toggle-wrap">
+                                <span class="toggle-bar"></span>
+                            </div>
+                            <nav class="navbar navbar-expand-xl cera-sideNav">
+                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample06" aria-controls="navbarsExample08" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+
+                                <div class="collapse navbar-collapse" id="navbarsExample08">
+                                    <ul class="navbar-nav flex-column">
+                                        <li class="nav-item active">
+                                            <a class="nav-link" asp-controller="Cera" asp-action="GetVMDetails"><i class="fa fa-television" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Virtual Machine"></i> <span>Virtual Machine </span> </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-controller="Cera" asp-action="GetStorageAccountsDetails"><i class="fa fa-database" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Storage Account"></i> <span>Storage Account  </span></a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link " asp-controller="Cera" asp-action="GetResourceGroupDetails"><i class="fa fa-tasks" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Resource Group"></i> <span>Resources Group </span></a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link " asp-controller="Cera" asp-action="GetWebAppsDetails"><i class="fa fa-globe" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Application"></i> <span>Web Application </span></a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link " asp-controller="Cera" asp-action="GetAdvisorRecommendationsDetails"><i class="fa fa-user-circle-o" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Advisor"></i> <span>Advisor </span></a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link " asp-controller="Cera" asp-action="GetPolicyDetails"><i class="fa fa-gavel" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Policy"></i> <span>Policy </span></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>*@
+                <div class="col-md-12">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>CERA-Visualize and optimize multi cloud business landscape</h3>
+                </div>
+                <div class="col-md-6 text-right">
+                    <p>© 2020 Quadrant Resource. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
+
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+</script>

@@ -10,7 +10,7 @@ namespace CERA.Entities.Models
     /// This class is used as a object for WebApps
     /// </summary>
     [Table("tbl_WebApps")]
-    public class CeraWebApps
+    public class CeraWebApps : UtilityModel 
     {
         [Key]
         public int? Id { get; set; }

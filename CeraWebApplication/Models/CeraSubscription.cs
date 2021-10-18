@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CeraWebApplication.Models
 {
-    public class CeraSubscription
+    public class CeraSubscription:UtilityModel
     {
         public string SubscriptionId { get; set; }
         public string DisplayName { get; set; }

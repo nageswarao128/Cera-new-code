@@ -10,12 +10,13 @@ namespace CERA.Entities.Models
     /// This class is used as a object for SqlServers
     /// </summary>
     [Table("tbl_SqlServer")]
-    public class CeraSqlServer
+    public class CeraSqlServer:UtilityModel
     {
         [Key]
         public int? ID { get; set; }
         public string Name { get; set; }
         public string RegionName { get; set; }
         public string ResourceGroupName { get; set; }
+        public string SqlServerId { get; set; }
     }
 }

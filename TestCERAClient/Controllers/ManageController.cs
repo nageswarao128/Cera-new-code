@@ -41,6 +41,11 @@ namespace CERAAPI.Controllers
         {
             return _ceraAuthenticator.GetUser(id);
         }
+        [HttpGet]
+        public  Task<UserModel> GetUserProfile(string name)
+        {
+            return _ceraAuthenticator.GetUserProfile(name);
+        }
         [HttpPut]
         public Task<object> UpdateUser(UpdateUserModel userModel)
         {

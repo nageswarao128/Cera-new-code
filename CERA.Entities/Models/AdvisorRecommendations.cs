@@ -7,7 +7,7 @@ using System.Text;
 namespace CERA.Entities.Models
 {
     [Table("tbl_advisor")]
-    public class AdvisorRecommendations
+    public class AdvisorRecommendations:UtilityModel
     {
         [Key]
         public int? id { get; set; }

@@ -1,4 +1,12 @@
-﻿using CERA.AuthenticationService;
+﻿using Amazon.CostExplorer;
+using Amazon.CostExplorer.Model;
+using Amazon.EC2;
+using Amazon.ElasticBeanstalk;
+using Amazon.RDS;
+using Amazon.ResourceGroups;
+using Amazon.ResourceGroups.Model;
+using Amazon.S3;
+using CERA.AuthenticationService;
 using CERA.Entities.Models;
 using CERA.Entities.ViewModels;
 using CERA.Logging;
@@ -18,7 +26,9 @@ namespace CERA.AWS.CloudService
 
         public ICeraLogger Logger { get; set; }
         public List<CeraPlatformConfigViewModel> _platformConfigs { get; set; }
-
+        string accessId = AWSAuth.Default.AccessId;
+        string secretKey = AWSAuth.Default.SecretKey;
+        Amazon.RegionEndpoint regionEndpoint = Amazon.RegionEndpoint.APSouth1;
         public object GetCloudMonthlyBillingList()
         {
             return new object();
@@ -54,14 +64,14 @@ namespace CERA.AWS.CloudService
             return new List<CeraTenants>();
         }
 
-        public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo)
+        public Task<List<CeraVM>> GetCloudVMList(RequestInfoViewModel requestInfo)
         {
-            return new List<CeraVM>();
+            throw new NotImplementedException();
         }
 
-        public List<CeraWebApps> GetCloudWebAppList(RequestInfoViewModel requestInfo)
+        public Task<List<CeraWebApps>> GetCloudWebAppList(RequestInfoViewModel requestInfo)
         {
-            return new List<CeraWebApps>();
+            throw new NotImplementedException();
         }
         public List<CeraSubscription> GetSubscriptionList()
         {
@@ -90,27 +100,34 @@ namespace CERA.AWS.CloudService
             throw new NotImplementedException();
         }
 
-        public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        public async Task<List<CeraVM>> GetCloudVMList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            AmazonEC2Client client = new AmazonEC2Client(accessId, secretKey, regionEndpoint);
+            var vm = await client.DescribeInstancesAsync();
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<CeraResourceGroups>> GetCloudResourceGroups(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            AmazonResourceGroupsClient client = new AmazonResourceGroupsClient(accessId, secretKey, regionEndpoint);
+            ListGroupsRequest model = new ListGroupsRequest();
+            var res = await client.ListGroupsAsync(model);
+            throw new NotImplementedException();
+        }
+
+        public Task<List<CeraResourceGroups>> GetCloudResourceGroups(RequestInfoViewModel requestInfo)
         {
             throw new NotImplementedException();
         }
 
-        public List<CeraResourceGroups> GetCloudResourceGroups(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        public async Task<List<CeraStorageAccount>> GetCloudStorageAccountList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
+            AmazonRDSClient client = new AmazonRDSClient(accessId, secretKey, regionEndpoint);
+            var storageAccounts = await client.DescribeDBInstancesAsync();
             throw new NotImplementedException();
         }
 
-        public List<CeraResourceGroups> GetCloudResourceGroups(RequestInfoViewModel requestInfo)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<CeraStorageAccount> GetCloudStorageAccountList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<CeraStorageAccount> GetCloudStorageAccountList(RequestInfoViewModel requestInfo)
+        public Task<List<CeraStorageAccount>> GetCloudStorageAccountList(RequestInfoViewModel requestInfo)
         {
             throw new NotImplementedException();
         }
@@ -140,8 +157,10 @@ namespace CERA.AWS.CloudService
             throw new NotImplementedException();
         }
 
-        public List<CeraWebApps> GetCloudWebAppList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        public async Task<List<CeraWebApps>> GetCloudWebAppList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
+            AmazonElasticBeanstalkClient client = new AmazonElasticBeanstalkClient(accessId,secretKey,regionEndpoint);
+            var webApp = await client.DescribeApplicationsAsync();
             throw new NotImplementedException();
         }
 
@@ -225,12 +244,42 @@ namespace CERA.AWS.CloudService
             throw new NotImplementedException();
         }
 
-        public List<CeraUsage> GetCloudUsageDetails(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        public async Task<List<CeraUsage>> GetCloudUsageDetails(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
+            AmazonCostExplorerClient data = new AmazonCostExplorerClient(accessId,secretKey,regionEndpoint);
+            GetCostAndUsageRequest request = new GetCostAndUsageRequest();
+
+            request.Granularity = Granularity.MONTHLY;
+            List<Amazon.CostExplorer.Model.GroupDefinition> groupDefinitions = new List<GroupDefinition>();
+            Amazon.CostExplorer.Model.GroupDefinition group = new GroupDefinition();
+            group.Type = "DIMENSION";
+            group.Key = "SERVICE";
+
+            groupDefinitions.Add(group);
+
+            request.GroupBy = groupDefinitions;
+
+            DateInterval start = new DateInterval();
+            start.Start = "2021-08-01";
+            start.End = "2021-08-31";
+            request.TimePeriod = start;
+
+            List<string> req = new List<string>();
+            req.Add("BLENDED_COST");
+            //req.Add("UNBLENDED_COST");
+            //req.Add("USAGE_QUANTITY");
+            //req.Add("AMORTIZED_COST");
+            //req.Add("NET_AMORTIZED_COST");
+            //req.Add("NET_UNBLENDED_COST");
+            //req.Add("NORMALIZED_USAGE_AMOUNT");
+
+            request.Metrics = req;
+
+            var usage = await data.GetCostAndUsageAsync(request);
             throw new NotImplementedException();
         }
 
-        public List<CeraUsage> GetCloudUsageDetails(RequestInfoViewModel requestInfo)
+        public Task<List<CeraUsage>> GetCloudUsageDetails(RequestInfoViewModel requestInfo)
         {
             throw new NotImplementedException();
         }
@@ -296,6 +345,36 @@ namespace CERA.AWS.CloudService
         }
 
         public List<AdvisorRecommendations> GetCloudAdvisorRecommendations(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UsageByMonth> GetCloudUsageByMonth(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UsageByMonth> GetCloudUsageByMonth(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UsageHistory> GetCloudUsageHistory(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UsageHistory> GetCloudUsageHistory(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UsageByMonth> GetUsageByMonth()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UsageHistory> GetUsageHistory()
         {
             throw new NotImplementedException();
         }

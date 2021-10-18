@@ -65,11 +65,11 @@ namespace CERASyncAPI.Controllers
             return _ceraCloud.GetCloudRateCardList(requestInfo);
         }
         [HttpGet]
-        public List<CeraUsage> GetCloudUsageDetails(string ClientName = "Quadrant")
+        public async Task<List<CeraUsage>> GetCloudUsageDetails(string ClientName = "Quadrant")
         {
             RequestInfoViewModel requestInfo = new RequestInfoViewModel();
             _ceraCloud.ClientName = ClientName;
-            return _ceraCloud.GetCloudUsageDetails(requestInfo);
+            return await _ceraCloud.GetCloudUsageDetails(requestInfo);
         }
         [HttpGet]
         public List<CeraCompliances> GetCloudCompliances(string ClientName = "Quadrant")
@@ -96,11 +96,11 @@ namespace CERASyncAPI.Controllers
         /// <param name="ClientName"></param>
         /// <returns>returns the list of Virtual Machines data from cloud</returns>
         [HttpGet]
-        public IEnumerable<CeraVM> GetCloudVM(string ClientName = "Quadrant")
+        public async Task<IEnumerable<CeraVM>> GetCloudVM(string ClientName = "Quadrant")
         {
             RequestInfoViewModel requestInfo = new RequestInfoViewModel();
             _ceraCloud.ClientName = ClientName;
-            return _ceraCloud.GetCloudVMList(requestInfo);
+            return await _ceraCloud.GetCloudVMList(requestInfo);
         }
         /// <summary>
         /// Based on the cloud this method will retrives ResourceGroups details from the cloud
@@ -108,11 +108,11 @@ namespace CERASyncAPI.Controllers
         /// <param name="ClientName"></param>
         /// <returns>returns the list of ResourceGroups data from cloud</returns>
         [HttpGet]
-        public IEnumerable<CeraResourceGroups> GetCloudResourceGroups(string ClientName = "Quadrant")
+        public async Task<IEnumerable<CeraResourceGroups>> GetCloudResourceGroups(string ClientName = "Quadrant")
         {
             RequestInfoViewModel requestInfo = new RequestInfoViewModel();
             _ceraCloud.ClientName = ClientName;
-            return _ceraCloud.GetCloudResourceGroups(requestInfo);
+            return await _ceraCloud.GetCloudResourceGroups(requestInfo);
         }
         /// <summary>
         /// Based on the cloud this method will retrives StorageAccount details from the cloud
@@ -120,11 +120,11 @@ namespace CERASyncAPI.Controllers
         /// <param name="ClientName"></param>
         /// <returns>returns the list of StorageAccount data from cloud</returns>
         [HttpGet]
-        public IEnumerable<CeraStorageAccount> GetCloudStorageAccount(string ClientName = "Quadrant")
+        public async Task<IEnumerable<CeraStorageAccount>> GetCloudStorageAccount(string ClientName = "Quadrant")
         {
             RequestInfoViewModel requestInfo = new RequestInfoViewModel();
             _ceraCloud.ClientName = ClientName;
-            return _ceraCloud.GetCloudStorageAccountList(requestInfo);
+            return await _ceraCloud.GetCloudStorageAccountList(requestInfo);
         }
         /// <summary>
         /// Based on the cloud this method will retrives SqlServer details from the cloud
@@ -156,11 +156,11 @@ namespace CERASyncAPI.Controllers
         /// <param name="ClientName"></param>
         /// <returns>returns the list of WebApps data from cloud</returns>
         [HttpGet]
-        public IEnumerable<CeraWebApps> GetCloudWebApps(string ClientName = "Quadrant")
+        public async Task<IEnumerable<CeraWebApps>> GetCloudWebApps(string ClientName = "Quadrant")
         {
             RequestInfoViewModel requestInfo = new RequestInfoViewModel();
             _ceraCloud.ClientName = ClientName;
-            return _ceraCloud.GetCloudWebAppList(requestInfo);
+            return await _ceraCloud.GetCloudWebAppList(requestInfo);
         }
         /// <summary>
         /// Based on the cloud this method will retrives AppServicePlans details from the cloud
@@ -199,6 +199,25 @@ namespace CERASyncAPI.Controllers
             RequestInfoViewModel requestInfo = new RequestInfoViewModel();
             _ceraCloud.ClientName = ClientName;
             return _ceraCloud.GetCloudAdvisorRecommendations(requestInfo);
+        }
+        [HttpGet]
+        public IEnumerable<UsageByMonth> GetCloudUsageByMonth(string ClientName = "Quadrant")
+        {
+            RequestInfoViewModel requestInfo = new RequestInfoViewModel();
+            _ceraCloud.ClientName = ClientName;
+            return _ceraCloud.GetCloudUsageByMonth(requestInfo);
+        }
+        [HttpGet]
+        public IEnumerable<UsageHistory> GetCloudUsageHistory(string ClientName = "Quadrant")
+        {
+            RequestInfoViewModel requestInfo = new RequestInfoViewModel();
+            _ceraCloud.ClientName = ClientName;
+            return _ceraCloud.GetCloudUsageHistory(requestInfo);
+        }
+        [HttpPost]
+        public object AddPolicyRules(List<PolicyRules> data)
+        {
+            return _ceraCloud.AddPolicyRules(data);
         }
     }
 }

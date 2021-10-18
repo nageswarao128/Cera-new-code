@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CERA.DataOperation
 {
@@ -30,7 +31,7 @@ namespace CERA.DataOperation
                                      {
                                          PlatformName = clientPlugin.PlugIn.CloudProviderName,
                                          APIClassName = clientPlugin.PlugIn.FullyQualifiedName,
-                                         DllPath = clientPlugin.PlugIn.DllPath,
+                                         DllPath = clientPlugin.PlugIn.DllPath,                                         
                                      };
             return onboradedPlatforms.ToList();
         }
@@ -119,12 +120,12 @@ namespace CERA.DataOperation
         public List<UserClouds> GetUserClouds()
         {
             List<UserClouds> clouds = new List<UserClouds>();
-            var data = _dbContext.CloudPlugIns.ToList();
+            var data = _dbContext.CloudPlugIns.Select(x=>x.CloudProviderName).ToList();
             foreach (var item in data)
             {
                 clouds.Add(new UserClouds
                 {
-                    cloudName = item.CloudProviderName
+                    cloudName = item
                 });
             }
             return clouds;
@@ -132,6 +133,11 @@ namespace CERA.DataOperation
         public List<CeraResourceTypeUsage> ResourceUsage()
         {
             var data = _spContext.resourceUsage.FromSqlRaw<CeraResourceTypeUsage>("[dbo].[Sp_ResourceSpent]").ToList();
+            return data;
+        }
+        public List<ManageOrg> ManageOrganization()
+        {
+            var data = _spContext.manageorg.FromSqlRaw<ManageOrg>("[dbo].[sp_ManageOrg]").ToList();
             return data;
         }
         public List<CeraResourceTypeUsage> ResourceUsage(string location)
@@ -143,9 +149,57 @@ namespace CERA.DataOperation
             var data = _spContext.resourceUsage.FromSqlRaw<CeraResourceTypeUsage>("[dbo].[Sp_ResourceLocationSpent] @location", parameter).ToList();
             return data;
         }
+        public List<CeraResourceTypeUsage> ResourceCloudUsage(string location,string cloudprovider)
+        {
+            SqlParameter parameter = new SqlParameter();
+            parameter.ParameterName = "@location";
+
+            parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter.Value = location;
+
+            SqlParameter parameter1 = new SqlParameter();
+            parameter1.ParameterName = "@cloudprovider";
+
+            parameter1.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter1.Value = cloudprovider;
+
+            var data =  _spContext.resourceUsage.FromSqlRaw<CeraResourceTypeUsage>("[dbo].[Sp_ResourceCloudLocationSpent] @location,@cloudprovider", parameter, parameter1).ToList();
+            return data;
+        }
+
+        public List<CeraResourceTypeUsage> ResourceSubscriptionCloudspentUsage(string cloudprovider, string subscriptionid)
+        {
+            SqlParameter parameter = new SqlParameter();
+            parameter.ParameterName = "@cloudprovider";
+
+            parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter.Value = cloudprovider;
+
+            SqlParameter parameter1 = new SqlParameter();
+            parameter1.ParameterName = "@subscriptionid";
+
+            parameter1.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter1.Value = subscriptionid;
+
+            var data = _spContext.resourceUsage.FromSqlRaw<CeraResourceTypeUsage>("[dbo].[Sp_ResourceSubscriptionCloudSpent] @cloudprovider,@subscriptionid", parameter, parameter1).ToList();
+            return data;
+        }
+       
         public List<ResourceTagsCount> GetResourceTagsCount()
         {
             var data = _spContext.resourceTags.FromSqlRaw<ResourceTagsCount>("[dbo].[Sp_ResourceTags]").ToList();
+            return data;
+        }
+
+     
+        public List<ResourceTagsCount> GetResourceTagsCloudCount(string cloudprovider)
+        {
+
+            SqlParameter parameter = new SqlParameter();
+            parameter.ParameterName = "@cloudprovider";
+            parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter.Value = cloudprovider;
+            var data = _spContext.resourceTags.FromSqlRaw<ResourceTagsCount>("[dbo].[Sp_ResourceCloudTags] @cloudprovider", parameter).ToList();
             return data;
         }
         public List<ResourceTagsCount> GetResourceTagsCount(string location)
@@ -157,6 +211,66 @@ namespace CERA.DataOperation
             var data = _spContext.resourceTags.FromSqlRaw<ResourceTagsCount>("[dbo].[Sp_ResourceLocationTags] @location", parameter).ToList();
             return data;
         }
+        public List<ResourceTagsCount> GetResourceCloudTagsCount(string location,string cloudprovider)
+        {
+            SqlParameter parameter = new SqlParameter();
+            parameter.ParameterName = "@location";
+
+            parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter.Value = location;
+
+            SqlParameter parameter1 = new SqlParameter();
+            parameter1.ParameterName = "@cloudprovider";
+
+            parameter1.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter1.Value = cloudprovider;
+
+            var data = _spContext.resourceTags.FromSqlRaw<ResourceTagsCount>("[dbo].[Sp_ResourceCloudLocationTags] @location,@cloudprovider", parameter, parameter1).ToList();
+            return data;
+        }
+        public List<CeraResourceTypeUsage> ResourceSubscriptionCloudUsage(string location, string cloudprovider,string subscriptionid)
+        {
+            SqlParameter parameter = new SqlParameter();
+            parameter.ParameterName = "@location";
+
+            parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter.Value = location;
+
+            SqlParameter parameter1 = new SqlParameter();
+            parameter1.ParameterName = "@cloudprovider";
+
+            parameter1.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter1.Value = cloudprovider;
+            SqlParameter parameter2 = new SqlParameter();
+            parameter2.ParameterName = "@subscriptionid";
+
+            parameter2.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter2.Value = subscriptionid;
+            var data = _spContext.resourceUsage.FromSqlRaw<CeraResourceTypeUsage>("[dbo].[Sp_ResourceSubscriptionCloudLocationSpent] @location,@cloudprovider,@subscriptionid", parameter, parameter1,parameter2).ToList();
+            return data;
+        }
+        public List<ResourceTagsCount> GetResourceSubscriptionCloudTagsCount(string location, string cloudprovider,string subscriptionid)
+        {
+            SqlParameter parameter = new SqlParameter();
+            parameter.ParameterName = "@location";
+
+            parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter.Value = location;
+
+            SqlParameter parameter1 = new SqlParameter();
+            parameter1.ParameterName = "@cloudprovider";
+
+            parameter1.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter1.Value = cloudprovider;
+
+            SqlParameter parameter2 = new SqlParameter();
+            parameter2.ParameterName = "@subscriptionid";
+
+            parameter2.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter2.Value = subscriptionid;
+            var data = _spContext.resourceTags.FromSqlRaw<ResourceTagsCount>("[dbo].[Sp_ResourceSubscriptionCloudLocationTags] @location,@cloudprovider,@subscriptionid", parameter, parameter1,parameter2).ToList();
+            return data;
+        }
         public List<ResourceTypeCount> GetResourceTypeCount()
         
         {
@@ -165,6 +279,18 @@ namespace CERA.DataOperation
             
             return data;
         }
+        public List<ResourceTypeCount> GetResourceCloudCount(string cloudprovider)
+
+        {
+            SqlParameter parameter = new SqlParameter();
+            parameter.ParameterName = "@cloudprovider";
+            parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter.Value = cloudprovider;
+            var data = _spContext.resourceTypeCount.FromSqlRaw<ResourceTypeCount>("[dbo].[Sp_ResourceCloudSpent] @cloudprovider", parameter).ToList();
+
+            return data;
+        }
+
         public List<ResourceTypeCount> GetResourceTypeCount(string location)
         {
             SqlParameter parameter = new SqlParameter();
@@ -174,6 +300,64 @@ namespace CERA.DataOperation
             var data = _spContext.resourceTypeCount.FromSqlRaw<ResourceTypeCount>("[dbo].[Sp_ResourceLocationCount] @location", parameter).ToList();
             return data;
         }
+        public List<ResourceTypeCount> GetSubscriptionTypeList(string subscriptionId,string cloudprovider)
+        {
+            SqlParameter parameter = new SqlParameter();
+            parameter.ParameterName = "@subscriptionid";
+
+            parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter.Value = subscriptionId;
+
+            SqlParameter parameter1 = new SqlParameter();
+            parameter1.ParameterName = "@cloudprovider";
+
+            parameter1.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter1.Value = cloudprovider;
+
+
+            var data = _spContext.resourceTypeCount.FromSqlRaw<ResourceTypeCount>("[dbo].[sp_subscriptionfilter] @subscriptionid,@cloudprovider", parameter,parameter1).ToList();
+            return data;
+        }
+        public List<ResourceTypeCount> GetSubscriptionLocationList(string location,string cloudprovider, string subscriptionid)
+        {
+            SqlParameter parameter = new SqlParameter();
+            parameter.ParameterName = "@location";
+
+            parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter.Value = location;
+
+            SqlParameter parameter1 = new SqlParameter();
+            parameter1.ParameterName = "@cloudprovider";
+
+            parameter1.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter1.Value = cloudprovider;
+            SqlParameter parameter2 = new SqlParameter();
+            parameter2.ParameterName = "@subscriptionid";
+
+            parameter2.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter2.Value = subscriptionid;
+
+            var data = _spContext.resourceTypeCount.FromSqlRaw<ResourceTypeCount>("[dbo].[Sp_SubscriptionLocationfilter] @location,@cloudprovider,@subscriptionid", parameter, parameter1,parameter2).ToList();
+            return data;
+        }
+        public List<ResourceTypeCount> GetResourceTypecloudCount(string location,string cloudprovider)
+        {
+            SqlParameter parameter = new SqlParameter();
+            parameter.ParameterName = "@location";
+         
+            parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter.Value = location;
+
+            SqlParameter parameter1 = new SqlParameter();
+            parameter1.ParameterName = "@cloudprovider";
+
+            parameter1.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter1.Value = cloudprovider;
+
+            var data = _spContext.resourceTypeCount.FromSqlRaw<ResourceTypeCount>("[dbo].[Sp_ResourceCloudLocationcount] @location,@cloudprovider", parameter,parameter1).ToList();
+            return data;
+        }
+       
         public List<ResourceHealthViewDTO> ResourceHealth()
         {
             
@@ -197,6 +381,14 @@ namespace CERA.DataOperation
           
             return data;
         }
+        public List<locationFilter> GetMapLocationsFilter()
+        {
+            var data = _spContext.locationfilters.FromSqlRaw<locationFilter>("[dbo].[Sp_MapDataFilter]").ToList();
+
+            return data;
+        }
+
+
 
         public List<ResourceLocations> GetResourceLocations(string location)
         {
@@ -207,5 +399,198 @@ namespace CERA.DataOperation
             var data = _spContext.Locations.FromSqlRaw<ResourceLocations>("[dbo].[Sp_MapLocationData] @location", parameter).ToList();
             return data;
         }
+
+        public List<CostUsage> UsageByMonth()
+        {
+            return _spContext.usageSp.FromSqlRaw<CostUsage>("[dbo].[Sp_UsageByMonth]").ToList();
+        }
+        public List<CostUsage> UsageCloudByMonth(string cloudprovider)
+        {
+            SqlParameter parameter = new SqlParameter();
+            parameter.ParameterName = "@cloudprovider";
+            parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter.Value = cloudprovider;
+            var data= _spContext.usageSp.FromSqlRaw<CostUsage>("[dbo].[Sp_UsageCloudByMonth] @cloudprovider", parameter).ToList();
+            return data;
+        }
+        public List<CostUsage> UsageSubscriptionByMonth(string cloudprovider, string subscriptionid)
+        {
+            SqlParameter parameter = new SqlParameter();
+            parameter.ParameterName = "@cloudprovider";
+            parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter.Value = cloudprovider;
+            SqlParameter parameter1 = new SqlParameter();
+            parameter1.ParameterName = "@subscriptionid";
+            parameter1.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter1.Value = subscriptionid;
+            var data = _spContext.usageSp.FromSqlRaw<CostUsage>("[dbo].[Sp_UsageSubscriptionByMonthh] @cloudprovider,@subscriptionid", parameter,parameter1).ToList();
+            return data;
+        }
+        public List<ResourceTagsCount> GetResourceSubscriptionCloudTagsCount(string cloudprovider,string subscriptionid)
+        {
+
+            SqlParameter parameter = new SqlParameter();
+            parameter.ParameterName = "@cloudprovider";
+            parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter.Value = cloudprovider;
+            SqlParameter parameter1 = new SqlParameter();
+            parameter1.ParameterName = "@subscriptionid";
+            parameter1.SqlDbType = System.Data.SqlDbType.NVarChar;
+            parameter1.Value = subscriptionid;
+            var data = _spContext.resourceTags.FromSqlRaw<ResourceTagsCount>("[dbo].[Sp_ResourceSubscriptionCloudTags] @cloudprovider,@subscriptionid", parameter,parameter1).ToList();
+            return data;
+        }
+        public List<CostUsage> UsageHistory()
+        {
+            return _spContext.usageSp.FromSqlRaw<CostUsage>("[dbo].[Sp_UsageByHistory]").ToList();
+        }
+        public List<UsageHistoryByMonth> UsageHistoryByMonth()
+        {
+            return _spContext.usageHistoryByMonth.FromSqlRaw<UsageHistoryByMonth>("[dbo].[Sp_UsageHistoryByMonth]").ToList();
+        }
+        public List<UsageByLocation> GetUsageByLocation()
+        {
+            return _spContext.usageByLocation.FromSqlRaw<UsageByLocation>("[dbo].[Sp_UsageByLocation]").ToList();
+        }
+        public List<UsageByResourceGroup> GetUsageByResourceGroup()
+        {
+            return _spContext.usageByResourceGroup.FromSqlRaw<UsageByResourceGroup>("[dbo].[Sp_UsageByResourceGroup]").ToList();
+        }
+        public List<DashboardCountModel> GetDashboardCount()
+        {
+            try
+            {
+                return _spContext.dashboardCounts.FromSqlRaw<DashboardCountModel>("Sp_Dashboardcounts").ToList();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+       
+        public List<DashboardCountModel> GetDashboardCountFilters(string location,string cloudprovider)
+        {
+            try
+            {
+
+                SqlParameter parameter = new SqlParameter();
+                parameter.ParameterName = "@location";
+
+                parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+                parameter.Value = location;
+
+                SqlParameter parameter1 = new SqlParameter();
+                parameter1.ParameterName = "@cloudprovider";
+
+                parameter1.SqlDbType = System.Data.SqlDbType.NVarChar;
+                parameter1.Value = cloudprovider;
+
+                var data = _spContext.dashboardCounts.FromSqlRaw<DashboardCountModel>("[dbo].[Sp_DashboardCountFilters] @location,@cloudprovider", parameter, parameter1).ToList();
+                return data;
+               
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public List<DashboardCountModel> GetDashboardSubscriptionCountFilters( string cloudprovider, string subscriptionid)
+        {
+            try
+            {
+
+                SqlParameter parameter = new SqlParameter();
+                parameter.ParameterName = "@cloudprovider";
+
+                parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+                parameter.Value = cloudprovider;
+
+                SqlParameter parameter1 = new SqlParameter();
+                parameter1.ParameterName = "@subscriptionid";
+
+                parameter1.SqlDbType = System.Data.SqlDbType.NVarChar;
+                parameter1.Value = subscriptionid;
+
+                var data = _spContext.dashboardCounts.FromSqlRaw<DashboardCountModel>("[dbo].[Sp_DashboardSubscriptionCountCloud] @cloudprovider,@subscriptionid", parameter, parameter1).ToList();
+                return data;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public List<DashboardCountModel> GetDashboardSubscriptionLocationFilters(string location, string cloudprovider,string subscriptionid)
+        {
+            try
+            {
+
+                SqlParameter parameter = new SqlParameter();
+                parameter.ParameterName = "@location";
+
+                parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+                parameter.Value = location;
+
+                SqlParameter parameter1 = new SqlParameter();
+                parameter1.ParameterName = "@cloudprovider";
+
+                parameter1.SqlDbType = System.Data.SqlDbType.NVarChar;
+                parameter1.Value = cloudprovider;
+                SqlParameter parameter2 = new SqlParameter();
+                parameter2.ParameterName = "@subscriptionid";
+
+                parameter2.SqlDbType = System.Data.SqlDbType.NVarChar;
+                parameter2.Value = subscriptionid;
+
+                var data = _spContext.dashboardCounts.FromSqlRaw<DashboardCountModel>("[dbo].[Sp_DashboardSubscriptionCountFilters] @location,@cloudprovider,@subscriptionid", parameter, parameter1,parameter2).ToList();
+                return data;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public List<DashboardCountModel> GetDashboardCountLocation(string location)
+        {
+            try
+            {
+                SqlParameter parameter = new SqlParameter();
+                parameter.ParameterName = "@location";
+                parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+                parameter.Value = location;
+                var data= _spContext.dashboardCounts.FromSqlRaw<DashboardCountModel>("[dbo].[Sp_DashboardCountLocation] @location", parameter).ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public List<DashboardCountModel> GetDashboardCountCloud(string cloudprovider)
+        {
+            try
+            {
+                SqlParameter parameter = new SqlParameter();
+                parameter.ParameterName = "@cloudprovider";
+                parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+                parameter.Value = cloudprovider;
+                var data = _spContext.dashboardCounts.FromSqlRaw<DashboardCountModel>("[dbo].[Sp_DashboardCountCloud] @cloudprovider", parameter).ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
     }
 }

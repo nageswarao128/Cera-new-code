@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿.
+<!DOCTYPE html>
 <html>
 <head>
     <title>azureWorldMap</title>
@@ -8,7 +9,7 @@
     <script src="mapJs/js/topojson.min.js"></script>
     <script src="mapJs/js/datamaps.world.min.js"></script>
 
-    <div id="container" style="position: relative; width: 900px; height: 400px; margin:auto;"></div>
+    <div id="container" style="position: relative; width: 750px; height: 380px; margin:auto;"></div>
 
     <script>
         var mapData = this.window.parent.getMapData();
@@ -85,7 +86,7 @@
 
         function updateMapOnChange(location) {
             /*let location = $('#ddlLocation').val();*/
-        
+
             var mapData = this.window.parent.loadMapData(location);
             var ceraWorldMap = new Datamap({
                 element: document.getElementById('container'),

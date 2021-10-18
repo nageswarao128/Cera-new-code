@@ -1,85 +1,83 @@
 ﻿@model List<CeraWebApplication.Models.AdvisorRecommendations>
 
-<head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.3.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 
-</head>
-
-<h1>Resources List</h1>
-@if (Model != null)
-{
-    @*<input style="width:30%" class="form-control" id="myInput" type="text" placeholder="Search..">*@
-    <table id="MyTable" class="table table-striped table-hover" style="margin-top:1%">
-        <thead>
-            <tr>
-
-                <th>
-                    Category
-                </th>
-
-                <th>
-                    Impact
-                </th>
-
-                <th>
-                    ResourceId
-                </th>
-
-                <th>
-                    Location
-                </th>
-            </tr>
-        </thead>
-        <tbody id="myTable">
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.category)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.impact)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.resourceId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.location)
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+@{
+    Layout = "~/Views/Shared/_ResourcesLayout.cshtml";
+    //ViewData["Title"] = "Login";
 }
-<script>
-    $(document).ready(function () {
-        $('#MyTable').DataTable({
-            initComplete: function () {
-                this.api().columns().every(function () {
-                    var column = this;
-                    var select = $('<select><option value=""></option></select>')
-                        .appendTo($(column.footer()).empty())
-                        .on('change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
-                            //to select and search from grid
-                            column
-                                .search(val ? '^' + val + '$' : '', true, false)
-                                .draw();
-                        });
 
-                    column.data().unique().sort().each(function (d, j) {
-                        select.append('<option value="' + d + '">' + d + '</option>')
-                    });
-                });
-            }
-        });
+
+<div>
+    <div class="row">
+        <div class="col-md-4">
+            <ul class="cera-breadCrumb">
+                <li><a asp-controller="Cera" asp-action="DashBoard">Home </a></li>
+                <li><a href="#">Resources</a></li>
+                <li>Advisor</li>
+            </ul>
+        </div>
+    </div>
+    <div class="cera-rightContent">
+        <h3 class="main_h">Advisor </h3>
+        <table class="table display" id="example" style="width:100%">
+            <thead>
+                <tr>
+
+                    <th>
+                        Category
+                    </th>
+
+                    <th>
+                        Impact
+                    </th>
+
+                    <th>
+                        ResourceId
+                    </th>
+
+                    <th>
+                        Location
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.category)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.impact)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.resourceId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.location)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example').DataTable();
     });
+</script>
+<script type="text/javascript">
+    (function () {
+        $('.toggle-wrap').on('click', function () {
+            $(this).toggleClass('active');
+            $('.cera-col3, .cera-col9').toggleClass('menu-open');
+        });
+    })();
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 </script>
 
 

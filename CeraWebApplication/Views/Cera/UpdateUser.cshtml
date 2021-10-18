@@ -1,46 +1,58 @@
 ﻿@model CeraWebApplication.Models.CeraUserModel
 
 @{
-    ViewData["Title"] = "UpdateUser";
+    Layout = "~/Views/Shared/_ResourcesLayout.cshtml";
 }
 
-<h1>UpdateUser</h1>
-<hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="UpdateUser">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @Html.HiddenFor(model => model.Id)
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EmailId" class="control-label"></label>
-                <input asp-for="EmailId" class="form-control" />
-                <span asp-validation-for="EmailId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Roles" class="control-label"></label>
-                <select asp-for="Roles[0]" required>
-                    <optgroup label="Select Role">
-                        <option></option>
-                        <option>Admin</option>
-                        <option>User</option>
-                    </optgroup>
-                </select>
-                <span asp-validation-for="Roles" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Update" class="btn btn-primary" />
-            </div>
-        </form>
+        <ul class="cera-breadCrumb">
+            <li><a asp-controller="Cera" asp-action="DashBoard">Home </a></li>
+            <li><a href="#">Admin</a></li>
+            <li>Update User</li>
+        </ul>
+    </div>
+    <div class="col-md-8 text-right">
+        <div>
+            <a asp-controller="Cera" asp-action="ManageUsers" class="back_toList">Back to List</a>
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-controller="Cera" asp-action="ManageUsers">Back to List</a>
+<div class="cera-rightContent">
+    <h3 class="main_h">Update User</h3>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="UpdateUser">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @Html.HiddenFor(model => model.Id)
+                <div class="form-group">
+                    <label asp-for="UserName" class="control-label"></label>
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EmailId" class="control-label"></label>
+                    <input asp-for="EmailId" class="form-control" />
+                    <span asp-validation-for="EmailId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Roles" class="control-label"></label>
+                    <select asp-for="Roles[0]" required>
+                        <optgroup label="Select Role">
+                            <option></option>
+                            <option>Admin</option>
+                            <option>User</option>
+                        </optgroup>
+                    </select>
+                    <span asp-validation-for="Roles" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Update" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+    
 
 

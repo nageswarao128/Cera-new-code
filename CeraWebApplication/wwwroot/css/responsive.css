@@ -1,0 +1,13 @@
+
+@media (min-width: 1200px){
+	.cera-col3{
+	    -ms-flex: 0 0 20%;
+	    flex: 0 0 20%;
+	    max-width: 20%;
+	}
+	.cera-col9{
+	    -ms-flex: 0 0 80%;
+	    flex: 0 0 80%;
+	    max-width: 80%;
+	}
+}

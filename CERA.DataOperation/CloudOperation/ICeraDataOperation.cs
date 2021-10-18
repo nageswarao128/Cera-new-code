@@ -13,6 +13,7 @@ namespace CERA.DataOperation
         public int AddStorageAccountData(List<CeraStorageAccount> data);
         public int AddSqlServerData(List<CeraSqlServer> data);
         public int AddWebAppData(List<CeraWebApps> data);
+        public int AddPolicyRules(List<PolicyRules> data);
         public object AddServicePlanData(object data);
         public int AddVMData(List<CeraVM> data);
         public int AddAppServicePlans(List<CeraAppServicePlans> data);
@@ -23,10 +24,12 @@ namespace CERA.DataOperation
         public int AddUsageDetails(List<CeraUsage> data);
         public int AddLocationsData(List<AzureLocations> data);
         public int AddPolicyData(List<CeraPolicy> data);
+        public int AddUsageByMonth(List<UsageByMonth> data);
+        public int AddUsageHistory(List<UsageHistory> data);
         public int AddAdvisorRecommendations(List<AdvisorRecommendations> data);
         public object AddSqlServerData(object data);
         public object AddSqlDbData(object data);
-
+       
         public object UpdateTenantData(object data);
         public object UpdateSubscriptionData(object data);
         public object UpdateResourceData(object data);
@@ -52,5 +55,8 @@ namespace CERA.DataOperation
         public List<CeraPolicy> GetPolicy();
         public List<AzureLocations> GetLocations();
         public List<AdvisorRecommendations> GetAdvisorRecommendations();
+        public List<PolicyRules> GetPolicyRules();
+        public List<UsageByMonth> GetUsageByMonth();
+        public List<UsageHistory> GetUsageHistory();
     }
 }

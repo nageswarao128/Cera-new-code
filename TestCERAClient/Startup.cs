@@ -63,7 +63,8 @@ namespace CERASyncAPI
 
             //services.AddDbContext<CeraAPIUserDbContext>(x => x.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=db_Cera_User; Integrated Security= true;"));
             services.AddDbContext<CeraAPIUserDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DbCS")));
-            
+            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_CONNECTIONSTRING"]);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

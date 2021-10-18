@@ -10,7 +10,7 @@ namespace CERA.Entities.Models
     /// This class is used as a object for Tenants
     /// </summary>
     [Table("tbl_Tenants")]
-    public class CeraTenants
+    public class CeraTenants:UtilityModel
     {
         [Key]
         public int? Id { get; set; }

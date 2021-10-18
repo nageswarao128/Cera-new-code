@@ -3,9 +3,11 @@
 	<PropertyGroup>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 		<UserSecretsId>5ca4a6f7-709e-444e-8745-83567f1ab90b</UserSecretsId>
+		<ApplicationInsightsResourceId>/subscriptions/b6700194-6522-4789-b5a1-c222828c1fba/resourcegroups/QRestApi/providers/Microsoft.Insights/components/CERA</ApplicationInsightsResourceId>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.15.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.12" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.3" />

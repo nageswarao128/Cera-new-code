@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using CeraWebApplication.Utility;
 using Newtonsoft.Json;
 
+
 namespace CeraWebApplication.Controllers
 {
     [Authorize]
@@ -28,6 +29,29 @@ namespace CeraWebApplication.Controllers
         {
             return View();
         }
+
+        public  async Task<IActionResult> ManageOrganization()
+        {
+            IEnumerable<ManageOrg> manageOrg = null;
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CERAData/ManageOrganization"))
+                {
+                    var apiresponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        manageOrg = JsonConvert.DeserializeObject<List<ManageOrg>>(apiresponse);
+                        ViewBag.cloudDetails = manageOrg.ToList();
+                        return View(manageOrg.ToList());
+                    }
+                    else
+                    {
+                        return RedirectToAction("ErrorPage", "Cera");
+                    }
+                }
+            }
+
+        }
        [HttpPost]
        public async Task<IActionResult> AddOrganisation(AddOrgModel orgModel)
         {
@@ -35,11 +59,13 @@ namespace CeraWebApplication.Controllers
             {
                 orgModel.FullyQualifiedClassName = "CERA.Azure.CloudService.CeraAzureApiService";
                 orgModel.DllPath = "../wwwroot/CERA.Azure.CloudService.dll";
+                //orgModel.DllPath = "../CERA.Azure.CloudService/bin/Debug/netstandard2.1/CERA.Azure.CloudService.dll";
             }
             else
             {
                 orgModel.FullyQualifiedClassName = "CERA.AWS.CloudService.CeraAWSApiService";
                 orgModel.DllPath = "../wwwroot/CERA.AWS.CloudService.dll";
+                //orgModel.DllPath = "../CERA.AWS.CloudServices/bin/Debug/netstandard2.1/CERA.AWS.CloudService.dll";
             }
             using (var httpClient = new HttpClient())
             {

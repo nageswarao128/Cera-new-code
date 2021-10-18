@@ -1,0 +1,242 @@
+﻿@{
+    Layout = "~/Views/Shared/_GeneralLayout.cshtml";
+    //ViewData["Title"] = "Login";
+}
+
+<style>
+    .my-custom-scrollbar {
+        position: relative;
+        height: 280px;
+        overflow: auto;
+    }
+
+    .table-wrapper-scroll-y {
+        display: block;
+    }
+</style>
+
+
+
+
+<div class="row">
+    <div class="col-md-4">
+        <ul class="cera-breadCrumb">
+            <li><a asp-controller="Cera" asp-action="DashBoard">Home </a></li>
+            <li><a href="#">Insights</a></li>
+            <li>Cost Analysis</li>
+        </ul>
+    </div>
+    @*<div class="col-md-8  text-right">
+            <button class="btn btn-primary" onclick="location.href = '@Url.Action("GetUsageChartsData","Cera")'">Show in Charts</button>
+        </div>*@
+</div>
+<div class="cera-rightContent">
+    <h3 class="main_h">Cost Analysis</h3>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="reqTab_h">Past 6 Months Cost</h6>
+                </div>
+                <div class="col-md-6">
+                    <select id="drpMonth" onchange="MonthOnChange()" class="form-control reqTab_control">
+                        <option value="AllMonths" selected>--Select Month--</option>
+                        @foreach (var month in ViewBag.Months)
+                        {
+                            <option value="@month">@month</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <table class="table table-striped table-hover sortable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Resource Type
+                            </th>
+                            <th>
+                                Consumed Cost
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblHistory">
+                        @foreach (var item in ViewBag.UsageHistory)
+                        {
+                            <tr>
+                                <td>
+                                    @item.resourceType
+                                </td>
+                                <td>
+                                    @item.pretaxCost
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h6 class="reqTab_h">Past 30 days Cost</h6>
+            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <table class="table table-striped table-hover sortable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Resource Type
+                            </th>
+                            <th>
+                                Consumed Cost
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.UsageByMonth)
+                        {
+                            <tr>
+                                <td>
+                                    @item.resourceType
+                                </td>
+                                <td>
+                                    @item.pretaxCost
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h6 class="reqTab_h">Usage By Location</h6>
+            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <table class="table table-striped table-hover sortable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Location
+                            </th>
+                            <th>
+                                Consumed Cost
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.UsageByLocation)
+                        {
+                            <tr>
+                                <td>
+                                    @item.instanceLocation
+                                </td>
+                                <td>
+                                    @item.ConsumedCost
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <br />
+            <div>
+                <p class="table_p">The rendered data is from past 30 days</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h6 class="reqTab_h">Usage By ResourceGroup</h6>
+            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <table class="table table-striped table-hover sortable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Resource Group
+                            </th>
+                            <th>
+                                Consumed Cost
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.UsageByResourcegroup)
+                        {
+                            <tr>
+                                <td>
+                                    @item.instanceResourceGroup
+                                </td>
+                                <td>
+                                    @item.ConsumedCost
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <br />
+            <div>
+                <p class="table_p">The rendered data is from past 30 days</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/tables.js"></script>
+<script src="~/js/sort.js"></script>
+
+<script>
+    var usageMonths = [];
+    var usageHistoryByMonths = [];
+    var UsageBySelectedMonth = [];
+
+    function MonthOnChange() {
+        let month = $('#drpMonth').val();
+        if (month != 'AllMonths') {
+            UsageBySelectedMonth = [];
+            usageMonths = [];
+            usageHistoryByMonths = [];
+            usageMonths.push((this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.UsageHistoryByMonth))')));
+            for (var i = 0; i < usageMonths[0].length; i++) {
+                usageHistoryByMonths.push({
+                    resourceType: usageMonths[0][i].resourceType, cost: usageMonths[0][i].cost, usageMonth: usageMonths[0][i].usageMonth
+                });
+            }
+            console.log(usageHistoryByMonths);
+
+            UsageBySelectedMonth = usageHistoryByMonths.filter(function (data) {
+                return data.usageMonth == month;
+            });
+            let html = '';
+
+            for (let i = 0; i < UsageBySelectedMonth.length; i++) {
+                html += '<tr>';
+                html += '<td>' + UsageBySelectedMonth[i].resourceType + '</td>';
+                html += '<td>' + UsageBySelectedMonth[i].cost + '</td>';
+                html += '</tr>';
+            }
+            $('#tblHistory').empty();
+            $('#tblHistory').append(html);
+        }
+        else {
+
+            usageMonths = [];
+            usageHistoryByMonths = [];
+            usageMonths.push((this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.UsageHistory))')));
+            for (var i = 0; i < usageMonths[0].length; i++) {
+                usageHistoryByMonths.push({
+                    resourceType: usageMonths[0][i].resourceType, pretaxCost: usageMonths[0][i].pretaxCost
+                });
+            }
+            console.log(usageHUrlrlrlstoryByMonths);
+
+            let html = '';
+
+            for (let i = 0; i < usageHistoryByMonths.length; i++) {
+                html += '<tr>';
+                html += '<td>' + usageHistoryByMonths[i].resourceType + '</td>';
+                html += '<td>' + usageHistoryByMonths[i].pretaxCost + '</td>';
+                html += '</tr>';
+            }
+            $('#tblHistory').empty();
+            $('#tblHistory').append(html);
+        }
+    }
+</script>

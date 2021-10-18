@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace CERA.AuthenticationService
 {
-    public class CeraClientAuthenticator:ICeraClientAuthenticator
+    public class CeraClientAuthenticator : ICeraClientAuthenticator
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         CeraClientAuthenticatorContext _dbContext;
-        public CeraClientAuthenticator(UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager,CeraClientAuthenticatorContext dbContext)
+        public CeraClientAuthenticator(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, CeraClientAuthenticatorContext dbContext)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -78,7 +78,7 @@ namespace CERA.AuthenticationService
 
                 throw ex;
             }
-            
+
         }
 
         public async Task<object> Login(LoginModel loginModel)
@@ -88,6 +88,7 @@ namespace CERA.AuthenticationService
                 var user = await _userManager.FindByNameAsync(loginModel.UserName);
                 if (user != null && await _userManager.CheckPasswordAsync(user, loginModel.Password))
                 {
+                    //var userDetails = GetUser(user.Id);
                     return user;
                 }
                 return null;
@@ -97,7 +98,7 @@ namespace CERA.AuthenticationService
 
                 throw ex;
             }
-           
+
         }
         public List<UserModel> GetUsers()
         {
@@ -121,7 +122,7 @@ namespace CERA.AuthenticationService
 
                 throw ex;
             }
-            
+
         }
         public async Task<UserModel> GetUser(string id)
         {
@@ -145,7 +146,30 @@ namespace CERA.AuthenticationService
 
                 throw ex;
             }
-            
+
+        }
+        public async Task<UserModel> GetUserProfile(string name)
+        {
+            try
+            {
+                UserModel user = new UserModel();
+              //  user.userName = name;
+                var result = await _userManager.FindByNameAsync(name);
+                var role = await _userManager.GetRolesAsync(result);
+                user = new UserModel
+                {
+                    id = result.Id,
+                    userName = result.UserName,
+                    emailId = result.Email,
+                    roles = role
+                };
+                return user;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
         public async Task<object> UpdateUser(UpdateUserModel userModel)
         {
@@ -157,10 +181,10 @@ namespace CERA.AuthenticationService
                 user.UpdatedTime = DateTime.Now;
                 var result = await _userManager.UpdateAsync(user);
                 var role = await _userManager.GetRolesAsync(user);
-                if (userModel.Role[0] != role[0])
+                if (userModel.Roles[0] != role[0])
                 {
                     await _userManager.RemoveFromRoleAsync(user, role[0]);
-                    await _userManager.AddToRoleAsync(user, userModel.Role[0]);
+                    await _userManager.AddToRoleAsync(user, userModel.Roles[0]);
                 }
                 return result;
             }

@@ -1,0 +1,72 @@
+﻿@model IEnumerable<CeraWebApplication.Models.ManageOrg>
+
+@{
+    Layout = "~/Views/Shared/_GeneralLayout.cshtml";
+}
+<div class="row">
+    <div class="col-md-4">
+        <ul class="cera-breadCrumb">
+            <li><a asp-controller="Cera" asp-action="DashBoard">Home </a></li>
+            <li><a href="#">Admin</a></li>
+            <li>Manage Organization</li>
+        </ul>
+    </div>
+    <div class="col-md-8 text-right">
+        <div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-controller="Manage" asp-action="AddOrganisation" class="back_toList">+Add Organization</a>
+                }
+            }
+        </div>
+    </div>
+</div>
+<div class="cera-rightContent">
+    <h3 class="main_h">Cera Users </h3>
+    <table class="table display" id="example" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    Organization Name
+                </th>
+                <th>
+                    Registered Cloud
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClientName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CloudProviderName)
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
+<script type="text/javascript">
+    (function () {
+        $('.toggle-wrap').on('click', function () {
+            $(this).toggleClass('active');
+            $('.cera-col3, .cera-col9').toggleClass('menu-open');
+        });
+    })();
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>

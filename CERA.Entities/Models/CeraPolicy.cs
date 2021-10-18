@@ -7,7 +7,7 @@ using System.Text;
 namespace CERA.Entities.Models
 {
     [Table("tbl_policy")]
-    public class CeraPolicy
+    public class CeraPolicy :UtilityModel
     {
         [Key]
         public int? Id { get; set; }

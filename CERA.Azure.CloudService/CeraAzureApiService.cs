@@ -100,7 +100,11 @@ namespace CERA.Azure.CloudService
                                     ResourceType = resource.ResourceType,
                                     Id = resource.Id,
                                     ResourceProviderNameSpace = resource.ResourceProviderNamespace,
-                                    Tags = true
+                                    Tags = true,
+                                    CloudProvider="Azure",
+                                    IsActive=true,
+                                    SubscriptionId=sub.SubscriptionId
+
                                 }) ;
                             }
                             else
@@ -113,7 +117,10 @@ namespace CERA.Azure.CloudService
                                     ResourceType = resource.ResourceType,
                                     Id = resource.Id,
                                     ResourceProviderNameSpace = resource.ResourceProviderNamespace,
-                                    Tags = false
+                                    Tags = false,
+                                    CloudProvider="Azure",
+                                    IsActive=true,
+                                    SubscriptionId=sub.SubscriptionId
                                 });
                             }
                             
@@ -139,7 +146,7 @@ namespace CERA.Azure.CloudService
         /// <param name="requestInfo"></param>
         /// <param name="subscriptions"></param>
         /// <returns>returns a list of resourceGroups from Azure</returns>
-        public List<CeraResourceGroups> GetCloudResourceGroups(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        public async Task<List<CeraResourceGroups>> GetCloudResourceGroups(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             try
             {
@@ -161,7 +168,10 @@ namespace CERA.Azure.CloudService
                             {
                                 Name = resource.Name,
                                 RegionName = resource.RegionName,
-                                provisioningstate = resource.ProvisioningState
+                                provisioningstate = resource.ProvisioningState,
+                                CloudProvider="Azure",
+                                IsActive=true,
+                                Resourcegroupid=resource.Id
 
                             });
                         }
@@ -186,7 +196,7 @@ namespace CERA.Azure.CloudService
         /// <param name="requestInfo"></param>
         /// <param name="subscriptions"></param>
         /// <returns>returns a list of StorageAccount from Azure</returns>
-        public List<CeraStorageAccount> GetCloudStorageAccountList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        public async Task<List<CeraStorageAccount>> GetCloudStorageAccountList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             try
             {
@@ -208,16 +218,19 @@ namespace CERA.Azure.CloudService
                             {
                                 Name = storage.Name,
                                 RegionName = storage.RegionName,
-                                ResourceGroupName = storage.ResourceGroupName
+                                ResourceGroupName = storage.ResourceGroupName,
+                                CloudProvider="Azure",
+                                IsActive=true,
+                                SubscriptionId=sub.SubscriptionId
 
                             });
                         }
                     }
-                    Logger.LogInfo("Parsing Completed ResourceGroups List To CERA Resources");
+                    Logger.LogInfo("Parsing Completed stroageAccount List To CERA Resources");
                     return ceraStorageAccounts;
 
                 }
-                Logger.LogInfo("No ResourceGroup List found");
+                Logger.LogInfo("No StorageAccount List found");
                 return null;
             }
             catch (Exception ex)
@@ -257,7 +270,10 @@ namespace CERA.Azure.CloudService
                             {
                                 Name = sqlServer.Name,
                                 RegionName = sqlServer.RegionName,
-                                ResourceGroupName = sqlServer.ResourceGroupName
+                                ResourceGroupName = sqlServer.ResourceGroupName,
+                                SqlServerId=sqlServer.Id,
+                                CloudProvider="Azure",
+                                IsActive=true
 
                             });
                         }
@@ -319,6 +335,8 @@ namespace CERA.Azure.CloudService
                             SubscriptionId = sub.SubscriptionId,
                             DisplayName = sub.DisplayName,
                             TenantID = sub.Inner.TenantId,
+                            CloudProvider="Azure",
+                            IsActive=true
 
                         });
 
@@ -365,7 +383,9 @@ namespace CERA.Azure.CloudService
                         tenants.Add(new CeraTenants
                         {
                             Key = Tenants.Key,
-                            TenantId = Tenants.TenantId
+                            TenantId = Tenants.TenantId,
+                            CloudProvider="Azure",
+                            IsActive=true
                         });
 
                     }
@@ -389,7 +409,7 @@ namespace CERA.Azure.CloudService
         /// <param name="requestInfo"></param>
         /// <param name="subscriptions"></param>
         /// <returns>returns a list of Virtual Machines from Azure</returns>
-        public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        public async Task<List<CeraVM>> GetCloudVMList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             try
             {
@@ -411,6 +431,8 @@ namespace CERA.Azure.CloudService
                                 VMName = virtualMachine.Name,
                                 RegionName = virtualMachine.RegionName,
                                 ResourceGroupName = virtualMachine.ResourceGroupName,
+                                CloudProvider="Azure",
+                                IsActive=true
 
                             });
                         }
@@ -435,7 +457,7 @@ namespace CERA.Azure.CloudService
         /// <param name="requestInfo"></param>
         /// <param name="subscriptions"></param>
         /// <returns>returns a list of WebApp from Azure</returns>
-        public List<CeraWebApps> GetCloudWebAppList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        public async Task<List<CeraWebApps>> GetCloudWebAppList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             try
             {
@@ -456,7 +478,9 @@ namespace CERA.Azure.CloudService
                             {
                                 Name = WebApps.Name,
                                 RegionName = WebApps.RegionName,
-                                ResourceGroupName = WebApps.ResourceGroupName
+                                ResourceGroupName = WebApps.ResourceGroupName,
+                                CloudProvider="Azure",
+                                IsActive=true
 
                             });
                         }
@@ -502,7 +526,10 @@ namespace CERA.Azure.CloudService
                             {
                                 Name = appService.Name,
                                 RegionName = appService.RegionName,
-                                ResourceGroupName = appService.ResourceGroupName
+                                ResourceGroupName = appService.ResourceGroupName,
+                                AppServicePlanId=appService.Id,
+                                CloudProvider="Azure",
+                                IsActive=true
 
                             });
                         }
@@ -543,7 +570,9 @@ namespace CERA.Azure.CloudService
                                  PrincipleName = item.DisplayName,
                                  ResourceGroupName = item.Scope.Remove(0,67),
                                  Scope = item.Scope,
-                                 Key = item.Key 
+                                 Key = item.Key,
+                                 CloudProvider="Azure",
+                                 IsActive=true
                             });
                         }
                         Logger.LogInfo("Parsing Completed Policies List To CERA Resources");
@@ -589,7 +618,10 @@ namespace CERA.Azure.CloudService
                             {
                                 Name = disk.Name,
                                 RegionName = disk.RegionName,
-                                ResourceGroupName = disk.ResourceGroupName
+                                ResourceGroupName = disk.ResourceGroupName,
+                                DiskId=disk.Id,
+                                CloudProvider="Azure",
+                                IsActive=true
 
                             });
                         }
@@ -628,7 +660,11 @@ namespace CERA.Azure.CloudService
                     Name = item.name,
                     Location = item.location,
                     Type = item.type,
-                    AvailabilityState = item.properties.availabilityState
+                    AvailabilityState = item.properties.availabilityState,
+                    CloudProvider="Azure",
+                    IsActive=true,
+                    SubscriptionId=item.id.Substring(15,36)
+
                 });
             }
             return resourceHealth;
@@ -664,55 +700,186 @@ namespace CERA.Azure.CloudService
             }
             return ceraRateCard;
         }
-        public List<CeraUsage> GetCloudUsageDetails(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        public async Task<List<CeraUsage>> GetCloudUsageDetails(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
-            const string url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.Consumption/usageDetails?api-version=2018-03-31&$expand=properties/additionalProperties";
-            var data = CallAzureEndPoint(url, subscriptions);
-            if (data == null)
-            {
-                return null;
-            }
-
-            List<UsageDTO> usageDetailsDTO = new List<UsageDTO>();
-            JObject result = JObject.Parse(data.Result);
-            var clientarray = result["value"].Value<JArray>();
-            usageDetailsDTO = clientarray.ToObject<List<UsageDTO>>();
-
+            string url; 
+            url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.Consumption/usageDetails?api-version=2018-03-31&$expand=properties/additionalProperties";
             List<CeraUsage> usageDetails = new List<CeraUsage>();
-            foreach (var item in usageDetailsDTO)
+            do
             {
-                string location = MapLocation(item.usageProperties.instanceLocation);
-                usageDetails.Add(new CeraUsage
+                var data = CallAzureEndPoint(url, subscriptions);
+                if (data == null)
                 {
-                    id = item.id,
-                    name = item.name,
-                    type = item.type,
-                    billingPeriodId = item.usageProperties.billingPeriodId,
-                    usageStart = item.usageProperties.usageStart,
-                    usageEnd = item.usageProperties.usageEnd,
-                    instanceId = item.usageProperties.instanceId,
-                    instanceName = item.usageProperties.instanceName,
-                    instanceLocation = location,
-                    meterId = item.usageProperties.meterId,
-                    usageQuantity = item.usageProperties.usageQuantity,
-                    pretaxCost = item.usageProperties.pretaxCost,
-                    currency = item.usageProperties.currency,
-                    isEstimated = item.usageProperties.isEstimated,
-                    subscriptionGuid = item.usageProperties.subscriptionGuid,
-                    subscriptionName = item.usageProperties.subscriptionName,
-                    product = item.usageProperties.product,
-                    consumedService = item.usageProperties.consumedService,
-                    partNumber = item.usageProperties.partNumber,
-                    resourceGuid = item.usageProperties.resourceGuid,
-                    offerId = item.usageProperties.offerId,
-                    chargesBilledSeparately = item.usageProperties.chargesBilledSeparately,
-                    meterDetails = item.usageProperties.meterDetails,
-                    additionalProperties = item.usageProperties.additionalProperties
-                });
-            }
+                    return null;
+                }
 
+                BillingDTO billingDTO = new BillingDTO();
+                billingDTO = JsonConvert.DeserializeObject<BillingDTO>(data.Result);
+                url = billingDTO.nextLink;
+                for (int i = 0; i < billingDTO.value.Length; i++)
+                {
+                    string location = MapLocation(billingDTO.value[i].properties.instanceLocation);
+                    usageDetails.Add(new CeraUsage
+                    {
+                        id = billingDTO.value[i].id,
+                        name = billingDTO.value[i].name,
+                        type = billingDTO.value[i].type,
+                        billingPeriodId = billingDTO.value[i].properties.billingPeriodId,
+                        usageStart = billingDTO.value[i].properties.usageStart,
+                        usageEnd = billingDTO.value[i].properties.usageEnd,
+                        instanceId = billingDTO.value[i].properties.instanceId,
+                        instanceName = billingDTO.value[i].properties.instanceName,
+                        instanceLocation = location,
+                        meterId = billingDTO.value[i].properties.meterId,
+                        usageQuantity = billingDTO.value[i].properties.usageQuantity,
+                        pretaxCost = billingDTO.value[i].properties.pretaxCost,
+                        currency = billingDTO.value[i].properties.currency,
+                        isEstimated = billingDTO.value[i].properties.isEstimated,
+                        subscriptionGuid = billingDTO.value[i].properties.subscriptionGuid,
+                        subscriptionName = billingDTO.value[i].properties.subscriptionName,
+                        product = billingDTO.value[i].properties.product,
+                        consumedService = billingDTO.value[i].properties.consumedService,
+                        partNumber = billingDTO.value[i].properties.partNumber,
+                        resourceGuid = billingDTO.value[i].properties.resourceGuid,
+                        offerId = billingDTO.value[i].properties.offerId,
+                        chargesBilledSeparately = billingDTO.value[i].properties.chargesBilledSeparately,
+                        meterDetails = billingDTO.value[i].properties.meterDetails,
+                        additionalProperties = billingDTO.value[i].properties.additionalProperties,
+                        CloudProvider="Azure",
+                        IsActive=true,
+                        SubscriptionId= billingDTO.value[i].id.Substring(15,36)
+
+
+                    });
+                }   
+            }
+            while (url != null);
             return usageDetails;
         }
+        public List<UsageByMonth> GetCloudUsageByMonth(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            string url;
+            DateTime endDate = DateTime.Now;
+            DateTime startDate = endDate.AddDays(-30);
+            string usageStart = startDate.ToShortDateString();
+            string usageEnd = endDate.ToShortDateString();
+            url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.Consumption/usageDetails?$filter=properties%2FusageStart%20ge%20'{1}'%20and%20properties%2FusageEnd%20le%20'{2}'&$top=1000&api-version=2018-03-31";
+            List<UsageByMonth> usageDetails = new List<UsageByMonth>();
+            do
+            {
+                var data = GetUsageData(url, subscriptions,usageStart,usageEnd);
+                if (data == null)
+                {
+                    return null;
+                }
+
+                BillingDTO billingDTO = new BillingDTO();
+                billingDTO = JsonConvert.DeserializeObject<BillingDTO>(data.Result);
+                url = billingDTO.nextLink;
+                for (int i = 0; i < billingDTO.value.Length; i++)
+                {
+                    string location = MapLocation(billingDTO.value[i].properties.instanceLocation);
+                    string month = billingDTO.value[i].properties.usageStart.ToString("MMMM");
+                    usageDetails.Add(new UsageByMonth
+                    {
+                        id = billingDTO.value[i].id,
+                        name = billingDTO.value[i].name,
+                        type = billingDTO.value[i].type,
+                        billingPeriodId = billingDTO.value[i].properties.billingPeriodId,
+                        usageMonth = month,
+                        usageStart = billingDTO.value[i].properties.usageStart,
+                        usageEnd = billingDTO.value[i].properties.usageEnd,
+                        instanceId = billingDTO.value[i].properties.instanceId,
+                        instanceName = billingDTO.value[i].properties.instanceName,
+                        instanceResourceGroup = billingDTO.value[i].properties.instanceId.Split("/")[4],
+                        instanceLocation = location,
+                        actualLocation = billingDTO.value[i].properties.instanceLocation,
+                        meterId = billingDTO.value[i].properties.meterId,
+                        usageQuantity = billingDTO.value[i].properties.usageQuantity,
+                        pretaxCost = billingDTO.value[i].properties.pretaxCost,
+                        currency = billingDTO.value[i].properties.currency,
+                        isEstimated = billingDTO.value[i].properties.isEstimated,
+                        subscriptionGuid = billingDTO.value[i].properties.subscriptionGuid,
+                        subscriptionName = billingDTO.value[i].properties.subscriptionName,
+                        product = billingDTO.value[i].properties.product,
+                        consumedService = billingDTO.value[i].properties.consumedService,
+                        partNumber = billingDTO.value[i].properties.partNumber,
+                        resourceGuid = billingDTO.value[i].properties.resourceGuid,
+                        offerId = billingDTO.value[i].properties.offerId,
+                        chargesBilledSeparately = billingDTO.value[i].properties.chargesBilledSeparately,
+                        meterDetails = billingDTO.value[i].properties.meterDetails,
+                        additionalProperties = billingDTO.value[i].properties.additionalProperties,
+                        CloudProvider="Azure",
+                        IsActive=true
+                    });
+                }
+            }
+            while (url != null);
+            return usageDetails;
+        }
+        public List<UsageHistory> GetCloudUsageHistory(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
+        {
+            string url;
+            DateTime endDate = DateTime.Now;
+            DateTime startDate = endDate.AddMonths(-6);
+            string usageStart = startDate.ToShortDateString();
+            string usageEnd = endDate.ToShortDateString();
+            url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.Consumption/usageDetails?$filter=properties%2FusageStart%20ge%20'{1}'%20and%20properties%2FusageEnd%20le%20'{2}'&$top=1000&api-version=2018-03-31";
+            
+            List<UsageHistory> usageDetails = new List<UsageHistory>();
+            do
+            {
+                var data = GetUsageData(url, subscriptions, usageStart, usageEnd);
+                if (data == null)
+                {
+                    return null;
+                }
+
+                BillingDTO billingDTO = new BillingDTO();
+                billingDTO = JsonConvert.DeserializeObject<BillingDTO>(data.Result);
+                url = billingDTO.nextLink;
+                for (int i = 0; i < billingDTO.value.Length; i++)
+                {
+                    string location = MapLocation(billingDTO.value[i].properties.instanceLocation);
+                    string month = billingDTO.value[i].properties.usageStart.ToString("MMMM");
+                    usageDetails.Add(new UsageHistory
+                    {
+                        id = billingDTO.value[i].id,
+                        name = billingDTO.value[i].name,
+                        type = billingDTO.value[i].type,
+                        billingPeriodId = billingDTO.value[i].properties.billingPeriodId,
+                        usageMonth = month,
+                        usageStart = billingDTO.value[i].properties.usageStart,
+                        usageEnd = billingDTO.value[i].properties.usageEnd,
+                        instanceId = billingDTO.value[i].properties.instanceId,
+                        instanceName = billingDTO.value[i].properties.instanceName,
+                        instanceResourceGroup = billingDTO.value[i].properties.instanceId.Split("/")[4],
+                        instanceLocation = location,
+                        actualLocation = billingDTO.value[i].properties.instanceLocation,
+                        meterId = billingDTO.value[i].properties.meterId,
+                        usageQuantity = billingDTO.value[i].properties.usageQuantity,
+                        pretaxCost = billingDTO.value[i].properties.pretaxCost,
+                        currency = billingDTO.value[i].properties.currency,
+                        isEstimated = billingDTO.value[i].properties.isEstimated,
+                        subscriptionGuid = billingDTO.value[i].properties.subscriptionGuid,
+                        subscriptionName = billingDTO.value[i].properties.subscriptionName,
+                        product = billingDTO.value[i].properties.product,
+                        consumedService = billingDTO.value[i].properties.consumedService,
+                        partNumber = billingDTO.value[i].properties.partNumber,
+                        resourceGuid = billingDTO.value[i].properties.resourceGuid,
+                        offerId = billingDTO.value[i].properties.offerId,
+                        chargesBilledSeparately = billingDTO.value[i].properties.chargesBilledSeparately,
+                        meterDetails = billingDTO.value[i].properties.meterDetails,
+                        additionalProperties = billingDTO.value[i].properties.additionalProperties,
+                        CloudProvider="Azure",
+                        IsActive=true
+                    });
+                }
+            }
+            while (url != null);
+            return usageDetails;
+        }
+
         public List<AzureLocations> GetCloudLocations(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             const string url = "https://management.azure.com/subscriptions/{0}/locations?api-version=2020-01-01";
@@ -740,7 +907,9 @@ namespace CERA.Azure.CloudService
                     name = item.name,
                     regionalDisplayName = item.regionalDisplayName,
                     physicalLocation = item.metadata.physicalLocation,
-                    regionType = item.metadata.regionType 
+                    regionType = item.metadata.regionType ,
+                    CloudProvider="Azure",
+                    IsActive=true
                 });
             }
 
@@ -764,7 +933,10 @@ namespace CERA.Azure.CloudService
                 {
                     Name = item.name,
                     Type = item.type,
-                    AssessmentType = item.properties.assessmentResult[0].type
+                    AssessmentType = item.properties.assessmentResult[0].type,
+                    CompliancesId=item.id,
+                    CloudProvider="Azure",
+                    IsActive=true
                 });
             }
             return ceraCompliances;
@@ -779,7 +951,10 @@ namespace CERA.Azure.CloudService
             }
 
            List<AdvisorRecommendationsDTO> advisorRecommendationsDTO = new List<AdvisorRecommendationsDTO>();
-            advisorRecommendationsDTO = JsonConvert.DeserializeObject<List<AdvisorRecommendationsDTO>>(data.Result);
+            JObject result = JObject.Parse(data.Result);
+            var clientarray = result["value"].Value<JArray>();
+            advisorRecommendationsDTO= clientarray.ToObject<List<AdvisorRecommendationsDTO>>();
+          //  advisorRecommendationsDTO = JsonConvert.DeserializeObject<List<AdvisorRecommendationsDTO>>(data.Result);
             List<AdvisorRecommendations> recommendations = new List<AdvisorRecommendations>();
             foreach (var item in advisorRecommendationsDTO)
             {
@@ -789,7 +964,9 @@ namespace CERA.Azure.CloudService
                     resourceId=item.properties.resourceMetadata.resourceId,
                     location=item.properties.extendedProperties.location,
                     category = item.properties.category,
-                    impact = item.properties.impact
+                    impact = item.properties.impact,
+                    CloudProvider="Azure",
+                    IsActive=true
                 });
             }
             return recommendations;
@@ -823,7 +1000,35 @@ namespace CERA.Azure.CloudService
                 return null;
             }
         }
+        public async Task<string> GetUsageData(string url, List<CeraSubscription> subscriptions,string usageStart,string usageEnd)
+        {
+            try
+            {
+                Initialize();
+                string token = authenticator.GetAuthToken();
+                var data = string.Empty;
+                if (token != null)
+                {
+                    foreach (var sub in subscriptions)
+                    {
+                        string uri = string.Format(url, sub.SubscriptionId, usageStart, usageEnd);
+                        HttpClient client = new HttpClient();
+                        HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
+                        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                        HttpResponseMessage responseMessage = await client.SendAsync(requestMessage);
+                        data = await responseMessage.Content.ReadAsStringAsync();
+                    }
+                    return data;
 
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+            }
+        }
         public string MapLocation(string location)
         {
             Dictionary<string, string> keyValues = new Dictionary<string, string>();
@@ -834,6 +1039,10 @@ namespace CERA.Azure.CloudService
             keyValues.Add("IN South", "southindia");
             keyValues.Add("US Central", "centralus");
             keyValues.Add("Intercontinental", "southindia");
+            keyValues.Add("EU North", "northeurope");
+            keyValues.Add("Asia", "asia");
+            keyValues.Add("US South Central", "southcentralus");
+            keyValues.Add("US East 2", "eastus2");
             if (keyValues.ContainsKey(location))
             {
                 return keyValues[location];
@@ -841,14 +1050,14 @@ namespace CERA.Azure.CloudService
             return null;
         }
 
-        public List<CeraVM> GetCloudVMList(RequestInfoViewModel requestInfo)
+        public Task<List<CeraVM>> GetCloudVMList(RequestInfoViewModel requestInfo)
         {
             throw new NotImplementedException();
         }
 
-        public List<CeraWebApps> GetCloudWebAppList(RequestInfoViewModel requestInfo)
+        public Task<List<CeraWebApps>> GetCloudWebAppList(RequestInfoViewModel requestInfo)
         {
-            return new List<CeraWebApps>();
+            throw new NotImplementedException();
         }
         public List<CeraSubscription> GetSubscriptionList()
         {
@@ -866,12 +1075,12 @@ namespace CERA.Azure.CloudService
         {
             return new List<CeraResourceGroups>();
         }
-        public List<CeraResourceGroups> GetCloudResourceGroups(RequestInfoViewModel requestInfo)
+        public Task<List<CeraResourceGroups>> GetCloudResourceGroups(RequestInfoViewModel requestInfo)
         {
             throw new NotImplementedException();
         }
 
-        public List<CeraStorageAccount> GetCloudStorageAccountList(RequestInfoViewModel requestInfo)
+        public Task<List<CeraStorageAccount>> GetCloudStorageAccountList(RequestInfoViewModel requestInfo)
         {
             throw new NotImplementedException();
         }
@@ -948,7 +1157,7 @@ namespace CERA.Azure.CloudService
             throw new NotImplementedException();
         }
 
-        public List<CeraUsage> GetCloudUsageDetails(RequestInfoViewModel requestInfo)
+        public Task<List<CeraUsage>> GetCloudUsageDetails(RequestInfoViewModel requestInfo)
         {
             throw new NotImplementedException();
         }
@@ -1003,6 +1212,24 @@ namespace CERA.Azure.CloudService
         }
 
         public List<AdvisorRecommendations> GetCloudAdvisorRecommendations(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UsageByMonth> GetCloudUsageByMonth(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UsageByMonth> GetUsageByMonth()
+        {
+            throw new NotImplementedException();
+        }
+        public List<UsageHistory> GetCloudUsageHistory(RequestInfoViewModel requestInfo)
+        {
+            throw new NotImplementedException();
+        }
+        public List<UsageHistory> GetUsageHistory()
         {
             throw new NotImplementedException();
         }

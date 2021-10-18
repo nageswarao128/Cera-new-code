@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CeraWebApplication.Models
 {
-    public class AdvisorRecommendations
+    public class AdvisorRecommendations:UtilityModel
     {
         public int id { get; set; }
         public string recommendationId { get; set; }

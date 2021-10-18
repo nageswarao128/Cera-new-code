@@ -5,26 +5,88 @@
     ViewData["Title"] = "Login";
 }
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="/img/img2.png" />
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="/fonts/iconic/css/material-design-iconic-font.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="/vendor/animate/animate.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="/vendor/css-hamburgers/hamburgers.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="/vendor/animsition/css/animsition.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="/vendor/select2/select2.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="/vendor/daterangepicker/daterangepicker.css">
+    <title>Cera </title>
+
+    <!---- Meta Data --->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="title" content="Cera" />
+    <meta name="subject" content="Cera" />
+    <meta name="description" content="Cera" />
+    <meta name="format" content="text/html" />
+    <meta name="publisher" content="QuadrentResources" />
+    <meta name="language" content="en" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+
+    <!---- Style Sheets -->
+    <link rel="icon" href="~/img/logo.svg">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/css/main.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!---- Script tags ---->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+    <!--- login ---->
+    <section class="login_page">
+        <div class="login">
+            <div class="container">
+                <div class="login_card">
+                    <img src="~/img/logo.svg" class="login_flogo">
+                    <h3 class="main_h">Login to your <span>Account</span></h3>
+                    <form class="login-form" asp-controller="Cera" asp-action="Login">
+                        <div class="form-group">
+                            <i class="fa fa-user"></i>
+                            <input type="text" asp-for="UserName" placeholder="User Name" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <i class="fa fa-lock"></i>
+                            <input type="password" asp-for="Password" placeholder="Password" class="form-control">
+                            <a href="#" class="forget-pass">Forget Password ?</a>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-default br-5" type="submit" >Sign In</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
+
+<!--<html>
+<head>-->
+<!--===============================================================================================-->
+<!--<link rel="icon" type="image/png" href="/img/img2.png" />-->
+<!--===============================================================================================-->
+<!--<link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.min.css">-->
+<!--===============================================================================================-->
+<!--<link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">-->
+<!--===============================================================================================-->
+<!--<link rel="stylesheet" type="text/css" href="/fonts/iconic/css/material-design-iconic-font.min.css">-->
+<!--===============================================================================================-->
+<!--<link rel="stylesheet" type="text/css" href="/vendor/animate/animate.css">-->
+<!--===============================================================================================-->
+<!--<link rel="stylesheet" type="text/css" href="/vendor/css-hamburgers/hamburgers.min.css">-->
+<!--===============================================================================================-->
+<!--<link rel="stylesheet" type="text/css" href="/vendor/animsition/css/animsition.min.css">-->
+<!--===============================================================================================-->
+<!--<link rel="stylesheet" type="text/css" href="/vendor/select2/select2.min.css">-->
+<!--===============================================================================================-->
+<!--<link rel="stylesheet" type="text/css" href="/vendor/daterangepicker/daterangepicker.css">
 
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <link rel="stylesheet" type="text/css" href="/css/util.css">
@@ -76,4 +138,4 @@
         </div>
     </div>
 </body>
-</html>
+</html>-->

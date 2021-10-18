@@ -1,0 +1,265 @@
+﻿<html>
+<head>
+    <style>
+        #sixMonthsChartContainer {
+            width: 100%;
+            height: 200px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+        #MonthChartContainer {
+            width: 100%;
+            height: 200px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+        #LocationChartContainer {
+            width: 100%;
+            height: 200px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+        #ResourceGroupChartContainer {
+            width: 160%;
+            height: 250px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Past 6 Months Cost</h6>
+                </div>
+                <div class="col-md-6">
+                    <select id="drpMonth" onchange="MonthOnChange()" class="form-control">
+                        <option value="AllMonths" selected>--Select Month--</option>
+                        @foreach (var month in ViewBag.Months)
+                        {
+                            <option value="@month">@month</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div id="sixMonthsChartContainer">
+
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4>Last 30 Days Data</h4>
+            <div id="MonthChartContainer">
+
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Usage By Location</h4>
+            <div id="LocationChartContainer">
+
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4>Usage By ResourceGroup</h4>
+            <div id="ResourceGroupChartContainer">
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="~/ChartJS/core.js"></script>
+<script src="~/ChartJS/charts.js"></script>
+<script src="~/ChartJS/material.js"></script>
+<script src="~/ChartJS/animated.js"></script>
+
+<script>
+
+    var sixMonthsData = [];
+    var sixMonthsDataArr = [];
+    var sixMonthsDataByMonth = [];
+    var sixMonthsChartDataArr = [];
+    var monthData = [];
+    var monthDataArr = [];
+    var locationData = [];
+    var locationDataArr = [];
+    var resourceGroupData = [];
+    var resourceGroupDataArr = [];
+
+    window.onload = function () {
+        $('#drpMonth').val('AllMonths');
+        MonthOnChange();
+        MonthChart();
+        LocationChart();
+        ResourcegroupChart();
+    }
+
+    function MonthOnChange() {
+        debugger;
+        let value = $('#drpMonth').val();
+        if (value != 'AllMonths') {
+            sixMonthsData = [];
+            sixMonthsDataArr = [];
+            sixMonthsDataByMonth = [];
+            sixMonthsChartDataArr = [];
+            sixMonthsData.push((this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.UsageHistoryByMonth))')));
+            for (var i = 0; i < sixMonthsData[0].length; i++) {
+                sixMonthsDataArr.push({
+                    resourceType: sixMonthsData[0][i].resourceType, cost: sixMonthsData[0][i].cost, usageMonth: sixMonthsData[0][i].usageMonth
+                });
+            }
+            console.log(sixMonthsDataArr);
+            sixMonthsDataByMonth = sixMonthsDataArr.filter(function (data) {
+                return data.usageMonth == value
+            });
+            console.log(sixMonthsDataByMonth)
+            for (var i = 0; i < sixMonthsDataByMonth.length; i++) {
+                sixMonthsChartDataArr.push({
+                    y: sixMonthsDataByMonth[i].cost, label: sixMonthsDataByMonth[i].resourceType
+                });
+            }
+            console.log(sixMonthsChartDataArr);
+            //var colorSet = new am4core.ColorSet();
+            //colorSet.list = ["#FFA500", "#f0db4f", "#0288d1", "#F44336", "#8E24AA", "#388E3C", "#FBC02D",].map(function (color) {
+            //    return new am4core.color(color);
+            //});
+
+            var chart = am4core.create("sixMonthsChartContainer", am4charts.PieChart);
+
+            chart.data = sixMonthsChartDataArr;
+
+            // Add and configure Series
+            var pieSeries = chart.series.push(new am4charts.PieSeries());
+            pieSeries.dataFields.value = "y";
+            pieSeries.dataFields.category = "label";
+            //pieSeries.colors = colorSet;
+
+            //Add legend
+            //chart.legend = new am4charts.Legend();
+
+
+            chart.logo.disabled = true;
+        }
+        else {
+            debugger;
+            sixMonthsData = [];
+            sixMonthsDataArr = [];
+            sixMonthsDataByMonth = [];
+            sixMonthsData.push((this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.UsageHistory))')));
+            for (var i = 0; i < sixMonthsData[0].length; i++) {
+                sixMonthsDataArr.push({
+                    resourceType: sixMonthsData[0][i].resourceType, pretaxCost: sixMonthsData[0][i].pretaxCost
+                });
+            }
+            for (var i = 0; i < sixMonthsDataArr.length; i++) {
+                sixMonthsDataByMonth.push({
+                    y: sixMonthsDataArr[i].pretaxCost, label: sixMonthsDataArr[i].resourceType
+                });
+            }
+            
+            //var colorSet = new am4core.ColorSet();
+            //colorSet.list = ["#FFA500", "#f0db4f", "#0288d1", "#F44336", "#8E24AA", "#388E3C", "#FBC02D",].map(function (color) {
+            //    return new am4core.color(color);
+            //});
+
+            var chart = am4core.create("sixMonthsChartContainer", am4charts.PieChart);
+
+            chart.data = sixMonthsDataByMonth;
+
+            // Add and configure Series
+            var pieSeries = chart.series.push(new am4charts.PieSeries());
+            pieSeries.dataFields.value = "y";
+            pieSeries.dataFields.category = "label";
+            //pieSeries.colors = colorSet;
+
+            //Add legend
+            //chart.legend = new am4charts.Legend();
+
+
+            chart.logo.disabled = true;
+        }
+    }
+
+    function MonthChart() {
+        monthData.push((this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.UsageByMonth))')));
+        for (var i = 0; i < monthData[0].length; i++) {
+            monthDataArr.push({ y: monthData[0][i].pretaxCost, label: monthData[0][i].resourceType });
+    }
+        var colorSet = new am4core.ColorSet();
+        colorSet.list = ["#FFA500", "#f0db4f", "#0288d1", "#F44336", "#8E24AA", "#388E3C", "#FBC02D",].map(function (color) {
+            return new am4core.color(color);
+        });
+
+        var chart = am4core.create("MonthChartContainer", am4charts.PieChart);
+
+        chart.data = monthDataArr;
+
+        // Add and configure Series
+        var pieSeries = chart.series.push(new am4charts.PieSeries());
+        pieSeries.dataFields.value = "y";
+        pieSeries.dataFields.category = "label";
+        pieSeries.colors = colorSet;
+
+        //Add legend
+        //chart.legend = new am4charts.Legend();
+
+
+        chart.logo.disabled = true;
+    }
+    function LocationChart() {
+
+        locationData.push((this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.UsageByLocation))')));
+        for (var i = 0; i < locationData[0].length; i++) {
+            locationDataArr.push({ y: locationData[0][i].consumedCost, label: locationData[0][i].instanceLocation });
+        }
+        //console.log(locationDataArr);
+        var colorSet = new am4core.ColorSet();
+        colorSet.list = ["#FFA500", "#f0db4f", "#0288d1", "#F44336", "#8E24AA", "#388E3C", "#FBC02D",].map(function (color) {
+            return new am4core.color(color);
+        });
+
+        var chart = am4core.create("LocationChartContainer", am4charts.PieChart);
+
+        chart.data = locationDataArr;
+
+        // Add and configure Series
+        var pieSeries = chart.series.push(new am4charts.PieSeries());
+        pieSeries.dataFields.value = "y";
+        pieSeries.dataFields.category = "label";
+        pieSeries.colors = colorSet;
+
+        //Add legend
+        //chart.legend = new am4charts.Legend();
+
+
+        chart.logo.disabled = true;
+    }
+    function ResourcegroupChart() {
+
+        resourceGroupData.push((this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.UsageByResourceGroup))')));
+        for (var i = 0; i < resourceGroupData[0].length; i++) {
+            resourceGroupDataArr.push({ y: resourceGroupData[0][i].consumedCost, label: resourceGroupData[0][i].instanceResourceGroup });
+        }
+        //console.log(resourceGroupDataArr);
+        var colorSet = new am4core.ColorSet();
+        colorSet.list = ["#FFA500", "#f0db4f", "#0288d1", "#F44336", "#8E24AA", "#388E3C", "#FBC02D",].map(function (color) {
+            return new am4core.color(color);
+        });
+
+        var chart = am4core.create("ResourceGroupChartContainer", am4charts.PieChart);
+
+        chart.data = resourceGroupDataArr;
+
+        // Add and configure Series
+        var pieSeries = chart.series.push(new am4charts.PieSeries());
+        pieSeries.dataFields.value = "y";
+        pieSeries.dataFields.category = "label";
+        pieSeries.colors = colorSet;
+
+        //Add legend
+        //chart.legend = new am4charts.Legend();
+
+
+        chart.logo.disabled = true;
+    }
+</script>

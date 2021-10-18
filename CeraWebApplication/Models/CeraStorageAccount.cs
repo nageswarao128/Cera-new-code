@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CeraWebApplication.Models
 {
-    public class CeraStorageAccount
+    public class CeraStorageAccount:UtilityModel
     {
         public int ID { get; set; }
         public string Name { get; set; }

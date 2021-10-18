@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CERA.AWS.CloudService" GeneratedClassName="AWSAuth">
+  <Profiles />
+  <Settings>
+    <Setting Name="AccessId" Type="System.String" Scope="User">
+      <Value Profile="(Default)">AKIA26K5OJKIR6LZ2JYU</Value>
+    </Setting>
+    <Setting Name="SecretKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">XCZx8JwHP/u9LeJj3qNtqGP9tf1HP/h5m6h1kO98</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
