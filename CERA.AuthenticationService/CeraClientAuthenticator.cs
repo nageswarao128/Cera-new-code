@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using CERA.Logging;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -14,11 +15,13 @@ namespace CERA.AuthenticationService
 {
     public class CeraClientAuthenticator : ICeraClientAuthenticator
     {
+        private readonly ICeraLogger _logger;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         CeraClientAuthenticatorContext _dbContext;
-        public CeraClientAuthenticator(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, CeraClientAuthenticatorContext dbContext)
+        public CeraClientAuthenticator(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, CeraClientAuthenticatorContext dbContext,ICeraLogger logger)
         {
+            _logger = logger;
             _userManager = userManager;
             _roleManager = roleManager;
             _dbContext = dbContext;
@@ -75,7 +78,7 @@ namespace CERA.AuthenticationService
             }
             catch (Exception ex)
             {
-
+                _logger.LogException(ex);
                 throw ex;
             }
 
@@ -95,7 +98,7 @@ namespace CERA.AuthenticationService
             }
             catch (Exception ex)
             {
-
+                _logger.LogException(ex);
                 throw ex;
             }
 
@@ -119,7 +122,7 @@ namespace CERA.AuthenticationService
             }
             catch (Exception ex)
             {
-
+                _logger.LogException(ex);
                 throw ex;
             }
 
@@ -143,7 +146,7 @@ namespace CERA.AuthenticationService
             }
             catch (Exception ex)
             {
-
+                _logger.LogException(ex);
                 throw ex;
             }
 
@@ -167,7 +170,7 @@ namespace CERA.AuthenticationService
             }
             catch (Exception ex)
             {
-
+                _logger.LogException(ex);
                 throw ex;
             }
         }
@@ -190,7 +193,7 @@ namespace CERA.AuthenticationService
             }
             catch (Exception ex)
             {
-
+                _logger.LogException(ex);
                 throw ex;
             }
             
@@ -210,7 +213,7 @@ namespace CERA.AuthenticationService
             }
             catch (Exception ex)
             {
-
+                _logger.LogException(ex);
                 throw ex;
             }
             
