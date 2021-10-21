@@ -1,0 +1,42 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vulnerabilityAssessments_Default_storageContainerPath": {
+            "value": null
+        },
+        "sites_Cera_name": {
+            "value": null
+        },
+        "servers_cera_name": {
+            "value": null
+        },
+        "sites_CERADataAPI_name": {
+            "value": null
+        },
+        "sites_CERASyncAPI_name": {
+            "value": null
+        },
+        "components_CERA_name": {
+            "value": null
+        },
+        "serverfarms_CERAPlan_name": {
+            "value": null
+        },
+        "actionGroups_Application_Insights_Smart_Detection_name": {
+            "value": null
+        },
+        "smartdetectoralertrules_failure_anomalies___cera_name": {
+            "value": null
+        },
+        "smartdetectoralertrules_failure_anomalies___cerasyncapi_name": {
+            "value": null
+        },
+        "smartdetectoralertrules_failure_anomalies___quadrantrestapiinsights_name": {
+            "value": null
+        },
+        "components_quadrantrestapiinsights_externalid": {
+            "value": null
+        }
+    }
+}
