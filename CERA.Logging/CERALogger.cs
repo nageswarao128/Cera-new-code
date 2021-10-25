@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CERA.Entities.Models;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
 using System;
@@ -9,15 +11,19 @@ namespace CERA.Logging
     public class CERALogger : ICeraLogger
     {
         ILogger<CERALogger> _logger;
+        private LoggerModel model;
+        public CERALogger(ILogger<CERALogger> logger, IOptions<LoggerModel> options)
+        {
+            _logger = logger;
+            model = options.Value;
+            CERALogging();
+        }
         /// <summary>
         /// This method will initializes the serilog for storing the logs in database and
         /// Azure app insights
         /// </summary>
         public void CERALogging()
         {
-
-             string InstrumentationKey = "f0c7be91-e0c0-43e1-8d27-7043ed0c3023";
-           // string InstrumentationKey = "7b9f7e40-40eb-4d17-91d4-043f65e93981";
             Log.Logger = new LoggerConfiguration()
                                .MinimumLevel.Debug()
                                .Enrich.WithProperty("SessionId", Guid.NewGuid())
@@ -25,16 +31,11 @@ namespace CERA.Logging
                                  (
                                    connectionString: "Server=tcp:cera.database.windows.net,1433;Initial Catalog=db_Cera;Persist Security Info=False;User ID=ceraadmin;Password=Cera@123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
                                    sinkOptions: new Serilog.Sinks.MSSqlServer.MSSqlServerSinkOptions { TableName = "Logs" }
-
                                  )
-                                .WriteTo.ApplicationInsights(InstrumentationKey,TelemetryConverter.Traces)
+                                .WriteTo.ApplicationInsights(model.InstrumentationKey,TelemetryConverter.Traces)
                                .CreateLogger();
         }
-        public CERALogger(ILogger<CERALogger> logger)
-        {
-            _logger = logger;
-            CERALogging();
-        }
+        
         /// <summary>
         /// This method will logs the errors level logs in database and Azure app insights
         /// </summary>

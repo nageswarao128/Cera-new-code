@@ -7,7 +7,7 @@ using System.Text;
 namespace CERA.Entities.Models
 {
     [Table("tbl_UsageByMonth")]
-    public class UsageByMonth:UtilityModel
+    public class UsageByMonth : UtilityModel
     {
         [Key]
         public int? UsageId { get; set; }

@@ -26,7 +26,7 @@ namespace CERA.Azure.CloudService
         ICeraAuthenticator authenticator;
         public List<CeraSubscription> _subscription { get; set; }
         public ICeraLogger Logger { get; set; }
-
+        private const string cloudProvider = "Azure";
 
         public CeraAzureApiService(ICeraLogger logger)
         {
@@ -64,6 +64,7 @@ namespace CERA.Azure.CloudService
                 return authClient;
             }
         }
+
         /// <summary>
         /// This method will calls the required authentication and after  authenticating it will 
         /// get the available Resources List from Azure cloud
@@ -101,7 +102,7 @@ namespace CERA.Azure.CloudService
                                     Id = resource.Id,
                                     ResourceProviderNameSpace = resource.ResourceProviderNamespace,
                                     Tags = true,
-                                    CloudProvider="Azure",
+                                    CloudProvider=cloudProvider,
                                     IsActive=true,
                                     SubscriptionId=sub.SubscriptionId
 
@@ -118,7 +119,7 @@ namespace CERA.Azure.CloudService
                                     Id = resource.Id,
                                     ResourceProviderNameSpace = resource.ResourceProviderNamespace,
                                     Tags = false,
-                                    CloudProvider="Azure",
+                                    CloudProvider= cloudProvider,
                                     IsActive=true,
                                     SubscriptionId=sub.SubscriptionId
                                 });
@@ -135,10 +136,12 @@ namespace CERA.Azure.CloudService
             }
             catch (Exception ex)
             {
+                Logger.LogError("Failed get Azure Resources List");
                 Logger.LogException(ex);
                 return null;
             }
         }
+
         /// <summary>
         /// This method will calls the required authentication and after  authenticating it will 
         /// get the available ResourceGroups List from Azure cloud
@@ -169,7 +172,7 @@ namespace CERA.Azure.CloudService
                                 Name = resource.Name,
                                 RegionName = resource.RegionName,
                                 provisioningstate = resource.ProvisioningState,
-                                CloudProvider="Azure",
+                                CloudProvider= cloudProvider,
                                 IsActive=true,
                                 Resourcegroupid=resource.Id
 
@@ -185,10 +188,12 @@ namespace CERA.Azure.CloudService
             }
             catch (Exception ex)
             {
+                Logger.LogError("Failed get Azure Resource Groups List");
                 Logger.LogException(ex);
                 return null;
             }
         }
+
         /// <summary>
         /// This method will calls the required authentication and after  authenticating it will 
         /// get the available StorageAccount List from Azure cloud
@@ -219,7 +224,7 @@ namespace CERA.Azure.CloudService
                                 Name = storage.Name,
                                 RegionName = storage.RegionName,
                                 ResourceGroupName = storage.ResourceGroupName,
-                                CloudProvider="Azure",
+                                CloudProvider= cloudProvider,
                                 IsActive=true,
                                 SubscriptionId=sub.SubscriptionId
 
@@ -235,10 +240,12 @@ namespace CERA.Azure.CloudService
             }
             catch (Exception ex)
             {
+                Logger.LogError("Failed get Azure Storage Accounts List");
                 Logger.LogException(ex);
                 return null;
             }
         }
+
         /// <summary>
         /// This method will calls the required authentication and after  authenticating it will 
         /// get the available SqlServer List from Azure cloud
@@ -272,7 +279,7 @@ namespace CERA.Azure.CloudService
                                 RegionName = sqlServer.RegionName,
                                 ResourceGroupName = sqlServer.ResourceGroupName,
                                 SqlServerId=sqlServer.Id,
-                                CloudProvider="Azure",
+                                CloudProvider= cloudProvider,
                                 IsActive=true
 
                             });
@@ -287,6 +294,7 @@ namespace CERA.Azure.CloudService
             }
             catch (Exception ex)
             {
+                Logger.LogError("Failed get Azure SqlServers List");
                 Logger.LogException(ex);
                 return null;
             }
@@ -335,7 +343,7 @@ namespace CERA.Azure.CloudService
                             SubscriptionId = sub.SubscriptionId,
                             DisplayName = sub.DisplayName,
                             TenantID = sub.Inner.TenantId,
-                            CloudProvider="Azure",
+                            CloudProvider= cloudProvider,
                             IsActive=true
 
                         });
@@ -350,6 +358,7 @@ namespace CERA.Azure.CloudService
             }
             catch (Exception ex)
             {
+                Logger.LogError("Failed get Azure Subscriptions List");
                 Logger.LogException(ex);
                 return null;
             }
@@ -359,6 +368,7 @@ namespace CERA.Azure.CloudService
         {
             return new object();
         }
+
         /// <summary>
         /// This method will calls the required authentication and after  authenticating it will 
         /// get the available Tenant List from Azure cloud
@@ -384,7 +394,7 @@ namespace CERA.Azure.CloudService
                         {
                             Key = Tenants.Key,
                             TenantId = Tenants.TenantId,
-                            CloudProvider="Azure",
+                            CloudProvider= cloudProvider,
                             IsActive=true
                         });
 
@@ -398,10 +408,12 @@ namespace CERA.Azure.CloudService
             }
             catch (Exception ex)
             {
+                Logger.LogError("Failed get Azure Tenants List");
                 Logger.LogException(ex);
                 return null;
             }
         }
+
         /// <summary>
         /// This method will calls the required authentication and after  authenticating it will 
         /// get the available VirtualMachines List from Azure cloud
@@ -431,7 +443,7 @@ namespace CERA.Azure.CloudService
                                 VMName = virtualMachine.Name,
                                 RegionName = virtualMachine.RegionName,
                                 ResourceGroupName = virtualMachine.ResourceGroupName,
-                                CloudProvider="Azure",
+                                CloudProvider= cloudProvider,
                                 IsActive=true
 
                             });
@@ -446,10 +458,12 @@ namespace CERA.Azure.CloudService
             }
             catch (Exception ex)
             {
+                Logger.LogError("Failed get Azure VM's List");
                 Logger.LogException(ex);
                 return null;
             }
         }
+
         /// <summary>
         /// This method will calls the required authentication and after  authenticating it will 
         /// get the available WebApp List from Azure cloud
@@ -479,7 +493,7 @@ namespace CERA.Azure.CloudService
                                 Name = WebApps.Name,
                                 RegionName = WebApps.RegionName,
                                 ResourceGroupName = WebApps.ResourceGroupName,
-                                CloudProvider="Azure",
+                                CloudProvider= cloudProvider,
                                 IsActive=true
 
                             });
@@ -494,10 +508,12 @@ namespace CERA.Azure.CloudService
             }
             catch (Exception ex)
             {
+                Logger.LogError("Failed get Azure WebApps List");
                 Logger.LogException(ex);
                 return null;
             }
         }
+
         /// <summary>
         /// This method will calls the required authentication and after  authenticating it will 
         /// get the available AppServicePlans List from Azure cloud
@@ -528,7 +544,7 @@ namespace CERA.Azure.CloudService
                                 RegionName = appService.RegionName,
                                 ResourceGroupName = appService.ResourceGroupName,
                                 AppServicePlanId=appService.Id,
-                                CloudProvider="Azure",
+                                CloudProvider= cloudProvider,
                                 IsActive=true
 
                             });
@@ -543,6 +559,7 @@ namespace CERA.Azure.CloudService
             }
             catch (Exception ex)
             {
+                Logger.LogError("Failed get Azure App ServicePlans List");
                 Logger.LogException(ex);
                 return null;
             }
@@ -571,7 +588,7 @@ namespace CERA.Azure.CloudService
                                  ResourceGroupName = item.Scope.Remove(0,67),
                                  Scope = item.Scope,
                                  Key = item.Key,
-                                 CloudProvider="Azure",
+                                 CloudProvider= cloudProvider,
                                  IsActive=true
                             });
                         }
@@ -585,10 +602,12 @@ namespace CERA.Azure.CloudService
             }
             catch (Exception ex)
             {
+                Logger.LogError("Failed get Azure Policies List");
                 Logger.LogException(ex);
                 return null;
             }
         }
+
         /// <summary>
         /// This method will calls the required authentication and after  authenticating it will 
         /// get the available Disks List from Azure cloud
@@ -620,7 +639,7 @@ namespace CERA.Azure.CloudService
                                 RegionName = disk.RegionName,
                                 ResourceGroupName = disk.ResourceGroupName,
                                 DiskId=disk.Id,
-                                CloudProvider="Azure",
+                                CloudProvider= cloudProvider,
                                 IsActive=true
 
                             });
@@ -635,6 +654,7 @@ namespace CERA.Azure.CloudService
             }
             catch (Exception ex)
             {
+                Logger.LogError("Failed get Azure Disks List");
                 Logger.LogException(ex);
                 return null;
             }
@@ -661,7 +681,7 @@ namespace CERA.Azure.CloudService
                     Location = item.location,
                     Type = item.type,
                     AvailabilityState = item.properties.availabilityState,
-                    CloudProvider="Azure",
+                    CloudProvider= cloudProvider,
                     IsActive=true,
                     SubscriptionId=item.id.Substring(15,36)
 
@@ -745,7 +765,7 @@ namespace CERA.Azure.CloudService
                         chargesBilledSeparately = billingDTO.value[i].properties.chargesBilledSeparately,
                         meterDetails = billingDTO.value[i].properties.meterDetails,
                         additionalProperties = billingDTO.value[i].properties.additionalProperties,
-                        CloudProvider="Azure",
+                        CloudProvider= cloudProvider,
                         IsActive=true,
                         SubscriptionId= billingDTO.value[i].id.Substring(15,36)
 
@@ -809,7 +829,7 @@ namespace CERA.Azure.CloudService
                         chargesBilledSeparately = billingDTO.value[i].properties.chargesBilledSeparately,
                         meterDetails = billingDTO.value[i].properties.meterDetails,
                         additionalProperties = billingDTO.value[i].properties.additionalProperties,
-                        CloudProvider="Azure",
+                        CloudProvider= cloudProvider,
                         IsActive=true
                     });
                 }
@@ -871,7 +891,7 @@ namespace CERA.Azure.CloudService
                         chargesBilledSeparately = billingDTO.value[i].properties.chargesBilledSeparately,
                         meterDetails = billingDTO.value[i].properties.meterDetails,
                         additionalProperties = billingDTO.value[i].properties.additionalProperties,
-                        CloudProvider="Azure",
+                        CloudProvider= cloudProvider,
                         IsActive=true
                     });
                 }
@@ -908,7 +928,7 @@ namespace CERA.Azure.CloudService
                     regionalDisplayName = item.regionalDisplayName,
                     physicalLocation = item.metadata.physicalLocation,
                     regionType = item.metadata.regionType ,
-                    CloudProvider="Azure",
+                    CloudProvider= cloudProvider,
                     IsActive=true
                 });
             }
@@ -935,7 +955,7 @@ namespace CERA.Azure.CloudService
                     Type = item.type,
                     AssessmentType = item.properties.assessmentResult[0].type,
                     CompliancesId=item.id,
-                    CloudProvider="Azure",
+                    CloudProvider= cloudProvider,
                     IsActive=true
                 });
             }
@@ -965,7 +985,7 @@ namespace CERA.Azure.CloudService
                     location=item.properties.extendedProperties.location,
                     category = item.properties.category,
                     impact = item.properties.impact,
-                    CloudProvider="Azure",
+                    CloudProvider= cloudProvider,
                     IsActive=true
                 });
             }
@@ -996,7 +1016,7 @@ namespace CERA.Azure.CloudService
             }
             catch (Exception ex)
             {
-
+                Logger.LogException(ex);
                 return null;
             }
         }

@@ -18,15 +18,16 @@ namespace CERAAPI.Controllers
     [Route("api/[controller]/[action]")]
     public class ManageController : ControllerBase
     {
-        private readonly CeraAPIUserDbContext _db;
-        ICeraPlatform _platform;
-        ICeraClientAuthenticator _ceraAuthenticator;
-        public ManageController(CeraAPIUserDbContext db, ICeraPlatform platform,ICeraClientAuthenticator ceraAuthenticator)
+        private readonly CeraAPIUserDbContext db;
+        ICeraPlatform platform;
+        ICeraClientAuthenticator ceraAuthenticator;
+        public ManageController(CeraAPIUserDbContext _db, ICeraPlatform _platform,ICeraClientAuthenticator _ceraAuthenticator)
         {
-            _db = db;
-            _platform = platform;
-            _ceraAuthenticator = ceraAuthenticator;
+            db = _db;
+            platform = _platform;
+            ceraAuthenticator = _ceraAuthenticator;
         }
+
         /// <summary>
         /// This method will returns the available users
         /// </summary>
@@ -34,18 +35,36 @@ namespace CERAAPI.Controllers
         [HttpGet]
         public List<UserModel> GetUsers()
         {
-            return _ceraAuthenticator.GetUsers();
+            return ceraAuthenticator.GetUsers();
         } 
+
+        /// <summary>
+        /// gets a user details
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public Task<UserModel> GetUser(string id)
         {
-            return _ceraAuthenticator.GetUser(id);
+            return ceraAuthenticator.GetUser(id);
         }
+
+        /// <summary>
+        /// get user details
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [HttpGet]
         public  Task<UserModel> GetUserProfile(string name)
         {
-            return _ceraAuthenticator.GetUserProfile(name);
+            return ceraAuthenticator.GetUserProfile(name);
         }
+
+        /// <summary>
+        /// to update the user info
+        /// </summary>
+        /// <param name="userModel"></param>
+        /// <returns></returns>
         [HttpPut]
         public Task<object> UpdateUser(UpdateUserModel userModel)
         {
@@ -53,13 +72,25 @@ namespace CERAAPI.Controllers
             {
                 return null;
             }
-            return _ceraAuthenticator.UpdateUser(userModel);
+            return ceraAuthenticator.UpdateUser(userModel);
         }
+
+        /// <summary>
+        /// to delete a user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete]
         public Task<object> DeleteUser(string id)
         {
-            return _ceraAuthenticator.DeleteUser(id);
+            return ceraAuthenticator.DeleteUser(id);
         }
+
+        /// <summary>
+        /// to add a organisation/client
+        /// </summary>
+        /// <param name="orgModel"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult AddOrganisation([FromBody] RegisterOrgModel orgModel)
         {
@@ -93,11 +124,11 @@ namespace CERAAPI.Controllers
                 ClientId = orgModel.ClientId,
                 ClientSecret = orgModel.ClientSecret
             };
-            if (_platform.OnBoardOrganization(organizationViewModel) >= 0)
+            if (platform.OnBoardOrganization(organizationViewModel) >= 0)
             {
-                if (_platform.OnBoardCloudProvider(cloudPluginViewModel) >= 0)
+                if (platform.OnBoardCloudProvider(cloudPluginViewModel) >= 0)
                 {
-                    if (_platform.OnBoardClientPlatform(clientPlatformViewModel) > 0)
+                    if (platform.OnBoardClientPlatform(clientPlatformViewModel) > 0)
                     {
                         return Ok(new ResponseViewModel { Status = "Success", Message = "Data inserted into DB" });
                     }
@@ -105,6 +136,7 @@ namespace CERAAPI.Controllers
             }
             return StatusCode(StatusCodes.Status500InternalServerError, new ResponseViewModel { Status = "Error", Message = "Failed to insert data into DB" });
         }
+
         /// <summary>
         /// This method will inserts the organisation details into database 
         /// </summary>
@@ -113,12 +145,13 @@ namespace CERAAPI.Controllers
         [HttpPost]
         public IActionResult RegisterOrganisation([FromBody] AddOrganizationViewModel Org)
         {
-            if (_platform.OnBoardOrganization(Org) < 1)
+            if (platform.OnBoardOrganization(Org) < 1)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new ResponseViewModel { Status = "Error", Message = "Failed to insert data into DB" });
             }
             return Ok(new ResponseViewModel { Status = "Success", Message = "Data inserted into DB" });
         }
+
         /// <summary>
         /// This method will inserts the cloud details for the orgnisation into database
         /// </summary>
@@ -130,7 +163,7 @@ namespace CERAAPI.Controllers
             try
             {
 
-                if (_platform.OnBoardClientPlatform(platform) < 1)
+                if (this.platform.OnBoardClientPlatform(platform) < 1)
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError, new ResponseViewModel { Status = "Error", Message = "Failed to insert data into DB" });
                 }
@@ -142,6 +175,7 @@ namespace CERAAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new ResponseViewModel { Status = "Error", Message = ex.Message });
             }
         }
+
         /// <summary>
         /// This method will inserts the dll details for the cloud 
         /// </summary>
@@ -153,7 +187,7 @@ namespace CERAAPI.Controllers
             try
             {
 
-                if (_platform.OnBoardCloudProvider(plugin) < 1)
+                if (platform.OnBoardCloudProvider(plugin) < 1)
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError, new ResponseViewModel { Status = "Error", Message = "Failed to insert data into DB" });
                 }

@@ -10,7 +10,7 @@ namespace CERA.Entities.Models
     /// This class is used as a object for AppServicePlans
     /// </summary>
     [Table("tbl_AppServicePlans")]
-    public class CeraAppServicePlans:UtilityModel
+    public class CeraAppServicePlans : UtilityModel
     {
         [Key]
         public int? Id { get; set; }

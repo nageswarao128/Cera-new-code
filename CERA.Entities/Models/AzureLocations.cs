@@ -7,7 +7,7 @@ using System.Text;
 namespace CERA.Entities.Models
 {
     [Table("tbl_Locations")]
-    public class AzureLocations:UtilityModel
+    public class AzureLocations : UtilityModel
     {
         [Key]
         public int? id { get; set; }

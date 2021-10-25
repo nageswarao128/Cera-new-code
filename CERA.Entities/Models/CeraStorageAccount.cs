@@ -10,7 +10,7 @@ namespace CERA.Entities.Models
     /// This class is used as a object for StorageAccounts
     /// </summary>
     [Table("tbl_StorageAccounts")]
-    public class CeraStorageAccount:UtilityModel
+    public class CeraStorageAccount : UtilityModel
     {
         [Key]
         public int? ID { get; set; }

@@ -5,6 +5,7 @@ using CERA.CloudService;
 using CERA.Converter;
 using CERA.DataOperation;
 using CERA.DataOperation.Data;
+using CERA.Entities.Models;
 using CERA.Logging;
 using CERA.Platform;
 using CERAAPI.Data;
@@ -64,7 +65,7 @@ namespace CERASyncAPI
             //services.AddDbContext<CeraAPIUserDbContext>(x => x.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=db_Cera_User; Integrated Security= true;"));
             services.AddDbContext<CeraAPIUserDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DbCS")));
             services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_CONNECTIONSTRING"]);
-
+            services.Configure<LoggerModel>(options => Configuration.GetSection("AzureConfig").Bind(options));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

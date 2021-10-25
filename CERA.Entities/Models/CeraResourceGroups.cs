@@ -10,7 +10,7 @@ namespace CERA.Entities.Models
     /// This class is used as a object for ResourceGroups
     /// </summary>
     [Table("tbl_ResourceGroups")]
-    public class CeraResourceGroups:UtilityModel
+    public class CeraResourceGroups : UtilityModel
     {
         [Key]
         public int? Id { get; set; }

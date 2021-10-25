@@ -5,6 +5,7 @@ using CERA.CloudService;
 using CERA.Converter;
 using CERA.DataOperation;
 using CERA.DataOperation.Data;
+using CERA.Entities.Models;
 using CERA.Logging;
 using CERA.Platform;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -77,6 +78,7 @@ namespace CERADataAPI
                    RequireExpirationTime = true
                };
            });
+            services.Configure<LoggerModel>(options => Configuration.GetSection("AzureConfig").Bind(options));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -10,7 +10,7 @@ namespace CERA.Entities.Models
     /// This class is used as a object for Disks
     /// </summary>
     [Table("tbl_Disks")]
-    public class CeraDisks:UtilityModel
+    public class CeraDisks : UtilityModel
     {
         [Key]
         public int? ID { get; set; }

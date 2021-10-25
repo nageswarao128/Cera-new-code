@@ -19,7 +19,7 @@ namespace CERA.Platform
         public List<ManageOrg> ManageOrganization();
         public List<locationFilter> GetMapLocationsFilter();
         public List<ResourceTagsCount> GetResourceSubscriptionCloudTagsCount(string cloudprovider, string subscriptionid);
-  public List<CostUsage> UsageSubscriptionByMonth(string cloudprovider, string subscriptionid);
+        public List<CostUsage> UsageSubscriptionByMonth(string cloudprovider, string subscriptionid);
         public List<CeraResourceTypeUsage> ResourceUsage(string location);
         public List<CeraResourceTypeUsage> ResourceCloudUsage(string location, string cloudprovider);
         public List<ResourceTypeCount> GetResourceTypeCount(string location);
@@ -42,10 +42,10 @@ namespace CERA.Platform
         public List<UsageByResourceGroup> GetUsageByResourceGroup();
         public List<DashboardCountModel> GetDashboardCount();
         public List<CeraResourceTypeUsage> ResourceSubscriptionCloudUsage(string location, string cloudprovider, string subscriptionid);
-  public List<ResourceTagsCount> GetResourceSubscriptionCloudTagsCount(string location, string cloudprovider, string subscriptionid);
+        public List<ResourceTagsCount> GetResourceSubscriptionCloudTagsCount(string location, string cloudprovider, string subscriptionid);
         public List<DashboardCountModel> GetDashboardCountFilters(string location, string cloudprovider);
-  public List<DashboardCountModel> GetDashboardCountLocation(string location);
-  public List<DashboardCountModel> GetDashboardCountCloud(string cloudprovider);
+        public List<DashboardCountModel> GetDashboardCountLocation(string location);
+        public List<DashboardCountModel> GetDashboardCountCloud(string cloudprovider);
         public List<DashboardCountModel> GetDashboardSubscriptionCountFilters(string cloudprovider, string subscriptionid);
         public List<DashboardCountModel> GetDashboardSubscriptionLocationFilters(string location, string cloudprovider, string subscriptionid);
     }

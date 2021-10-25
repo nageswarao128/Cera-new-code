@@ -11,6 +11,7 @@ namespace CERA.DataOperation
 {
     public partial class CERADataOperation : ICeraDataOperation
     {
+
         /// <summary>
         /// This method will retrives PlatformName,APIClassName,DllPath data from database based on the
         /// client name
@@ -49,6 +50,7 @@ namespace CERA.DataOperation
                        };
             return data.ToList();
         }
+
         /// <summary>
         /// This will adds a organisation details into database
         /// </summary>
@@ -73,6 +75,7 @@ namespace CERA.DataOperation
             });
             return _dbContext.SaveChanges();
         }
+
         /// <summary>
         /// This method will inserts the Client Cloud details into database
         /// </summary>
@@ -92,6 +95,7 @@ namespace CERA.DataOperation
             });
             return _dbContext.SaveChanges();
         }
+
         /// <summary>
         /// This method will inserts the cloud platform details into database
         /// </summary>
@@ -130,16 +134,19 @@ namespace CERA.DataOperation
             }
             return clouds;
         }
+
         public List<CeraResourceTypeUsage> ResourceUsage()
         {
             var data = _spContext.resourceUsage.FromSqlRaw<CeraResourceTypeUsage>("[dbo].[Sp_ResourceSpent]").ToList();
             return data;
         }
+
         public List<ManageOrg> ManageOrganization()
         {
             var data = _spContext.manageorg.FromSqlRaw<ManageOrg>("[dbo].[sp_ManageOrg]").ToList();
             return data;
         }
+
         public List<CeraResourceTypeUsage> ResourceUsage(string location)
         {
             SqlParameter parameter = new SqlParameter();
@@ -149,6 +156,7 @@ namespace CERA.DataOperation
             var data = _spContext.resourceUsage.FromSqlRaw<CeraResourceTypeUsage>("[dbo].[Sp_ResourceLocationSpent] @location", parameter).ToList();
             return data;
         }
+
         public List<CeraResourceTypeUsage> ResourceCloudUsage(string location,string cloudprovider)
         {
             SqlParameter parameter = new SqlParameter();
@@ -202,6 +210,7 @@ namespace CERA.DataOperation
             var data = _spContext.resourceTags.FromSqlRaw<ResourceTagsCount>("[dbo].[Sp_ResourceCloudTags] @cloudprovider", parameter).ToList();
             return data;
         }
+
         public List<ResourceTagsCount> GetResourceTagsCount(string location)
         {
             SqlParameter parameter = new SqlParameter();
@@ -211,6 +220,7 @@ namespace CERA.DataOperation
             var data = _spContext.resourceTags.FromSqlRaw<ResourceTagsCount>("[dbo].[Sp_ResourceLocationTags] @location", parameter).ToList();
             return data;
         }
+
         public List<ResourceTagsCount> GetResourceCloudTagsCount(string location,string cloudprovider)
         {
             SqlParameter parameter = new SqlParameter();
@@ -228,6 +238,7 @@ namespace CERA.DataOperation
             var data = _spContext.resourceTags.FromSqlRaw<ResourceTagsCount>("[dbo].[Sp_ResourceCloudLocationTags] @location,@cloudprovider", parameter, parameter1).ToList();
             return data;
         }
+
         public List<CeraResourceTypeUsage> ResourceSubscriptionCloudUsage(string location, string cloudprovider,string subscriptionid)
         {
             SqlParameter parameter = new SqlParameter();
@@ -249,6 +260,7 @@ namespace CERA.DataOperation
             var data = _spContext.resourceUsage.FromSqlRaw<CeraResourceTypeUsage>("[dbo].[Sp_ResourceSubscriptionCloudLocationSpent] @location,@cloudprovider,@subscriptionid", parameter, parameter1,parameter2).ToList();
             return data;
         }
+
         public List<ResourceTagsCount> GetResourceSubscriptionCloudTagsCount(string location, string cloudprovider,string subscriptionid)
         {
             SqlParameter parameter = new SqlParameter();
@@ -271,6 +283,7 @@ namespace CERA.DataOperation
             var data = _spContext.resourceTags.FromSqlRaw<ResourceTagsCount>("[dbo].[Sp_ResourceSubscriptionCloudLocationTags] @location,@cloudprovider,@subscriptionid", parameter, parameter1,parameter2).ToList();
             return data;
         }
+
         public List<ResourceTypeCount> GetResourceTypeCount()
         
         {
@@ -279,6 +292,7 @@ namespace CERA.DataOperation
             
             return data;
         }
+
         public List<ResourceTypeCount> GetResourceCloudCount(string cloudprovider)
 
         {
@@ -300,6 +314,7 @@ namespace CERA.DataOperation
             var data = _spContext.resourceTypeCount.FromSqlRaw<ResourceTypeCount>("[dbo].[Sp_ResourceLocationCount] @location", parameter).ToList();
             return data;
         }
+
         public List<ResourceTypeCount> GetSubscriptionTypeList(string subscriptionId,string cloudprovider)
         {
             SqlParameter parameter = new SqlParameter();
@@ -318,6 +333,7 @@ namespace CERA.DataOperation
             var data = _spContext.resourceTypeCount.FromSqlRaw<ResourceTypeCount>("[dbo].[sp_subscriptionfilter] @subscriptionid,@cloudprovider", parameter,parameter1).ToList();
             return data;
         }
+
         public List<ResourceTypeCount> GetSubscriptionLocationList(string location,string cloudprovider, string subscriptionid)
         {
             SqlParameter parameter = new SqlParameter();
@@ -340,6 +356,7 @@ namespace CERA.DataOperation
             var data = _spContext.resourceTypeCount.FromSqlRaw<ResourceTypeCount>("[dbo].[Sp_SubscriptionLocationfilter] @location,@cloudprovider,@subscriptionid", parameter, parameter1,parameter2).ToList();
             return data;
         }
+
         public List<ResourceTypeCount> GetResourceTypecloudCount(string location,string cloudprovider)
         {
             SqlParameter parameter = new SqlParameter();
@@ -574,6 +591,7 @@ namespace CERA.DataOperation
                 throw ex;
             }
         }
+
         public List<DashboardCountModel> GetDashboardCountCloud(string cloudprovider)
         {
             try

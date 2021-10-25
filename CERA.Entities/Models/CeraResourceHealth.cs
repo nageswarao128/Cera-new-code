@@ -7,7 +7,7 @@ using System.Text;
 namespace CERA.Entities.Models
 {
     [Table("tbl_ResourceHealth")]
-    public class CeraResourceHealth :UtilityModel
+    public class CeraResourceHealth : UtilityModel
     {
         [Key]
         public int? Id { get; set; }

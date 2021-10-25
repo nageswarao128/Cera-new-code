@@ -7,7 +7,7 @@ namespace CERA.Entities.Models
     /// This class is used as a object for subscriptions
     /// </summary>
     [Table("tbl_Subscription")]
-    public class CeraSubscription:UtilityModel
+    public class CeraSubscription : UtilityModel
     {
         [Key]
         public string SubscriptionId { get; set; }

@@ -33,6 +33,7 @@ namespace CERAAPI.Controllers
             _db = db;
             _ceraClientAuthenticator = ceraClientAuthenticator;
         }
+
         /// <summary>
         /// This method will registers the user
         /// </summary>
@@ -48,6 +49,7 @@ namespace CERAAPI.Controllers
             }
             return StatusCode(StatusCodes.Status500InternalServerError, new ResponseViewModel { Status = "Error", Message = "User Details should not be null" });
         }
+
         /// <summary>
         /// This method is used for user login
         /// </summary>
@@ -67,6 +69,10 @@ namespace CERAAPI.Controllers
             }
             return StatusCode(StatusCodes.Status500InternalServerError,new ResponseViewModel { Status = "Error", Message = "Invalid UserName or Password" });
         }
+
+        /// <summary>
+        /// This method is used for user logout
+        /// </summary>
         [HttpPost]
         public async void Logout()
         {

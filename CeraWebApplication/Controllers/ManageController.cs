@@ -24,13 +24,21 @@ namespace CeraWebApplication.Controllers
         const string SyncApiUrl = Utilities.SyncApiUrl;
         const string DataApiUrl = Utilities.DataApiUrl;
 
+        /// <summary>
+        /// To add organisation details
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-       public IActionResult AddOrganisation()
+        public IActionResult AddOrganisation()
         {
             return View();
         }
 
-        public  async Task<IActionResult> ManageOrganization()
+        /// <summary>
+        /// To get available organisation details
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> ManageOrganization()
         {
             IEnumerable<ManageOrg> manageOrg = null;
             using (var httpClient = new HttpClient())
@@ -52,8 +60,14 @@ namespace CeraWebApplication.Controllers
             }
 
         }
-       [HttpPost]
-       public async Task<IActionResult> AddOrganisation(AddOrgModel orgModel)
+
+        /// <summary>
+        /// To add organisation details
+        /// </summary>
+        /// <param name="orgModel"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> AddOrganisation(AddOrgModel orgModel)
         {
             if (orgModel.CloudProviderName == "Azure")
             {
@@ -83,6 +97,11 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// To get cloud details of the user
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetCloudCredentials()
         {

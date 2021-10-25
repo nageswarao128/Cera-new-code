@@ -35,6 +35,7 @@ namespace CERA.DataOperation
         {
             return new object();
         }
+
         /// <summary>
         /// This method will inserts the resources data into database
         /// </summary>
@@ -45,29 +46,6 @@ namespace CERA.DataOperation
             try
             {
                 _logger.LogInfo("Receive Data");
-                //List<CeraResources> dbdata = null;
-
-                //foreach(var item in resources)
-                //{
-                //    dbdata = _dbContext.Resources.Where(x => x.CloudProvider == item.CloudProvider && x.IsActive == true).ToList();                    
-                //}
-
-                //var diffids = dbdata.Select(s => s.Id);
-                //var AddData = resources.Where(m => !diffids.Contains(m.Id)).ToList();
-                //foreach (var item in AddData)
-                //{
-                //    _dbContext.Resources.Add(item);
-                //}
-                //var diffidsfordb = resources.Select(s => s.Id);
-                //var UpdateData = dbdata.Where(m => !diffidsfordb.Contains(m.Id)).ToList();
-
-                //foreach (var data in UpdateData)
-                //{
-                //    data.IsActive = false;
-                //    _dbContext.Resources.Update(data);
-                //}
-                //int record = _dbContext.SaveChanges();
-                //return record;
                 var resource = _dbContext.Resources.ToList();
                 foreach (var item in resource)
                 {
@@ -109,6 +87,7 @@ namespace CERA.DataOperation
                 return null;
             }
         }
+
         /// <summary>
         /// This method will inserts the StorageAccount data into database
         /// </summary>
@@ -142,21 +121,7 @@ namespace CERA.DataOperation
                 }
                 int record = _dbContext.SaveChanges();
                 return record;
-                //var storage = _dbContext.StorageAccounts.ToList();
-                //var abc = _dbContext.StorageAccounts.Where(x => x.CloudProvider == "Azure" && x.IsActive == true);
-                //foreach (var item in storage)
-                //{
-                //    _dbContext.StorageAccounts.Remove(item);
-
-                //}
-                //_dbContext.SaveChanges();
-                //foreach (var ceraStorage in storageAccounts)
-                //{
-                //    _dbContext.StorageAccounts.Add(ceraStorage);
-                //}
-                //int record = _dbContext.SaveChanges();
-                //_logger.LogInfo("Data Imported Successfully");
-                //return record;
+                
             }
             catch (Exception ex)
             {
@@ -164,6 +129,7 @@ namespace CERA.DataOperation
                 return 0;
             }
         }
+
         /// <summary>
         /// This method will retrives the StorageAccount data from database
         /// </summary>
@@ -182,6 +148,7 @@ namespace CERA.DataOperation
                 return null;
             }
         }
+
         /// <summary>
         /// This method will inserts the resourceGroups data into database
         /// </summary>
@@ -214,19 +181,7 @@ namespace CERA.DataOperation
                 }
                 int record = _dbContext.SaveChanges();
                 return record;
-                //var resourcegroup = _dbContext.resourceGroups.ToList();
-                //foreach(var item in resourcegroup)
-                //{
-                //    _dbContext.resourceGroups.Remove(item);
-                //}
-                //_dbContext.SaveChanges();
-                //foreach (var Resource in resources)
-                //{
-                //    _dbContext.resourceGroups.Add(Resource);
-                //}
-                //int record = _dbContext.SaveChanges();
-                //_logger.LogInfo("Data Imported Successfully");
-                //return record;
+                
             }
             catch (Exception ex)
             {
@@ -234,6 +189,7 @@ namespace CERA.DataOperation
                 return 0;
             }
         }
+
         /// <summary>
         /// This method will retrives the ResourceGroups data from database
         /// </summary>
@@ -253,6 +209,7 @@ namespace CERA.DataOperation
             }
 
         }
+
         /// <summary>
         /// This method will inserts the subscriptions data into database
         /// </summary>
@@ -286,19 +243,6 @@ namespace CERA.DataOperation
                 int record = _dbContext.SaveChanges();
                 return record;
 
-                //var sub = _dbContext.Subscriptions.ToList();
-                //foreach(var item in sub)
-                //{
-                //    _dbContext.Subscriptions.Remove(item);
-                //}
-                //_dbContext.SaveChanges();
-                //foreach (var subscription in subscriptions)
-                //{
-                //    _dbContext.Subscriptions.Add(subscription);
-                //}
-                //int record = _dbContext.SaveChanges();
-                //_logger.LogInfo("Data Imported Successfully");
-                //return record;
             }
             catch (Exception ex)
             {
@@ -306,6 +250,7 @@ namespace CERA.DataOperation
                 return 0;
             }
         }
+
         /// <summary>
         /// This method will retrives the Subscriptions data from database
         /// </summary>
@@ -324,6 +269,7 @@ namespace CERA.DataOperation
                 return null;
             }
         }
+
         /// <summary>
         /// This method will inserts the SqlServer data into database
         /// </summary>
@@ -357,19 +303,6 @@ namespace CERA.DataOperation
                 int record = _dbContext.SaveChanges();
                 return record;
 
-                //var ceraSqlServers = _dbContext.SqlServers.ToList();
-                //foreach (var item in ceraSqlServers)
-                //{
-                //    _dbContext.SqlServers.Remove(item);
-                //}
-                //_dbContext.SaveChanges();
-                //foreach (var sqlservers in sqlServer)
-                //{
-                //    _dbContext.SqlServers.Add(sqlservers);
-                //}
-                //int record = _dbContext.SaveChanges();
-                //_logger.LogInfo("Data Imported Successfully");
-                //return record;
             }
             catch (Exception ex)
             {
@@ -377,6 +310,7 @@ namespace CERA.DataOperation
                 return 0;
             }
         }
+
         /// <summary>
         /// This method will retrives the SqlServer data from database
         /// </summary>
@@ -395,6 +329,7 @@ namespace CERA.DataOperation
                 return null;
             }
         }
+
         /// <summary>
         /// This method will inserts the Virtual MAchines data into database
         /// </summary>
@@ -428,19 +363,6 @@ namespace CERA.DataOperation
                 int record = _dbContext.SaveChanges();
                 return record;
 
-                //var VM = _dbContext.ceraVMs.ToList();
-                //foreach(var item in VM)
-                //{
-                //    _dbContext.ceraVMs.Remove(item);
-                //}
-                //_dbContext.SaveChanges();
-                //foreach (var vm in ceraVMs)
-                //{
-                //    _dbContext.ceraVMs.Add(vm);
-                //}
-                //int record = _dbContext.SaveChanges();
-                //_logger.LogInfo("Data Imported Successfully");
-                //return record;
             }
             catch (Exception ex)
             {
@@ -448,6 +370,7 @@ namespace CERA.DataOperation
                 return 0;
             }
         }
+
         /// <summary>
         /// This method will retrives the VirtualMachines data from database
         /// </summary>
@@ -466,6 +389,7 @@ namespace CERA.DataOperation
                 return null;
             }
         }
+
         /// <summary>
         /// This method will inserts the Tenant data into database
         /// </summary>
@@ -498,19 +422,7 @@ namespace CERA.DataOperation
                 }
                 int record = _dbContext.SaveChanges();
                 return record;
-                //var Tenant = _dbContext.CeraTenants.ToList();
-                //foreach (var item in Tenant)
-                //{
-                //    _dbContext.CeraTenants.Remove(item);
-                //}
-                //_dbContext.SaveChanges();
-                //foreach (var Tenants in tenants)
-                //{
-                //    _dbContext.CeraTenants.Add(Tenants);
-                //}
-                //int record = _dbContext.SaveChanges();
-                //_logger.LogInfo("Data Imported Successfully");
-                //return record;
+                
             }
             catch (Exception ex)
             {
@@ -518,6 +430,7 @@ namespace CERA.DataOperation
                 return 0;
             }
         }
+
         /// <summary>
         /// This method will retrives the Tenants data from database
         /// </summary>
@@ -536,6 +449,7 @@ namespace CERA.DataOperation
                 return null;
             }
         }
+
         /// <summary>
         /// This method will inserts the WebApp data into database
         /// </summary>
@@ -568,19 +482,7 @@ namespace CERA.DataOperation
                 }
                 int record = _dbContext.SaveChanges();
                 return record;
-                //var ceraWebApps = _dbContext.CeraWebApps.ToList();
-                //foreach (var item in ceraWebApps)
-                //{
-                //    _dbContext.CeraWebApps.Remove(item);
-                //}
-                //_dbContext.SaveChanges();
-                //foreach (var Webapps in webApps)
-                //{
-                //    _dbContext.CeraWebApps.Add(Webapps);
-                //}
-                //int record = _dbContext.SaveChanges();
-                //_logger.LogInfo("Data Imported Successfully");
-                //return record;
+                
             }
             catch (Exception ex)
             {
@@ -588,6 +490,7 @@ namespace CERA.DataOperation
                 return 0;
             }
         }
+
         /// <summary>
         /// This method will retrives the WebApps data from database
         /// </summary>
@@ -606,6 +509,7 @@ namespace CERA.DataOperation
                 return null;
             }
         }
+
         /// <summary>
         /// This method will inserts the AppServicePlans data into database
         /// </summary>
@@ -638,19 +542,7 @@ namespace CERA.DataOperation
                 }
                 int record = _dbContext.SaveChanges();
                 return record;
-                //var ceraappservice = _dbContext.AppServicePlans.ToList();
-                //foreach (var item in ceraappservice)
-                //{
-                //    _dbContext.AppServicePlans.Remove(item);
-                //}
-                //_dbContext.SaveChanges();
-                //foreach (var ceraAppService in ceraAppServices)
-                //{
-                //    _dbContext.AppServicePlans.Add(ceraAppService);
-                //}
-                //int record = _dbContext.SaveChanges();
-                //_logger.LogInfo("Data Imported Successfully");
-                //return record;
+                
             }
             catch (Exception ex)
             {
@@ -658,6 +550,7 @@ namespace CERA.DataOperation
                 return 0;
             }
         }
+
         /// <summary>
         /// This method will retrives the AppServicePlans data from database
         /// </summary>
@@ -676,6 +569,7 @@ namespace CERA.DataOperation
                 return null;
             }
         }
+
         /// <summary>
         /// This method will inserts the Disks data into database
         /// </summary>
@@ -708,19 +602,7 @@ namespace CERA.DataOperation
                 }
                 int record = _dbContext.SaveChanges();
                 return record;
-                //var ceraDisks = _dbContext.Disks.ToList();
-                //foreach (var item in ceraDisks)
-                //{
-                //    _dbContext.Disks.Remove(item);
-                //}
-                //_dbContext.SaveChanges();
-                //foreach (var disks in Disks)
-                //{
-                //    _dbContext.Disks.Add(disks);
-                //}
-                //int record = _dbContext.SaveChanges();
-                //_logger.LogInfo("Data Imported Successfully");
-                //return record;
+                
             }
             catch (Exception ex)
             {
@@ -781,19 +663,6 @@ namespace CERA.DataOperation
                 int record = _dbContext.SaveChanges();
                 return record;
 
-                //var health = _dbContext.ResourceHealth.ToList();
-                //foreach (var item in health)
-                //{
-                //    _dbContext.ResourceHealth.Remove(item);
-                //}
-                //_dbContext.SaveChanges();
-                //foreach (var item in resourceHealth)
-                //{
-                //    _dbContext.ResourceHealth.Add(item);
-                //}
-                //int record = _dbContext.SaveChanges();
-                //_logger.LogInfo("Data Imported Successfully");
-                //return record;
             }
             catch (Exception ex)
             {
@@ -844,19 +713,7 @@ namespace CERA.DataOperation
                 }
                 int record = _dbContext.SaveChanges();
                 return record;
-                //var compliances = _dbContext.Compliances.ToList();
-                //foreach (var item in compliances)
-                //{
-                //    _dbContext.Compliances.Remove(item);
-                //}
-                //_dbContext.SaveChanges();
-                //foreach (var item in data)
-                //{
-                //    _dbContext.Compliances.Add(item);
-                //}
-                //int record = _dbContext.SaveChanges();
-                //_logger.LogInfo("Data Imported Successfully");
-                //return record;
+                
             }
             catch (Exception ex)
             {
@@ -917,19 +774,7 @@ namespace CERA.DataOperation
                 }
                 int record = _dbContext.SaveChanges();
                 return record;
-                //var policies = _dbContext.Policies.ToList();
-                //foreach (var item in policies)
-                //{
-                //    _dbContext.Policies.Remove(item);
-                //}
-                //_dbContext.SaveChanges();
-                //foreach (var item in data)
-                //{
-                //    _dbContext.Policies.Add(item);
-                //}
-                //int record = _dbContext.SaveChanges();
-                //_logger.LogInfo("Policy Data Imported Successfully");
-                //return record;
+                
             }
             catch (Exception ex)
             {
@@ -996,6 +841,7 @@ namespace CERA.DataOperation
                 return 0;
             }
         }
+
         public int AddUsageHistory(List<UsageHistory> data)
         {
             try
@@ -1075,11 +921,11 @@ namespace CERA.DataOperation
         {
             return new object();
         }
+
         /// <summary>
         /// This method will retrives the Disks data from database
         /// </summary>
         /// <returns>returns Disks data</returns>
-
         public List<CeraDisks> GetDisks()
         {
             try
@@ -1191,19 +1037,6 @@ namespace CERA.DataOperation
                 int record = _dbContext.SaveChanges();
                 return record;
 
-                //var locations = _dbContext.Locations.ToList();
-                //foreach (var item in locations)
-                //{
-                //    _dbContext.Locations.Remove(item);
-                //}
-                //_dbContext.SaveChanges();
-                //foreach (var item in data)
-                //{
-                //    _dbContext.Locations.Add(item);
-                //}
-                //int record = _dbContext.SaveChanges();
-                //_logger.LogInfo("Data Imported Successfully");
-                //return record;
             }
             catch (Exception ex)
             {

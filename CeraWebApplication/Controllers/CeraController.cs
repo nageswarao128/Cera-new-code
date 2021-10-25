@@ -24,14 +24,15 @@ namespace CeraWebApplication.Controllers
     public class CeraController : Controller
     {
         private readonly ILogger<CeraController> _logger;
-        
+
         public CeraController(ILogger<CeraController> logger)
         {
-            _logger = logger;            
+            _logger = logger;
         }
-  
+
         const string SyncApiUrl = Utilities.SyncApiUrl;
         const string DataApiUrl = Utilities.DataApiUrl;
+
         /// <summary>
         /// This method gives the home page view
         /// </summary>
@@ -40,11 +41,22 @@ namespace CeraWebApplication.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// This method gives the Login page view
+        /// </summary>
+        /// <returns></returns>
         [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
+
+        /// <summary>
+        /// This method send the user credentials to API to authenticate
+        /// </summary>
+        /// <param name="loginModel"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel loginModel)
@@ -71,17 +83,13 @@ namespace CeraWebApplication.Controllers
                         }
                         List<Claim> claims = new List<Claim>();
                         claims.Add(new Claim(ClaimTypes.Name, userDetails.userName));
-                        foreach(var item in user.roles)
+                        foreach (var item in user.roles)
                         {
                             claims.Add(new Claim(ClaimTypes.Role, item));
                         }
-                        //var claims = new List<Claim>
-                        //{
-                        //    new Claim(ClaimTypes.Name,userDetails.userName),
-                        //    new Claim(ClaimTypes.Role,userDetails.roles)
-                        //};
+
                         var auth = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                        
+
                         var principle = new ClaimsPrincipal(auth);
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principle);
                         return RedirectToAction("DashBoard", "Cera");
@@ -93,18 +101,23 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
-        //[HttpGet]
-        //public IActionResult Logout()
-        //{
-        //    return View();
-        //}
+
+        /// <summary>
+        /// This method gives the logout page view
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Logout() 
+        public async Task<IActionResult> Logout()
         {
-                HttpContext.Session.Clear();
-                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Clear();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return View();
         }
+
+        /// <summary>
+        /// This method gives the user management page view
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> ManageUsers()
         {
@@ -126,24 +139,33 @@ namespace CeraWebApplication.Controllers
             }
             return View(users.ToList());
         }
-        [AllowAnonymous]
+
+        /// <summary>
+        /// This method gives the Add user page view
+        /// </summary>
+        /// <returns></returns>
         public IActionResult AddUser()
         {
             return View();
         }
-        [AllowAnonymous]
+
+        /// <summary>
+        /// This page will send the user details to the API to add
+        /// </summary>
+        /// <param name="ceraUser"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> AddUser(AddCeraUser ceraUser)
         {
-        
+
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.PostAsJsonAsync<AddCeraUser>($"{SyncApiUrl}/api/Login/Register",ceraUser))
+                using (var response = await httpClient.PostAsJsonAsync<AddCeraUser>($"{SyncApiUrl}/api/Login/Register", ceraUser))
                 {
                     var apiresponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
                     {
-                       return RedirectToAction("ManageUsers", "Cera");
+                        return RedirectToAction("ManageUsers", "Cera");
                     }
                     else
                     {
@@ -152,13 +174,19 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// This method gives the user details update page view
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> UpdateUser(string id)
         {
             CeraUserModel user = null;
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync($"{SyncApiUrl}/api/Manage/GetUser?id="+id))
+                using (var response = await httpClient.GetAsync($"{SyncApiUrl}/api/Manage/GetUser?id=" + id))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -173,6 +201,12 @@ namespace CeraWebApplication.Controllers
             }
             return View(user);
         }
+
+        /// <summary>
+        /// This page will send the user details to the API to update
+        /// </summary>
+        /// <param name="userModel"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> UpdateUser(CeraUserModel userModel)
         {
@@ -192,6 +226,12 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// This method will give the user deletion page view
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> DeleteUser(string id)
         {
@@ -213,12 +253,18 @@ namespace CeraWebApplication.Controllers
             }
             return View(user);
         }
+
+        /// <summary>
+        /// This page will send the user details to the API to delete
+        /// </summary>
+        /// <param name="userModel"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> DeleteUser(CeraUserModel userModel)
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.DeleteAsync($"{SyncApiUrl}/api/Manage/DeleteUser?id="+userModel.Id))
+                using (var response = await httpClient.DeleteAsync($"{SyncApiUrl}/api/Manage/DeleteUser?id=" + userModel.Id))
                 {
                     var apiresponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
@@ -232,6 +278,11 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// This method will retrive required data for the dashboard view
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> DashBoard()
         {
             IEnumerable<ResourceTypeCount> resourceCount = null;
@@ -285,7 +336,7 @@ namespace CeraWebApplication.Controllers
                     }
                 }
             }
-            
+
             List<UserCloud> clouds = new List<UserCloud>();
             using (var httpClient = new HttpClient())
             {
@@ -295,7 +346,7 @@ namespace CeraWebApplication.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         clouds = JsonConvert.DeserializeObject<List<UserCloud>>(apiResponse);
-                        
+
                         ViewBag.clouds = clouds.ToList();
                     }
                     else
@@ -313,7 +364,7 @@ namespace CeraWebApplication.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         resourceTags = JsonConvert.DeserializeObject<List<ResourceTagsCountVM>>(apiResponse);
-                        
+
                         ViewBag.tags = resourceTags.ToList();
                     }
                     else
@@ -378,10 +429,16 @@ namespace CeraWebApplication.Controllers
                 }
             }
 
-            ViewBag.count = resourceCount.OrderBy(x=>x.ResourceType== "Others").ThenBy(x=>x.ResourceType=="Network").ThenBy(x=>x.ResourceType== "Storage").ThenBy(x=>x.ResourceType=="Compute");
+            ViewBag.count = resourceCount.OrderBy(x => x.ResourceType == "Others").ThenBy(x => x.ResourceType == "Network").ThenBy(x => x.ResourceType == "Storage").ThenBy(x => x.ResourceType == "Compute");
             ViewBag.usage = resourceUsage;
             return View();
         }
+
+        /// <summary>
+        /// This method will retrive the cloud usage data for month
+        /// </summary>
+        /// <param name="cloudprovider"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<JsonResult> UsageCloudByMonth(string cloudprovider)
         {
@@ -399,6 +456,12 @@ namespace CeraWebApplication.Controllers
             }
 
         }
+
+        /// <summary>
+        /// This method will retrive the resources tags data
+        /// </summary>
+        /// <param name="cloudprovider"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<JsonResult> GetResourceTagsCloudCount(string cloudprovider)
         {
@@ -415,12 +478,18 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// This method will retrive the resource usage by location
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<JsonResult> GetResourceUsageByLocation(string location)
         {
-            using(var httpclient = new HttpClient())
+            using (var httpclient = new HttpClient())
             {
-                using(var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/ResourceUsageByLocation?location="+location))
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/ResourceUsageByLocation?location=" + location))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -432,6 +501,11 @@ namespace CeraWebApplication.Controllers
             }
         }
 
+        /// <summary>
+        /// This method will retrive the resources count data by cloud
+        /// </summary>
+        /// <param name="cloudprovider"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<JsonResult> GetResourceCloudCount(string cloudprovider)
         {
@@ -448,12 +522,19 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// This method will retrive the resources count data by cloud and location
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="cloudprovider"></param>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<JsonResult> GetResourcetypeCloudCount(string location,string cloudprovider)
+        public async Task<JsonResult> GetResourcetypeCloudCount(string location, string cloudprovider)
         {
             using (var httpclient = new HttpClient())
             {
-                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetResourceTypecloudCount?location=" + location+"&cloudprovider="+cloudprovider))
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetResourceTypecloudCount?location=" + location + "&cloudprovider=" + cloudprovider))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -464,6 +545,13 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// This method will retrive the resources uage data by cloud and subscription
+        /// </summary>
+        /// <param name="cloudprovider"></param>
+        /// <param name="subscriptionid"></param>
+        /// <returns></returns>
         public async Task<JsonResult> ResourceSubscriptionCloudspentUsage(string cloudprovider, string subscriptionid)
         {
             using (var httpclient = new HttpClient())
@@ -479,6 +567,13 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// This method will retrive the resources tags count data by cloud and subscription
+        /// </summary>
+        /// <param name="cloudprovider"></param>
+        /// <param name="subscriptionid"></param>
+        /// <returns></returns>
         public async Task<JsonResult> GetResourceSubscriptionCloudTagsCount(string cloudprovider, string subscriptionid)
         {
             using (var httpclient = new HttpClient())
@@ -494,8 +589,15 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
-  public async Task<JsonResult> UsageSubscriptionByMonth(string cloudprovider, string subscriptionid)
-        {
+
+        /// <summary>
+        /// This method will retrive the resources usage data by cloud and subscription
+        /// </summary>
+        /// <param name="cloudprovider"></param>
+        /// <param name="subscriptionid"></param>
+        /// <returns></returns>
+        public async Task<JsonResult> UsageSubscriptionByMonth(string cloudprovider, string subscriptionid)
+         {
             using (var httpclient = new HttpClient())
             {
                 using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/UsageSubscriptionByMonth?cloudprovider=" + cloudprovider + "&subscriptionid=" + subscriptionid))
@@ -509,6 +611,13 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// This method will retrive the resources tags count data by cloud and location
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="cloudprovider"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<JsonResult> GetResourceCloudTagsCount(string location, string cloudprovider)
         {
@@ -526,11 +635,18 @@ namespace CeraWebApplication.Controllers
             }
         }
 
+        /// <summary>
+        /// This method will retrive the resources data by cloud, subscription and location
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="cloudprovider"></param>
+        /// <param name="subscriptionid"></param>
+        /// <returns></returns>
         public async Task<JsonResult> GetSubscriptionLocationList(string location, string cloudprovider, string subscriptionid)
         {
             using (var httpclient = new HttpClient())
             {
-                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetSubscriptionLocationList?location=" + location + "&cloudprovider=" + cloudprovider + "&subscriptionid="+ subscriptionid))
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetSubscriptionLocationList?location=" + location + "&cloudprovider=" + cloudprovider + "&subscriptionid=" + subscriptionid))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -541,6 +657,14 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// This method will retrive the resources usage data by cloud,subscription and location
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="cloudprovider"></param>
+        /// <param name="subscriptionid"></param>
+        /// <returns></returns>
         public async Task<JsonResult> ResourceSubscriptionCloudUsage(string location, string cloudprovider, string subscriptionid)
         {
             using (var httpclient = new HttpClient())
@@ -556,6 +680,14 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// This method will retrive the resources tags count data by cloud,subscription and location
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="cloudprovider"></param>
+        /// <param name="subscriptionid"></param>
+        /// <returns></returns>
         public async Task<JsonResult> GetResourceSubscriptionCloudTagsCount(string location, string cloudprovider, string subscriptionid)
         {
             using (var httpclient = new HttpClient())
@@ -571,7 +703,14 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
-         public async Task<JsonResult> GetSubscriptionTypeList(string subscriptionId, string cloudprovider)
+
+        /// <summary>
+        /// This method will retrive the resources count data by cloud and subscription
+        /// </summary>
+        /// <param name="subscriptionId"></param>
+        /// <param name="cloudprovider"></param>
+        /// <returns></returns>
+        public async Task<JsonResult> GetSubscriptionTypeList(string subscriptionId, string cloudprovider)
         {
             using (var httpclient = new HttpClient())
             {
@@ -586,6 +725,13 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// This method will retrive the data for dashboard tiles by cloud and location
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="cloudprovider"></param>
+        /// <returns></returns>
         public async Task<JsonResult> GetDashboardCountFilters(string location, string cloudprovider)
         {
             using (var httpclient = new HttpClient())
@@ -601,21 +747,26 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// This method will give the user profile page view
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> userprofile()
         {
             string name = HttpContext.User.Identity.Name;
-           
-          UserModel user = new UserModel();
+
+            UserModel user = new UserModel();
 
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync($"{SyncApiUrl}/api/Manage/GetUserProfile?name=" +name))
+                using (var response = await httpClient.GetAsync($"{SyncApiUrl}/api/Manage/GetUserProfile?name=" + name))
                 {
                     if (response.IsSuccessStatusCode)
-                    {                      
-                        string apiResponse = await response.Content.ReadAsStringAsync();                      
-                       user = JsonConvert.DeserializeObject<UserModel>(apiResponse);
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        user = JsonConvert.DeserializeObject<UserModel>(apiResponse);
                         ViewBag.data = user;
                         return View(user);
                     }
@@ -625,11 +776,14 @@ namespace CeraWebApplication.Controllers
                     }
                 }
             }
-
-           
         }
-        
-  public async Task<JsonResult> GetDashboardCountLocation(string location)
+
+        /// <summary>
+        /// This method will retrive the data for dashboard tiles by location
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
+        public async Task<JsonResult> GetDashboardCountLocation(string location)
         {
             using (var httpclient = new HttpClient())
             {
@@ -644,6 +798,11 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// This method will retrive the subscriptions data
+        /// </summary>
+        /// <returns></returns>
         public async Task<JsonResult> GetSubscription()
         {
             IEnumerable<CeraSubscription> subscriptions = null;
@@ -657,11 +816,17 @@ namespace CeraWebApplication.Controllers
                     {
                         subscriptions = JsonConvert.DeserializeObject<List<CeraSubscription>>(apiResponse);
                     }
-                   
+
                 }
             }
             return Json(subscriptions);
         }
+
+        /// <summary>
+        /// This method will retrive the data for dashboard tiles by cloud
+        /// </summary>
+        /// <param name="cloudprovider"></param>
+        /// <returns></returns>
         public async Task<JsonResult> GetDashboardCountCloud(string cloudprovider)
         {
             using (var httpclient = new HttpClient())
@@ -677,6 +842,13 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// This method will retrive the data for dashboard tiles by cloud and subscription
+        /// </summary>
+        /// <param name="cloudprovider"></param>
+        /// <param name="subscriptionid"></param>
+        /// <returns></returns>
         public async Task<JsonResult> GetDashboardSubscriptionCountFilters(string cloudprovider, string subscriptionid)
         {
             using (var httpclient = new HttpClient())
@@ -692,11 +864,19 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
-  public async Task<JsonResult> GetDashboardSubscriptionLocationFilters(string location, string cloudprovider, string subscriptionid)
+
+        /// <summary>
+        /// This method will retrive the data for dashboard tiles by cloud,location and subscription
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="cloudprovider"></param>
+        /// <param name="subscriptionid"></param>
+        /// <returns></returns>
+        public async Task<JsonResult> GetDashboardSubscriptionLocationFilters(string location, string cloudprovider, string subscriptionid)
         {
             using (var httpclient = new HttpClient())
             {
-                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetDashboardSubscriptionLocationFilters?location=" + location + "&cloudprovider=" + cloudprovider +"&subscriptionid=" + subscriptionid))
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetDashboardSubscriptionLocationFilters?location=" + location + "&cloudprovider=" + cloudprovider + "&subscriptionid=" + subscriptionid))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -708,6 +888,12 @@ namespace CeraWebApplication.Controllers
             }
         }
 
+        /// <summary>
+        /// This method will retrive the usage data for resources
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="cloudprovider"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<JsonResult> ResourceCloudUsage(string location, string cloudprovider)
         {
@@ -724,6 +910,12 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// This method will retrive the resources count data by location
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<JsonResult> GetResourceCountByLocation(string location)
         {
@@ -740,6 +932,12 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// This method will retrive the resources tags data by location
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<JsonResult> GetResourceTagsByLocation(string location)
         {
@@ -756,6 +954,12 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// This method will retrive the resources data by location
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<JsonResult> GetResourceByLocation(string location)
         {
@@ -772,6 +976,11 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// Thi smethod will retrive the usage details
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetResourceTypeUsage()
         {
@@ -791,10 +1000,15 @@ namespace CeraWebApplication.Controllers
                     }
                     ViewBag.usage = apiResponse;
                 }
-                
+
             }
             return View(resourceTypeUsages.ToList());
         }
+
+        /// <summary>
+        /// this method will give the resource health data
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetResourceHealth()
         {
@@ -816,6 +1030,7 @@ namespace CeraWebApplication.Controllers
             }
             return View(resourceHealths.ToList());
         }
+
         /// <summary>
         /// This method will call the API to retrive subscription details from db 
         /// </summary>
@@ -842,7 +1057,7 @@ namespace CeraWebApplication.Controllers
             }
             return View(subscriptions.ToList());
         }
-        
+
         /// <summary>
         /// This method will calls the API to sync the subscription data from cloud to db
         /// </summary>
@@ -865,6 +1080,7 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
         /// <summary>
         /// This method will call the API to retrive ResourceGroup details from db 
         /// </summary>
@@ -892,6 +1108,7 @@ namespace CeraWebApplication.Controllers
             ViewBag.data = ResourceGroups.ToList();
             return View(ResourceGroups.ToList());
         }
+
         /// <summary>
         /// This method will calls the API to sync the ResourceGroups data from cloud to db
         /// </summary>
@@ -914,6 +1131,7 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
         /// <summary>
         /// This method will call the API to retrive StorageAccounts details from db 
         /// </summary>
@@ -941,6 +1159,7 @@ namespace CeraWebApplication.Controllers
             ViewBag.data = StorageAccounts.ToList();
             return View(StorageAccounts.ToList());
         }
+
         /// <summary>
         /// This method will calls the API to sync the StorageAccount data from cloud to db
         /// </summary>
@@ -964,6 +1183,7 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
         /// <summary>
         /// This method will call the API to retrive Resources details from db 
         /// </summary>
@@ -990,6 +1210,7 @@ namespace CeraWebApplication.Controllers
             }
             return View(Resources.ToList());
         }
+
         /// <summary>
         /// This method will calls the API to sync the Resources data from cloud to db
         /// </summary>
@@ -1013,6 +1234,7 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
         /// <summary>
         /// This method will call the API to retrive VM details from db 
         /// </summary>
@@ -1040,6 +1262,7 @@ namespace CeraWebApplication.Controllers
             ViewBag.data = CeraVMs.ToList();
             return View(CeraVMs.ToList());
         }
+
         /// <summary>
         /// This method will calls the API to sync the VM data from cloud to db
         /// </summary>
@@ -1062,6 +1285,7 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
         /// <summary>
         /// This method will call the API to retrive SqlServer details from db 
         /// </summary>
@@ -1088,6 +1312,7 @@ namespace CeraWebApplication.Controllers
             }
             return View(sqlServers.ToList());
         }
+
         /// <summary>
         /// This method will calls the API to sync the SqlServer data from cloud to db
         /// </summary>
@@ -1110,6 +1335,7 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
         /// <summary>
         /// This method will call the API to retrive Tenant details from db 
         /// </summary>
@@ -1136,6 +1362,7 @@ namespace CeraWebApplication.Controllers
             }
             return View(tenants.ToList());
         }
+
         /// <summary>
         /// This method will calls the API to sync the Tenant data from cloud to db
         /// </summary>
@@ -1158,6 +1385,7 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
         /// <summary>
         /// This method will call the API to retrive WebApps details from db 
         /// </summary>
@@ -1185,6 +1413,7 @@ namespace CeraWebApplication.Controllers
             ViewBag.data = webApps.ToList();
             return View(webApps.ToList());
         }
+
         /// <summary>
         /// This method will calls the API to sync the WebApps data from cloud to db
         /// </summary>
@@ -1207,6 +1436,7 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
         /// <summary>
         /// This method will call the API to retrive AppServicePlans details from db 
         /// </summary>
@@ -1233,6 +1463,7 @@ namespace CeraWebApplication.Controllers
             }
             return View(appServicePlans.ToList());
         }
+
         /// <summary>
         /// This method will calls the API to sync the AppServicePlan data from cloud to db
         /// </summary>
@@ -1255,6 +1486,7 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
         /// <summary>
         /// This method will call the API to retrive Disks details from db 
         /// </summary>
@@ -1281,14 +1513,16 @@ namespace CeraWebApplication.Controllers
             }
             return View(Disks.ToList());
         }
+
         public IActionResult Notifications()
         {
             return View();
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAdvisorRecommendationsDetails()
         {
-            IEnumerable<AdvisorRecommendations> advisorRecommendations  = null;
+            IEnumerable<AdvisorRecommendations> advisorRecommendations = null;
 
             using (var httpClient = new HttpClient())
             {
@@ -1307,6 +1541,11 @@ namespace CeraWebApplication.Controllers
             }
             return View(advisorRecommendations.ToList());
         }
+
+        /// <summary>
+        /// This method will show the policy details page
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetPolicyDetails()
         {
@@ -1366,6 +1605,7 @@ namespace CeraWebApplication.Controllers
             }
             return View(policies.ToList());
         }
+
         /// <summary>
         /// This method will calls the API to sync the Disks data from cloud to db
         /// </summary>
@@ -1388,17 +1628,23 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+        
+        /// <summary>
+        /// This method is used to sync the cloud data
+        /// </summary>
+        /// <param name="TenantId"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> SyncCloudData(string TenantId)
         {
             RequestBaseVm request = new RequestBaseVm();
             using (var httpClient = new HttpClient())
             {
-                
+
                 string accessToken = HttpContext.Session.GetString("accessToken");
                 request.tenantId = TenantId;
                 request.token = accessToken;
-                using (var response = await httpClient.PostAsJsonAsync<RequestBaseVm>($"{SyncApiUrl}/api/Cera/SyncCloudData",request))
+                using (var response = await httpClient.PostAsJsonAsync<RequestBaseVm>($"{SyncApiUrl}/api/Cera/SyncCloudData", request))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -1411,16 +1657,22 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// This method is used to add policy rules
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> AddPolicyRules(List<PolicyRules> data)
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.PostAsJsonAsync<List<PolicyRules>>($"{SyncApiUrl}/api/cera/AddPolicyRules",data))
+                using (var response = await httpClient.PostAsJsonAsync<List<PolicyRules>>($"{SyncApiUrl}/api/cera/AddPolicyRules", data))
                 {
                     if (response.IsSuccessStatusCode)
                     {
-                        return RedirectToAction("GetPolicyDetails","Cera");
+                        return RedirectToAction("GetPolicyDetails", "Cera");
                     }
                     else
                     {
@@ -1429,6 +1681,11 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// This method will give the usage reports view page
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetUsageReportsData()
         {
@@ -1521,6 +1778,11 @@ namespace CeraWebApplication.Controllers
             return View();
 
         }
+
+        /// <summary>
+        /// This method will give the usage details chart page view
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetUsageChartsData()
         {
@@ -1613,6 +1875,11 @@ namespace CeraWebApplication.Controllers
             return View();
 
         }
+
+        /// <summary>
+        /// This method will retrive user cloud details
+        /// </summary>
+        /// <returns></returns>
         public async Task<JsonResult> GetUserClouds()
         {
 
@@ -1625,7 +1892,7 @@ namespace CeraWebApplication.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         clouds = JsonConvert.DeserializeObject<List<UserCloud>>(apiResponse);
-                        
+
                         //ViewBag.clouds = clouds.Select(x => x.cloudName).ToList();
                         return Json(clouds);
                     }
@@ -1636,16 +1903,23 @@ namespace CeraWebApplication.Controllers
                 }
             }
         }
+
         [HttpPost]
         public JsonResult UpdateAccesstoken(string accessToken)
         {
             HttpContext.Session.SetString("accessToken", accessToken);
             return Json("Session Created");
         }
+
         public IActionResult Privacy()
         {
             return View();
         }
+
+        /// <summary>
+        /// This method will give error page view
+        /// </summary>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpGet]
         public IActionResult Error()

@@ -17,24 +17,25 @@ namespace CERADataAPI.Controllers
     [Route("api/[controller]/[action]")]
     public class CERADataController : ControllerBase
     {
-        private readonly ILogger<CERADataController> _logger;
-        ICeraPlatform _ceraCloud;
-        public CERADataController(ILogger<CERADataController> logger, ICeraPlatform ceraCloud)
+        private readonly ILogger<CERADataController> logger;
+        ICeraPlatform ceraCloud;
+        public CERADataController(ILogger<CERADataController> _logger, ICeraPlatform _ceraCloud)
         {
-            _logger = logger;
-            _ceraCloud = ceraCloud;
+            logger = _logger;
+            ceraCloud = _ceraCloud;
 
         }
+
         /// <summary>
         /// This method will retrives the Subscription data from the database
         /// </summary>
         /// <returns>returns Subscription data from database</returns>
         [HttpGet]
-       
         public IEnumerable<CeraSubscription> GetDBSubscriptions()
         {
-            return _ceraCloud.GetSubscriptionList();
+            return ceraCloud.GetSubscriptionList();
         }
+
         /// <summary>
         /// This method will retrives the Resources data from the database
         /// </summary>
@@ -42,8 +43,9 @@ namespace CERADataAPI.Controllers
         [HttpGet]
         public IEnumerable<CeraResources> GetDBResources()
         {
-            return _ceraCloud.GetResourcesList();
+            return ceraCloud.GetResourcesList();
         }
+
         /// <summary>
         /// This method will retrives the Virtual Machines data from the database
         /// </summary>
@@ -51,8 +53,9 @@ namespace CERADataAPI.Controllers
         [HttpGet]
         public IEnumerable<CeraVM> GetDBVM()
         {
-            return _ceraCloud.GetVMList();
+            return ceraCloud.GetVMList();
         }
+
         /// <summary>
         /// This method will retrives the ResourceGroups data from the database
         /// </summary>
@@ -60,8 +63,9 @@ namespace CERADataAPI.Controllers
         [HttpGet]
         public IEnumerable<CeraResourceGroups> GetDBResourceGroups()
         {
-            return _ceraCloud.GetResourceGroupsList();
+            return ceraCloud.GetResourceGroupsList();
         }
+
         /// <summary>
         /// This method will retrives the StorageAccount data from the database
         /// </summary>
@@ -69,8 +73,9 @@ namespace CERADataAPI.Controllers
         [HttpGet]
         public IEnumerable<CeraStorageAccount> GetDBStorageAccount()
         {
-            return _ceraCloud.GetStorageAccountList();
+            return ceraCloud.GetStorageAccountList();
         }
+
         /// <summary>
         /// This method will retrives the SqlServer data from the database
         /// </summary>
@@ -78,8 +83,9 @@ namespace CERADataAPI.Controllers
         [HttpGet]
         public IEnumerable<CeraSqlServer> GetDBSqlServer()
         {
-            return _ceraCloud.GetSqlServersList();
+            return ceraCloud.GetSqlServersList();
         }
+
         /// <summary>
         /// This method will retrives the Tenants data from the database
         /// </summary>
@@ -87,8 +93,9 @@ namespace CERADataAPI.Controllers
         [HttpGet]
         public IEnumerable<CeraTenants> GetDBTenants()
         {
-            return _ceraCloud.GetTenantsList();
+            return ceraCloud.GetTenantsList();
         }
+
         /// <summary>
         /// This method will retrives the WebApps data from the database
         /// </summary>
@@ -96,8 +103,9 @@ namespace CERADataAPI.Controllers
         [HttpGet]
         public IEnumerable<CeraWebApps> GetDBWebApps()
         {
-            return _ceraCloud.GetWebAppsList();
+            return ceraCloud.GetWebAppsList();
         }
+
         /// <summary>
         /// This method will retrives the AppServicePlans data from the database
         /// </summary>
@@ -105,8 +113,9 @@ namespace CERADataAPI.Controllers
         [HttpGet]
         public IEnumerable<CeraAppServicePlans> GetDBAppServicePlans()
         {
-            return _ceraCloud.GetAppServicePlansList();
+            return ceraCloud.GetAppServicePlansList();
         }
+
         /// <summary>
         /// This method will retrives the Disks data from the database
         /// </summary>
@@ -114,214 +123,458 @@ namespace CERADataAPI.Controllers
         [HttpGet]
         public IEnumerable<CeraDisks> GetDBDisks()
         {
-            return _ceraCloud.GetDisksList();
+            return ceraCloud.GetDisksList();
         }
+
+        /// <summary>
+        /// This method will retrives the Resources Health data from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<ResourceHealthViewDTO> GetDBResourceHealth()
         {
-            return _ceraCloud.GetCeraResourceHealthList();
+            return ceraCloud.GetCeraResourceHealthList();
         }
+
+        /// <summary>
+        /// This method will retrives the Policies data from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<CeraPolicy> GetDBPolicies()
         {
-            return _ceraCloud.GetPolicies();
+            return ceraCloud.GetPolicies();
         }
+
+        /// <summary>
+        /// This method will retrives the Usage details by resouce type data from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public object GetResourceTypeUsageDetails()
         {
-            return _ceraCloud.GetResourceTypeUsageDetails();
+            return ceraCloud.GetResourceTypeUsageDetails();
         }
+
+        /// <summary>
+        /// This method will retrives the count of resources for each resource type data from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<ResourceTypeCount> GetResourceTypeCount()
         {
-            return _ceraCloud.GetResourceTypeCounts();
+            return ceraCloud.GetResourceTypeCounts();
         }
+
+        /// <summary>
+        /// This method will retrives the available clouds data for the user data from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<UserClouds> GetUserClouds()
         {
-            return _ceraCloud.GetUserClouds();
+            return ceraCloud.GetUserClouds();
         }
+
+        /// <summary>
+        /// This method will retrives the cloud details of the client data from the database
+        /// </summary>
+        /// <param name="clientName"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<ClientCloudDetails> GetClientCloudDetails(string clientName = "Quadrant")
         {
-            return _ceraCloud.GetClientCloudDetails(clientName);
+            return ceraCloud.GetClientCloudDetails(clientName);
         }
+
+        /// <summary>
+        /// This method will retrives the tags count for the resources data from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public List<ResourceTagsCount> GetResourceTagsCount()
         {
-            return _ceraCloud.GetResourceTagsCount();
+            return ceraCloud.GetResourceTagsCount();
         }
+
+        /// <summary>
+        /// This method will retrives the resources tags count for a given cloud data from the database
+        /// </summary>
+        /// <param name="cloudprovider"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<ResourceTagsCount> GetResourceTagsCloudCount(string cloudprovider)
         {
-            return _ceraCloud.GetResourceTagsCloudCount(cloudprovider);
+            return ceraCloud.GetResourceTagsCloudCount(cloudprovider);
         }
+
+        /// <summary>
+        /// This method will retrives all locations data from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<AzureLocations> GetLocations()
         {
-            return _ceraCloud.GetLocations();
+            return ceraCloud.GetLocations();
         }
+
+        /// <summary>
+        /// This method will retrives the resources location data from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<ResourceLocations> GetResourceLocations()
         {
-            return _ceraCloud.GetResourceLocations();
+            return ceraCloud.GetResourceLocations();
         }
+
+        /// <summary>
+        /// This method will retrives the map data by location from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public List<locationFilter> GetMapLocationsFilter()
         {
-            return _ceraCloud.GetMapLocationsFilter();
+            return ceraCloud.GetMapLocationsFilter();
         }
+
+        /// <summary>
+        /// This method will retrives the resources data by cloud and subscription data from the database
+        /// </summary>
+        /// <param name="cloudprovider"></param>
+        /// <param name="subscriptionid"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<ResourceTagsCount> GetResourceSubscriptionCloudTagsCount(string cloudprovider, string subscriptionid)
         {
-            return _ceraCloud.GetResourceSubscriptionCloudTagsCount(cloudprovider, subscriptionid);
+            return ceraCloud.GetResourceSubscriptionCloudTagsCount(cloudprovider, subscriptionid);
         }
+
+        /// <summary>
+        /// This method will retrives the usage data by cloud and subscription from the database
+        /// </summary>
+        /// <param name="cloudprovider"></param>
+        /// <param name="subscriptionid"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<CostUsage> UsageSubscriptionByMonth(string cloudprovider, string subscriptionid)
         {
-            return _ceraCloud.UsageSubscriptionByMonth(cloudprovider, subscriptionid);
+            return ceraCloud.UsageSubscriptionByMonth(cloudprovider, subscriptionid);
         }
 
+        /// <summary>
+        /// This method will retrives the resources usage data by location from the database
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<CeraResourceTypeUsage> ResourceUsageByLocation(string location)
         {
-            return _ceraCloud.ResourceUsage(location);
+            return ceraCloud.ResourceUsage(location);
         }
+
+        /// <summary>
+        /// This method will retrives the resources usage data by cloud and subscription from the database
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="cloudprovider"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<CeraResourceTypeUsage> ResourceCloudUsage(string location, string cloudprovider)
         {
-            return _ceraCloud.ResourceCloudUsage(location, cloudprovider);
+            return ceraCloud.ResourceCloudUsage(location, cloudprovider);
         }
+
+        /// <summary>
+        /// This method will retrives the resources data by cloud , subscription and location from the database
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="cloudprovider"></param>
+        /// <param name="subscriptionid"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<CeraResourceTypeUsage> ResourceSubscriptionCloudUsage(string location, string cloudprovider, string subscriptionid)
         {
-            return _ceraCloud.ResourceSubscriptionCloudUsage(location, cloudprovider, subscriptionid);
+            return ceraCloud.ResourceSubscriptionCloudUsage(location, cloudprovider, subscriptionid);
         }
+
+        /// <summary>
+        /// This method will retrives the resources tags data by cloud,subscription and location from the database
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="cloudprovider"></param>
+        /// <param name="subscriptionid"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<ResourceTagsCount> GetResourceSubscriptionCloudTagsCounts(string location, string cloudprovider, string subscriptionid)
         {
-            return _ceraCloud.GetResourceSubscriptionCloudTagsCount(location, cloudprovider, subscriptionid);
+            return ceraCloud.GetResourceSubscriptionCloudTagsCount(location, cloudprovider, subscriptionid);
         }
+
+        /// <summary>
+        /// This method will retrives the resources count data by location from the database
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<ResourceTypeCount> GetResourceTypeCountByLocation(string location)
         {
-            return _ceraCloud.GetResourceTypeCount(location);
+            return ceraCloud.GetResourceTypeCount(location);
         }
+
+        /// <summary>
+        /// This method will retrives the resources tags count data by location from the database
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<ResourceTagsCount> GetResourceTagsCountByLocation(string location)
         {
-            return _ceraCloud.GetResourceTagsCount(location);
+            return ceraCloud.GetResourceTagsCount(location);
         }
+
+        /// <summary>
+        /// This method will retrives the resources tags count data by location and cloud from the database
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="cloudprovider"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<ResourceTagsCount> GetResourceCloudTagsCount(string location, string cloudprovider)
         {
-            return _ceraCloud.GetResourceCloudTagsCount(location, cloudprovider);
+            return ceraCloud.GetResourceCloudTagsCount(location, cloudprovider);
         }
+
+        /// <summary>
+        /// This method will retrives the resources data by location from the database
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<ResourceLocations> GetResourceByLocations(string location)
         {
-            return _ceraCloud.GetResourceLocations(location);
+            return ceraCloud.GetResourceLocations(location);
         }
+
+        /// <summary>
+        /// This method will retrives the resources count data by cloud from the database
+        /// </summary>
+        /// <param name="cloudprovider"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<ResourceTypeCount> GetResourceCloudCount(string cloudprovider)
         {
-            return _ceraCloud.GetResourceCloudCount(cloudprovider);
+            return ceraCloud.GetResourceCloudCount(cloudprovider);
         }
+
+        /// <summary>
+        /// This method will retrives the resources usage data by cloud and subscription from the database
+        /// </summary>
+        /// <param name="cloudprovider"></param>
+        /// <param name="subscriptionid"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<CeraResourceTypeUsage> ResourceSubscriptionCloudspentUsage(string cloudprovider, string subscriptionid)
         {
-            return _ceraCloud.ResourceSubscriptionCloudspentUsage(cloudprovider, subscriptionid);
+            return ceraCloud.ResourceSubscriptionCloudspentUsage(cloudprovider, subscriptionid);
         }
+
+        /// <summary>
+        /// This method will retrives the resources location data by location,cloud and subscription from the database
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="cloudprovider"></param>
+        /// <param name="subscriptionid"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<ResourceTypeCount> GetSubscriptionLocationList(string location, string cloudprovider, string subscriptionid)
         {
-            return _ceraCloud.GetSubscriptionLocationList(location, cloudprovider, subscriptionid);
+            return ceraCloud.GetSubscriptionLocationList(location, cloudprovider, subscriptionid);
         }
+
+        /// <summary>
+        /// This method will retrives the resources count data by cloud and subscription from the database
+        /// </summary>
+        /// <param name="subscriptionId"></param>
+        /// <param name="cloudprovider"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<ResourceTypeCount> GetSubscriptionTypeList(string subscriptionId, string cloudprovider)
         {
-            return _ceraCloud.GetSubscriptionTypeList(subscriptionId, cloudprovider);
+            return ceraCloud.GetSubscriptionTypeList(subscriptionId, cloudprovider);
         }
+
+        /// <summary>
+        /// This method will retrives the resources count data by cloud and location from the database
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="cloudprovider"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<ResourceTypeCount> GetResourceTypecloudCount(string location, string cloudprovider)
         {
-            return _ceraCloud.GetResourceTypecloudCount(location, cloudprovider);
+            return ceraCloud.GetResourceTypecloudCount(location, cloudprovider);
         }
+
+        /// <summary>
+        /// This method will retrives the AdvisorRecommendations data from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public List<AdvisorRecommendations> GetAdvisorRecommendations()
         {
-            return _ceraCloud.GetAdvisorRecommendations();
+            return ceraCloud.GetAdvisorRecommendations();
         }
+
+        /// <summary>
+        /// This method will retrives the Policiy rules data from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public List<PolicyRules> GetPolicyRules()
         {
-            return _ceraCloud.GetPolicyRules();
+            return ceraCloud.GetPolicyRules();
         }
+
+        /// <summary>
+        /// This method will retrives the usage data for a month from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public List<CostUsage> UsageByMonth()
         {
-            return _ceraCloud.UsageByMonth();
+            return ceraCloud.UsageByMonth();
         }
+
+        /// <summary>
+        /// This method will retrives the usage data by cloud from the database
+        /// </summary>
+        /// <param name="cloudprovider"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<CostUsage> UsageCloudByMonth(string cloudprovider)
         {
-            return _ceraCloud.UsageCloudByMonth(cloudprovider);
+            return ceraCloud.UsageCloudByMonth(cloudprovider);
         }
+
+        /// <summary>
+        /// This method will retrives the usage data for six months from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public List<CostUsage> UsageHistory()
         {
-            return _ceraCloud.UsageHistory();
+            return ceraCloud.UsageHistory();
         }
+
+        /// <summary>
+        /// This method will retrives the usage data for six months from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public List<UsageHistoryByMonth> UsageHistoryByMonth()
         {
-            return _ceraCloud.UsageHistoryByMonth();
+            return ceraCloud.UsageHistoryByMonth();
         }
+
+        /// <summary>
+        /// This method will retrives the usage data by location from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public List<UsageByLocation> GetUsageByLocation()
         {
-            return _ceraCloud.GetUsageByLocation();
+            return ceraCloud.GetUsageByLocation();
         }
+
+        /// <summary>
+        /// This method will retrives the usage data by resource group from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public List<UsageByResourceGroup> GetUsageByResourceGroup()
         {
-            return _ceraCloud.GetUsageByResourceGroup();
+            return ceraCloud.GetUsageByResourceGroup();
         }
+
+        /// <summary>
+        /// This method will retrives the list of clients from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public List<ManageOrg> ManageOrganization()
         {
-            return _ceraCloud.ManageOrganization();
+            return ceraCloud.ManageOrganization();
 
         }
+
+        /// <summary>
+        /// This method will retrives the information for the tiles on the dashboard from the database
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public List<DashboardCountModel> GetDashboardCount()
         {
-            return _ceraCloud.GetDashboardCount();
+            return ceraCloud.GetDashboardCount();
         }
+
+        /// <summary>
+        /// This method will retrives the information for the tiles on the dashboard by location and cloud from the database
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="cloudprovider"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<DashboardCountModel> GetDashboardCountFilters(string location, string cloudprovider)
         {
-            return _ceraCloud.GetDashboardCountFilters(location, cloudprovider);
+            return ceraCloud.GetDashboardCountFilters(location, cloudprovider);
         }
+
+        /// <summary>
+        /// This method will retrives the information for the tiles on the dashboard by location from the database
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<DashboardCountModel> GetDashboardCountLocation(string location)
         {
-            return _ceraCloud.GetDashboardCountLocation(location);
+            return ceraCloud.GetDashboardCountLocation(location);
         }
+
+        /// <summary>
+        /// This method will retrives the information for the tiles on the dashboard by cloud from the database
+        /// </summary>
+        /// <param name="cloudprovider"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<DashboardCountModel> GetDashboardCountCloud(string cloudprovider)
         {
-            return _ceraCloud.GetDashboardCountCloud(cloudprovider);
+            return ceraCloud.GetDashboardCountCloud(cloudprovider);
         }
+
+        /// <summary>
+        /// This method will retrives the information for the tiles on the dashboard by cloud and subscription from the database
+        /// </summary>
+        /// <param name="cloudprovider"></param>
+        /// <param name="subscriptionid"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<DashboardCountModel> GetDashboardSubscriptionCountFilters(string cloudprovider, string subscriptionid)
         {
-            return _ceraCloud.GetDashboardSubscriptionCountFilters(cloudprovider, subscriptionid);
+            return ceraCloud.GetDashboardSubscriptionCountFilters(cloudprovider, subscriptionid);
         }
+
+        /// <summary>
+        /// This method will retrives the information for the tiles on the dashboard by location,cloud and subscription from the database
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="cloudprovider"></param>
+        /// <param name="subscriptionid"></param>
+        /// <returns></returns>
         [HttpGet]
         public List<DashboardCountModel> GetDashboardSubscriptionLocationFilters(string location, string cloudprovider, string subscriptionid)
         {
-            return _ceraCloud.GetDashboardSubscriptionLocationFilters(location, cloudprovider, subscriptionid);
+            return ceraCloud.GetDashboardSubscriptionLocationFilters(location, cloudprovider, subscriptionid);
         }
     }
 }
