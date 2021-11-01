@@ -3,40 +3,40 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "vulnerabilityAssessments_Default_storageContainerPath": {
-            "value": null
+            "value":"https://meenastg.blob.core.windows.net/meenacont"
         },
         "sites_Cera_name": {
-            "value": null
+            "value": "cerapojectsite"
         },
         "servers_cera_name": {
-            "value": null
+            "value": "cerapojectservers"
         },
         "sites_CERADataAPI_name": {
-            "value": null
+            "value": "cerapojectapi"
         },
         "sites_CERASyncAPI_name": {
-            "value": null
+            "value": "cerapojectapim"
         },
         "components_CERA_name": {
-            "value": null
+            "value": "ceracompo"
         },
         "serverfarms_CERAPlan_name": {
-            "value": null
+            "value": "ceraserverfarms"
         },
         "actionGroups_Application_Insights_Smart_Detection_name": {
-            "value": null
+            "value": "ceraactiongroups"
         },
         "smartdetectoralertrules_failure_anomalies___cera_name": {
-            "value": null
+            "value": "cerasmartdete"
         },
         "smartdetectoralertrules_failure_anomalies___cerasyncapi_name": {
-            "value": null
+            "value": "cerarules"
         },
         "smartdetectoralertrules_failure_anomalies___quadrantrestapiinsights_name": {
-            "value": null
+            "value": "cerarulesana"
         },
         "components_quadrantrestapiinsights_externalid": {
-            "value": null
+            "value": "cereacomponets"
         }
     }
 }
