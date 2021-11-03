@@ -9,6 +9,10 @@
             "defaultValue": "Cera",
             "type": "String"
         },
+        "administratorLoginPassword": {
+            "defaultValue": "Quadrant123",
+            "type": "SecureString"
+        },
         "servers_cera_name": {
             "defaultValue": "cera",
             "type": "String"
