@@ -11,6 +11,9 @@
         "servers_cera_name": {
             "value": "cerapojectservers"
         },
+        "administratorLoginPassword": {
+            "value": "Quadrant123"
+        },
         "sites_CERADataAPI_name": {
             "value": "cerapojectapi"
         },
