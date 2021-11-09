@@ -11,11 +11,11 @@
             "type": "String"
         },
         "administratorLoginPassword": {
-			"type": "securestring",
-			"metadata": {
-			"description": "The administrator password of the SQL logical server."
-			}
-		},
+          "type": "securestring",
+          "metadata": {
+          "description": "The administrator password of the SQL logical server."
+          }
+        },
         "sites_CERADataAPI_name": {
             "defaultValue": "CERADataAPI",
             "type": "String"
@@ -35,6 +35,7 @@
     },
     "variables": {},
     "resources": [
+        {
             "type": "microsoft.insights/actionGroups",
             "apiVersion": "2019-06-01",
             "name": "[parameters('actionGroups_Application_Insights_Smart_Detection_name')]",
@@ -89,7 +90,7 @@
             "kind": "v12.0",
             "properties": {
                 "administratorLogin": "[concat(parameters('servers_cera_name'), 'admin')]",
-                "administratorLoginPassword": "[parameters('administratorLoginPassword')]"
+                "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
                 "version": "12.0",
                 "publicNetworkAccess": "Enabled",
                 "restrictOutboundNetworkAccess": "Disabled"
@@ -120,7 +121,7 @@
                 "targetWorkerSizeId": 0
             }
         },
-        {
+	    {
             "type": "Microsoft.Sql/servers/databases",
             "apiVersion": "2021-02-01-preview",
             "name": "[concat(parameters('servers_cera_name'), '/db_', parameters('servers_cera_name'))]",
