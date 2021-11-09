@@ -11,10 +11,10 @@
             "type": "String"
         },
         "administratorLoginPassword": {
-          "type": "securestring",
-          "metadata": {
-          "description": "The administrator password of the SQL logical server."
-          }
+            "type": "securestring",
+            "metadata": {
+            "description": "The administrator password of the SQL logical server."
+            }
         },
         "sites_CERADataAPI_name": {
             "defaultValue": "CERADataAPI",
@@ -38,7 +38,7 @@
         {
             "type": "microsoft.insights/actionGroups",
             "apiVersion": "2019-06-01",
-            "name": "cera_app_actiongroup",
+            "name": "[parameters('actionGroups_Application_Insights_Smart_Detection_name')]",
             "location": "Global",
             "properties": {
                 "groupShortName": "SmartDetect",
@@ -121,7 +121,7 @@
                 "targetWorkerSizeId": 0
             }
         },
-	    {
+		{
             "type": "Microsoft.Sql/servers/databases",
             "apiVersion": "2021-02-01-preview",
             "name": "[concat(parameters('servers_cera_name'), '/db_', parameters('servers_cera_name'))]",
@@ -158,250 +158,169 @@
                 "serverKeyType": "ServiceManaged"
             }
         },
-        {
-            "type": "Microsoft.Web/sites/config",
+		{
+            "type": "Microsoft.Web/sites",
             "apiVersion": "2021-01-15",
-            "name": "[concat(parameters('sites_Cera_name'), '/web')]",
+            "name": "[parameters('sites_Cera_name')]",
             "location": "East US",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_Cera_name'))]"
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_CERAPlan_name'))]"
             ],
             "tags": {},
+            "kind": "app",
+            "identity": {
+                "principalId": "cd9b42ed-ed5b-4b04-84f1-cc37e880fc5f",
+                "tenantId": "73d3d213-f87a-4465-9a7e-67bd625fdf9c",
+                "type": "SystemAssigned"
+            },
             "properties": {
-                "numberOfWorkers": 1,
-                "defaultDocuments": [
-                    "Default.htm",
-                    "Default.html",
-                    "Default.asp",
-                    "index.htm",
-                    "index.html",
-                    "iisstart.htm",
-                    "default.aspx",
-                    "index.php",
-                    "hostingstart.html"
-                ],
-                "netFrameworkVersion": "v4.0",
-                "phpVersion": "5.6",
-                "requestTracingEnabled": false,
-                "remoteDebuggingEnabled": false,
-                "httpLoggingEnabled": false,
-                "acrUseManagedIdentityCreds": false,
-                "logsDirectorySizeLimit": 35,
-                "detailedErrorLoggingEnabled": false,
-                "publishingUsername": "$Cera",
-                "scmType": "None",
-                "use32BitWorkerProcess": true,
-                "webSocketsEnabled": false,
-                "alwaysOn": false,
-                "managedPipelineMode": "Integrated",
-                "virtualApplications": [
+                "enabled": true,
+                "hostNameSslStates": [
                     {
-                        "virtualPath": "/",
-                        "physicalPath": "site\\wwwroot",
-                        "preloadEnabled": false
+                        "name": "cera.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "cera.scm.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
                     }
                 ],
-                "loadBalancing": "LeastRequests",
-                "experiments": {
-                    "rampUpRules": []
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_CERAPlan_name'))]",
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "siteConfig": {
+                    "numberOfWorkers": 1,
+                    "acrUseManagedIdentityCreds": false,
+                    "alwaysOn": false,
+                    "http20Enabled": false,
+                    "functionAppScaleLimit": 0,
+                    "minimumElasticInstanceCount": 0
                 },
-                "autoHealEnabled": false,
-                "vnetRouteAllEnabled": false,
-                "vnetPrivatePortsCount": 0,
-                "localMySqlEnabled": false,
-                "managedServiceIdentityId": 14277,
-                "ipSecurityRestrictions": [
-                    {
-                        "ipAddress": "Any",
-                        "action": "Allow",
-                        "priority": 1,
-                        "name": "Allow all",
-                        "description": "Allow all access"
-                    }
-                ],
-                "scmIpSecurityRestrictions": [
-                    {
-                        "ipAddress": "Any",
-                        "action": "Allow",
-                        "priority": 1,
-                        "name": "Allow all",
-                        "description": "Allow all access"
-                    }
-                ],
-                "scmIpSecurityRestrictionsUseMain": false,
-                "http20Enabled": false,
-                "minTlsVersion": "1.2",
-                "scmMinTlsVersion": "1.0",
-                "ftpsState": "AllAllowed",
-                "preWarmedInstanceCount": 0,
-                "functionAppScaleLimit": 0,
-                "functionsRuntimeScaleMonitoringEnabled": false,
-                "minimumElasticInstanceCount": 0,
-                "azureStorageAccounts": {}
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "clientCertMode": "Required",
+                "hostNamesDisabled": false,
+                "customDomainVerificationId": "CDD6095C8075822A382B17BE08CE9C7DB3053A205ADBF9AE6D5AB8604AF5742F",
+                "containerSize": 0,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": true,
+                "redundancyMode": "None",
+                "storageAccountRequired": false,
+                "keyVaultReferenceIdentity": "SystemAssigned"
             }
         },
         {
-            "type": "Microsoft.Web/sites/config",
+            "type": "Microsoft.Web/sites",
             "apiVersion": "2021-01-15",
-            "name": "[concat(parameters('sites_CERADataAPI_name'), '/web')]",
+            "name": "[parameters('sites_CERADataAPI_name')]",
             "location": "East US",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_CERADataAPI_name'))]"
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_CERAPlan_name'))]"
             ],
-            "tags": { },
+            "tags": {  },
+            "kind": "app",
+            "identity": {
+                "principalId": "feb3c77b-69e5-4dcb-ac3e-ae2a8afe16a6",
+                "tenantId": "73d3d213-f87a-4465-9a7e-67bd625fdf9c",
+                "type": "SystemAssigned"
+            },
             "properties": {
-                "numberOfWorkers": 1,
-                "defaultDocuments": [
-                    "Default.htm",
-                    "Default.html",
-                    "Default.asp",
-                    "index.htm",
-                    "index.html",
-                    "iisstart.htm",
-                    "default.aspx",
-                    "index.php",
-                    "hostingstart.html"
-                ],
-                "netFrameworkVersion": "v4.0",
-                "phpVersion": "5.6",
-                "requestTracingEnabled": false,
-                "remoteDebuggingEnabled": false,
-                "httpLoggingEnabled": false,
-                "acrUseManagedIdentityCreds": false,
-                "logsDirectorySizeLimit": 35,
-                "detailedErrorLoggingEnabled": false,
-                "publishingUsername": "$CERADataAPI",
-                "scmType": "None",
-                "use32BitWorkerProcess": true,
-                "webSocketsEnabled": false,
-                "alwaysOn": false,
-                "managedPipelineMode": "Integrated",
-                "virtualApplications": [
+                "enabled": true,
+                "hostNameSslStates": [
                     {
-                        "virtualPath": "/",
-                        "physicalPath": "site\\wwwroot",
-                        "preloadEnabled": false
+                        "name": "ceradataapi.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "ceradataapi.scm.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
                     }
                 ],
-                "loadBalancing": "LeastRequests",
-                "experiments": {
-                    "rampUpRules": []
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_CERAPlan_name'))]",
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "siteConfig": {
+                    "numberOfWorkers": 1,
+                    "acrUseManagedIdentityCreds": false,
+                    "alwaysOn": false,
+                    "http20Enabled": false,
+                    "functionAppScaleLimit": 0,
+                    "minimumElasticInstanceCount": 0
                 },
-                "autoHealEnabled": false,
-                "vnetRouteAllEnabled": false,
-                "vnetPrivatePortsCount": 0,
-                "localMySqlEnabled": false,
-                "managedServiceIdentityId": 14276,
-                "ipSecurityRestrictions": [
-                    {
-                        "ipAddress": "Any",
-                        "action": "Allow",
-                        "priority": 1,
-                        "name": "Allow all",
-                        "description": "Allow all access"
-                    }
-                ],
-                "scmIpSecurityRestrictions": [
-                    {
-                        "ipAddress": "Any",
-                        "action": "Allow",
-                        "priority": 1,
-                        "name": "Allow all",
-                        "description": "Allow all access"
-                    }
-                ],
-                "scmIpSecurityRestrictionsUseMain": false,
-                "http20Enabled": false,
-                "minTlsVersion": "1.2",
-                "scmMinTlsVersion": "1.0",
-                "ftpsState": "AllAllowed",
-                "preWarmedInstanceCount": 0,
-                "functionAppScaleLimit": 0,
-                "functionsRuntimeScaleMonitoringEnabled": false,
-                "minimumElasticInstanceCount": 0,
-                "azureStorageAccounts": {}
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "clientCertMode": "Required",
+                "hostNamesDisabled": false,
+                "customDomainVerificationId": "CDD6095C8075822A382B17BE08CE9C7DB3053A205ADBF9AE6D5AB8604AF5742F",
+                "containerSize": 0,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": true,
+                "redundancyMode": "None",
+                "storageAccountRequired": false,
+                "keyVaultReferenceIdentity": "SystemAssigned"
             }
         },
         {
-            "type": "Microsoft.Web/sites/config",
+            "type": "Microsoft.Web/sites",
             "apiVersion": "2021-01-15",
-            "name": "[concat(parameters('sites_CERASyncAPI_name'), '/web')]",
+            "name": "[parameters('sites_CERASyncAPI_name')]",
             "location": "East US",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_CERASyncAPI_name'))]"
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_CERAPlan_name'))]"
             ],
             "tags": { },
+            "kind": "app",
+            "identity": {
+                "principalId": "16ed9c63-0caf-4b85-aae7-6d84026473a9",
+                "tenantId": "73d3d213-f87a-4465-9a7e-67bd625fdf9c",
+                "type": "SystemAssigned"
+            },
             "properties": {
-                "numberOfWorkers": 1,
-                "defaultDocuments": [
-                    "Default.htm",
-                    "Default.html",
-                    "Default.asp",
-                    "index.htm",
-                    "index.html",
-                    "iisstart.htm",
-                    "default.aspx",
-                    "index.php",
-                    "hostingstart.html"
-                ],
-                "netFrameworkVersion": "v4.0",
-                "phpVersion": "5.6",
-                "requestTracingEnabled": false,
-                "remoteDebuggingEnabled": false,
-                "httpLoggingEnabled": false,
-                "acrUseManagedIdentityCreds": false,
-                "logsDirectorySizeLimit": 35,
-                "detailedErrorLoggingEnabled": false,
-                "publishingUsername": "$CERASyncAPI",
-                "scmType": "None",
-                "use32BitWorkerProcess": true,
-                "webSocketsEnabled": false,
-                "alwaysOn": false,
-                "managedPipelineMode": "Integrated",
-                "virtualApplications": [
+                "enabled": true,
+                "hostNameSslStates": [
                     {
-                        "virtualPath": "/",
-                        "physicalPath": "site\\wwwroot",
-                        "preloadEnabled": false
+                        "name": "cerasyncapi.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "cerasyncapi.scm.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
                     }
                 ],
-                "loadBalancing": "LeastRequests",
-                "experiments": {
-                    "rampUpRules": []
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_CERAPlan_name'))]",
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "siteConfig": {
+                    "numberOfWorkers": 1,
+                    "acrUseManagedIdentityCreds": false,
+                    "alwaysOn": false,
+                    "http20Enabled": false,
+                    "functionAppScaleLimit": 0,
+                    "minimumElasticInstanceCount": 0
                 },
-                "autoHealEnabled": false,
-                "vnetRouteAllEnabled": false,
-                "vnetPrivatePortsCount": 0,
-                "localMySqlEnabled": false,
-                "managedServiceIdentityId": 14275,
-                "ipSecurityRestrictions": [
-                    {
-                        "ipAddress": "Any",
-                        "action": "Allow",
-                        "priority": 1,
-                        "name": "Allow all",
-                        "description": "Allow all access"
-                    }
-                ],
-                "scmIpSecurityRestrictions": [
-                    {
-                        "ipAddress": "Any",
-                        "action": "Allow",
-                        "priority": 1,
-                        "name": "Allow all",
-                        "description": "Allow all access"
-                    }
-                ],
-                "scmIpSecurityRestrictionsUseMain": false,
-                "http20Enabled": false,
-                "minTlsVersion": "1.2",
-                "scmMinTlsVersion": "1.0",
-                "ftpsState": "AllAllowed",
-                "preWarmedInstanceCount": 0,
-                "functionAppScaleLimit": 0,
-                "functionsRuntimeScaleMonitoringEnabled": false,
-                "minimumElasticInstanceCount": 0,
-                "azureStorageAccounts": {}
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "clientCertMode": "Required",
+                "hostNamesDisabled": false,
+                "customDomainVerificationId": "CDD6095C8075822A382B17BE08CE9C7DB3053A205ADBF9AE6D5AB8604AF5742F",
+                "containerSize": 0,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": true,
+                "redundancyMode": "None",
+                "storageAccountRequired": false,
+                "keyVaultReferenceIdentity": "SystemAssigned"
             }
         }
     ]
