@@ -115,18 +115,6 @@
                 "isLedgerOn": false
             }
         },
-        {
-            "type": "Microsoft.Sql/servers/keys",
-            "apiVersion": "2021-02-01-preview",
-            "name": "[concat(parameters('servers_cera_name'), '/ServiceManaged')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_cera_name'))]"
-            ],
-            "kind": "servicemanaged",
-            "properties": {
-                "serverKeyType": "ServiceManaged"
-            }
-        },
 		{
             "type": "Microsoft.Web/sites",
             "apiVersion": "2021-01-15",
