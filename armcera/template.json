@@ -11,11 +11,11 @@
             "type": "String"
         },
         "administratorLoginPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "The administrator password of the SQL logical server."
-      }
-    }
+			"type": "securestring",
+			"metadata": {
+			"description": "The administrator password of the SQL logical server."
+			}
+		},
         "sites_CERADataAPI_name": {
             "defaultValue": "CERADataAPI",
             "type": "String"
