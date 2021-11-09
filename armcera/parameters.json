@@ -2,17 +2,11 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "vulnerabilityAssessments_Default_storageContainerPath": {
-            "value":"https://meenastg.blob.core.windows.net/meenacont"
-        },
         "sites_Cera_name": {
             "value": "cerapojectsite"
         },
         "servers_cera_name": {
             "value": "cerapojectservers"
-        },
-        "administratorLoginPassword": {
-            "value": "Quadrant123"
         },
         "sites_CERADataAPI_name": {
             "value": "cerapojectapi"
@@ -25,21 +19,6 @@
         },
         "serverfarms_CERAPlan_name": {
             "value": "ceraserverfarms"
-        },
-        "actionGroups_Application_Insights_Smart_Detection_name": {
-            "value": "ceraactiongroups"
-        },
-        "smartdetectoralertrules_failure_anomalies___cera_name": {
-            "value": "cerasmartdete"
-        },
-        "smartdetectoralertrules_failure_anomalies___cerasyncapi_name": {
-            "value": "cerarules"
-        },
-        "smartdetectoralertrules_failure_anomalies___quadrantrestapiinsights_name": {
-            "value": "cerarulesana"
-        },
-        "components_quadrantrestapiinsights_externalid": {
-            "value": "cereacomponets"
         }
     }
 }
