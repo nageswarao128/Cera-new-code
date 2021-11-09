@@ -138,7 +138,7 @@
             "tags": {},
             "kind": "app",
             "identity": {
-                "principalId": "cd9b42ed-ed5b-4b04-84f1-cc37e880fc5f",
+                "principalId": "",
                 "tenantId": "73d3d213-f87a-4465-9a7e-67bd625fdf9c",
                 "type": "SystemAssigned"
             },
@@ -193,7 +193,7 @@
             "tags": {  },
             "kind": "app",
             "identity": {
-                "principalId": "feb3c77b-69e5-4dcb-ac3e-ae2a8afe16a6",
+                "principalId": "",
                 "tenantId": "73d3d213-f87a-4465-9a7e-67bd625fdf9c",
                 "type": "SystemAssigned"
             },
@@ -248,7 +248,7 @@
             "tags": { },
             "kind": "app",
             "identity": {
-                "principalId": "16ed9c63-0caf-4b85-aae7-6d84026473a9",
+                "principalId": "",
                 "tenantId": "73d3d213-f87a-4465-9a7e-67bd625fdf9c",
                 "type": "SystemAssigned"
             },
