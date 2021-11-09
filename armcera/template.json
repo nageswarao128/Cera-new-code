@@ -127,7 +127,7 @@
             "kind": "app",
             "identity": {
                 "principalId": "",
-                "tenantId": "73d3d213-f87a-4465-9a7e-67bd625fdf9c",
+                "tenantId": "",
                 "type": "SystemAssigned"
             },
             "properties": {
@@ -182,7 +182,7 @@
             "kind": "app",
             "identity": {
                 "principalId": "",
-                "tenantId": "73d3d213-f87a-4465-9a7e-67bd625fdf9c",
+                "tenantId": "",
                 "type": "SystemAssigned"
             },
             "properties": {
@@ -237,7 +237,7 @@
             "kind": "app",
             "identity": {
                 "principalId": "",
-                "tenantId": "73d3d213-f87a-4465-9a7e-67bd625fdf9c",
+                "tenantId": "",
                 "type": "SystemAssigned"
             },
             "properties": {
