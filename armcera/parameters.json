@@ -5,6 +5,9 @@
         "sites_Cera_name": {
             "value": "cerapojectsite"
         },
+        "administratorLoginPassword": {
+            "value": "Quadrant123"
+        },
         "servers_cera_name": {
             "value": "cerapojectservers"
         },
