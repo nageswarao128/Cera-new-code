@@ -36,37 +36,6 @@
     "variables": {},
     "resources": [
         {
-            "type": "microsoft.insights/actionGroups",
-            "apiVersion": "2019-06-01",
-            "name": "[parameters('actionGroups_Application_Insights_Smart_Detection_name')]",
-            "location": "Global",
-            "properties": {
-                "groupShortName": "SmartDetect",
-                "enabled": true,
-                "emailReceivers": [],
-                "smsReceivers": [],
-                "webhookReceivers": [],
-                "itsmReceivers": [],
-                "azureAppPushReceivers": [],
-                "automationRunbookReceivers": [],
-                "voiceReceivers": [],
-                "logicAppReceivers": [],
-                "azureFunctionReceivers": [],
-                "armRoleReceivers": [
-                    {
-                        "name": "Monitoring Contributor",
-                        "roleId": "749f88d5-cbae-40b8-bcfc-e573ddc772fa",
-                        "useCommonAlertSchema": true
-                    },
-                    {
-                        "name": "Monitoring Reader",
-                        "roleId": "43d0d8ad-25c7-4714-9337-8ba259a9fe05",
-                        "useCommonAlertSchema": true
-                    }
-                ]
-            }
-        },
-        {
             "type": "microsoft.insights/components",
             "apiVersion": "2020-02-02",
             "name": "[parameters('components_CERA_name')]",
