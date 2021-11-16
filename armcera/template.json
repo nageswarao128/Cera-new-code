@@ -2,9 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "vulnerabilityAssessments_Default_storageContainerPath": {
-            "type": "SecureString"
-        },
         "sites_Cera_name": {
             "defaultValue": "Cera_bindhu",
             "type": "String"
@@ -816,22 +813,7 @@
                 "emailAccountAdmins": false,
                 "retentionDays": 0
             }
-        },
-        {
-            "type": "Microsoft.Sql/servers/vulnerabilityAssessments",
-            "apiVersion": "2021-02-01-preview",
-            "name": "[concat(parameters('servers_cera_name'), '/Default')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_cera_name'))]"
-            ],
-            "properties": {
-                "recurringScans": {
-                    "isEnabled": false,
-                    "emailSubscriptionAdmins": true
-                },
-                "storageContainerPath": "[parameters('vulnerabilityAssessments_Default_storageContainerPath')]"
-            }
-        },
+        },  
         {
             "type": "Microsoft.Web/sites",
             "apiVersion": "2021-01-15",
