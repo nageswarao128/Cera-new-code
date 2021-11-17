@@ -978,33 +978,6 @@
                 "siteName": "CERASyncAPI",
                 "hostNameType": "Verified"
             }
-        },
-        {
-            "type": "Microsoft.Web/sites/siteextensions",
-            "apiVersion": "2021-01-15",
-            "name": "[concat(parameters('sites_Cera_name'), '/Microsoft.AspNetCore.AzureAppServices.SiteExtension')]",
-            "location": "East US",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_Cera_name'))]"
-            ]
-        },
-        {
-            "type": "Microsoft.Web/sites/siteextensions",
-            "apiVersion": "2021-01-15",
-            "name": "[concat(parameters('sites_CERADataAPI_name'), '/Microsoft.AspNetCore.AzureAppServices.SiteExtension')]",
-            "location": "East US",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_CERADataAPI_name'))]"
-            ]
-        },
-        {
-            "type": "Microsoft.Web/sites/siteextensions",
-            "apiVersion": "2021-01-15",
-            "name": "[concat(parameters('sites_CERASyncAPI_name'), '/Microsoft.AspNetCore.AzureAppServices.SiteExtension')]",
-            "location": "East US",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_CERASyncAPI_name'))]"
-            ]
-        }       
+        }     
     ]
 }
