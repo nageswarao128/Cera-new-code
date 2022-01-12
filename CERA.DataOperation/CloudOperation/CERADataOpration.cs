@@ -4,6 +4,7 @@ using CERA.Entities;
 using CERA.Entities.Models;
 using CERA.Entities.ViewModels;
 using CERA.Logging;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,14 +19,14 @@ namespace CERA.DataOperation
         private readonly ICeraConverter _converter;
         private readonly CeraSpContext _spContext;
 
-        public CERADataOperation(CeraDbContext dbContext, ICeraLogger logger, ICeraConverter converter,CeraSpContext spContext)
+        public CERADataOperation(CeraDbContext dbContext, ICeraLogger logger, ICeraConverter converter, CeraSpContext spContext)
         {
             _logger = logger;
             _dbContext = dbContext;
             _converter = converter;
             _spContext = spContext;
         }
-      
+
         public object AddServicePlanData(object data)
         {
             return new object();
@@ -46,20 +47,27 @@ namespace CERA.DataOperation
             try
             {
                 _logger.LogInfo("Receive Data");
-                var resource = _dbContext.Resources.ToList();
-                foreach (var item in resource)
+                List<CeraResources> dbdata = null;
+                foreach (var item in resources)
                 {
-                    _dbContext.Resources.Remove(item);
-
+                    dbdata = _dbContext.Resources.Where(x => x.CloudProvider == item.CloudProvider && x.IsActive == true).ToList();
                 }
-                _dbContext.SaveChanges();
-                foreach (var Resource in resources)
-                {
 
-                    _dbContext.Resources.Add(Resource);
+                var diffids = dbdata.Select(s => s.ResourceID);
+                var AddData = resources.Where(m => !diffids.Contains(m.ResourceID)).ToList();
+                foreach (var item in AddData)
+                {
+                    _dbContext.Resources.Add(item);
+                }
+                var diffidsfordb = resources.Select(s => s.ResourceID);
+                var UpdateData = dbdata.Where(m => !diffidsfordb.Contains(m.ResourceID)).ToList();
+
+                foreach (var data in UpdateData)
+                {
+                    data.IsActive = false;
+                    _dbContext.Resources.Update(data);
                 }
                 int record = _dbContext.SaveChanges();
-                _logger.LogInfo("Data Imported Successfully");
                 return record;
             }
             catch (Exception ex)
@@ -77,7 +85,7 @@ namespace CERA.DataOperation
         {
             try
             {
-                var Resources = _dbContext.Resources.ToList();
+                var Resources = _dbContext.Resources.Where(x => x.IsActive == true).ToList();
                 _logger.LogInfo("Data retrieved for Resources List from Database");
                 return Resources;
             }
@@ -105,23 +113,24 @@ namespace CERA.DataOperation
                     dbdata = _dbContext.StorageAccounts.Where(x => x.CloudProvider == item.CloudProvider && x.IsActive == true).ToList();
                 }
 
-                var diffids = dbdata.Select(s => s.Name);
-                var AddData = storageAccounts.Where(m => !diffids.Contains(m.Name)).ToList();
+                var diffids = dbdata.Select(s => s.StorageAccountId);
+                var AddData = storageAccounts.Where(m => !diffids.Contains(m.StorageAccountId)).ToList();
                 foreach (var item in AddData)
                 {
                     _dbContext.StorageAccounts.Add(item);
                 }
-                var diffidsfordb = storageAccounts.Select(s => s.Name);
-                var UpdateData = dbdata.Where(m => !diffidsfordb.Contains(m.Name)).ToList();
+                var diffidsfordb = storageAccounts.Select(s => s.StorageAccountId);
+                var UpdateData = dbdata.Where(m => !diffidsfordb.Contains(m.StorageAccountId)).ToList();
 
                 foreach (var data in UpdateData)
                 {
                     data.IsActive = false;
                     _dbContext.StorageAccounts.Update(data);
                 }
+
                 int record = _dbContext.SaveChanges();
                 return record;
-                
+
             }
             catch (Exception ex)
             {
@@ -129,23 +138,62 @@ namespace CERA.DataOperation
                 return 0;
             }
         }
+        public int AddStorageSize(List<StorageSize> data)
+        {
+            try
+            {
+                var dbData = _dbContext.storageSize.ToList();
+                foreach (var item in dbData)
+                {
+                    _dbContext.storageSize.Remove(item);
+                }
+                _dbContext.SaveChanges();
+                foreach (var item in data)
+                {
+                    _dbContext.storageSize.Add(item);
+                }
+                int record = _dbContext.SaveChanges();
+                return record;
+            }
+            catch (Exception ex)
+            {
 
+                _logger.LogException(ex);
+                return 0;
+            }
+        }
         /// <summary>
         /// This method will retrives the StorageAccount data from database
         /// </summary>
         /// <returns>returns StorageAccount data</returns>
-        public List<CeraStorageAccount> GetStorageAccount()
+        public List<StorageAccountsVM> GetStorageAccount()
         {
             try
             {
-                var storageAccounts = _dbContext.StorageAccounts.ToList();
+                var data = _spContext.storageAccounts.FromSqlRaw<StorageAccountsVM>("[dbo].[Sp_StorageAccounts]").ToList();
                 _logger.LogInfo("Data retrieved for StorageAccounts List from Database");
-                return storageAccounts;
+                return data;
             }
             catch (Exception ex)
             {
                 _logger.LogException(ex);
                 return null;
+            }
+        }
+
+
+        public List<StorageSize> GetStorageSizes()
+        {
+            try
+            {
+                var data = _dbContext.storageSize.ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return null;
+
             }
         }
 
@@ -181,7 +229,7 @@ namespace CERA.DataOperation
                 }
                 int record = _dbContext.SaveChanges();
                 return record;
-                
+
             }
             catch (Exception ex)
             {
@@ -194,11 +242,11 @@ namespace CERA.DataOperation
         /// This method will retrives the ResourceGroups data from database
         /// </summary>
         /// <returns>returns ResourceGroups data</returns>
-        public List<CeraResourceGroups> GetResourceGroups()
+        public List<ResourceGroupsVM> GetResourceGroups()
         {
             try
             {
-                var ResourceGroups = _dbContext.resourceGroups.ToList();
+                var ResourceGroups = _spContext.resourceGroups.FromSqlRaw<ResourceGroupsVM>("[dbo].[Sp_ResourceGroups]").ToList();
                 _logger.LogInfo("Data retrieved for ResourceGroups List from Database");
                 return ResourceGroups;
             }
@@ -259,7 +307,8 @@ namespace CERA.DataOperation
         {
             try
             {
-                var subscriptions = _dbContext.Subscriptions.ToList();
+                var subscriptions = _dbContext.Subscriptions.Where(x => x.IsActive == true).ToList();
+
                 _logger.LogInfo("Data retrieved for Subcription List from Database");
                 return subscriptions;
             }
@@ -335,12 +384,13 @@ namespace CERA.DataOperation
         /// </summary>
         /// <param name="resources"></param>
         /// <returns>returns 1 or 0</returns>
-        public int AddVMData( List<CeraVM> ceraVMs)
+        public int AddVMData(List<CeraVM> ceraVMs)
         {
             try
             {
                 _logger.LogInfo("Receive Data");
                 List<CeraVM> dbdata = null;
+
                 foreach (var item in ceraVMs)
                 {
                     dbdata = _dbContext.ceraVMs.Where(x => x.CloudProvider == item.CloudProvider && x.IsActive == true).ToList();
@@ -375,16 +425,80 @@ namespace CERA.DataOperation
         /// This method will retrives the VirtualMachines data from database
         /// </summary>
         /// <returns>returns VirtualMachines data</returns>
-        public List<CeraVM> GetVM()
+        public List<ResourcesModel> GetVM()
         {
             try
             {
-                var Vm = _dbContext.ceraVMs.ToList();
+                var Vm = _spContext.resources.FromSqlRaw<ResourcesModel>("[dbo].[Sp_VM]").ToList();
                 _logger.LogInfo("Data retrieved for Virtual Machines List from Database");
                 return Vm;
             }
             catch (Exception ex)
             {
+                _logger.LogException(ex);
+                return null;
+            }
+        }
+
+        public List<ResourcesModel> GetResourceGroupResources(string name)
+        {
+            try
+            {
+                SqlParameter parameter = new SqlParameter();
+                parameter.ParameterName = "@name";
+                parameter.SqlDbType= System.Data.SqlDbType.NVarChar;
+                parameter.Value = name;
+                var resources = _spContext.resources.FromSqlRaw<ResourcesModel>("Sp_ResourceGroupResources @name",parameter).ToList();
+                _logger.LogInfo($"Resources Data retrieved for Resource Group : {name} ");
+                return resources;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogException(ex);
+                return null;
+            }
+        }
+
+        public List<BarChartModel> GetBarChartCloudData(string cloud)
+        {
+            try
+            {
+                SqlParameter parameter = new SqlParameter();
+                parameter.ParameterName = "@cloudProvider";
+                parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+                parameter.Value = cloud;
+                var resources = _spContext.barCharts.FromSqlRaw<BarChartModel>("Sp_BarChartCloudFilter @cloudProvider", parameter).ToList();
+                _logger.LogInfo($"Resources Data retrieved for Resource Group : {cloud} ");
+                return resources;
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogException(ex);
+                return null;
+            }
+        }
+        public List<BarChartModel> GetBarChartSubscriptionData(string cloud, string subscriptionId)
+        {
+            try
+            {
+                SqlParameter parameter = new SqlParameter();
+                parameter.ParameterName = "@cloud";
+                parameter.SqlDbType = System.Data.SqlDbType.NVarChar;
+                parameter.Value = cloud;
+
+                SqlParameter parameter1 = new SqlParameter();
+                parameter1.ParameterName = "@subscriptionId";
+                parameter1.SqlDbType = System.Data.SqlDbType.NVarChar;
+                parameter1.Value = subscriptionId;
+
+                var resources = _spContext.barCharts.FromSqlRaw<BarChartModel>("Sp_BarChartSubscriptionFilter @cloud,@subscriptionId", parameter,parameter1).ToList();
+                _logger.LogInfo($"Resources Data retrieved for Resource Group : {subscriptionId} ");
+                return resources;
+            }
+            catch (Exception ex)
+            {
+
                 _logger.LogException(ex);
                 return null;
             }
@@ -422,7 +536,7 @@ namespace CERA.DataOperation
                 }
                 int record = _dbContext.SaveChanges();
                 return record;
-                
+
             }
             catch (Exception ex)
             {
@@ -482,7 +596,7 @@ namespace CERA.DataOperation
                 }
                 int record = _dbContext.SaveChanges();
                 return record;
-                
+
             }
             catch (Exception ex)
             {
@@ -495,11 +609,11 @@ namespace CERA.DataOperation
         /// This method will retrives the WebApps data from database
         /// </summary>
         /// <returns>returns WebApps data</returns>
-        public List<CeraWebApps> GetWebApps()
+        public List<ResourcesModel> GetWebApps()
         {
             try
             {
-                var webApps = _dbContext.CeraWebApps.ToList();
+                var webApps = _spContext.resources.FromSqlRaw<ResourcesModel>("[dbo].[Sp_WebApps]").ToList();
                 _logger.LogInfo("Data retrieved for WebApps List from Database");
                 return webApps;
             }
@@ -542,7 +656,7 @@ namespace CERA.DataOperation
                 }
                 int record = _dbContext.SaveChanges();
                 return record;
-                
+
             }
             catch (Exception ex)
             {
@@ -602,7 +716,7 @@ namespace CERA.DataOperation
                 }
                 int record = _dbContext.SaveChanges();
                 return record;
-                
+
             }
             catch (Exception ex)
             {
@@ -675,7 +789,7 @@ namespace CERA.DataOperation
         {
             try
             {
-                var resourceHealth = _dbContext.ResourceHealth.ToList();
+                var resourceHealth = _dbContext.ResourceHealth.Where(x => x.IsActive == true).ToList();
                 _logger.LogInfo("Data retrieved for Resources Health List from Database");
                 return resourceHealth;
             }
@@ -713,7 +827,7 @@ namespace CERA.DataOperation
                 }
                 int record = _dbContext.SaveChanges();
                 return record;
-                
+
             }
             catch (Exception ex)
             {
@@ -774,7 +888,7 @@ namespace CERA.DataOperation
                 }
                 int record = _dbContext.SaveChanges();
                 return record;
-                
+
             }
             catch (Exception ex)
             {
@@ -788,11 +902,11 @@ namespace CERA.DataOperation
             {
                 _logger.LogInfo("Receive Data");
                 List<CeraUsage> dbdata = null;
-                foreach(var item in data)
+                foreach (var item in data)
                 {
                     dbdata = _dbContext.UsageDetails.Where(x => x.CloudProvider == item.CloudProvider).ToList();
                 }
-                
+
                 foreach (var item in dbdata)
                 {
                     _dbContext.UsageDetails.Remove(item);
@@ -818,10 +932,10 @@ namespace CERA.DataOperation
             {
                 _logger.LogInfo("Receive Data");
                 List<UsageByMonth> dbdata = null;
-                foreach(var item in data)
+                foreach (var item in data)
                 {
                     dbdata = _dbContext.UsageByMonth.Where(x => x.CloudProvider == item.CloudProvider).ToList();
-                }              
+                }
                 foreach (var item in dbdata)
                 {
                     _dbContext.UsageByMonth.Remove(item);
@@ -848,10 +962,10 @@ namespace CERA.DataOperation
             {
                 _logger.LogInfo("Receive Data");
                 List<UsageHistory> dbdata = null;
-                foreach(var item in data)
+                foreach (var item in data)
                 {
                     dbdata = _dbContext.usageHistory.Where(x => x.CloudProvider == item.CloudProvider).ToList();
-                }               
+                }
                 foreach (var item in dbdata)
                 {
                     _dbContext.usageHistory.Remove(item);
@@ -980,7 +1094,7 @@ namespace CERA.DataOperation
                 return null;
             }
         }
-       
+
         public List<CeraUsage> GetUsageDetails()
         {
             try

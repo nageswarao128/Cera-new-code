@@ -48,6 +48,7 @@ namespace CERA.DataOperation.Data
         public DbSet<PolicyRules> PolicyRules { get; set; }
         public DbSet<UsageByMonth> UsageByMonth { get; set; }
         public DbSet<UsageHistory> usageHistory { get; set; }
+        public DbSet<StorageSize> storageSize { get; set; }
     }
     
 }

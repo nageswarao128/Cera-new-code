@@ -51,7 +51,7 @@ namespace CERADataAPI.Controllers
         /// </summary>
         /// <returns>returns Virtual Machines data from database</returns>
         [HttpGet]
-        public IEnumerable<CeraVM> GetDBVM()
+        public IEnumerable<ResourcesModel> GetDBVM()
         {
             return ceraCloud.GetVMList();
         }
@@ -61,7 +61,7 @@ namespace CERADataAPI.Controllers
         /// </summary>
         /// <returns>returns ResourceGroups data from database</returns>
         [HttpGet]
-        public IEnumerable<CeraResourceGroups> GetDBResourceGroups()
+        public IEnumerable<ResourceGroupsVM> GetDBResourceGroups()
         {
             return ceraCloud.GetResourceGroupsList();
         }
@@ -71,9 +71,15 @@ namespace CERADataAPI.Controllers
         /// </summary>
         /// <returns>returns StorageAccount data from database</returns>
         [HttpGet]
-        public IEnumerable<CeraStorageAccount> GetDBStorageAccount()
+        public IEnumerable<StorageAccountsVM> GetDBStorageAccount()
         {
             return ceraCloud.GetStorageAccountList();
+        }
+
+        [HttpGet]
+        public List<StorageSize> GetStorageSizes()
+        {
+            return ceraCloud.GetStorageSizes();
         }
 
         /// <summary>
@@ -101,7 +107,7 @@ namespace CERADataAPI.Controllers
         /// </summary>
         /// <returns>returns WebApps data from database</returns>
         [HttpGet]
-        public IEnumerable<CeraWebApps> GetDBWebApps()
+        public IEnumerable<ResourcesModel> GetDBWebApps()
         {
             return ceraCloud.GetWebAppsList();
         }
@@ -575,6 +581,48 @@ namespace CERADataAPI.Controllers
         public List<DashboardCountModel> GetDashboardSubscriptionLocationFilters(string location, string cloudprovider, string subscriptionid)
         {
             return ceraCloud.GetDashboardSubscriptionLocationFilters(location, cloudprovider, subscriptionid);
+        }
+
+        [HttpGet]
+        public List<Dashboardresources> GetComputeResources()
+        {
+            return ceraCloud.GetComputeResources();
+        }
+
+        [HttpGet]
+        public List<Dashboardresources> GetNetworkResources()
+        {
+            return ceraCloud.GetNetworkResources();
+        }
+
+        [HttpGet]
+        public List<Dashboardresources> GetStorageResources()
+        {
+            return ceraCloud.GetStorageResources();
+        }
+
+        [HttpGet]
+        public List<Dashboardresources> GetOtherResources()
+        {
+            return ceraCloud.GetOtherResources();
+        }
+
+        [HttpGet]
+        public List<ResourcesModel> GetResourceGroupResources(string name)
+        {
+            return ceraCloud.GetResourceGroupResources(name);
+        }
+
+        [HttpGet]
+        public List<BarChartModel> GetBarChartCloudData(string cloud)
+        {
+            return ceraCloud.GetBarChartCloudData(cloud);
+        }
+
+        [HttpGet]
+        public List<BarChartModel> GetBarChartSubscriptionData(string cloud, string subscriptionId)
+        {
+            return ceraCloud.GetBarChartSubscriptionData(cloud, subscriptionId);
         }
     }
 }

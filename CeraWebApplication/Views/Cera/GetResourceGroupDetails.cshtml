@@ -1,4 +1,4 @@
-﻿@model List<CeraWebApplication.Models.CeraResourceGroup>
+﻿@model List<CeraWebApplication.Models.ResourceGroupsVM>
 
 @{
     Layout = "~/Views/Shared/_ResourcesLayout.cshtml";
@@ -30,7 +30,7 @@
                         Region
                     </th>
                     <th>
-                        provisioningstate
+                        Cost (INR)
                     </th>
                 </tr>
             </thead>
@@ -40,14 +40,22 @@
                     <tr>
 
                         <td>
-                            @Html.DisplayFor(modelItem => item.Name)
+                            @Html.ActionLink(item.Name,"GetResourceGroupResources","Cera", new {name = item.Name})
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.RegionName)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.provisioningstate)
-                        </td>
+                        @if (item.cost == null)
+                        {
+                            <td>₹ 0.00</td>
+                        }
+                        else
+                        {
+                            <td>
+                               ₹ @Html.DisplayFor(modelItem => item.cost)
+                            </td>
+                        }
+
                     </tr>
                 }
             </tbody>
@@ -110,14 +118,14 @@
     //    }
 
     function getdataCloud() {
-      
+
         cloud = $('#ddlCloud').val();
         console.log('selected cloud', cloud);
         let subscriptionid = $('#ddlSub').val();
         if (subscriptionid == "AllSubscriptions") {
             if (cloud == "AllClouds") {
                 $('#subscriptionFilter').hide();
-              
+
                 clouddata = [];
                 clouddata = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.data))');
                 console.log('AllCloudsdata', clouddata);
@@ -126,7 +134,7 @@
             else if (cloud == "Azure") {
                 debugger;
                 $('#subscriptionFilter').show();
-              
+
                 //subscriptiondata();
                 data = [];
                 dataarr = [];
@@ -156,7 +164,7 @@
         else {
             if (cloud == "AllClouds") {
                 $('#subscriptionFilter').hide();
-                
+
                 clouddata = [];
                 clouddata = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.data))');
                 console.log('AllCloudsdata', clouddata);
@@ -198,12 +206,19 @@
         if (data != null) {
 
             let html = '';
-       
+
             for (let i = 0; i < data.length; i++) {
                 html += '<tr>';
-                html += '<td>' + data[i].name + '</td>';
+                html += '<td><a href="GetResourceGroupResources?name=' + data[i].name +'">' + data[i].name + '</a></td>';
                 html += '<td>' + data[i].regionName + '</td>';
-                html += '<td>' + data[i].provisioningstate + '</td>';
+                if (data[i].cost == null) {
+                    html += '<td>' +'₹ 0.00' + '</td>';
+                }
+                else
+                {
+                    html += '<td>' +'₹' +data[i].cost + '</td>';
+                }
+
                 html += '</tr>';
             }
             $('#myTable').empty();

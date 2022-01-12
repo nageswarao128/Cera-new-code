@@ -1,4 +1,8 @@
-﻿using CERA.AuthenticationService;
+﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using Azure.Storage.Files.Shares;
+using Azure.Storage.Files.Shares.Specialized;
+using CERA.AuthenticationService;
 using CERA.CloudService;
 using CERA.Entities;
 using CERA.Entities.Models;
@@ -38,28 +42,28 @@ namespace CERA.Azure.CloudService
             authenticator = new CeraAzureAuthenticator(Logger);
             authenticator.Initialize(tenantId, clientID, clientSecret, authority);
         }
-        public void Initialize()
+        public void Initialize(RequestInfoViewModel requestInfo)
         {
-            string clientId = AzureAuth.Default.ClientId;
-            string tenantId = AzureAuth.Default.tenantId;
-            string clientSecret = AzureAuth.Default.Clientsecert;
-            string authority = AzureAuth.Default.authority;
+            string clientId = requestInfo.clientId;
+            string tenantId = requestInfo.tenantId;
+            string clientSecret = requestInfo.clientSecret;
+            string authority = "https://login.microsoftonline.com/{0}/v2.0";
             authenticator = new CeraAzureAuthenticator(Logger);
             authenticator.Initialize(tenantId, clientId, clientSecret, authority);
         }
-        public IAuthenticated GetToken(string token,string tenantId)
+        public IAuthenticated GetToken(RequestInfoViewModel requestInfo)
         {
-            
-            if (token != null)
+
+            if (requestInfo.token != null)
             {
                 Logger.LogInfo("Obtained ID Token");
                 authenticator = new CeraAzureAuthenticator(Logger);
-                var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential(token, tenantId);
+                var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential(requestInfo.token, requestInfo.tenantId);
                 return authClient;
             }
             else
             {
-                Initialize();
+                Initialize(requestInfo);
                 var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
                 return authClient;
             }
@@ -78,7 +82,7 @@ namespace CERA.Azure.CloudService
             {
                 //Initialize();
                 //var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
-                var authClient = GetToken(requestInfo.token, requestInfo.tenantId);
+                var authClient = GetToken(requestInfo);
                 Logger.LogInfo("Auth Client Initialized");
                 List<CeraResources> ceraResources = new List<CeraResources>();
                 foreach (var sub in subscriptions)
@@ -102,11 +106,11 @@ namespace CERA.Azure.CloudService
                                     Id = resource.Id,
                                     ResourceProviderNameSpace = resource.ResourceProviderNamespace,
                                     Tags = true,
-                                    CloudProvider=cloudProvider,
-                                    IsActive=true,
-                                    SubscriptionId=sub.SubscriptionId
+                                    CloudProvider = cloudProvider,
+                                    IsActive = true,
+                                    SubscriptionId = sub.SubscriptionId
 
-                                }) ;
+                                });
                             }
                             else
                             {
@@ -119,12 +123,12 @@ namespace CERA.Azure.CloudService
                                     Id = resource.Id,
                                     ResourceProviderNameSpace = resource.ResourceProviderNamespace,
                                     Tags = false,
-                                    CloudProvider= cloudProvider,
-                                    IsActive=true,
-                                    SubscriptionId=sub.SubscriptionId
+                                    CloudProvider = cloudProvider,
+                                    IsActive = true,
+                                    SubscriptionId = sub.SubscriptionId
                                 });
                             }
-                            
+
                         }
 
                     }
@@ -153,7 +157,7 @@ namespace CERA.Azure.CloudService
         {
             try
             {
-                Initialize();
+                Initialize(requestInfo);
                 var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
                 Logger.LogInfo("Auth Client Initialized");
                 List<CeraResourceGroups> ceraResourceGroups = new List<CeraResourceGroups>();
@@ -171,10 +175,11 @@ namespace CERA.Azure.CloudService
                             {
                                 Name = resource.Name,
                                 RegionName = resource.RegionName,
+                                SubscriptionId = sub.SubscriptionId,
                                 provisioningstate = resource.ProvisioningState,
-                                CloudProvider= cloudProvider,
-                                IsActive=true,
-                                Resourcegroupid=resource.Id
+                                CloudProvider = cloudProvider,
+                                IsActive = true,
+                                Resourcegroupid = resource.Id
 
                             });
                         }
@@ -205,10 +210,17 @@ namespace CERA.Azure.CloudService
         {
             try
             {
-                Initialize();
+                Initialize(requestInfo);
                 var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
                 Logger.LogInfo("Auth Client Initialized");
                 List<CeraStorageAccount> ceraStorageAccounts = new List<CeraStorageAccount>();
+                List<CeraSynapseDTO> ceraSynapses = new List<CeraSynapseDTO>();
+                string url;
+                url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.Synapse/workspaces?api-version=2021-06-01";
+                var data = CallAzureEndPoint(requestInfo, url, subscriptions);
+                JObject result = JObject.Parse(data.Result);
+                var clientarray = result["value"].Value<JArray>();
+                ceraSynapses = clientarray.ToObject<List<CeraSynapseDTO>>();
                 foreach (var sub in subscriptions)
                 {
                     var azureStorageAccount = authClient.WithSubscription(sub.SubscriptionId).StorageAccounts.ListAsync().Result;
@@ -221,13 +233,32 @@ namespace CERA.Azure.CloudService
                         {
                             ceraStorageAccounts.Add(new CeraStorageAccount
                             {
+                                StorageAccountId = storage.Id,
                                 Name = storage.Name,
                                 RegionName = storage.RegionName,
                                 ResourceGroupName = storage.ResourceGroupName,
-                                CloudProvider= cloudProvider,
-                                IsActive=true,
-                                SubscriptionId=sub.SubscriptionId
-
+                                CloudProvider = cloudProvider,
+                                IsActive = true,
+                                SubscriptionId = sub.SubscriptionId,
+                                ResourceType = storage.Type.Split("/")[0],
+                                //blobSize = size
+                            });
+                        }
+                    }
+                    if (ceraSynapses != null)
+                    {
+                        foreach (var storage in ceraSynapses)
+                        {
+                            ceraStorageAccounts.Add(new CeraStorageAccount
+                            {
+                                StorageAccountId = storage.id,
+                                Name = storage.name,
+                                RegionName = storage.location,
+                                ResourceGroupName = storage.id.Split("/")[4],
+                                CloudProvider = cloudProvider,
+                                IsActive = true,
+                                SubscriptionId = sub.SubscriptionId,
+                                ResourceType = storage.type.Split("/")[0]
                             });
                         }
                     }
@@ -240,12 +271,310 @@ namespace CERA.Azure.CloudService
             }
             catch (Exception ex)
             {
-                Logger.LogError("Failed get Azure Storage Accounts List");
+
                 Logger.LogException(ex);
                 return null;
             }
         }
 
+        public async Task<List<StorageSize>> GetCloudStorageSize(RequestInfoViewModel requestInfo, List<CeraStorageAccount> storageAccounts)
+        {
+            List<StorageSize> storageSizes = new List<StorageSize>();
+            List<StorageAccountKey> storageAccountKeys = new List<StorageAccountKey>();
+            List<StorageContainersList> containersLists = new List<StorageContainersList>();
+            List<StorageContainerKeysMapDTO> storageContainerKeys = new List<StorageContainerKeysMapDTO>();
+            List<StorageblobSize> storageblobSizes = new List<StorageblobSize>();
+            storageAccountKeys = await GetStorageAccountkeys(requestInfo, storageAccounts);
+            containersLists = await GetStorageContainers(requestInfo, storageAccounts);
+            foreach (var container in containersLists)
+            {
+                foreach (var key in storageAccountKeys)
+                {
+                    if (container.storageAccountName == key.storageAccountName)
+                    {
+                        storageContainerKeys.Add(new StorageContainerKeysMapDTO
+                        {
+                            storageAccountId=key.storageAccountId,
+                            storageAccountName = key.storageAccountName,
+                            containerName = container.container,
+                            key = key.key
+                        });
+                    }
+                }
+            }
+
+            storageblobSizes = GetBlobContainerSize(storageContainerKeys);
+            foreach (var storage in storageblobSizes)
+            {
+                //float? size = 0;
+                //foreach (var sizes in storageblobSizes)
+                //{
+                //    if (sizes.storageType=="Blob" && sizes.storageAccountName.Contains(storage.Name))
+                //    {
+                //        size += sizes.size;
+                //    }
+                //}
+                storageSizes.Add(new StorageSize
+                {
+                    ResourceID = storage.storageAccountId,
+                    Name=storage.name,
+                    StorageType = storage.storageType,
+                    Size = storage.size
+                });
+            }
+            storageContainerKeys.Clear();
+            storageblobSizes.Clear();
+            containersLists.Clear();
+            containersLists = await GetStorageFileShares(requestInfo, storageAccounts);
+            foreach (var container in containersLists)
+            {
+                foreach (var key in storageAccountKeys)
+                {
+                    if (container.storageAccountName == key.storageAccountName)
+                    {
+                        storageContainerKeys.Add(new StorageContainerKeysMapDTO
+                        {
+                            storageAccountId=key.storageAccountId,
+                            storageAccountName = key.storageAccountName,
+                            containerName = container.container,
+                            key = key.key
+                        });
+                    }
+                }
+            }
+            storageblobSizes = GetStorageFileShareSize(storageContainerKeys);
+            foreach (var storage in storageblobSizes)
+            {
+                //float? size = 0;
+                //foreach (var sizes in storageblobSizes)
+                //{
+                //    if (sizes.storageType == "FileShare" && sizes.storageAccountName.Contains(storage.Name))
+                //    {
+                //        size += sizes.size;
+                //    }
+                //}
+                storageSizes.Add(new StorageSize
+                {
+                    ResourceID = storage.storageAccountId,
+                    Name=storage.name,
+                    StorageType = storage.storageType,
+                    Size = storage.size
+                });
+            }
+            return storageSizes;
+        }
+        public List<StorageblobSize> GetBlobContainerSize(List<StorageContainerKeysMapDTO> storageContainerKeys)
+        {
+
+
+            List<StorageblobSize> blobSize = new List<StorageblobSize>();
+            try
+            {
+                foreach (var item in storageContainerKeys)
+                {
+                    float? size = 0;
+                    
+                    string connectionString = string.Format("DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1};EndpointSuffix=core.windows.net", item.storageAccountName, item.key);
+
+                    BlobContainerClient blobContainerClient = new BlobContainerClient(connectionString, item.containerName);
+
+                    var blobs = blobContainerClient.GetBlobs();
+                    foreach (BlobItem blobItem in blobs)
+                    {
+                        size += (blobItem.Properties.ContentLength / 1024f) / 1024f;
+                        
+                    }
+
+                    blobSize.Add(new StorageblobSize
+                    {
+                        storageAccountId=item.storageAccountId,
+                        storageAccountName = item.storageAccountName,
+                        name=item.containerName,
+                        storageType ="Blob",
+                        size = size
+                    });
+                }
+                return blobSize;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                return null;
+            }
+        }
+        public List<StorageblobSize> GetStorageFileShareSize(List<StorageContainerKeysMapDTO> storageContainerKeys)
+        {
+
+
+            List<StorageblobSize> sizes = new List<StorageblobSize>();
+            try
+            {
+                foreach (var item in storageContainerKeys)
+                {
+                    float? size = 0;
+                    string connectionString = string.Format("DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1};EndpointSuffix=core.windows.net", item.storageAccountName, item.key);
+
+                    ShareClient cloudFile = new ShareClient(connectionString, item.containerName);
+                    var abc = cloudFile.GetShareLeaseClient();
+                    var data = cloudFile.GetStatistics();
+                    size = (data.Value.ShareUsageInBytes / 1024f) / 1024f;
+
+                    sizes.Add(new StorageblobSize
+                    {
+                        storageAccountId=item.storageAccountId,
+                        storageAccountName = item.storageAccountName,
+                        name=item.containerName,
+                        storageType="FileShare",
+                        size = size
+                    });
+                }
+                return sizes;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                return null;
+            }
+        }
+        public async Task<List<StorageAccountKey>> GetStorageAccountkeys(RequestInfoViewModel requestInfo, List<CeraStorageAccount> storageAccounts)
+        {
+            List<StorageAccountKeysDTO> storageAccountKeys = new List<StorageAccountKeysDTO>();
+            List<StorageAccountKey> accountKeys = new List<StorageAccountKey>();
+            try
+            {
+                Initialize(requestInfo);
+                string token = authenticator.GetAuthToken();
+                var keyData = string.Empty;
+                if (token != null)
+                {
+                    foreach (var item in storageAccounts)
+                    {
+                        string keyUrl = "https://management.azure.com/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.Storage/storageAccounts/{2}/listKeys?api-version=2021-04-01";
+                        string keyUri = string.Format(keyUrl, item.SubscriptionId, item.ResourceGroupName, item.Name);
+
+                        HttpClient client = new HttpClient();
+                        HttpRequestMessage keyRequestMessage = new HttpRequestMessage(HttpMethod.Post, keyUri);
+                        keyRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                        HttpResponseMessage keyResponseMessage = await client.SendAsync(keyRequestMessage);
+
+                        keyData = await keyResponseMessage.Content.ReadAsStringAsync();
+                        JObject result1 = JObject.Parse(keyData);
+                        var clientarray1 = result1["keys"].Value<JArray>();
+                        storageAccountKeys = clientarray1.ToObject<List<StorageAccountKeysDTO>>();
+
+                        foreach (var keys in storageAccountKeys)
+                        {
+                            if (keys.keyName == "key1")
+                            {
+                                accountKeys.Add(new StorageAccountKey
+                                {
+                                    storageAccountId=item.StorageAccountId,
+                                    storageAccountName = item.Name,
+                                    key = keys.value
+                                });
+                            }
+                        }
+                    }
+                    return accountKeys;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                return null;
+            }
+        }
+
+        public async Task<List<StorageContainersList>> GetStorageContainers(RequestInfoViewModel requestInfo, List<CeraStorageAccount> storageAccounts)
+        {
+            try
+            {
+                List<StorageContainersDTO> storageContainers = new List<StorageContainersDTO>();
+                List<StorageContainersList> containersLists = new List<StorageContainersList>();
+                Initialize(requestInfo);
+                string token = authenticator.GetAuthToken();
+                var data = string.Empty;
+                if (token != null)
+                {
+                    string url = "https://management.azure.com/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.Storage/storageAccounts/{2}/blobServices/default/containers?api-version=2021-04-01";
+                    foreach (var item in storageAccounts)
+                    {
+                        string uri = string.Format(url, item.SubscriptionId, item.ResourceGroupName, item.Name);
+                        HttpClient client = new HttpClient();
+                        HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
+                        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                        HttpResponseMessage responseMessage = await client.SendAsync(requestMessage);
+                        data = await responseMessage.Content.ReadAsStringAsync();
+                        JObject result = JObject.Parse(data);
+                        var clientarray = result["value"].Value<JArray>();
+                        storageContainers = clientarray.ToObject<List<StorageContainersDTO>>();
+                        foreach (var containers in storageContainers)
+                        {
+                            containersLists.Add(new StorageContainersList
+                            {
+                                storageAccountName = item.Name,
+                                container = containers.name
+                            });
+                        }
+                    }
+                    return containersLists;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                return null;
+            }
+        }
+
+        public async Task<List<StorageContainersList>> GetStorageFileShares(RequestInfoViewModel requestInfo, List<CeraStorageAccount> storageAccounts)
+        {
+            try
+            {
+                List<StorageContainersDTO> storageContainers = new List<StorageContainersDTO>();
+                List<StorageContainersList> containersLists = new List<StorageContainersList>();
+                Initialize(requestInfo);
+                string token = authenticator.GetAuthToken();
+                var data = string.Empty;
+                if (token != null)
+                {
+                    string url = "https://management.azure.com/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.Storage/storageAccounts/{2}/fileServices/default/shares?api-version=2021-04-01";
+                    foreach (var item in storageAccounts)
+                    {
+                        string uri = string.Format(url, item.SubscriptionId, item.ResourceGroupName, item.Name);
+                        HttpClient client = new HttpClient();
+                        HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
+                        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                        HttpResponseMessage responseMessage = await client.SendAsync(requestMessage);
+                        data = await responseMessage.Content.ReadAsStringAsync();
+                        if (!data.Contains("FeatureNotSupportedForAccount"))
+                        {
+                            JObject result = JObject.Parse(data);
+                            var clientarray = result["value"].Value<JArray>();
+                            storageContainers = clientarray.ToObject<List<StorageContainersDTO>>();
+                            foreach (var containers in storageContainers)
+                            {
+                                containersLists.Add(new StorageContainersList
+                                {
+                                    storageAccountName = item.Name,
+                                    container = containers.name
+                                });
+                            }
+                        }
+
+                    }
+                    return containersLists;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                return null;
+            }
+        }
         /// <summary>
         /// This method will calls the required authentication and after  authenticating it will 
         /// get the available SqlServer List from Azure cloud
@@ -257,14 +586,14 @@ namespace CERA.Azure.CloudService
         {
             try
             {
-                Initialize();
+                Initialize(requestInfo);
                 var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
                 Logger.LogInfo("Auth Client Initialized");
                 List<CeraSqlServer> cerasqlServer = new List<CeraSqlServer>();
                 foreach (var sub in subscriptions)
                 {
                     var azureSqlserver = authClient.WithSubscription(sub.SubscriptionId).SqlServers.ListAsync().Result;
-                    var tenant = authClient.Tenants.ListAsync().Result;
+                    //var tenant = authClient.Tenants.ListAsync().Result;
 
                     Logger.LogInfo("Got SqlServer List from a subscription in Azure Cloud Provider");
                     if (azureSqlserver != null)
@@ -278,9 +607,9 @@ namespace CERA.Azure.CloudService
                                 Name = sqlServer.Name,
                                 RegionName = sqlServer.RegionName,
                                 ResourceGroupName = sqlServer.ResourceGroupName,
-                                SqlServerId=sqlServer.Id,
-                                CloudProvider= cloudProvider,
-                                IsActive=true
+                                SqlServerId = sqlServer.Id,
+                                CloudProvider = cloudProvider,
+                                IsActive = true
 
                             });
                         }
@@ -315,7 +644,7 @@ namespace CERA.Azure.CloudService
         {
             return new object();
         }
-        
+
         /// <summary>
         /// This method will calls the required authentication and after  authenticating it will 
         /// get the available Subscriptions List from Azure cloud
@@ -328,7 +657,7 @@ namespace CERA.Azure.CloudService
             {
                 //Initialize();
                 //var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
-                var authClient = GetToken(requestInfo.token, requestInfo.tenantId);
+                var authClient = GetToken(requestInfo);
                 Logger.LogInfo("Auth Client Initialized");
                 var azureSubscriptions = authClient.Subscriptions.ListAsync().Result;
                 Logger.LogInfo("Got Subscription List from Azure Cloud Provider");
@@ -343,8 +672,8 @@ namespace CERA.Azure.CloudService
                             SubscriptionId = sub.SubscriptionId,
                             DisplayName = sub.DisplayName,
                             TenantID = sub.Inner.TenantId,
-                            CloudProvider= cloudProvider,
-                            IsActive=true
+                            CloudProvider = cloudProvider,
+                            IsActive = true
 
                         });
 
@@ -379,7 +708,7 @@ namespace CERA.Azure.CloudService
         {
             try
             {
-                Initialize();
+                Initialize(requestInfo);
                 var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
                 Logger.LogInfo("Auth Client Initialized");
                 var azureTenants = authClient.Tenants.ListAsync().Result;
@@ -394,8 +723,8 @@ namespace CERA.Azure.CloudService
                         {
                             Key = Tenants.Key,
                             TenantId = Tenants.TenantId,
-                            CloudProvider= cloudProvider,
-                            IsActive=true
+                            CloudProvider = cloudProvider,
+                            IsActive = true
                         });
 
                     }
@@ -425,7 +754,7 @@ namespace CERA.Azure.CloudService
         {
             try
             {
-                Initialize();
+                Initialize(requestInfo);
                 var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
                 Logger.LogInfo("Auth Client Initialized");
                 foreach (var sub in subscriptions)
@@ -440,12 +769,14 @@ namespace CERA.Azure.CloudService
                         {
                             ceraVM.Add(new CeraVM
                             {
+                                Id = virtualMachine.Id,
                                 VMName = virtualMachine.Name,
+                                SubscriptionId = sub.SubscriptionId,
                                 RegionName = virtualMachine.RegionName,
                                 ResourceGroupName = virtualMachine.ResourceGroupName,
-                                CloudProvider= cloudProvider,
-                                IsActive=true
-
+                                CloudProvider = cloudProvider,
+                                IsActive = true,
+                                ResourceType = virtualMachine.Type.Split("/")[0]
                             });
                         }
                         Logger.LogInfo("Parsing Completed VM's List To CERA Resources");
@@ -475,7 +806,7 @@ namespace CERA.Azure.CloudService
         {
             try
             {
-                Initialize();
+                Initialize(requestInfo);
                 var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
                 Logger.LogInfo("Auth Client Initialized");
                 foreach (var sub in subscriptions)
@@ -490,12 +821,14 @@ namespace CERA.Azure.CloudService
                         {
                             ceraWebApps.Add(new CeraWebApps
                             {
+                                WebAppId = WebApps.Id,
                                 Name = WebApps.Name,
                                 RegionName = WebApps.RegionName,
+                                SubscriptionId = sub.SubscriptionId,
                                 ResourceGroupName = WebApps.ResourceGroupName,
-                                CloudProvider= cloudProvider,
-                                IsActive=true
-
+                                CloudProvider = cloudProvider,
+                                IsActive = true,
+                                ResourceType = WebApps.Type.Split("/")[0]
                             });
                         }
                         Logger.LogInfo("Parsing Completed WebApps List To CERA Resources");
@@ -525,7 +858,7 @@ namespace CERA.Azure.CloudService
         {
             try
             {
-                Initialize();
+                Initialize(requestInfo);
                 var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
                 Logger.LogInfo("Auth Client Initialized");
                 foreach (var sub in subscriptions)
@@ -543,9 +876,9 @@ namespace CERA.Azure.CloudService
                                 Name = appService.Name,
                                 RegionName = appService.RegionName,
                                 ResourceGroupName = appService.ResourceGroupName,
-                                AppServicePlanId=appService.Id,
-                                CloudProvider= cloudProvider,
-                                IsActive=true
+                                AppServicePlanId = appService.Id,
+                                CloudProvider = cloudProvider,
+                                IsActive = true
 
                             });
                         }
@@ -568,7 +901,7 @@ namespace CERA.Azure.CloudService
         {
             try
             {
-                Initialize();
+                Initialize(requestInfo);
                 var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
                 Logger.LogInfo("Auth Client Initialized");
                 foreach (var sub in subscriptions)
@@ -583,13 +916,13 @@ namespace CERA.Azure.CloudService
                         {
                             policy.Add(new CeraPolicy
                             {
-                                 PolicyId = item.Id,
-                                 PrincipleName = item.DisplayName,
-                                 ResourceGroupName = item.Scope.Remove(0,67),
-                                 Scope = item.Scope,
-                                 Key = item.Key,
-                                 CloudProvider= cloudProvider,
-                                 IsActive=true
+                                PolicyId = item.Id,
+                                PrincipleName = item.DisplayName,
+                                ResourceGroupName = item.Scope.Remove(0, 67),
+                                Scope = item.Scope,
+                                Key = item.Key,
+                                CloudProvider = cloudProvider,
+                                IsActive = true
                             });
                         }
                         Logger.LogInfo("Parsing Completed Policies List To CERA Resources");
@@ -619,7 +952,7 @@ namespace CERA.Azure.CloudService
         {
             try
             {
-                Initialize();
+                Initialize(requestInfo);
                 var authClient = authenticator.GetAuthenticatedClientUsingAzureCredential();
                 Logger.LogInfo("Auth Client Initialized");
                 foreach (var sub in subscriptions)
@@ -638,9 +971,9 @@ namespace CERA.Azure.CloudService
                                 Name = disk.Name,
                                 RegionName = disk.RegionName,
                                 ResourceGroupName = disk.ResourceGroupName,
-                                DiskId=disk.Id,
-                                CloudProvider= cloudProvider,
-                                IsActive=true
+                                DiskId = disk.Id,
+                                CloudProvider = cloudProvider,
+                                IsActive = true
 
                             });
                         }
@@ -662,7 +995,7 @@ namespace CERA.Azure.CloudService
         public List<CeraResourceHealth> GetCloudResourceHealth(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             const string url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.ResourceHealth/availabilityStatuses?api-version=2020-05-01-preview";
-            var data = CallAzureEndPoint(url, subscriptions);
+            var data = CallAzureEndPoint(requestInfo, url, subscriptions);
             if (data == null)
             {
                 return null;
@@ -676,14 +1009,14 @@ namespace CERA.Azure.CloudService
             {
                 resourceHealth.Add(new CeraResourceHealth
                 {
-                    ResourceId = item.id.Replace("/providers/Microsoft.ResourceHealth/availabilityStatuses/current",""),
+                    ResourceId = item.id.Replace("/providers/Microsoft.ResourceHealth/availabilityStatuses/current", ""),
                     Name = item.name,
                     Location = item.location,
                     Type = item.type,
                     AvailabilityState = item.properties.availabilityState,
-                    CloudProvider= cloudProvider,
-                    IsActive=true,
-                    SubscriptionId=item.id.Substring(15,36)
+                    CloudProvider = cloudProvider,
+                    IsActive = true,
+                    SubscriptionId = item.id.Substring(15, 36)
 
                 });
             }
@@ -693,7 +1026,7 @@ namespace CERA.Azure.CloudService
         public List<CeraRateCard> GetCloudRateCardList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             const string url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.Commerce/RateCard?api-version=2016-08-31-preview&$filter=OfferDurableId eq 'MS-AZR-0003P' and Currency eq 'INR' and Locale eq 'en-IN' and RegionInfo eq 'IN'";
-            var data = CallAzureEndPoint(url, subscriptions);
+            var data = CallAzureEndPoint(requestInfo, url, subscriptions);
             if (data == null)
             {
                 return null;
@@ -722,12 +1055,12 @@ namespace CERA.Azure.CloudService
         }
         public async Task<List<CeraUsage>> GetCloudUsageDetails(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
-            string url; 
+            string url;
             url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.Consumption/usageDetails?api-version=2018-03-31&$expand=properties/additionalProperties";
             List<CeraUsage> usageDetails = new List<CeraUsage>();
             do
             {
-                var data = CallAzureEndPoint(url, subscriptions);
+                var data = CallAzureEndPoint(requestInfo, url, subscriptions);
                 if (data == null)
                 {
                     return null;
@@ -765,13 +1098,13 @@ namespace CERA.Azure.CloudService
                         chargesBilledSeparately = billingDTO.value[i].properties.chargesBilledSeparately,
                         meterDetails = billingDTO.value[i].properties.meterDetails,
                         additionalProperties = billingDTO.value[i].properties.additionalProperties,
-                        CloudProvider= cloudProvider,
-                        IsActive=true,
-                        SubscriptionId= billingDTO.value[i].id.Substring(15,36)
+                        CloudProvider = cloudProvider,
+                        IsActive = true,
+                        SubscriptionId = billingDTO.value[i].id.Substring(15, 36)
 
 
                     });
-                }   
+                }
             }
             while (url != null);
             return usageDetails;
@@ -787,7 +1120,7 @@ namespace CERA.Azure.CloudService
             List<UsageByMonth> usageDetails = new List<UsageByMonth>();
             do
             {
-                var data = GetUsageData(url, subscriptions,usageStart,usageEnd);
+                var data = GetUsageData(requestInfo, url, subscriptions, usageStart, usageEnd);
                 if (data == null)
                 {
                     return null;
@@ -829,8 +1162,9 @@ namespace CERA.Azure.CloudService
                         chargesBilledSeparately = billingDTO.value[i].properties.chargesBilledSeparately,
                         meterDetails = billingDTO.value[i].properties.meterDetails,
                         additionalProperties = billingDTO.value[i].properties.additionalProperties,
-                        CloudProvider= cloudProvider,
-                        IsActive=true
+                        CloudProvider = cloudProvider,
+                        IsActive = true,
+                        SubscriptionId = billingDTO.value[i].id.Substring(15, 36)
                     });
                 }
             }
@@ -845,11 +1179,11 @@ namespace CERA.Azure.CloudService
             string usageStart = startDate.ToShortDateString();
             string usageEnd = endDate.ToShortDateString();
             url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.Consumption/usageDetails?$filter=properties%2FusageStart%20ge%20'{1}'%20and%20properties%2FusageEnd%20le%20'{2}'&$top=1000&api-version=2018-03-31";
-            
+
             List<UsageHistory> usageDetails = new List<UsageHistory>();
             do
             {
-                var data = GetUsageData(url, subscriptions, usageStart, usageEnd);
+                var data = GetUsageData(requestInfo, url, subscriptions, usageStart, usageEnd);
                 if (data == null)
                 {
                     return null;
@@ -891,8 +1225,8 @@ namespace CERA.Azure.CloudService
                         chargesBilledSeparately = billingDTO.value[i].properties.chargesBilledSeparately,
                         meterDetails = billingDTO.value[i].properties.meterDetails,
                         additionalProperties = billingDTO.value[i].properties.additionalProperties,
-                        CloudProvider= cloudProvider,
-                        IsActive=true
+                        CloudProvider = cloudProvider,
+                        IsActive = true
                     });
                 }
             }
@@ -903,7 +1237,7 @@ namespace CERA.Azure.CloudService
         public List<AzureLocations> GetCloudLocations(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             const string url = "https://management.azure.com/subscriptions/{0}/locations?api-version=2020-01-01";
-            var data = CallAzureEndPoint(url, subscriptions);
+            var data = CallAzureEndPoint(requestInfo, url, subscriptions);
             if (data == null)
             {
                 return null;
@@ -927,9 +1261,9 @@ namespace CERA.Azure.CloudService
                     name = item.name,
                     regionalDisplayName = item.regionalDisplayName,
                     physicalLocation = item.metadata.physicalLocation,
-                    regionType = item.metadata.regionType ,
-                    CloudProvider= cloudProvider,
-                    IsActive=true
+                    regionType = item.metadata.regionType,
+                    CloudProvider = cloudProvider,
+                    IsActive = true
                 });
             }
 
@@ -938,7 +1272,7 @@ namespace CERA.Azure.CloudService
         public List<CeraCompliances> GetCloudCompliances(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             const string url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.Security/compliances?api-version=2017-08-01-preview";
-            var data = CallAzureEndPoint(url, subscriptions);
+            var data = CallAzureEndPoint(requestInfo, url, subscriptions);
             if (data == null)
             {
                 return null;
@@ -954,9 +1288,9 @@ namespace CERA.Azure.CloudService
                     Name = item.name,
                     Type = item.type,
                     AssessmentType = item.properties.assessmentResult[0].type,
-                    CompliancesId=item.id,
-                    CloudProvider= cloudProvider,
-                    IsActive=true
+                    CompliancesId = item.id,
+                    CloudProvider = cloudProvider,
+                    IsActive = true
                 });
             }
             return ceraCompliances;
@@ -964,38 +1298,38 @@ namespace CERA.Azure.CloudService
         public List<AdvisorRecommendations> GetCloudAdvisorRecommendations(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             const string url = "https://management.azure.com/subscriptions/{0}/providers/Microsoft.Security/compliances?api-version=2017-08-01-preview";
-            var data = CallAzureEndPoint(url, subscriptions);
+            var data = CallAzureEndPoint(requestInfo, url, subscriptions);
             if (data == null)
             {
                 return null;
             }
 
-           List<AdvisorRecommendationsDTO> advisorRecommendationsDTO = new List<AdvisorRecommendationsDTO>();
+            List<AdvisorRecommendationsDTO> advisorRecommendationsDTO = new List<AdvisorRecommendationsDTO>();
             JObject result = JObject.Parse(data.Result);
             var clientarray = result["value"].Value<JArray>();
-            advisorRecommendationsDTO= clientarray.ToObject<List<AdvisorRecommendationsDTO>>();
-          //  advisorRecommendationsDTO = JsonConvert.DeserializeObject<List<AdvisorRecommendationsDTO>>(data.Result);
+            advisorRecommendationsDTO = clientarray.ToObject<List<AdvisorRecommendationsDTO>>();
+            //  advisorRecommendationsDTO = JsonConvert.DeserializeObject<List<AdvisorRecommendationsDTO>>(data.Result);
             List<AdvisorRecommendations> recommendations = new List<AdvisorRecommendations>();
             foreach (var item in advisorRecommendationsDTO)
             {
                 recommendations.Add(new AdvisorRecommendations
                 {
                     recommendationId = item.id,
-                    resourceId=item.properties.resourceMetadata.resourceId,
-                    location=item.properties.extendedProperties.location,
+                    resourceId = item.properties.resourceMetadata.resourceId,
+                    location = item.properties.extendedProperties.location,
                     category = item.properties.category,
                     impact = item.properties.impact,
-                    CloudProvider= cloudProvider,
-                    IsActive=true
+                    CloudProvider = cloudProvider,
+                    IsActive = true
                 });
             }
             return recommendations;
         }
-        public async Task<string> CallAzureEndPoint(string url, List<CeraSubscription> subscriptions)
+        public async Task<string> CallAzureEndPoint(RequestInfoViewModel requestInfo, string url, List<CeraSubscription> subscriptions)
         {
             try
             {
-                Initialize();
+                Initialize(requestInfo);
                 string token = authenticator.GetAuthToken();
                 var data = string.Empty;
                 if (token != null)
@@ -1020,11 +1354,11 @@ namespace CERA.Azure.CloudService
                 return null;
             }
         }
-        public async Task<string> GetUsageData(string url, List<CeraSubscription> subscriptions,string usageStart,string usageEnd)
+        public async Task<string> GetUsageData(RequestInfoViewModel requestInfo, string url, List<CeraSubscription> subscriptions, string usageStart, string usageEnd)
         {
             try
             {
-                Initialize();
+                Initialize(requestInfo);
                 string token = authenticator.GetAuthToken();
                 var data = string.Empty;
                 if (token != null)
@@ -1063,6 +1397,9 @@ namespace CERA.Azure.CloudService
             keyValues.Add("Asia", "asia");
             keyValues.Add("US South Central", "southcentralus");
             keyValues.Add("US East 2", "eastus2");
+            keyValues.Add("IN West","westindia");
+            keyValues.Add("US West 2", "westus2");
+            keyValues.Add("US West 3", "westus3");
             if (keyValues.ContainsKey(location))
             {
                 return keyValues[location];
@@ -1087,13 +1424,13 @@ namespace CERA.Azure.CloudService
         {
             return new List<CeraResources>();
         }
-        public List<CeraVM> GetVMList()
+        public List<ResourcesModel> GetVMList()
         {
-            return new List<CeraVM>();
+            return new List<ResourcesModel>();
         }
-        public List<CeraResourceGroups> GetResourceGroupsList()
+        public List<ResourceGroupsVM> GetResourceGroupsList()
         {
-            return new List<CeraResourceGroups>();
+            return new List<ResourceGroupsVM>();
         }
         public Task<List<CeraResourceGroups>> GetCloudResourceGroups(RequestInfoViewModel requestInfo)
         {
@@ -1105,7 +1442,7 @@ namespace CERA.Azure.CloudService
             throw new NotImplementedException();
         }
 
-        public List<CeraStorageAccount> GetStorageAccountList()
+        public List<StorageAccountsVM> GetStorageAccountList()
         {
             throw new NotImplementedException();
         }
@@ -1124,7 +1461,7 @@ namespace CERA.Azure.CloudService
             throw new NotImplementedException();
         }
 
-        public List<CeraWebApps> GetWebAppsList()
+        public List<ResourcesModel> GetWebAppsList()
         {
             throw new NotImplementedException();
         }
@@ -1202,7 +1539,7 @@ namespace CERA.Azure.CloudService
             throw new NotImplementedException();
         }
 
-        
+
 
         public List<CeraPolicy> GetPolicies()
         {
@@ -1219,7 +1556,7 @@ namespace CERA.Azure.CloudService
             throw new NotImplementedException();
         }
 
-        
+
 
         public List<AzureLocations> GetLocations()
         {

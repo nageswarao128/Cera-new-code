@@ -27,6 +27,7 @@ namespace CERA.DataOperation
         public int AddUsageByMonth(List<UsageByMonth> data);
         public int AddUsageHistory(List<UsageHistory> data);
         public int AddAdvisorRecommendations(List<AdvisorRecommendations> data);
+        public int AddStorageSize(List<StorageSize> data);
         public object AddSqlServerData(object data);
         public object AddSqlDbData(object data);
        
@@ -40,13 +41,13 @@ namespace CERA.DataOperation
         public object UpdateSqlDbData(object data);
         public List<CeraSubscription> GetSubscriptions();
         public List<CeraResources> GetResources();
-        public List<CeraVM> GetVM();
-        public List<CeraResourceGroups> GetResourceGroups();
+        public List<ResourcesModel> GetVM();
+        public List<ResourceGroupsVM> GetResourceGroups();
         public List<CeraSqlServer> GetSqlServers();
         public List<CeraResourceHealth> GetResourceHealth();
-        public List<CeraStorageAccount> GetStorageAccount();
+        public List<StorageAccountsVM> GetStorageAccount();
         public List<CeraTenants> GetTenants();
-        public List<CeraWebApps> GetWebApps();
+        public List<ResourcesModel> GetWebApps();
         public List<CeraAppServicePlans> GetAppServicePlans();
         public List<CeraDisks> GetDisks();
         public List<CeraCompliances> GetCompliances();
@@ -58,5 +59,9 @@ namespace CERA.DataOperation
         public List<PolicyRules> GetPolicyRules();
         public List<UsageByMonth> GetUsageByMonth();
         public List<UsageHistory> GetUsageHistory();
+        public List<ResourcesModel> GetResourceGroupResources(string name);
+        public List<BarChartModel> GetBarChartCloudData(string cloud);
+        public List<BarChartModel> GetBarChartSubscriptionData(string cloud, string subscriptionId);
+        public List<StorageSize> GetStorageSizes();
     }
 }

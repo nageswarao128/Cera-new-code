@@ -14,9 +14,10 @@ namespace CERA.Entities.Models
     {
         [Key]
         public int? ID { get; set; }
+        public string StorageAccountId { get; set; }
         public string Name { get; set; }
         public string RegionName { get; set; }
         public string ResourceGroupName { get; set; }
-        
+        public string ResourceType { get; set; }
     }
 }

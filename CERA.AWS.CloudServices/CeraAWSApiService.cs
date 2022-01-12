@@ -81,13 +81,13 @@ namespace CERA.AWS.CloudService
         {
             return new List<CeraResources>();
         }
-        public List<CeraVM> GetVMList()
+        public List<ResourcesModel> GetVMList()
         {
-            return new List<CeraVM>();
+            return new List<ResourcesModel>();
         }
-        public List<CeraResourceGroups> GetResourceGroupsList()
+        public List<ResourceGroupsVM> GetResourceGroupsList()
         {
-            return new List<CeraResourceGroups>();
+            return new List<ResourceGroupsVM>();
         }
 
         public void Initialize(string tenantId, string clientID, string clientSecret,string authority)
@@ -132,7 +132,7 @@ namespace CERA.AWS.CloudService
             throw new NotImplementedException();
         }
 
-        public List<CeraStorageAccount> GetStorageAccountList()
+        public List<StorageAccountsVM> GetStorageAccountList()
         {
             throw new NotImplementedException();
         }
@@ -164,7 +164,7 @@ namespace CERA.AWS.CloudService
             throw new NotImplementedException();
         }
 
-        public List<CeraWebApps> GetWebAppsList()
+        public List<ResourcesModel> GetWebAppsList()
         {
             throw new NotImplementedException();
         }
@@ -378,5 +378,17 @@ namespace CERA.AWS.CloudService
         {
             throw new NotImplementedException();
         }
+
+        public List<StorageSize> GetCloudStorageSize(List<CeraStorageAccount> storageAccounts)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<StorageSize>> GetCloudStorageSize(RequestInfoViewModel requestInfo, List<CeraStorageAccount> storageAccounts)
+        {
+            throw new NotImplementedException();
+        }
+
+        
     }
 }

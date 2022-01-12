@@ -9,7 +9,7 @@
         <ul class="cera-breadCrumb">
             <li><a asp-controller="Cera" asp-action="DashBoard">Home </a></li>
             <li><a href="#">Resources</a></li>
-            <li>Virtual Machines</li>
+            <li>Policies</li>
         </ul>
     </div>
 </div>
@@ -61,6 +61,14 @@
             text-decoration: none;
             cursor: pointer;
         }
+
+    .img-size {
+        max-width: 20px;
+    }
+
+    .btn-danger {
+        border-radius: 10px;
+    }
 </style>
 <div class="cera-rightContent">
     <h3 class="main_h">Policies List</h3>
@@ -74,37 +82,97 @@
     </div>
     @if (Model != null)
     {
-        <input style="width:30%" class="form-control" id="myInput" type="text" placeholder="Search..">
-        <table class="table table-striped table-hover sortable" style="margin-top:1%">
-            <thead>
-                <tr>
+    <input style="width:30%" class="form-control" id="myInput" type="text" placeholder="Search..">
+    <table class="table table-striped table-hover sortable" style="margin-top:1%">
+        <thead>
+            <tr>
 
-                    <th>
-                        Policy Name
-                    </th>
+                <th>
+                    Policy Name
+                </th>
+                <th></th>
 
-                    <th>
-                        Resource Group
-                    </th>
-
-                </tr>
-            </thead>
-            <tbody id="myTable">
-                @foreach (var item in Model)
+            </tr>
+        </thead>
+        <tbody id="myTable">
+            @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PrincipleName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ResourceGroupName)
-                        </td>
+            <tr>
+                <td type="button" data-toggle="modal" data-target="#myModal">
+                    @Html.DisplayFor(modelItem => item.PrincipleName)
+                </td>
+                <td>
+                    <img class="img-size" src="~/img/AvailabilityYellow.png" />
+                </td>
 
-                    </tr>
+            </tr>
+
                 }
-            </tbody>
-        </table>
+        </tbody>
+    </table>
     }
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    @*<h4 class="modal-title"></h4>*@
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Resource Group
+                                </th>
+                                <th>
+                                    Resource
+                                </th>
+                                <th>
+                                    Compliance
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    QRestApi
+                                </td>
+                                <td>
+                                    Cera
+                                </td>
+                                <td>
+                                    <img class="img-size" src="~/img/Correct.png" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Quadbilling
+                                </td>
+                                <td>
+                                    QbillDB
+                                </td>
+                                <td>
+                                    <img class="img-size" src="~/img/Wrong.png" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <hr />
     <table class="table table-striped table-hover sortable" style="margin-top:1%">
         <thead>
@@ -123,15 +191,15 @@
         <tbody id="myTable">
             @foreach (var item in ViewBag.policyRules)
             {
-                <tr>
-                    <td>
-                        @item.subscriptionName
-                    </td>
-                    <td>
-                        @item.policyRule
-                    </td>
+            <tr>
+                <td>
+                    @item.subscriptionName
+                </td>
+                <td>
+                    @item.policyRule
+                </td>
 
-                </tr>
+            </tr>
             }
         </tbody>
     </table>
@@ -143,7 +211,7 @@
             <option value="0">--Select Subscription--</option>
             @foreach (var item in ViewBag.subscriptions)
             {
-                <option value="@item.DisplayName">@item.DisplayName</option>
+            <option value="@item.DisplayName">@item.DisplayName</option>
             }
         </select>
     </div>
@@ -185,9 +253,9 @@
     window.onclick = function (event) {
         if (event.target == modal) {
             modal.style.display = "none";
-            
+
         }
-        
+
     }
     function DrpChange() {
         let val = $('#select').val();
@@ -341,5 +409,5 @@
 
         }
     }
-    
+
 </script>

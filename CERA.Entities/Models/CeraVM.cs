@@ -11,8 +11,10 @@ namespace CERA.Entities.Models
     {
         [Key]
         public int VMId { get; set; }
+        public string Id { get; set; }
         public string VMName { get; set; }
         public string RegionName { get; set; }
         public string ResourceGroupName { get; set; }
+        public string ResourceType { get; set; }
     }
 }

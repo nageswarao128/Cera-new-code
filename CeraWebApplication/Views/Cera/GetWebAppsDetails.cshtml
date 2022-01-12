@@ -1,4 +1,4 @@
-﻿@model List<CeraWebApplication.Models.CeraWebApps>
+﻿@model List<CeraWebApplication.Models.ResourcesModel>
 
 @{
     Layout = "~/Views/Shared/_ResourcesLayout.cshtml";
@@ -27,13 +27,16 @@
                     </th>
 
                     <th>
-                        ResourceGroupName
-                        
+                        ResourceGroup
                     </th>
-
-
                     <th>
-                        RegionName
+                        ResourceType
+                    </th>
+                    <th>
+                        Region
+                    </th>
+                    <th>
+                        Cost (INR)
                     </th>
                 </tr>
             </thead>
@@ -48,8 +51,21 @@
                             @Html.DisplayFor(modelItem => item.ResourceGroupName)
                         </td>
                         <td>
+                            @Html.DisplayFor(modelItem => item.type)
+                        </td>
+                        <td>
                             @Html.DisplayFor(modelItem => item.RegionName)
                         </td>
+                        @if (item.cost == null)
+                        {
+                            <td>₹ 0.00</td>
+                        }
+                        else
+                        {
+                            <td>
+                               ₹ @Html.DisplayFor(modelItem => item.cost)
+                            </td>
+                        }
                     </tr>
                 }
             </tbody>
@@ -169,7 +185,14 @@
                 html += '<tr>';
                 html += '<td>' + data[i].name + '</td>';
                 html += '<td>' + data[i].resourceGroupName + '</td>';
+                html += '<td>' + data[i].type + '</td>';
                 html += '<td>' + data[i].regionName + '</td>';
+                if (data[i].cost == null) {
+                    html += '<td>' +'₹ 0.00' + '</td>';
+                }
+                else {
+                    html += '<td>' +'₹' +data[i].cost + '</td>';
+                }
                 html += '</tr>';
             }
             $('#myTable').empty();

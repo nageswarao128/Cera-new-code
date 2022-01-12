@@ -48,5 +48,13 @@ namespace CERA.Platform
         public List<DashboardCountModel> GetDashboardCountCloud(string cloudprovider);
         public List<DashboardCountModel> GetDashboardSubscriptionCountFilters(string cloudprovider, string subscriptionid);
         public List<DashboardCountModel> GetDashboardSubscriptionLocationFilters(string location, string cloudprovider, string subscriptionid);
+        public List<Dashboardresources> GetComputeResources();
+        public List<Dashboardresources> GetNetworkResources();
+        public List<Dashboardresources> GetStorageResources();
+        public List<Dashboardresources> GetOtherResources();
+        public List<ResourcesModel> GetResourceGroupResources(string name);
+        public List<BarChartModel> GetBarChartCloudData(string cloud);
+        public List<BarChartModel> GetBarChartSubscriptionData(string cloud, string subscriptionId);
+        public List<StorageSize> GetStorageSizes();
     }
 }

@@ -8,5 +8,7 @@ namespace CERA.Entities
     {
         public string token { get; set; }
         public string tenantId { get; set; }
+        public string clientId { get; set; }
+        public string clientSecret { get; set; }
     }
 }

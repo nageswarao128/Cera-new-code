@@ -9,7 +9,7 @@ namespace CERA.Entities.ViewModels
     {
         
         public string ResourceType { get; set; }
-        public int ResourceCount { get; set; }
+        public int? ResourceCount { get; set; }
         public string Color { get; set; }
         public decimal ConsumedPercent { get; set; }
     }

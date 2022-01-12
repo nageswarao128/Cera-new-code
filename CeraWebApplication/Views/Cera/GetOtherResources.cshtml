@@ -1,0 +1,220 @@
+﻿@model List<CeraWebApplication.Models.DashboardResources>
+
+@{
+    Layout = "~/Views/Shared/_ResourcesLayout.cshtml";
+    //ViewData["Title"] = "Login";
+}
+
+
+<div>
+    <div class="row">
+        <div class="col-md-4">
+            <ul class="cera-breadCrumb">
+                <li><a asp-controller="Cera" asp-action="DashBoard">Home </a></li>
+                <li><a href="#">Resources</a></li>
+                <li>Other Types of Resources</li>
+            </ul>
+        </div>
+        <div class="col-md-8 text-right">
+            <div>
+                <a asp-controller="Cera" asp-action="Dashboard" class="back_toList">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+    <div class="cera-rightContent">
+        <h3 class="main_h">Other Types of Resources </h3>
+        <table class="table display" id="example" style="width:100%">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+
+                    <th>
+                        ResourceGroup
+                    </th>
+                    <th>
+                        ResourceProviderType
+                    </th>
+                    <th>
+                        ResourceType
+                    </th>
+                    <th>
+                        RegionName
+                    </th>
+                    <th>
+                        Cost (INR)
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="ddlStorage">
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td style="white-space: nowrap">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td style="white-space: nowrap">
+                        @Html.DisplayFor(modelItem => item.ResourceGroupName)
+                    </td>
+                    <td style="white-space: nowrap">
+                        @Html.DisplayFor(modelItem => item.ResourceProviderType)
+                    </td>
+
+                    <td style="white-space: nowrap">
+                        @Html.DisplayFor(modelItem => item.ResourceType)
+                    </td>
+                    <td style="white-space: nowrap">
+                        @Html.DisplayFor(modelItem => item.RegionName)
+                    </td>
+                    @if (item.cost == null)
+                    {
+                        <td style="white-space: nowrap">₹ 0.00</td>
+                    }
+                    else
+                    {
+                        <td style="white-space: nowrap">
+                            ₹ @Html.DisplayFor(modelItem => item.cost)
+                        </td>
+                    }
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example').DataTable({ responsive: false, "scrollX": true });
+    });
+    //window.onload=function() {
+    //    let cloud = $('#ddlCloud').val();
+    //    console.log(cloud);
+    //};
+
+</script>
+<script type="text/javascript">
+    (function () {
+        $('.toggle-wrap').on('click', function () {
+            $(this).toggleClass('active');
+            $('.cera-col3, .cera-col9').toggleClass('menu-open');
+        });
+    })();
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+    var cloud;
+    var storageaccountdata = [];
+    var storageaccountdataarr = [];
+    var storagedata = [];
+    function getdataCloud() {
+        debugger;
+        cloud = $('#ddlCloud').val();
+        console.log('selected cloud', cloud);
+        let subscriptionid = $('#ddlSub').val();
+        if (subscriptionid == "AllSubscriptions") {
+            if (cloud == "AllClouds") {
+                $('#subscriptionFilter').hide();
+                storagedata = [];
+                storagedata = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.resources))');
+                console.log('AllCloudsdata', storagedata);
+                appendhtmlstroage(storagedata);
+            }
+            else if (cloud == "Azure") {
+                $('#subscriptionFilter').show();
+                storageaccountdata = [];
+                storageaccountdataarr = [];
+                storageaccountdata = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.resources))');
+                storageaccountdataarr = storageaccountdata.filter(function (data) {
+                    return data.cloudProvider == cloud;
+
+                });
+                console.log('Selectedcloud', storageaccountdataarr);
+                appendhtmlstroage(storageaccountdataarr);
+            }
+            else {
+                $('#subscriptionFilter').hide();
+                storageaccountdata = [];
+                storageaccountdataarr = [];
+                storageaccountdata = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.resources))');
+                storageaccountdataarr = storageaccountdata.filter(function (data) {
+                    return data.cloudProvider == cloud;
+
+                });
+                console.log('Selectedcloud', storageaccountdataarr);
+                appendhtmlstroage(storageaccountdataarr);
+            }
+        }
+        else {
+              if (cloud == "AllClouds") {
+                $('#subscriptionFilter').hide();
+                storagedata = [];
+                storagedata = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.resources))');
+                  console.log('AllCloudsdata', storagedata);
+
+                  appendhtmlstroage(storagedata);
+            }
+            else if (cloud == "Azure") {
+                $('#subscriptionFilter').show();
+                storageaccountdata = [];
+                storageaccountdataarr = [];
+                storageaccountdata = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.resources))');
+                storageaccountdataarr = storageaccountdata.filter(function (data) {
+                    return data.cloudProvider == cloud && data.subscriptionId == subscriptionid;
+
+                });
+                console.log('Selectedcloud', storageaccountdataarr);
+                appendhtmlstroage(storageaccountdataarr);
+            }
+            else {
+                $('#subscriptionFilter').hide();
+                storageaccountdata = [];
+                storageaccountdataarr = [];
+                storageaccountdata = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.resources))');
+                storageaccountdataarr = storageaccountdata.filter(function (data) {
+                    return data.cloudProvider == cloud;
+
+                });
+                console.log('Selectedcloud', storageaccountdataarr);
+                appendhtmlstroage(storageaccountdataarr);
+            }
+
+        }
+
+
+    }
+    function getDataBySubscription() {
+        getdataCloud();
+    }
+
+    function appendhtmlstroage(data) {
+        console.log('appendhtmlhit');
+        if (data != null) {
+
+            let html = '';
+            debugger;
+
+            for (let i = 0; i < data.length; i++) {
+                html += '<tr>';
+                html += '<td style="white-space: nowrap">' + data[i].name + '</td>';
+                html += '<td style="white-space: nowrap">' + data[i].resourceGroupName + '</td>';
+                html += '<td style="white-space: nowrap">' + data[i].resourceProviderType + '</td>';
+                html += '<td style="white-space: nowrap">' + data[i].resourceType + '</td>';
+                html += '<td style="white-space: nowrap">' + data[i].regionName + '</td>';
+                if (data[i].cost == null) {
+                    html += '<td style="white-space: nowrap">' + '₹ 0.00' + '</td>';
+                }
+                else {
+                    html += '<td style="white-space: nowrap">' +'₹'+ data[i].cost + '</td>';
+                }
+                html += '</tr>';
+            }
+            $('#ddlStorage').empty();
+            $('#ddlStorage').append(html);
+
+        }
+    }
+
+</script>
+

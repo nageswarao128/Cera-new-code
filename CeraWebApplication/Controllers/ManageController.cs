@@ -88,7 +88,8 @@ namespace CeraWebApplication.Controllers
                     var apiresponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
                     {
-                        return this.Json(apiresponse);
+                        return RedirectToAction("ManageOrganization", "Cera");
+                       
                     }
                     else
                     {

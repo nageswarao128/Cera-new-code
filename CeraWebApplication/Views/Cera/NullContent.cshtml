@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Cera </title>
+
+    <!---- Meta Data --->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="title" content="Cera" />
+    <meta name="subject" content="Cera" />
+    <meta name="description" content="Cera" />
+    <meta name="format" content="text/html" />
+    <meta name="publisher" content="QuadrentResources" />
+    <meta name="language" content="en" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+
+    <!---- Style Sheets -->
+    <link rel="icon" href="~/img/logo.svg">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/responsive.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!---- Script tags ---->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+    
+    <section class="logout">
+        <div class="container">
+            <div class="col-md-7 mx-auto">
+                <div class="page_notFound">
+                    <img src="~/img/no content.svg">
+                    <br />
+                    @*<h3 class="col-g">Logged Out </h3>*@
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <h5>No Content Here Please Add Your Organisation Details</h5>
+                            <a asp-controller="Manage" asp-action="AddOrganisation" class="back_toList">+Add Organization</a>
+                        }
+                    }
+            else
+            {
+                <h5>No Content Here Please Contact ADMIN</h5>
+            }
+                    
+                    @*<a asp-controller="Cera" asp-action="Login">Log in again</a>*@
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

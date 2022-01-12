@@ -1,4 +1,8 @@
-﻿<html>
+﻿@{
+    Layout = "~/Views/Shared/_GeneralLayout.cshtml";
+    //ViewData["Title"] = "Login";
+}
+<html>
 <head>
     <style>
         #sixMonthsChartContainer {
@@ -6,16 +10,19 @@
             height: 200px;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
         }
+
         #MonthChartContainer {
             width: 100%;
             height: 200px;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
         }
+
         #LocationChartContainer {
             width: 100%;
             height: 200px;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
         }
+
         #ResourceGroupChartContainer {
             width: 160%;
             height: 250px;
@@ -156,7 +163,7 @@
                     y: sixMonthsDataArr[i].pretaxCost, label: sixMonthsDataArr[i].resourceType
                 });
             }
-            
+
             //var colorSet = new am4core.ColorSet();
             //colorSet.list = ["#FFA500", "#f0db4f", "#0288d1", "#F44336", "#8E24AA", "#388E3C", "#FBC02D",].map(function (color) {
             //    return new am4core.color(color);

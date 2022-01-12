@@ -26,11 +26,29 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <link href="../SiteAssets/style.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js" type="text/javascript"></script>
+
     <!---- Script tags ---->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    @*<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>*@
+    <style>
+        .future {
+            margin: 0px;
+            
+            font-size: 12px
+        }
+        .map-font {
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: #222;
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
 
@@ -50,10 +68,10 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="dropdownI" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Resources</a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownI">
-                                        <a class="dropdown-item active" asp-controller="Cera" asp-action="GetVMDetails"><i class="fa fa-television"></i><span>Virtual Machine </span> </a>
-                                        <a class="dropdown-item" asp-controller="Cera" asp-action="GetStorageAccountsDetails"><i class="fa fa-database"></i> <span>Storage Account </span></a>
-                                        <a class="dropdown-item" asp-controller="Cera" asp-action="GetResourceGroupDetails"><i class="fa fa-tasks"></i> <span>Resources Group </span></a>
-                                        <a class="dropdown-item" asp-controller="Cera" asp-action="GetWebAppsDetails"><i class="fa fa-globe"></i> <span>Web Application </span></a>
+                                        <a class="dropdown-item active" asp-controller="Cera" asp-action="GetVMDetails"><i class="fa fa-television"></i><span>Virtual Machines </span> </a>
+                                        <a class="dropdown-item" asp-controller="Cera" asp-action="GetStorageAccountsDetails"><i class="fa fa-database"></i> <span>Storage Accounts </span></a>
+                                        <a class="dropdown-item" asp-controller="Cera" asp-action="GetResourceGroupDetails"><i class="fa fa-tasks"></i> <span>Resource Groups </span></a>
+                                        <a class="dropdown-item" asp-controller="Cera" asp-action="GetWebAppsDetails"><i class="fa fa-globe"></i> <span>Web Applications </span></a>
                                         <a class="dropdown-item" asp-controller="Cera" asp-action="GetAdvisorRecommendationsDetails"><i class="fa fa-user-circle-o"></i> <span>Advisor </span></a>
                                         <a class="dropdown-item" asp-controller="Cera" asp-action="GetPolicyDetails"><i class="fa fa-gavel"></i> <span>Policy </span></a>
                                     </div>
@@ -204,69 +222,69 @@
                     <div class="row">
                         <div class="col-md-3 pl-2 pr-2">
                             <div class="main_card_link c5">
-                                <a href="#">
-                                    <div class="media">
-                                        <i class="fa fa-money" aria-hidden="true"></i>
-                                        <div class="media-body">
-                                            <h3>Cost</h3>
-                                            <h2 id="costCount">₹ @item.cost</h2>
-                                        </div>
+
+                                <div class="media">
+                                    <i class="fa fa-money" aria-hidden="true"></i>
+                                    <div class="media-body">
+                                        <h3>Cost</h3>
+                                        <h2 id="costCount">₹ @item.cost</h2>
                                     </div>
-                                </a>
+                                </div>
+
                             </div>
                         </div>
                         <div class="col-md-3 pr-2">
                             <div class="main_card_link">
-                                <a href="#">
-                                    <div class="media">
-                                        <i class="fa fa-folder-open-o" aria-hidden="true"></i>
-                                        <div class="media-body">
-                                            <h3>Resources</h3>
-                                            <h2 id="resourceCount">@item.resources</h2>
-                                        </div>
+
+                                <div class="media">
+                                    <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+                                    <div class="media-body">
+                                        <h3>Resources</h3>
+                                        <h2 id="resourceCount">@item.resources</h2>
                                     </div>
-                                </a>
+                                </div>
+
                             </div>
                         </div>
 
 
                         <div class="col-md-3 pl-2">
                             <div class="main_card_link c4">
-                                <a href="#">
-                                    <div class="media">
-                                        <i class="fa fa-balance-scale" aria-hidden="true"></i>
-                                        <div class="media-body">
-                                            <h3>Policies</h3>
-                                            <h2 id="policiesCount">@item.policies</h2>
-                                        </div>
+
+                                <div class="media">
+                                    <i class="fa fa-balance-scale" aria-hidden="true"></i>
+                                    <div class="media-body">
+                                        <h3>Policies</h3>
+                                        <h2 id="policiesCount">@item.policies</h2>
                                     </div>
-                                </a>
+                                </div>
+
                             </div>
                         </div>
                         <div class="col-md-3 pl-2 pr-2">
                             <div class="main_card_link c2">
-                                <a href="#">
-                                    <div class="media">
-                                        <i class="fa fa-user-o" aria-hidden="true"></i>
-                                        <div class="media-body">
-                                            <h3>Admin</h3>
-                                            <h2 id="usersCount">@item.users</h2>
-                                        </div>
+
+                                <div class="media">
+                                    <i class="fa fa-user-o" aria-hidden="true"></i>
+                                    <div class="media-body">
+                                        <h3>Admin</h3>
+                                        <h2 id="usersCount">@item.users</h2>
                                     </div>
-                                </a>
+                                </div>
+
                             </div>
                         </div>
                         <div class="col-md-3 pl-2 pr-2">
                             <div class="main_card_link c3">
-                                <a href="#">
-                                    <div class="media">
-                                        <i class="fa fa-clone" aria-hidden="true"></i>
-                                        <div class="media-body">
-                                            <h3>Insights</h3>
-                                            <h2 id="insightsCount">4</h2>
-                                        </div>
+
+                                <div class="media">
+                                    <i class="fa fa-clone" aria-hidden="true"></i>
+                                    <div class="media-body">
+                                        <h3>Insights</h3>
+                                        <h2 id="insightsCount">4</h2>
                                     </div>
-                                </a>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -286,6 +304,7 @@
                             <table class="table cera-table">
                                 <thead>
                                     <tr>
+
                                         <th>
                                             Resources
                                         </th>
@@ -301,16 +320,34 @@
                                             Spent
                                         </th>
                                         <th>
-                                            Recommendations
+                                            Recommendations *
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody id="tblBody">
                                     @foreach (var item in ViewBag.count)
                                     {
+
+
                                         <tr>
+
                                             <td>
-                                                @item.ResourceType
+                                                @if (item.ResourceType == "Compute")
+                                                {
+                                                    <a asp-controller="Cera" asp-action="GetComputeResources">@item.ResourceType</a>
+                                                }
+                                                else if (item.ResourceType == "Storage")
+                                                {
+                                                    <a asp-controller="Cera" asp-action="GetStorageResources">@item.ResourceType</a>
+                                                }
+                                                else if (item.ResourceType == "Network")
+                                                {
+                                                    <a asp-controller="Cera" asp-action="GetNetworkResources">@item.ResourceType</a>
+                                                }
+                                                else
+                                                {
+                                                    <a asp-controller="Cera" asp-action="GetOtherResources">@item.ResourceType</a>
+                                                }
                                             </td>
                                             <td>
                                                 @item.ResourceCount
@@ -338,13 +375,15 @@
                                                 @(item.ConsumedPercent+"%")
                                             </td>
                                             <td>
-                                                <img class="recom_img" src="/img/Recommendation.png" />
+
+                                                @*<img class="recom_img" src="/img/Recommendation.png" />*@
                                                 @*>5000*@
                                             </td>
                                         </tr>
                                     }
                                 </tbody>
                             </table>
+                            <p class="future">* indicates future enhancements</p>
                         </div>
                     </div>
                     <div class="col-md-5">
@@ -358,6 +397,7 @@
                                     <option value="0">--Select--</option>
                                     <option value="Spend">Spend</option>
                                     <option value="Tags">Tags</option>
+                                    <option value="Bar">Location Chart</option>
                                 </select>
                             </div>
                         </div>
@@ -365,6 +405,7 @@
                             <div id="chartContainer" class="mt-5">
 
                             </div>
+                            <canvas id="barChart" style="display:none;height:250px"></canvas>
                         </div>
 
                     </div>
@@ -379,7 +420,7 @@
     <section class="map_section">
         <div class="container">
             <div class="map_svg">
-                <h3 class="main_h">Resource Availability Map</h3>
+                <h4 class="map-font" style="margin-top:10px">Resource Availability Map</h4>
                 <div id="resourceMap" class="card-body" style="padding:0% !important">
                     <iframe src="~/azureWorldMap.html" width="1000" height="430"></iframe>
                 </div>
@@ -407,7 +448,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h3>CERA-Visualize and optimize multi cloud business landscape</h3>
+                    <h3>Cloud Enablement And Risk Assessment (Q-CERA)</h3>
                 </div>
                 <div class="col-md-6 text-right">
                     <p>© 2020 Quadrant Resource. All Rights Reserved.</p>
@@ -447,6 +488,11 @@
     var dashboardCount = [];
     var subscriptiondata = [];
     var subscriptionarrdata = [];
+    var barChartData = [];
+    var barChartDaraArr = [];
+    var barColors = [];
+    var barChartLabel = [];
+    var barChartValues = [];
 
     let cloud="AllClouds";
   async  function loadChartData(cloudprovider) {
@@ -744,7 +790,7 @@
         debugger;
         let location = $('#ddlLocation').val();
         let filterBy = $('#drpFilterBy').val();
-
+        cloudprovider = $('#ddlCloud').val();
         if (cloudprovider === "AllClouds") {
             if (location === "AllLocations") {
                 if (dataVal === undefined || dataVal.length === 0 || dataVal === 0) {
@@ -753,14 +799,26 @@
                 var drpval = $('#drpFilterBy').val();
                 if (filterBy == "Spend") {
                     dataVal = resourcesSpentArrData;
-                    $('#lblChart').text("Resources Spend");
+                    $('#lblChart').text("Resource Spend");
+                    $('#barChart').hide();
+                    $('#chartContainer').show();
                     console.log(resourcesSpentArrData);
+                    renderPieChartData();
                 }
-                if (filterBy == "Tags") {
+                else if (filterBy == "Tags") {
                     dataVal = resourceTagsData;
-                    $('#lblChart').text("Resources Tags");
+                    $('#lblChart').text("Resource Tags");
+                    $('#barChart').hide();
+                    $('#chartContainer').show();
+                    renderPieChartData();
                 }
-                renderPieChartData();
+                else if (filterBy == "Bar") {
+                    debugger;
+                    $('#lblChart').text("Resource Count per Location");
+                    $('#chartContainer').hide();
+                    $('#barChart').show();
+                    GetBarChartData();
+                }
 
             }
             loadPieChartData(filterBy, location);
@@ -776,12 +834,12 @@
                     var drpval = $('#drpFilterBy').val();
                     if (filterBy == "Spend") {
                         dataVal = resourcesSpentArrData;
-                        $('#lblChart').text("Resources Spend");
+                        $('#lblChart').text("Resource Spend");
                         console.log(resourcesSpentArrData);
                     }
                     if (filterBy == "Tags") {
                         dataVal = resourceTagsData;
-                        $('#lblChart').text("Resources Tags");
+                        $('#lblChart').text("Resource Tags");
                     }
                     renderPieChartData();
 
@@ -803,18 +861,70 @@
                 var drpval = $('#drpFilterBy').val();
                 if (filterBy == "Spend") {
                     dataVal = resourcesSpentArrData;
-                    $('#lblChart').text("Resources Spend");
+                    $('#lblChart').text("Resource Spend");
                     console.log(resourcesSpentArrData);
                 }
                 if (filterBy == "Tags") {
                     dataVal = resourceTagsData;
-                    $('#lblChart').text("Resources Tags");
+                    $('#lblChart').text("Resource Tags");
                 }
                 renderPieChartData();
 
             }
             loadPieChartData(filterBy, location, cloudprovider);
         }
+    }
+
+    function GetBarChartData() {
+        debugger;
+        barChartData = [];
+        barChartDaraArr = [];
+        barChartLabel = [];
+        barChartValues = [];
+        barColors = [];
+        barChartData.push((this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.barChart))')));
+        for (var i = 0; i < barChartData[0].length; i++) {
+            /*barChartDaraArr.push({ y: barChartData[0][i].resourceCount, label: barChartData[0][i].location });*/
+            barChartLabel.push(barChartData[0][i].location);
+            barChartValues.push(barChartData[0][i].resourceCount);
+            const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+            barColors.push(randomColor);
+        }
+        RenderBarChart();
+    }
+
+    function RenderBarChart() {
+        debugger;
+        let barChart = new Chart("barChart", {
+            type: "bar",
+            data: {
+                labels: barChartLabel,
+                datasets: [{
+                    data: barChartValues,
+                    label: 'Count of Resources in each Location',
+                    backgroundColor: barColors
+                }]
+            }
+        });
+        //var chart = new CanvasJS.Chart("chartContainer", {
+        //    animationEnabled: true,
+        //    theme: "light2", // "light1", "light2", "dark1", "dark2"
+        //    title: {
+        //        text: "Top Oil Reserves"
+        //    },
+        //    axisY: {
+        //        title: "Reserves(MMbbl)"
+        //    },
+        //    data: [{
+        //        type: "column",
+        //        showInLegend: true,
+        //        legendMarkerColor: "grey",
+        //        legendText: "MMbbl = one million barrels",
+        //        dataPoints: barChartDaraArr
+        //    }]
+        //});
+        //chart.render();
+
     }
 
     function appendDashboardCount(data) {
@@ -857,7 +967,18 @@
 
             for (let i = 0; i < data.length; i++) {
                 html += '<tr>';
-                html += '<td>' + data[i].resourceType + '</td>';
+                if (data[i].resourceType == 'Compute') {
+                    html += '<td><a href="Cera/GetComputeResources">' + data[i].resourceType + '</a></td>';
+                }
+                else if (data[i].resourceType == 'Storage') {
+                    html += '<td><a href="Cera/GetStorageResources">' + data[i].resourceType + '</a></td>';
+                }
+                else if (data[i].resourceType == 'Network') {
+                    html += '<td><a href="Cera/GetNetworkResources">' + data[i].resourceType + '</a></td>';
+                }
+                else {
+                    html += '<td><a href="Cera/GetOtherResources">' + data[i].resourceType + '</a></td>';
+                }
                 html += '<td>' + data[i].resourceCount + '</td>';
                 if (data[i].color == "red") {
                     html += '<td> <i class="fa fa-heartbeat" aria-hidden="true" style="color:red"></i> </td>';
@@ -869,7 +990,7 @@
                    html += '<td> <i class="fa fa-check" aria-hidden="true" style="color:lawngreen"></i> </td>';
                 }
                 html += '<td>' + data[i].consumedPercent + '%</td>';
-                html += '<td> <img class="recom_img" src="/img/Recommendation.png"/></td>';
+                html += '<td> </td>';
                 html += '</tr>';
             }
             $('#tblBody').empty();
@@ -1252,6 +1373,8 @@
                         console.log("spentOnChange ->", spentOnChange);
 
                         dataVal = spentOnChange;
+                        $('#barChart').hide();
+                        $('#chartContainer').show();
                         renderPieChartData();
                     }
                 },
@@ -1282,6 +1405,8 @@
                         console.log("tagsOnChange ->", tagsOnChange);
 
                         dataVal = tagsOnChange;
+                        $('#barChart').hide();
+                        $('#chartContainer').show();
                         renderPieChartData();
                     }
                 },
@@ -1291,8 +1416,8 @@
             });
         }
     }
-     function loadPieChartData(filterBy, location) {
-
+    function loadPieChartData(filterBy, location) {
+        debugger;
         if (filterBy === "Spend" && location !== "AllLocations") {
              $.ajax({
                     async: true,
@@ -1315,6 +1440,8 @@
                             console.log("spentOnChange ->", spentOnChange);
 
                             dataVal = spentOnChange;
+                            $('#barChart').hide();
+                            $('#chartContainer').show();
                             renderPieChartData();
                         }
                     },
@@ -1345,6 +1472,8 @@
                             console.log("tagsOnChange ->", tagsOnChange);
 
                             dataVal = tagsOnChange;
+                            $('#barChart').hide();
+                            $('#chartContainer').show();
                             renderPieChartData();
                         }
                     },
@@ -1379,6 +1508,8 @@
                         console.log("spentOnChange ->", spentOnChange);
 
                         dataVal = spentOnChange;
+                        $('#barChart').hide();
+                        $('#chartContainer').show();
                         renderPieChartData();
                     }
                 },
@@ -1409,6 +1540,8 @@
                         console.log("tagsOnChange ->", tagsOnChange);
 
                         dataVal = tagsOnChange;
+                        $('#barChart').hide();
+                        $('#chartContainer').show();
                         renderPieChartData();
                     }
                 },
@@ -1443,6 +1576,8 @@
                         console.log("spentOnChange ->", spentOnChange);
 
                         dataVal = spentOnChange;
+                        $('#barChart').hide();
+                        $('#chartContainer').show();
                         renderPieChartData();
                     }
                 },
@@ -1473,6 +1608,8 @@
                         console.log("tagsOnChange ->", tagsOnChange);
 
                         dataVal = tagsOnChange;
+                        $('#barChart').hide();
+                        $('#chartContainer').show();
                         renderPieChartData();
                     }
                 },
@@ -1484,9 +1621,11 @@
     }
 
     window.onload = function () {
+        debugger;
         $('.dataTables_length').addClass('bs-select');
         $('#drpFilterBy').val('Spend');
         dropdownChange(cloud);
+        console.log('cloud:', cloud);
         $('#resourceMap').empty();
         $('#resourceMap').append('<iframe src="/azureWorldMap.html" width="1000" height="430"></iframe>');
 

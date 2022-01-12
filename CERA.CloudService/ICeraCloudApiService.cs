@@ -47,17 +47,19 @@ namespace CERA.CloudService
         public List<UsageByMonth>GetCloudUsageByMonth(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions);
         public List<UsageHistory> GetCloudUsageHistory(RequestInfoViewModel requestInfo);
         public List<UsageHistory> GetCloudUsageHistory(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions);
+        public Task<List<StorageSize>> GetCloudStorageSize(RequestInfoViewModel requestInfo, List<CeraStorageAccount> storageAccounts);
+        
         public object GetCloudServicePlanList();
         public object GetCloudSqlDbList();
         public object GetCloudMonthlyBillingList();
         public List<CeraSubscription> GetSubscriptionList();
         public List<CeraResources> GetResourcesList();
-        public List<CeraVM> GetVMList();
-        public List<CeraResourceGroups> GetResourceGroupsList();
-        public List<CeraStorageAccount> GetStorageAccountList();
+        public List<ResourcesModel> GetVMList();
+        public List<ResourceGroupsVM> GetResourceGroupsList();
+        public List<StorageAccountsVM> GetStorageAccountList();
         public List<CeraSqlServer> GetSqlServersList();
         public List<CeraTenants> GetTenantsList();
-        public List<CeraWebApps> GetWebAppsList();
+        public List<ResourcesModel> GetWebAppsList();
         public List<CeraAppServicePlans> GetAppServicePlansList();
         public List<CeraDisks> GetDisksList();
         public List<ResourceHealthViewDTO> GetCeraResourceHealthList();
@@ -72,5 +74,6 @@ namespace CERA.CloudService
         public List<AdvisorRecommendations> GetAdvisorRecommendations();
         public List<UsageByMonth> GetUsageByMonth();
         public List<UsageHistory> GetUsageHistory();
+        
     }
 }

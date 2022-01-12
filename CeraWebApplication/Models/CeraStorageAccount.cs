@@ -8,9 +8,11 @@ namespace CeraWebApplication.Models
     public class CeraStorageAccount:UtilityModel
     {
         public int ID { get; set; }
+        public string StorageAccountId { get; set; }
         public string Name { get; set; }
         public string RegionName { get; set; }
         public string ResourceGroupName { get; set; }
+        //public float? blobSize { get; set; }
 
     }
 }

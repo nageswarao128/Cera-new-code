@@ -115,14 +115,14 @@ section.main_section {
     transition: all 0.5s;
 }
 
-    .main_card_link:hover {
+    /*.main_card_link:hover {
         background: #0a4c7e;
         transition: all 0.5s;
     }
 
         .main_card_link:hover i.fa, .main_card_link:hover h3 {
             color: #fff;
-        }
+        }*/
 
     .main_card_link i.fa {
         font-size: 18px;
@@ -339,14 +339,14 @@ section.home_page {
             color: #4caf50;
         }
 
-        section.home_page .main_card_link:hover {
+        /*section.home_page .main_card_link:hover {
             background: rgb(10 76 126 / 80%);
-        }
+        }*/
 
-            section.home_page .main_card_link:hover i.fa {
+           /* section.home_page .main_card_link:hover i.fa {
                 color: #fff;
                 background: rgb(255 255 255 / 20%);
-            }
+            }*/
 
 .main_card_link h2 {
     font-weight: 700;
@@ -355,9 +355,9 @@ section.home_page {
     margin-top: 8px;
 }
 
-section.home_page .main_card_link:hover h2 {
+/*section.home_page .main_card_link:hover h2 {
     color: #fff;
-}
+}*/
 
 /*path {
     fill: lightgray;

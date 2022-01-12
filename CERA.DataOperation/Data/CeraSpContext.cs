@@ -26,6 +26,11 @@ namespace CERA.DataOperation.Data
             modelBuilder.Entity<DashboardCountModel>().HasNoKey();
             modelBuilder.Entity<locationFilter>().HasNoKey();
             modelBuilder.Entity<ManageOrg>().HasNoKey();
+            modelBuilder.Entity<ResourcesModel>().HasNoKey();
+            modelBuilder.Entity<ResourceGroupsVM>().HasNoKey();
+            modelBuilder.Entity<Dashboardresources>().HasNoKey();
+            modelBuilder.Entity<StorageAccountsVM>().HasNoKey();
+            modelBuilder.Entity<BarChartModel>().HasNoKey();
         }
         public DbSet<ResourceTypeCount> resourceTypeCount { get; set; }
         public DbSet<ResourceLocations> Locations { get; set; }
@@ -38,5 +43,10 @@ namespace CERA.DataOperation.Data
         public DbSet<DashboardCountModel> dashboardCounts { get; set; }
         public DbSet<locationFilter> locationfilters { get; set; }
         public DbSet<ManageOrg> manageorg { get; set; }
+        public DbSet<ResourcesModel> resources { get; set; }
+        public DbSet<ResourceGroupsVM> resourceGroups { get; set; }
+        public DbSet<Dashboardresources> dashboardresources { get; set; }
+        public DbSet<StorageAccountsVM> storageAccounts { get; set; }
+        public DbSet<BarChartModel> barCharts { get; set; }
     }
 }

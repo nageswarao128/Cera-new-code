@@ -1,4 +1,4 @@
-﻿@model List<CeraWebApplication.Models.CeraVM>
+﻿@model List<CeraWebApplication.Models.ResourcesModel>
 
 @{
     Layout = "~/Views/Shared/_ResourcesLayout.cshtml";
@@ -6,55 +6,72 @@
 }
 
 
-    <div>
-        <div class="row">
-            <div class="col-md-4">
-                <ul class="cera-breadCrumb">
-                    <li><a asp-controller="Cera" asp-action="DashBoard">Home </a></li>
-                    <li><a href="#">Resources</a></li>
-                    <li>Virtual Machine</li>
-                </ul>
-            </div>
-        </div>
-        <div class="cera-rightContent">
-            <h3 class="main_h">Virtual Machine </h3>
-            <table class="table display" id="example" style="width:100%">
-                <thead>
-                    <tr>
-
-                        <th>
-                            VMName
-                        </th>
-
-                        <th>
-                            ResourceGroupName
-                        </th>
-
-                        <th>
-                            
-                            RegionName
-                        </th>
-                    </tr>
-                </thead>
-                <tbody id="ddlVM">
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.VMName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ResourceGroupName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.RegionName)
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+<div>
+    <div class="row">
+        <div class="col-md-4">
+            <ul class="cera-breadCrumb">
+                <li><a asp-controller="Cera" asp-action="DashBoard">Home </a></li>
+                <li><a href="#">Resources</a></li>
+                <li>Virtual Machine</li>
+            </ul>
         </div>
     </div>
+    <div class="cera-rightContent">
+        <h3 class="main_h">Virtual Machine </h3>
+        <table class="table display" id="example" style="width:100%">
+            <thead>
+                <tr>
+
+                    <th>
+                        Name
+                    </th>
+
+                    <th>
+                        ResourceGroup
+                    </th>
+                    <th>
+                        ResourceType
+                    </th>
+                    <th>
+                        Region
+                    </th>
+                    <th>
+                        Cost (INR)
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="ddlVM">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ResourceGroupName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RegionName)
+                        </td>
+                        @if (item.cost == null)
+                        {
+                            <td>₹ 0.00</td>
+                        }
+                        else
+                        {
+                            <td>
+                               ₹ @Html.DisplayFor(modelItem => item.cost)
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -168,7 +185,14 @@
                 html += '<tr>';
                 html += '<td>' + data[i].vmName + '</td>';
                 html += '<td>' + data[i].resourceGroupName + '</td>';
+                html += '<td>' + data[i].type + '</td>';
                 html += '<td>' + data[i].regionName + '</td>';
+                if (data[i].cost == null) {
+                    html += '<td>' +'₹ 0.00' + '</td>';
+                }
+                else {
+                    html += '<td>' +'₹' +data[i].cost + '</td>';
+                }
                 html += '</tr>';
             }
             $('#ddlVM').empty();

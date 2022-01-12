@@ -63,6 +63,7 @@ namespace CeraWebApplication.Controllers
         {
             UserDetails userDetails = new UserDetails();
             UserModel user = new UserModel();
+            List<CeraSubscription> subscriptions = new List<CeraSubscription>();
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.PostAsJsonAsync<LoginModel>($"{SyncApiUrl}/api/Login/Login", loginModel))
@@ -92,7 +93,27 @@ namespace CeraWebApplication.Controllers
 
                         var principle = new ClaimsPrincipal(auth);
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principle);
-                        return RedirectToAction("DashBoard", "Cera");
+                        using (var response1 = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetDBSubscriptions"))
+                        {
+                            string apiResponse = await response1.Content.ReadAsStringAsync();
+                            if (response1.IsSuccessStatusCode)
+                            {
+                                subscriptions = JsonConvert.DeserializeObject<List<CeraSubscription>>(apiResponse);
+                                if (subscriptions.Count <= 0)
+                                {
+                                    return RedirectToAction("NullContent", "Cera");
+                                }
+                                else
+                                {
+                                    return RedirectToAction("DashBoard", "Cera");
+                                }
+                            }
+                            else
+                            {
+                                return RedirectToAction("Error", "Cera");
+                            }
+                        }
+                        
                     }
                     else
                     {
@@ -287,6 +308,7 @@ namespace CeraWebApplication.Controllers
         {
             IEnumerable<ResourceTypeCount> resourceCount = null;
             IEnumerable<ResourceTypeUsage> resourceUsage = null;
+
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetResourceTypeCount"))
@@ -374,6 +396,7 @@ namespace CeraWebApplication.Controllers
                 }
             }
             List<Locations> locations = new List<Locations>();
+            List<BarChartModel> barChartModel = new List<BarChartModel>();
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CERAData/GetResourceLocations"))
@@ -382,7 +405,15 @@ namespace CeraWebApplication.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         locations = JsonConvert.DeserializeObject<List<Locations>>(apiResponse);
-
+                        foreach (var item in locations)
+                        {
+                            barChartModel.Add(new BarChartModel
+                            {
+                                resourceCount = item.resourceCount,
+                                location = item.locationName
+                            });
+                        }
+                        ViewBag.barChart = barChartModel.ToList();
                         ViewBag.locations = locations.ToList();
                     }
                     else
@@ -597,7 +628,7 @@ namespace CeraWebApplication.Controllers
         /// <param name="subscriptionid"></param>
         /// <returns></returns>
         public async Task<JsonResult> UsageSubscriptionByMonth(string cloudprovider, string subscriptionid)
-         {
+        {
             using (var httpclient = new HttpClient())
             {
                 using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/UsageSubscriptionByMonth?cloudprovider=" + cloudprovider + "&subscriptionid=" + subscriptionid))
@@ -911,6 +942,38 @@ namespace CeraWebApplication.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<JsonResult> GetBarChartCloudData(string cloud)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetBarChartCloudData?cloud=" + cloud))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+        public async Task<JsonResult> GetBarChartSubscriptionData(string cloud, string subscriptionId)
+        {
+            using (var httpclient = new HttpClient())
+            {
+                using (var response = await httpclient.GetAsync($"{DataApiUrl}/api/CeraData/GetBarChartSubscriptionData?cloud=" + cloud+ "&subscriptionId="+subscriptionId))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        return Json(apiResponse);
+                    }
+                    return null;
+                }
+            }
+        }
+
         /// <summary>
         /// This method will retrive the resources count data by location
         /// </summary>
@@ -1088,7 +1151,7 @@ namespace CeraWebApplication.Controllers
         [HttpGet]
         public async Task<IActionResult> GetResourceGroupDetails()
         {
-            IEnumerable<CeraResourceGroup> ResourceGroups = null;
+            IEnumerable<ResourceGroupsVM> ResourceGroups = null;
 
             using (var httpClient = new HttpClient())
             {
@@ -1097,7 +1160,7 @@ namespace CeraWebApplication.Controllers
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
                     {
-                        ResourceGroups = JsonConvert.DeserializeObject<List<CeraResourceGroup>>(apiResponse);
+                        ResourceGroups = JsonConvert.DeserializeObject<List<ResourceGroupsVM>>(apiResponse);
                     }
                     else
                     {
@@ -1139,8 +1202,8 @@ namespace CeraWebApplication.Controllers
         [HttpGet]
         public async Task<IActionResult> GetStorageAccountsDetails()
         {
-            IEnumerable<CeraStorageAccount> StorageAccounts = null;
-
+            IEnumerable<StorageAccountsVM> StorageAccounts = null;
+            IEnumerable<StorageSizes> storageSizes = null;
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetDBStorageAccount"))
@@ -1148,17 +1211,39 @@ namespace CeraWebApplication.Controllers
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
                     {
-                        StorageAccounts = JsonConvert.DeserializeObject<List<CeraStorageAccount>>(apiResponse);
+                        StorageAccounts = JsonConvert.DeserializeObject<List<StorageAccountsVM>>(apiResponse);
+                        
                     }
                     else
                     {
                         return RedirectToAction("Error", "Home");
                     }
                 }
+
             }
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetStorageSizes"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        storageSizes = JsonConvert.DeserializeObject<List<StorageSizes>>(apiResponse);
+
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Home");
+                    }
+                }
+
+            }
+            ViewBag.size = storageSizes.ToList();
             ViewBag.data = StorageAccounts.ToList();
             return View(StorageAccounts.ToList());
         }
+
+        
 
         /// <summary>
         /// This method will calls the API to sync the StorageAccount data from cloud to db
@@ -1182,6 +1267,30 @@ namespace CeraWebApplication.Controllers
                     }
                 }
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetResourceGroupResources(string name)
+        {
+            IEnumerable<ResourcesModel> Resources = null;
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetResourceGroupResources?name="+name))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        Resources = JsonConvert.DeserializeObject<List<ResourcesModel>>(apiResponse);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Home");
+                    }
+                }
+            }
+            ViewBag.data = Resources.ToList();
+            return View(Resources.ToList());
         }
 
         /// <summary>
@@ -1242,7 +1351,7 @@ namespace CeraWebApplication.Controllers
         [HttpGet]
         public async Task<IActionResult> GetVMDetails()
         {
-            IEnumerable<CeraVM> CeraVMs = null;
+            IEnumerable<ResourcesModel> CeraVMs = null;
 
             using (var httpClient = new HttpClient())
             {
@@ -1251,7 +1360,7 @@ namespace CeraWebApplication.Controllers
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
                     {
-                        CeraVMs = JsonConvert.DeserializeObject<List<CeraVM>>(apiResponse);
+                        CeraVMs = JsonConvert.DeserializeObject<List<ResourcesModel>>(apiResponse);
                     }
                     else
                     {
@@ -1393,7 +1502,7 @@ namespace CeraWebApplication.Controllers
         [HttpGet]
         public async Task<IActionResult> GetWebAppsDetails()
         {
-            IEnumerable<CeraWebApps> webApps = null;
+            IEnumerable<ResourcesModel> webApps = null;
 
             using (var httpClient = new HttpClient())
             {
@@ -1402,7 +1511,7 @@ namespace CeraWebApplication.Controllers
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
                     {
-                        webApps = JsonConvert.DeserializeObject<List<CeraWebApps>>(apiResponse);
+                        webApps = JsonConvert.DeserializeObject<List<ResourcesModel>>(apiResponse);
                     }
                     else
                     {
@@ -1909,6 +2018,104 @@ namespace CeraWebApplication.Controllers
         {
             HttpContext.Session.SetString("accessToken", accessToken);
             return Json("Session Created");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetComputeResources()
+        {
+            List<DashboardResources> resources= null;
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetComputeResources"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        resources = JsonConvert.DeserializeObject<List<DashboardResources>>(apiResponse);
+                        ViewBag.resources = resources;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Cera");
+                    }
+                }
+            }
+            return View(resources.ToList());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetNetworkResources()
+        {
+            List<DashboardResources> resources = null;
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetNetworkResources"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        resources = JsonConvert.DeserializeObject<List<DashboardResources>>(apiResponse);
+                        ViewBag.resources = resources;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Cera");
+                    }
+                }
+            }
+            return View(resources.ToList());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetStorageResources()
+        {
+            List<DashboardResources> resources = null;
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetStorageResources"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        resources = JsonConvert.DeserializeObject<List<DashboardResources>>(apiResponse);
+                        ViewBag.resources = resources;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Cera");
+                    }
+                }
+            }
+            return View(resources.ToList());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetOtherResources()
+        {
+            List<DashboardResources> resources = null;
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetOtherResources"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        resources = JsonConvert.DeserializeObject<List<DashboardResources>>(apiResponse);
+                        ViewBag.resources = resources;
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error", "Cera");
+                    }
+                }
+            }
+            return View(resources.ToList());
+        }
+
+        [HttpGet]
+        public IActionResult NullContent()
+        {
+            return View();
         }
 
         public IActionResult Privacy()

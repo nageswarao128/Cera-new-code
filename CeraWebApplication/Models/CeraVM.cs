@@ -8,6 +8,7 @@ namespace CeraWebApplication.Models
     public class CeraVM:UtilityModel
     {
         public int VMId { get; set; }
+        public string Id { get; set; }
         public string VMName { get; set; }
         public string RegionName { get; set; }
         public string ResourceGroupName { get; set; }

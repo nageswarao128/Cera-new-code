@@ -1,4 +1,5 @@
 ﻿
+using CERA.Entities.Models;
 using CERA.Entities.ViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -30,14 +31,14 @@ namespace CERA.DataOperation
         public List<ResourceLocations> GetResourceLocations();
         public List<locationFilter> GetMapLocationsFilter();
         public List<CeraResourceTypeUsage> ResourceSubscriptionCloudUsage(string location, string cloudprovider, string subscriptionid);
-  public List<ResourceTagsCount> GetResourceSubscriptionCloudTagsCount(string location, string cloudprovider, string subscriptionid);
+        public List<ResourceTagsCount> GetResourceSubscriptionCloudTagsCount(string location, string cloudprovider, string subscriptionid);
         public List<ResourceLocations> GetResourceLocations(string location);
         public List<CostUsage> UsageByMonth();
         public List<CostUsage> UsageCloudByMonth(string cloudprovider);
         public List<ResourceTypeCount> GetResourceTypecloudCount(string location, string cloudprovider);
         public List<CostUsage> UsageHistory();
         public List<ResourceTagsCount> GetResourceSubscriptionCloudTagsCount(string cloudprovider, string subscriptionid);
-  public List<CostUsage> UsageSubscriptionByMonth(string cloudprovider, string subscriptionid);
+        public List<CostUsage> UsageSubscriptionByMonth(string cloudprovider, string subscriptionid);
         public List<UsageHistoryByMonth> UsageHistoryByMonth();
         public List<CeraResourceTypeUsage> ResourceSubscriptionCloudspentUsage(string cloudprovider, string subscriptionid);
         public List<UsageByLocation> GetUsageByLocation();
@@ -48,5 +49,11 @@ namespace CERA.DataOperation
         public List<DashboardCountModel> GetDashboardCountFilters(string location, string cloudprovider);
         public List<DashboardCountModel> GetDashboardCountLocation(string location);
         public List<DashboardCountModel> GetDashboardCountCloud(string cloudprovider);
+        public List<Dashboardresources> GetComputeResources();
+        public List<Dashboardresources> GetNetworkResources();
+        public List<Dashboardresources> GetStorageResources();
+        public List<Dashboardresources> GetOtherResources();
+        public List<CeraSubscription> TenantSubscriptions(string tenantId);
+       
     }
 }

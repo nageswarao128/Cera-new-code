@@ -1,4 +1,4 @@
-﻿@model List<CeraWebApplication.Models.CeraStorageAccount>
+﻿@model List<CeraWebApplication.Models.StorageAccountsVM>
 
 @{
     Layout = "~/Views/Shared/_ResourcesLayout.cshtml";
@@ -12,58 +12,120 @@
             <ul class="cera-breadCrumb">
                 <li><a asp-controller="Cera" asp-action="DashBoard">Home </a></li>
                 <li><a href="#">Resources</a></li>
-                <li>Storage Accounts</li>
+                <li>Storage Account</li>
             </ul>
         </div>
     </div>
     <div class="cera-rightContent">
-        <h3 class="main_h">Storage Accounts </h3>
+        <h3 class="main_h">Storage Account </h3>
         <table class="table display" id="example" style="width:100%">
             <thead>
                 <tr>
+
                     <th>
                         Name
                     </th>
 
-
                     <th>
-                        ResourceGroupName
+                        ResourceGroup
                     </th>
-
                     <th>
-                        RegionName
+                        ResourceType
+                    </th>
+                    <th>
+                        Region
+                    </th>
+                    <th>
+                        Cost (INR)
                     </th>
                 </tr>
             </thead>
-            <tbody id="ddlStorage">
+            <tbody id="ddlVM">
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>
+                        <td data-toggle="modal" data-target="#sizeModal" onclick="GetDataSize('@item.StorageAccountId')">
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ResourceGroupName)
                         </td>
                         <td>
+                            @Html.DisplayFor(modelItem => item.type)
+                        </td>
+                        <td>
                             @Html.DisplayFor(modelItem => item.RegionName)
                         </td>
+                        @if (item.cost == null)
+                        {
+                            <td>₹ 0.00</td>
+                        }
+                        else
+                        {
+                            <td>
+                                ₹ @Html.DisplayFor(modelItem => item.cost)
+                            </td>
+                        }
                     </tr>
                 }
             </tbody>
         </table>
+
+
+        <div class="modal fade" id="sizeModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        @*<h4 class="modal-title"></h4>*@
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <table class="table display" id="size" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Type
+                                    </th>
+                                    <th>
+                                        Size
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="sizeBody">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </div>
 
 <script type="text/javascript">
     $(document).ready(function () {
         $('#example').DataTable();
+        //$('#size').DataTable();
     });
-    //window.onload=function() {
-    //    let cloud = $('#ddlCloud').val();
-    //    console.log(cloud);
-    //};
-   
+
+    //$(document).ready(function () {
+    //    $('#size').DataTable();
+    //});
 </script>
 <script type="text/javascript">
     (function () {
@@ -75,109 +137,151 @@
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
-    var cloud;
-    var storageaccountdata = [];
-    var storageaccountdataarr = [];
-    var storagedata = [];
+
+     var cloud;
+    var data = [];
+    var dataarr = [];
+    var clouddata = [];
+    var sizeData = [];
+    var sizeDataArr = [];
     function getdataCloud() {
-        debugger;
+
         cloud = $('#ddlCloud').val();
         console.log('selected cloud', cloud);
         let subscriptionid = $('#ddlSub').val();
         if (subscriptionid == "AllSubscriptions") {
             if (cloud == "AllClouds") {
                 $('#subscriptionFilter').hide();
-                storagedata = [];
-                storagedata = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.data))');
-                console.log('AllCloudsdata', storagedata);
-                appendhtmlstroage(storagedata);
+                debugger;
+                clouddata = [];
+                clouddata = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.data))');
+                console.log('AllCloudsdata', clouddata);
+                appendhtmldata(clouddata);
             }
             else if (cloud == "Azure") {
+                debugger;
                 $('#subscriptionFilter').show();
-                storageaccountdata = [];
-                storageaccountdataarr = [];
-                storageaccountdata = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.data))');
-                storageaccountdataarr = storageaccountdata.filter(function (data) {
+                data = [];
+                dataarr = [];
+                data = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.data))');
+                dataarr = data.filter(function (data) {
                     return data.cloudProvider == cloud;
 
                 });
-                console.log('Selectedcloud', storageaccountdataarr);
-                appendhtmlstroage(storageaccountdataarr);
+                console.log('Selectedcloud', dataarr);
+                appendhtmldata(dataarr);
             }
+
             else {
                 $('#subscriptionFilter').hide();
-                storageaccountdata = [];
-                storageaccountdataarr = [];
-                storageaccountdata = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.data))');
-                storageaccountdataarr = storageaccountdata.filter(function (data) {
+                data = [];
+                dataarr = [];
+                data = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.data))');
+                dataarr = data.filter(function (data) {
                     return data.cloudProvider == cloud;
 
                 });
-                console.log('Selectedcloud', storageaccountdataarr);
-                appendhtmlstroage(storageaccountdataarr);
+                console.log('Selectedcloud', dataarr);
+                appendhtmldata(dataarr);
             }
         }
         else {
-              if (cloud == "AllClouds") {
+            if (cloud == "AllClouds") {
                 $('#subscriptionFilter').hide();
-                storagedata = [];
-                storagedata = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.data))');
-                  console.log('AllCloudsdata', storagedata);
-                  
-                  appendhtmlstroage(storagedata);
+                
+                clouddata = [];
+                clouddata = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.data))');
+                console.log('AllCloudsdata', clouddata);
+                appendhtmldata(clouddata);
             }
             else if (cloud == "Azure") {
+                
                 $('#subscriptionFilter').show();
-                storageaccountdata = [];
-                storageaccountdataarr = [];
-                storageaccountdata = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.data))');
-                storageaccountdataarr = storageaccountdata.filter(function (data) {
+                data = [];
+                dataarr = [];
+                data = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.data))');
+                dataarr = data.filter(function (data) {
                     return data.cloudProvider == cloud && data.subscriptionId == subscriptionid;
 
                 });
-                console.log('Selectedcloud', storageaccountdataarr);
-                appendhtmlstroage(storageaccountdataarr);
+                console.log('Selectedcloud', dataarr);
+                appendhtmldata(dataarr);
             }
+
             else {
                 $('#subscriptionFilter').hide();
-                storageaccountdata = [];
-                storageaccountdataarr = [];
-                storageaccountdata = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.data))');
-                storageaccountdataarr = storageaccountdata.filter(function (data) {
+                data = [];
+                dataarr = [];
+                data = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.data))');
+                dataarr = data.filter(function (data) {
                     return data.cloudProvider == cloud;
 
                 });
-                console.log('Selectedcloud', storageaccountdataarr);
-                appendhtmlstroage(storageaccountdataarr);
+                console.log('Selectedcloud', dataarr);
+                appendhtmldata(dataarr);
             }
-
         }
-
 
     }
     function getDataBySubscription() {
         getdataCloud();
     }
 
-    function appendhtmlstroage(data) {
+    function appendhtmldata(data) {
         console.log('appendhtmlhit');
         if (data != null) {
 
             let html = '';
-            debugger;
+            
 
             for (let i = 0; i < data.length; i++) {
+                let temp = "'" + data[i].storageAccountId + "'";
+                console.log(temp);
                 html += '<tr>';
-                html += '<td>' + data[i].name + '</td>';
+                /*html += '<td data-toggle="modal" data-target="#sizeModal" onclick="GetDataSize('+ data[i].storageAccountId +')">' + data[i].name + '</td>';*/
+                /*html += "<td data-toggle='modal' data-target='#sizeModal' onclick='GetDataSize(" + temp + ")'>" + data[i].name + "</td>";*/
+                html += '<td data-toggle="modal" data-target="#sizeModal" onclick="GetDataSize(' + temp + ')">' + data[i].name + '</td>';
                 html += '<td>' + data[i].resourceGroupName + '</td>';
+                html += '<td>' + data[i].type + '</td>';
                 html += '<td>' + data[i].regionName + '</td>';
+                if (data[i].cost == null) {
+                    html += '<td>' +'₹ 0.00' + '</td>';
+                }
+                else {
+                    html += '<td>' +'₹' +data[i].cost + '</td>';
+                }
                 html += '</tr>';
             }
-            $('#ddlStorage').empty();
-            $('#ddlStorage').append(html);
+            $('#ddlVM').empty();
+            $('#ddlVM').append(html);
 
         }
     }
 
+    function GetDataSize(id) {
+        
+        sizeData = [];
+        sizeDataArr = [];
+        sizeData = this.JSON.parse('@Html.Raw(Json.Serialize(ViewBag.size))');
+        sizeDataArr = sizeData.filter(function (data) {
+            return data.resourceID == id;
+
+        });
+        let html = '';
+        for (var i = 0; i < sizeDataArr.length; i++) {
+            html += '<tr>';
+            html += '<td>' + sizeDataArr[i].name + '</td>';
+            html += '<td>' + sizeDataArr[i].storageType + '</td>';
+            html += '<td>' + sizeDataArr[i].size +'MB' +'</td>';
+            html += '</tr>';
+        }
+        //$('#size').DataTable().clear().destroy();
+        $('#sizeBody').empty();
+        $('#sizeBody').append(html);
+        console.log('called');
+        $('#size').DataTable();
+    }
+
 </script>
+
 

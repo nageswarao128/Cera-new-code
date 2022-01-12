@@ -9,5 +9,6 @@ namespace CERA.Entities.Models
         public string CloudProvider { get; set; }
         public bool IsActive { get; set; }
         public string SubscriptionId { get; set; }
+        //public string cost { get; set; }
     }
 }

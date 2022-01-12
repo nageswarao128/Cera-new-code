@@ -32,7 +32,10 @@ namespace CERA.DataOperation
                                      {
                                          PlatformName = clientPlugin.PlugIn.CloudProviderName,
                                          APIClassName = clientPlugin.PlugIn.FullyQualifiedName,
-                                         DllPath = clientPlugin.PlugIn.DllPath,                                         
+                                         DllPath = clientPlugin.PlugIn.DllPath,
+                                         TenantId = clientPlugin.TenantId,
+                                         ClientId = clientPlugin.ClientId,
+                                         ClientSecret=clientPlugin.ClientSecret
                                      };
             return onboradedPlatforms.ToList();
         }
@@ -120,7 +123,10 @@ namespace CERA.DataOperation
             });
             return _dbContext.SaveChanges();
         }
-
+        public List<CeraSubscription> TenantSubscriptions(string tenantId)
+        {
+            return _dbContext.Subscriptions.Where(x => x.TenantID == tenantId && x.IsActive == true).ToList();
+        }
         public List<UserClouds> GetUserClouds()
         {
             List<UserClouds> clouds = new List<UserClouds>();
@@ -610,5 +616,57 @@ namespace CERA.DataOperation
             }
         }
 
+        public List<Dashboardresources> GetComputeResources()
+        {
+            try
+            {
+                var data= _spContext.dashboardresources.FromSqlRaw<Dashboardresources>("Sp_ComputeResources").ToList();
+                return data;
+            }
+            catch ( Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public List<Dashboardresources> GetNetworkResources()
+        {
+            try
+            {
+                var data = _spContext.dashboardresources.FromSqlRaw<Dashboardresources>("Sp_NetworkResources").ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public List<Dashboardresources> GetStorageResources()
+        {
+            try
+            {
+                var data = _spContext.dashboardresources.FromSqlRaw<Dashboardresources>("Sp_StorageResources").ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public List<Dashboardresources> GetOtherResources()
+        {
+            try
+            {
+                var data = _spContext.dashboardresources.FromSqlRaw<Dashboardresources>("Sp_OthersResources").ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }

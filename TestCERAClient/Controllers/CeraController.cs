@@ -63,7 +63,7 @@ namespace CERASyncAPI.Controllers
         }
 
         /// <summary>
-        /// to ger resources health from the cloud
+        /// to get resources health from the cloud
         /// </summary>
         /// <param name="ClientName"></param>
         /// <returns></returns>

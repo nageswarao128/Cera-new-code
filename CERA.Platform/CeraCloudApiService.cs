@@ -74,9 +74,13 @@ namespace CERA.CloudService
                 List<CeraResources> resources = new List<CeraResources>();
                 GetPlatforms();
                 List<CeraSubscription> subscriptions = new List<CeraSubscription>();
-                subscriptions = GetSubscriptionList();
+                
                 foreach (var platformConfig in PlatformConfigs)
                 {
+                    requestInfo.tenantId = platformConfig.TenantId;
+                    requestInfo.clientId = platformConfig.ClientId;
+                    requestInfo.clientSecret = platformConfig.ClientSecret;
+                    subscriptions = GetTenantSubscriptions(platformConfig.TenantId);
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     resources = _cloudApiServices.GetCloudResourceList(requestInfo, subscriptions);
@@ -110,9 +114,13 @@ namespace CERA.CloudService
 
                 GetPlatforms();
                 List<CeraSubscription> subscriptions = new List<CeraSubscription>();
-                subscriptions = GetSubscriptionList();
+                
                 foreach (var platformConfig in PlatformConfigs)
                 {
+                    requestInfo.tenantId = platformConfig.TenantId;
+                    requestInfo.clientId = platformConfig.ClientId;
+                    requestInfo.clientSecret = platformConfig.ClientSecret;
+                    subscriptions = GetTenantSubscriptions(platformConfig.TenantId);
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     resources = await _cloudApiServices.GetCloudResourceGroups(requestInfo, subscriptions);
@@ -145,14 +153,23 @@ namespace CERA.CloudService
                 List<CeraStorageAccount> storageAccount = new List<CeraStorageAccount>();
                 GetPlatforms();
                 List<CeraSubscription> subscriptions = new List<CeraSubscription>();
-                subscriptions = GetSubscriptionList();
+                List<StorageSize> storageSizes = new List<StorageSize>();
                 foreach (var platformConfig in PlatformConfigs)
                 {
+                    requestInfo.tenantId = platformConfig.TenantId;
+                    requestInfo.clientId = platformConfig.ClientId;
+                    requestInfo.clientSecret = platformConfig.ClientSecret;
+                    subscriptions = GetTenantSubscriptions(platformConfig.TenantId);
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     storageAccount = await _cloudApiServices.GetCloudStorageAccountList(requestInfo, subscriptions);
                     Logger.LogInfo($"Got data from {platformConfig.PlatformName} Cloud Resources");
                     _dataOps.AddStorageAccountData(storageAccount);
+                    if(platformConfig.PlatformName== "Azure")
+                    {
+                      await GetCloudStorageSize(requestInfo,storageAccount);
+                        
+                    }
                     storageAccount.Clear();
                     Logger.LogInfo($"Imported data for {platformConfig.PlatformName} Cloud StorageGroups to DB");
                 }
@@ -165,7 +182,29 @@ namespace CERA.CloudService
             }
             
         }
-
+        public async Task<List<StorageSize>> GetCloudStorageSize(RequestInfoViewModel requestInfo ,List<CeraStorageAccount> storageAccounts)
+        {
+            
+            List<StorageSize> storageSizes = new List<StorageSize>();
+            GetPlatforms();
+            foreach(var platforms in PlatformConfigs)
+            {
+                if (platforms.PlatformName == "Azure")
+                {
+                    requestInfo.tenantId = platforms.TenantId;
+                    requestInfo.clientId = platforms.ClientId;
+                    requestInfo.clientSecret = platforms.ClientSecret;
+                    
+                    _cloudApiServices = _converter.CreateInstance(platforms.DllPath, platforms.APIClassName);
+                    _cloudApiServices.Logger = Logger;
+                    storageSizes = await _cloudApiServices.GetCloudStorageSize(requestInfo, storageAccounts);
+                    _dataOps.AddStorageSize(storageSizes);
+                    storageSizes.Clear();
+                }
+                
+            }
+            return storageSizes;
+        }
         public object GetCloudSqlDbList()
         {
             return new object();
@@ -185,6 +224,9 @@ namespace CERA.CloudService
                 GetPlatforms();
                 foreach (var platformConfig in PlatformConfigs)
                 {
+                    requestInfo.tenantId = platformConfig.TenantId;
+                    requestInfo.clientId = platformConfig.ClientId;
+                    requestInfo.clientSecret = platformConfig.ClientSecret;
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     subscriptions = _cloudApiServices.GetCloudSubscriptionList(requestInfo);
@@ -222,6 +264,10 @@ namespace CERA.CloudService
                 GetPlatforms();
                 foreach (var platformConfig in PlatformConfigs)
                 {
+                    requestInfo.tenantId = platformConfig.TenantId;
+                    requestInfo.clientId = platformConfig.ClientId;
+                    requestInfo.clientSecret = platformConfig.ClientSecret;
+                    
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     Tenants = _cloudApiServices.GetCloudTenantList(requestInfo);
@@ -253,9 +299,13 @@ namespace CERA.CloudService
                 List<CeraVM> vM = new List<CeraVM>();
                 GetPlatforms();
                 List<CeraSubscription> subscriptions = new List<CeraSubscription>();
-                subscriptions = GetSubscriptionList();
+                
                 foreach (var platformConfig in PlatformConfigs)
                 {
+                    requestInfo.tenantId = platformConfig.TenantId;
+                    requestInfo.clientId = platformConfig.ClientId;
+                    requestInfo.clientSecret = platformConfig.ClientSecret;
+                    subscriptions = GetTenantSubscriptions(platformConfig.TenantId);
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     vM = await _cloudApiServices.GetCloudVMList(requestInfo, subscriptions);
@@ -281,9 +331,13 @@ namespace CERA.CloudService
                 List<CeraResourceHealth> resourceHealth = new List<CeraResourceHealth>();
                 GetPlatforms();
                 List<CeraSubscription> subscriptions = new List<CeraSubscription>();
-                subscriptions = GetSubscriptionList();
+                
                 foreach (var platformConfig in PlatformConfigs)
                 {
+                    requestInfo.tenantId = platformConfig.TenantId;
+                    requestInfo.clientId = platformConfig.ClientId;
+                    requestInfo.clientSecret = platformConfig.ClientSecret;
+                    subscriptions = GetTenantSubscriptions(platformConfig.TenantId);
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     resourceHealth = _cloudApiServices.GetCloudResourceHealth(requestInfo, subscriptions);
@@ -315,9 +369,13 @@ namespace CERA.CloudService
                 List<CeraSqlServer> sqlServers = new List<CeraSqlServer>();
                 GetPlatforms();
                 List<CeraSubscription> subscriptions = new List<CeraSubscription>();
-                subscriptions = GetSubscriptionList();
+                
                 foreach (var platformConfig in PlatformConfigs)
                 {
+                    requestInfo.tenantId = platformConfig.TenantId;
+                    requestInfo.clientId = platformConfig.ClientId;
+                    requestInfo.clientSecret = platformConfig.ClientSecret;
+                    subscriptions = GetTenantSubscriptions(platformConfig.TenantId);
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     sqlServers = _cloudApiServices.GetCloudSqlServersList(requestInfo, subscriptions);
@@ -349,9 +407,13 @@ namespace CERA.CloudService
                 List<CeraWebApps> webApps = new List<CeraWebApps>();
                 GetPlatforms();
                 List<CeraSubscription> subscriptions = new List<CeraSubscription>();
-                subscriptions = GetSubscriptionList();
+                
                 foreach (var platformConfig in PlatformConfigs)
                 {
+                    requestInfo.tenantId = platformConfig.TenantId;
+                    requestInfo.clientId = platformConfig.ClientId;
+                    requestInfo.clientSecret = platformConfig.ClientSecret;
+                    subscriptions = GetTenantSubscriptions(platformConfig.TenantId);
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     webApps = await _cloudApiServices.GetCloudWebAppList(requestInfo, subscriptions);
@@ -383,9 +445,13 @@ namespace CERA.CloudService
                 List<CeraAppServicePlans> appServicePlans = new List<CeraAppServicePlans>();
                 GetPlatforms();
                 List<CeraSubscription> subscriptions = new List<CeraSubscription>();
-                subscriptions = GetSubscriptionList();
+                
                 foreach (var platformConfig in PlatformConfigs)
                 {
+                    requestInfo.tenantId = platformConfig.TenantId;
+                    requestInfo.clientId = platformConfig.ClientId;
+                    requestInfo.clientSecret = platformConfig.ClientSecret;
+                    subscriptions = GetTenantSubscriptions(platformConfig.TenantId);
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     appServicePlans = _cloudApiServices.GetCloudAppServicePlansList(requestInfo, subscriptions);
@@ -420,6 +486,10 @@ namespace CERA.CloudService
                 subscriptions = GetSubscriptionList();
                 foreach (var platformConfig in PlatformConfigs)
                 {
+                    requestInfo.tenantId = platformConfig.TenantId;
+                    requestInfo.clientId = platformConfig.ClientId;
+                    requestInfo.clientSecret = platformConfig.ClientSecret;
+                    subscriptions = GetTenantSubscriptions(platformConfig.TenantId);
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     Disks = _cloudApiServices.GetCloudDisksList(requestInfo, subscriptions);
@@ -445,9 +515,13 @@ namespace CERA.CloudService
                 List<CeraPolicy> policies = new List<CeraPolicy>();
                 GetPlatforms();
                 List<CeraSubscription> subscriptions = new List<CeraSubscription>();
-                subscriptions = GetSubscriptionList();
+                
                 foreach (var platformConfig in PlatformConfigs)
                 {
+                    requestInfo.tenantId = platformConfig.TenantId;
+                    requestInfo.clientId = platformConfig.ClientId;
+                    requestInfo.clientSecret = platformConfig.ClientSecret;
+                    subscriptions = GetTenantSubscriptions(platformConfig.TenantId);
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     policies = _cloudApiServices.GetCloudPolicies(requestInfo, subscriptions);
@@ -477,9 +551,13 @@ namespace CERA.CloudService
                 List<CeraCompliances> compliances = new List<CeraCompliances>();
                 GetPlatforms();
                 List<CeraSubscription> subscriptions = new List<CeraSubscription>();
-                subscriptions = GetSubscriptionList();
+                
                 foreach (var platformConfig in PlatformConfigs)
                 {
+                    requestInfo.tenantId = platformConfig.TenantId;
+                    requestInfo.clientId = platformConfig.ClientId;
+                    requestInfo.clientSecret = platformConfig.ClientSecret;
+                    subscriptions = GetTenantSubscriptions(platformConfig.TenantId);
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     compliances = _cloudApiServices.GetCloudCompliances(requestInfo, subscriptions);
@@ -505,9 +583,13 @@ namespace CERA.CloudService
                 List<CeraRateCard> rateCard = new List<CeraRateCard>();
                 GetPlatforms();
                 List<CeraSubscription> subscriptions = new List<CeraSubscription>();
-                subscriptions = GetSubscriptionList();
+                
                 foreach (var platformConfig in PlatformConfigs)
                 {
+                    requestInfo.tenantId = platformConfig.TenantId;
+                    requestInfo.clientId = platformConfig.ClientId;
+                    requestInfo.clientSecret = platformConfig.ClientSecret;
+                    subscriptions = GetTenantSubscriptions(platformConfig.TenantId);
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     rateCard = _cloudApiServices.GetCloudRateCardList(requestInfo, subscriptions);
@@ -533,9 +615,13 @@ namespace CERA.CloudService
                 List<CeraUsage> usage = new List<CeraUsage>();
                 GetPlatforms();
                 List<CeraSubscription> subscriptions = new List<CeraSubscription>();
-                subscriptions = GetSubscriptionList();
+                
                 foreach (var platformConfig in PlatformConfigs)
                 {
+                    requestInfo.tenantId = platformConfig.TenantId;
+                    requestInfo.clientId = platformConfig.ClientId;
+                    requestInfo.clientSecret = platformConfig.ClientSecret;
+                    subscriptions = GetTenantSubscriptions(platformConfig.TenantId);
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     usage = await _cloudApiServices.GetCloudUsageDetails(requestInfo, subscriptions);
@@ -561,9 +647,13 @@ namespace CERA.CloudService
                 List<UsageByMonth> usage = new List<UsageByMonth>();
                 GetPlatforms();
                 List<CeraSubscription> subscriptions = new List<CeraSubscription>();
-                subscriptions = GetSubscriptionList();
+                
                 foreach (var platformConfig in PlatformConfigs)
                 {
+                    requestInfo.tenantId = platformConfig.TenantId;
+                    requestInfo.clientId = platformConfig.ClientId;
+                    requestInfo.clientSecret = platformConfig.ClientSecret;
+                    subscriptions = GetTenantSubscriptions(platformConfig.TenantId);
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     usage = _cloudApiServices.GetCloudUsageByMonth(requestInfo, subscriptions);
@@ -588,9 +678,13 @@ namespace CERA.CloudService
                 List<UsageHistory> usage = new List<UsageHistory>();
                 GetPlatforms();
                 List<CeraSubscription> subscriptions = new List<CeraSubscription>();
-                subscriptions = GetSubscriptionList();
+                
                 foreach (var platformConfig in PlatformConfigs)
                 {
+                    requestInfo.tenantId = platformConfig.TenantId;
+                    requestInfo.clientId = platformConfig.ClientId;
+                    requestInfo.clientSecret = platformConfig.ClientSecret;
+                    subscriptions = GetTenantSubscriptions(platformConfig.TenantId);
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     usage = _cloudApiServices.GetCloudUsageHistory(requestInfo, subscriptions);
@@ -615,9 +709,13 @@ namespace CERA.CloudService
                 List<AdvisorRecommendations> recommendations  = new List<AdvisorRecommendations>();
                 GetPlatforms();
                 List<CeraSubscription> subscriptions = new List<CeraSubscription>();
-                subscriptions = GetSubscriptionList();
+                
                 foreach (var platformConfig in PlatformConfigs)
                 {
+                    requestInfo.tenantId = platformConfig.TenantId;
+                    requestInfo.clientId = platformConfig.ClientId;
+                    requestInfo.clientSecret = platformConfig.ClientSecret;
+                    subscriptions = GetTenantSubscriptions(platformConfig.TenantId);
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     recommendations = _cloudApiServices.GetCloudAdvisorRecommendations(requestInfo, subscriptions);
@@ -642,9 +740,13 @@ namespace CERA.CloudService
                 List<AzureLocations> locations = new List<AzureLocations>();
                 GetPlatforms();
                 List<CeraSubscription> subscriptions = new List<CeraSubscription>();
-                subscriptions = GetSubscriptionList();
+                
                 foreach (var platformConfig in PlatformConfigs)
                 {
+                    requestInfo.tenantId = platformConfig.TenantId;
+                    requestInfo.clientId = platformConfig.ClientId;
+                    requestInfo.clientSecret = platformConfig.ClientSecret;
+                    subscriptions = GetTenantSubscriptions(platformConfig.TenantId);
                     _cloudApiServices = _converter.CreateInstance(platformConfig.DllPath, platformConfig.APIClassName);
                     _cloudApiServices.Logger = Logger;
                     locations = _cloudApiServices.GetCloudLocations(requestInfo, subscriptions);
@@ -716,7 +818,7 @@ namespace CERA.CloudService
         /// This method retrives Virtual Machines data from database
         /// </summary>
         /// <returns>returns VirtualMAchines data from database</returns>
-        public List<CeraVM> GetVMList()
+        public List<ResourcesModel> GetVMList()
         {
             try
             {
@@ -734,7 +836,7 @@ namespace CERA.CloudService
         /// This method retrives ResourceGroups data from database
         /// </summary>
         /// <returns>returns ResourceGroups from database</returns>
-        public List<CeraResourceGroups> GetResourceGroupsList()
+        public List<ResourceGroupsVM> GetResourceGroupsList()
         {
             try
             {
@@ -752,7 +854,7 @@ namespace CERA.CloudService
         /// This method retrives StorageAccount data from database
         /// </summary>
         /// <returns>returns StorageAccount data from database</returns>
-        public List<CeraStorageAccount> GetStorageAccountList()
+        public List<StorageAccountsVM> GetStorageAccountList()
         {
             try
             {
@@ -765,6 +867,20 @@ namespace CERA.CloudService
                 throw ex;
             }
             
+        }
+
+        public List<StorageSize> GetStorageSizes()
+        {
+            try
+            {
+                Logger.LogInfo("Requested data for StorageAccount Sizes from Database called");
+                return _dataOps.GetStorageSizes();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                throw ex;
+            }
         }
         /// <summary>
         /// This method retrives SqlServer data from database
@@ -806,7 +922,7 @@ namespace CERA.CloudService
         /// This method retrives WebApp data from database
         /// </summary>
         /// <returns>returns WebApp data from database</returns>
-        public List<CeraWebApps> GetWebAppsList()
+        public List<ResourcesModel> GetWebAppsList()
         {
             try
             {
@@ -856,6 +972,21 @@ namespace CERA.CloudService
             }
             
         }
+
+        public List<ResourcesModel> GetResourceGroupResources(string name)
+        {
+            try
+            {
+                Logger.LogInfo($"Requested resources data for Resource Group: {name} from the Database");
+                return _dataOps.GetResourceGroupResources(name);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                return null;
+            }
+        }
+
         public List<ResourceHealthViewDTO> GetCeraResourceHealthList()
         {
             try
@@ -1125,7 +1256,7 @@ namespace CERA.CloudService
             catch (Exception ex)
             {
                 Logger.LogException(ex);
-                throw ex;
+                return null;
             }
         }
   public List<CostUsage> UsageSubscriptionByMonth(string cloudprovider, string subscriptionid)
@@ -1137,7 +1268,32 @@ namespace CERA.CloudService
             catch (Exception ex)
             {
                 Logger.LogException(ex);
-                throw ex;
+                return null;
+            }
+        }
+
+        public List<BarChartModel> GetBarChartCloudData(string cloud)
+        {
+            try
+            {
+                return _dataOps.GetBarChartCloudData(cloud);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                return null;
+            }
+        }
+        public List<BarChartModel> GetBarChartSubscriptionData(string cloud, string subscriptionId)
+        {
+            try
+            {
+                return _dataOps.GetBarChartSubscriptionData(cloud, subscriptionId);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                return null;
             }
         }
         public List<PolicyRules> GetPolicyRules()
@@ -1351,6 +1507,30 @@ namespace CERA.CloudService
         {
             return _dataOps.GetResourceTypecloudCount(location, cloudprovider);
         }
+
+        public List<Dashboardresources> GetComputeResources()
+        {
+            return _dataOps.GetComputeResources();
+        }
+
+        public List<Dashboardresources> GetNetworkResources()
+        {
+            return _dataOps.GetNetworkResources();
+        }
+
+        public List<Dashboardresources> GetStorageResources()
+        {
+            return _dataOps.GetStorageResources();
+        }
+
+        public List<Dashboardresources> GetOtherResources()
+        {
+            return _dataOps.GetOtherResources();
+        }
+        public List<CeraSubscription> GetTenantSubscriptions(string tenantId)
+        {
+            return _dataOps.TenantSubscriptions(tenantId);
+        }
         public List<CeraResources> GetCloudResourceList(RequestInfoViewModel requestInfo, List<CeraSubscription> subscriptions)
         {
             throw new NotImplementedException();
@@ -1442,5 +1622,6 @@ namespace CERA.CloudService
         {
             throw new NotImplementedException();
         }
+
     }
 }

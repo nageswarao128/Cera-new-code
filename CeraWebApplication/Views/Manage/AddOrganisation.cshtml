@@ -74,7 +74,7 @@
             </div>
             <div class="col-md-12">
                 <div class="form-group">
-                    <h6  class="user_enter">Enter Cloud Details:</h6>
+                    <h6 class="user_enter">Enter Cloud Details:</h6>
                 </div>
             </div>
             <div class="col-md-4">
@@ -127,10 +127,20 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <button type="button" onclick="addData()" class="btn btn-default">Add</button>
-                </div>
+                    <label asp-for="ClientSecret" class="control-label"></label>
+                    <input id="clientSecret" asp-for="ClientSecret" class="form-control" required />
+                    <span asp-validation-for="ClientSecret" class="text-danger"></span>
                 </div>
             </div>
+            </div>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <button type="button" onclick="addData()" class="btn btn-default">Add</button>
+                </div>
+            </div>
+        </div>
 
 
 
@@ -141,7 +151,7 @@
 
         <button id="btnSignIn" style="display:none" type="button" class="btn btn-outline-primary" onclick="getDetails()">Sign-In</button>
 
-        <a id="btnClient" style="display:none" href="#">Get Client Secret</a>
+        @*<a id="btnClient" style="display:none" href="#">Get Client Secret</a>*@
 
     </div>
     <script>
@@ -182,7 +192,8 @@
                 SupportContact: document.getElementById('supportContact').value,
                 Description: document.getElementById('description').value,
                 TenantId: document.getElementById('tenantId').value,
-                ClientId: document.getElementById('clientId').value
+                ClientId: document.getElementById('clientId').value,
+                ClientSecret: document.getElementById('clientSecret').value
             };
             postData(data);
             sessionStorage.setItem("tenantId", data.TenantId);
@@ -201,14 +212,15 @@
                 success: function (data) {
                     if (data != null) {
                         alert("Data Inserted Sucessfully");
+                        
                         //$('#OrgAdd').reset();
-                        let html = '<select id="selectAuthType" onchange="authOnChange()">';
-                        html += '<option value="0" selected>Select Authentication Type</option>';
-                        html += '<option value="AAD">Microsoft Authentication</option>';
-                        html += '<option value="CloudPrinciple">Client Cloud Principle</option>';
-                        html += '</select>';
-                        $('#ddnAuthType').append(html);
-                        $('#ddnAuthType').show();
+                        //let html = '<select id="selectAuthType" onchange="authOnChange()">';
+                        //html += '<option value="0" selected>Select Authentication Type</option>';
+                        //html += '<option value="AAD">Microsoft Authentication</option>';
+                        //html += '<option value="CloudPrinciple">Client Cloud Principle</option>';
+                        //html += '</select>';
+                        //$('#ddnAuthType').append(html);
+                        //$('#ddnAuthType').show();
 
                     }
                 },
