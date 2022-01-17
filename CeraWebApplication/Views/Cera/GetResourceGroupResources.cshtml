@@ -41,7 +41,7 @@
                         Region
                     </th>
                     <th>
-                        Cost (INR)
+                        Cost
                     </th>
                 </tr>
             </thead>
@@ -63,13 +63,13 @@
                         </td>
                         @if (item.cost == null)
                         {
-                            <td>₹ 0.00</td>
+                            <td>0.00</td>
                         }
                         else
                         {
-                            <td>
-                                ₹ @Html.DisplayFor(modelItem => item.cost)
-                            </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.currency) @Html.DisplayFor(modelItem => item.cost)
+                    </td>
                         }
                     </tr>
                 }
@@ -193,10 +193,10 @@
                 html += '<td>' + data[i].type + '</td>';
                 html += '<td>' + data[i].regionName + '</td>';
                 if (data[i].cost == null) {
-                    html += '<td>' +'₹ 0.00' + '</td>';
+                    html += '<td>' +'0.00' + '</td>';
                 }
                 else {
-                    html += '<td>' +'₹' +data[i].cost + '</td>';
+                    html += '<td>' + data[i].currency + data[i].cost + '</td>';
                 }
                 html += '</tr>';
             }

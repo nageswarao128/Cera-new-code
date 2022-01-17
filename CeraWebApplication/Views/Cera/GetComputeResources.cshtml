@@ -43,7 +43,7 @@
                         RegionName
                     </th>
                     <th>
-                        Cost (INR)
+                        Cost
                     </th>
                 </tr>
             </thead>
@@ -69,13 +69,13 @@
                         </td>
                         @if (item.cost == null)
                         {
-                            <td style="white-space: nowrap">₹ 0.00</td>
+                            <td style="white-space: nowrap">0.00</td>
                         }
                         else
                         {
-                            <td style="white-space: nowrap">
-                                ₹ @Html.DisplayFor(modelItem => item.cost)
-                            </td>
+                    <td style="white-space: nowrap">
+                        @Html.DisplayFor(modelItem => item.currency) @Html.DisplayFor(modelItem => item.cost)
+                    </td>
                         }
                     </tr>
                 }
@@ -203,10 +203,10 @@
                 html += '<td style="white-space: nowrap">' + data[i].resourceType + '</td>';
                 html += '<td style="white-space: nowrap">' + data[i].regionName + '</td>';
                 if (data[i].cost == null) {
-                    html += '<td style="white-space: nowrap">' + '₹ 0.00' + '</td>';
+                    html += '<td style="white-space: nowrap">' + '0.00' + '</td>';
                 }
                 else {
-                    html += '<td style="white-space: nowrap">' +'₹'+ data[i].cost + '</td>';
+                    html += '<td style="white-space: nowrap">' + data[i].currency + data[i].cost + '</td>';
                 }
                 html += '</tr>';
             }

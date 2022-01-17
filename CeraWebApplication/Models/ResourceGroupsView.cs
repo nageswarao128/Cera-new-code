@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace CERA.Entities.ViewModels
+namespace CeraWebApplication.Models
 {
-    public class ResourceGroupsVM
+    public class ResourceGroupsView
     {
         public string Name { get; set; }
         public string RegionName { get; set; }

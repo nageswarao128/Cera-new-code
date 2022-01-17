@@ -14,5 +14,6 @@ namespace CERA.Entities.ViewModels
         public decimal? cost { get; set; }
         public string Cloudprovider { get; set; }
         public string SubscriptionId { get; set; }
+        public string currency { get; set; }
     }
 }

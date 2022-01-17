@@ -1152,7 +1152,7 @@ namespace CeraWebApplication.Controllers
         public async Task<IActionResult> GetResourceGroupDetails()
         {
             IEnumerable<ResourceGroupsVM> ResourceGroups = null;
-
+            List<ResourceGroupsView> data = new List<ResourceGroupsView>();
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync($"{DataApiUrl}/api/CeraData/GetDBResourceGroups"))
@@ -1161,6 +1161,10 @@ namespace CeraWebApplication.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         ResourceGroups = JsonConvert.DeserializeObject<List<ResourceGroupsVM>>(apiResponse);
+                        foreach(var item in ResourceGroups) {
+                            string currency = MapCurrency(item.currency);
+                            item.currency = currency;
+                        }
                     }
                     else
                     {
@@ -1170,6 +1174,23 @@ namespace CeraWebApplication.Controllers
             }
             ViewBag.data = ResourceGroups.ToList();
             return View(ResourceGroups.ToList());
+        }
+
+        public string MapCurrency(string currency)
+        {
+            Dictionary<string, string> keyValues = new Dictionary<string, string>();
+
+            keyValues.Add("INR", "₹");
+            keyValues.Add("USD", "$");
+            if (currency != null)
+            {
+                if (keyValues.ContainsKey(currency))
+                {
+                    return keyValues[currency];
+                }
+                return null;
+            }
+            return null;
         }
 
         /// <summary>
@@ -1212,7 +1233,11 @@ namespace CeraWebApplication.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         StorageAccounts = JsonConvert.DeserializeObject<List<StorageAccountsVM>>(apiResponse);
-                        
+                        foreach (var item in StorageAccounts)
+                        {
+                            string currency = MapCurrency(item.currency);
+                            item.currency = currency;
+                        }
                     }
                     else
                     {
@@ -1282,6 +1307,11 @@ namespace CeraWebApplication.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         Resources = JsonConvert.DeserializeObject<List<ResourcesModel>>(apiResponse);
+                        foreach (var item in Resources)
+                        {
+                            string currency = MapCurrency(item.currency);
+                            item.currency = currency;
+                        }
                     }
                     else
                     {
@@ -1361,6 +1391,11 @@ namespace CeraWebApplication.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         CeraVMs = JsonConvert.DeserializeObject<List<ResourcesModel>>(apiResponse);
+                        foreach (var item in CeraVMs)
+                        {
+                            string currency = MapCurrency(item.currency);
+                            item.currency = currency;
+                        }
                     }
                     else
                     {
@@ -1512,6 +1547,11 @@ namespace CeraWebApplication.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         webApps = JsonConvert.DeserializeObject<List<ResourcesModel>>(apiResponse);
+                        foreach (var item in webApps)
+                        {
+                            string currency = MapCurrency(item.currency);
+                            item.currency = currency;
+                        }
                     }
                     else
                     {
@@ -2032,6 +2072,11 @@ namespace CeraWebApplication.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         resources = JsonConvert.DeserializeObject<List<DashboardResources>>(apiResponse);
+                        foreach (var item in resources)
+                        {
+                            string currency = MapCurrency(item.currency);
+                            item.currency = currency;
+                        }
                         ViewBag.resources = resources;
                     }
                     else
@@ -2055,6 +2100,11 @@ namespace CeraWebApplication.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         resources = JsonConvert.DeserializeObject<List<DashboardResources>>(apiResponse);
+                        foreach (var item in resources)
+                        {
+                            string currency = MapCurrency(item.currency);
+                            item.currency = currency;
+                        }
                         ViewBag.resources = resources;
                     }
                     else
@@ -2078,6 +2128,11 @@ namespace CeraWebApplication.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         resources = JsonConvert.DeserializeObject<List<DashboardResources>>(apiResponse);
+                        foreach (var item in resources)
+                        {
+                            string currency = MapCurrency(item.currency);
+                            item.currency = currency;
+                        }
                         ViewBag.resources = resources;
                     }
                     else
@@ -2101,6 +2156,11 @@ namespace CeraWebApplication.Controllers
                     if (response.IsSuccessStatusCode)
                     {
                         resources = JsonConvert.DeserializeObject<List<DashboardResources>>(apiResponse);
+                        foreach (var item in resources)
+                        {
+                            string currency = MapCurrency(item.currency);
+                            item.currency = currency;
+                        }
                         ViewBag.resources = resources;
                     }
                     else
