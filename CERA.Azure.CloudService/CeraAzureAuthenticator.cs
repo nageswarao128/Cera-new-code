@@ -61,6 +61,7 @@ namespace CERA.Azure.CloudService
         {
             _logger.LogInfo("Initializing Variable for Auth Client");
             if (!string.IsNullOrWhiteSpace(tenantId))
+                TenantId = tenantId;
                 Authority = string.Format(authority, tenantId);
             if (!string.IsNullOrWhiteSpace(clientID))
                 ClientID = clientID;
